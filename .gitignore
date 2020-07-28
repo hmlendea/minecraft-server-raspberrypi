@@ -1,6 +1,9 @@
+# Logs
+logs
+*.log
+
 # Temporary files
 cache
-logs
 usercache.json
 version_history.json
 
