@@ -47,6 +47,7 @@ settings:
       to use TNT duplication, but this also allows duplicating carpet, rails and potentially
       other items
   async-chunks:
+    enable: true
     threads: -1
 messages:
   no-permission: '&cI''m sorry, but you do not have permission to perform this command.
