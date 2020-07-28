@@ -9,7 +9,6 @@ PAPER_BIN_PATH="${PAPER_DIR_PATH}/papermc_server.jar"
 cd "${PAPER_DIR_PATH}"
 
 echo "Starting '${PAPER_BIN_PATH}' with ${ALLOCATED_RAM_GB}GB RAM allocated..."
-exit
 java \
     -Xms${ALLOCATED_RAM_GB}G \
     -Xmx${ALLOCATED_RAM_GB}G \
