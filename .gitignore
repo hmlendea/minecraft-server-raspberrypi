@@ -18,6 +18,10 @@ eula.txt
 ops.json
 whitelist.json
 
+# World files
 NuciLandia
 NuciLandia_nether
 NuciLandia_the_end
+
+# Backups
+backup
