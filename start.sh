@@ -1,10 +1,15 @@
 PAPER_DIR_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
 ALLOCATED_RAM_GB=3
+
+PAPER_BIN_PATH="${PAPER_DIR_PATH}/papermc_server.jar"
+[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
+[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}" | grep "papermc\.[0-9]\.[0-9]*\.[0-9]+[a-z][0-9]*\.jar" | tail -n 1)
+[ -f "${PAPER_DIR_PATH}/${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=${PAPER_DIR_PATH}/${PAPER_BIN_PATH}
 
 cd "${PAPER_DIR_PATH}"
 
-echo "Starting '${PAPER_JAR_NAME}' with ${ALLOCATED_RAM_GB}GB RAM allocated..."
+echo "Starting '${PAPER_BIN_PATH}' with ${ALLOCATED_RAM_GB}GB RAM allocated..."
+exit
 java \
     -Xms${ALLOCATED_RAM_GB}G \
     -Xmx${ALLOCATED_RAM_GB}G \
@@ -28,7 +33,7 @@ java \
     -XX:MaxTenuringThreshold=1 \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
-    -jar "${PAPER_DIR_PATH}"/${PAPER_JAR_NAME} nogui
+    -jar ${PAPER_BIN_PATH} nogui
 
 # Clean server.properties
 SERVER_PROPERTIES_FILE_PATH="${PAPER_DIR_PATH}/server.properties"
