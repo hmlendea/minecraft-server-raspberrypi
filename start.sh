@@ -1,10 +1,13 @@
 PAPER_DIR_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ALLOCATED_RAM_GB=3
 
-PAPER_BIN_PATH="${PAPER_DIR_PATH}/papermc_server.jar"
-[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
-[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}" | grep "papermc\.[0-9]\.[0-9]*\.[0-9]+[a-z][0-9]*\.jar" | tail -n 1)
-[ -f "${PAPER_DIR_PATH}/${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=${PAPER_DIR_PATH}/${PAPER_BIN_PATH}
+PAPER_BIN_PATH="sss"
+[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}/"paper-[0-9]*.jar | tail -n 1)
+[ ! -f "${PAPER_BIN_PATH}" ] && PAPER_BIN_PATH=$(ls "${PAPER_DIR_PATH}/"papermc\.[0-9]\.[0-9]*\.[0-9]+[a-z][0-9]*\.jar | tail -n 1)
+
+if [ ! -f "${PAPER_BIN_PATH}" ] && [ -f "${PAPER_DIR_PATH}/papermc_server.jar" ]; then
+    PAPER_BIN_PATH="${PAPER_DIR_PATH}/papermc_server.jar"
+fi
 
 cd "${PAPER_DIR_PATH}"
 
