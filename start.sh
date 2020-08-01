@@ -29,3 +29,8 @@ java \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
     -jar "${PAPER_DIR_PATH}"/${PAPER_JAR_NAME} nogui
+
+# Clean server.properties
+SERVER_PROPERTIES_FILE_PATH="${PAPER_DIR_PATH}/server.properties"
+sed '/^#/d' -i "${SERVER_PROPERTIES_FILE_PATH}"
+sort -o "${SERVER_PROPERTIES_FILE_PATH}" "${SERVER_PROPERTIES_FILE_PATH}"
