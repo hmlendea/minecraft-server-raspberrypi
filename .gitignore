@@ -1,0 +1,16 @@
+# Temporary files
+cache
+logs
+usercache.json
+version_history.json
+
+# Sensitive files
+banned-ips.json
+banned-players.json
+eula.txt
+ops.json
+whitelist.json
+
+NuciLandia
+NuciLandia_nether
+NuciLandia_the_end
