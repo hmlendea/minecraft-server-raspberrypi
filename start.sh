@@ -1,7 +1,8 @@
 PAPER_DIR_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar")
-
+PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
 ALLOCATED_RAM_GB=4
+
+cd "${PAPER_DIR_PATH}"
 
 echo "Starting '${PAPER_JAR_NAME}' with ${ALLOCATED_RAM_GB}GB RAM allocated..."
 java \

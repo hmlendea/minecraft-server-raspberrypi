@@ -5,6 +5,7 @@ usercache.json
 version_history.json
 
 # Sensitive files
+.console_history
 banned-ips.json
 banned-players.json
 eula.txt
