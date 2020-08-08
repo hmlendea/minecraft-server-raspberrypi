@@ -90,7 +90,7 @@ world-settings:
     zombie-aggressive-towards-villager: true
     nerf-spawner-mobs: true
     end-portal-sound-radius: 0
-    mob-spawn-range: 6
+    mob-spawn-range: 5
     max-entity-collisions: 8
     merge-radius:
       exp: 6.0
