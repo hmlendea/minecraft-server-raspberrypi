@@ -1,0 +1,184 @@
+deftemplatesuffix: hires
+
+storage:
+  type: filetree
+  
+components:
+  - class: org.dynmap.ClientConfigurationComponent
+  
+  - class: org.dynmap.InternalClientUpdateComponent
+    sendhealth: true
+    sendposition: true
+    allowwebchat: true
+    webchat-interval: 5
+    hidewebchatip: false
+    trustclientname: false
+    includehiddenplayers: false
+    use-name-colors: false
+    use-player-login-ip: true
+    require-player-login-ip: false
+    block-banned-player-chat: true
+    webchat-requires-login: false
+    webchat-permissions: false
+    chatlengthlimit: 256
+    hideifsneaking: false
+    protected-player-info: false
+    hide-if-invisiblity-potion: true
+    hidenames: false
+   
+  - class: org.dynmap.SimpleWebChatComponent
+    allowchat: true
+    allowurlname: false
+  
+  - class: org.dynmap.MarkersComponent
+    type: markers
+    showlabel: false
+    enablesigns: false
+    default-sign-set: markers
+    showspawn: true
+    spawnicon: world
+    spawnlabel: "Spawn"
+    showofflineplayers: false
+    offlinelabel: "Offline"
+    offlineicon: offlineuser
+    offlinehidebydefault: true
+    offlineminzoom: 0
+    maxofflinetime: 30
+    showspawnbeds: false
+    spawnbedlabel: "Spawn Beds"
+    spawnbedicon: bed
+    spawnbedhidebydefault: true
+    spawnbedminzoom: 0
+    spawnbedformat: "%name%'s bed"
+    showworldborder: true
+    
+  - class: org.dynmap.ClientComponent
+    type: chat
+    allowurlname: false
+
+  - class: org.dynmap.ClientComponent
+    type: chatballoon
+    focuschatballoons: false
+
+  - class: org.dynmap.ClientComponent
+    type: chatbox
+    showplayerfaces: true
+    messagettl: 5
+    sendbutton: false
+
+  - class: org.dynmap.ClientComponent
+    type: playermarkers
+    showplayerfaces: true
+    showplayerhealth: true
+    showplayerbody: false
+    smallplayerfaces: false
+    hidebydefault: false
+    layerprio: 0
+    label: "Players"
+    
+  - class: org.dynmap.ClientComponent
+    type: link
+    
+  - class: org.dynmap.ClientComponent
+    type: timeofdayclock
+    showdigitalclock: true
+    showweather: true
+
+  - class: org.dynmap.ClientComponent
+    type: coord
+    label: "Location"
+    hidey: false
+    show-mcr: false
+
+display-whitelist: false
+renderinterval: 1
+renderacceleratethreshold: 60
+renderaccelerateinterval: 0.2
+tiles-rendered-at-once: 2
+usenormalthreadpriority: true
+saverestorepending: true
+save-pending-period: 900
+zoomoutperiod: 30
+initial-zoomout-validate: true
+tileupdatedelay: 30
+enabletilehash: true
+smooth-lighting: true
+use-brightness-table: true
+block-id-alias:
+image-format: png
+use-generated-textures: true
+correct-water-lighting: true
+transparent-leaves: true
+ctm-support: true
+custom-colors-support: true
+skin-url: "http://skins.minecraft.net/MinecraftSkins/%player%.png"
+
+render-triggers:
+  - blockplaced
+  - blockbreak
+  - leavesdecay
+  - blockburn
+  - chunkgenerated
+  - blockformed
+  - blockfaded
+  - blockspread
+  - pistonmoved
+  - explosion
+  - structuregrow
+  - blockgrow
+
+tilespath: web/tiles
+webpath: web
+exportpath: export
+webserver-port: 25550
+max-sessions: 5
+disable-webserver: false
+allow-symlinks: true
+login-enabled: false
+login-required: false
+timesliceinterval: 0.4
+maxchunkspertick: 200
+progressloginterval: 100
+updaterate: 1000
+sidebaropened: true
+fullrenderplayerlimit: 0
+updateplayerlimit: 0
+per-tick-time-limit: 50
+update-min-tps: 18.0
+fullrender-min-tps: 18.0
+zoomout-min-tps: 18.0
+showplayerfacesinmenu: true
+grayplayerswhenhidden: true
+player-sort-permission-nodes:
+  - bukkit.command.op
+trusted-proxies:
+  - "127.0.0.1"
+  - "0:0:0:0:0:0:0:1"
+joinmessage: "%playername% joined"
+quitmessage: "%playername% quit"
+spammessage: "You may only chat once every %interval% seconds."
+webmsgformat: "&color;2[WEB] %playername%: &color;f%message%"
+showlayercontrol: true
+check-banned-ips: true
+defaultzoom: 0
+defaultworld: world
+defaultmap: flat
+persist-ids-by-ip: true
+cyrillic-support: false
+round-coordinates: true
+msg:
+    maptypes: "Map Types"
+    players: "Players"
+    chatrequireslogin: "Chat Requires Login"
+    chatnotallowed: "You are not permitted to send chat messages"
+    hiddennamejoin: "Player joined"
+    hiddennamequit: "Player quit"
+url:
+custom-commands:
+    image-updates:
+        preupdatecommand: ""
+        postupdatecommand: ""
+snapshotcachesize: 500
+soft-ref-cache: true
+verbose: false
+dump-missing-blocks: false
