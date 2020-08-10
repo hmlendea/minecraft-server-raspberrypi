@@ -1,7 +1,3 @@
-# Logs
-logs
-*.log
-
 # Binaries
 *.jar
 
@@ -9,6 +5,13 @@ logs
 cache
 usercache.json
 version_history.json
+
+# Logs
+logs
+*.log
+
+# Branding
+server-icon.png
 
 # Sensitive files
 .console_history
