@@ -202,9 +202,9 @@ world-settings:
       maximum: 0.0
     generator-settings:
       flat-bedrock: false
-  NuciLandia_nether:
+  world_nether:
     keep-spawn-loaded: false
     auto-save-interval: 24000
-  NuciLandia_the_end:
+  world_the_end:
     keep-spawn-loaded: false
     auto-save-interval: 24000

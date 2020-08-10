@@ -19,9 +19,22 @@ ops.json
 whitelist.json
 
 # World files
-NuciLandia
-NuciLandia_nether
-NuciLandia_the_end
+world
+*_nether
+*_nether_old
+*_the_end
+*_the_end_old
 
 # Backups
 backup
+
+# Plugins data
+plugins
+
+# Allow plugin configs
+!plugins/
+plugins/*
+!plugins/dynmap/
+plugins/dynmap/*
+!plugins/dynmap/configuration.txt
+!plugins/dynmap/worlds.txt
