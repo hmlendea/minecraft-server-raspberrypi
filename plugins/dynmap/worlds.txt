@@ -1,8 +1,8 @@
 %YAML 1.1
 ---
 worlds:
--   name: NuciLandia
-    title: NuciLandia
+-   name: world
+    title: Overworld
     enabled: true
     protected: false
     showborder: true
@@ -41,3 +41,9 @@ worlds:
         boostzoom: 0
         append_to_world: ''
         protected: false
+-   name: world_nether
+    title: Nether
+    enabled: false
+-   name: world_the_end
+    title: The End
+    enabled: false
