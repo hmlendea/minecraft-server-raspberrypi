@@ -91,7 +91,7 @@ components:
     show-mcr: false
 
 display-whitelist: false
-renderinterval: 1
+renderinterval: 2
 renderacceleratethreshold: 60
 renderaccelerateinterval: 0.2
 tiles-rendered-at-once: 2
@@ -114,18 +114,18 @@ custom-colors-support: true
 skin-url: "http://skins.minecraft.net/MinecraftSkins/%player%.png"
 
 render-triggers:
-  - blockplaced
-  - blockbreak
-  - leavesdecay
   - blockburn
-  - chunkgenerated
-  - blockformed
+  - blockbreak
   - blockfaded
-  - blockspread
-  - pistonmoved
-  - explosion
-  - structuregrow
+  - blockformed
   - blockgrow
+  - blockplaced
+  - blockspread
+  - chunkloaded
+  - chunkgenerated
+  - explosion
+  - leavesdecay
+  - structuregrow
 
 tilespath: web/tiles
 webpath: web
@@ -137,9 +137,9 @@ allow-symlinks: true
 login-enabled: false
 login-required: false
 timesliceinterval: 0.4
-maxchunkspertick: 200
+maxchunkspertick: 100
 progressloginterval: 100
-updaterate: 1000
+updaterate: 500
 sidebaropened: true
 fullrenderplayerlimit: 0
 updateplayerlimit: 0
@@ -160,9 +160,9 @@ spammessage: "You may only chat once every %interval% seconds."
 webmsgformat: "&color;2[WEB] %playername%: &color;f%message%"
 showlayercontrol: true
 check-banned-ips: true
-defaultzoom: 0
+defaultzoom: 6
 defaultworld: world
-defaultmap: flat
+defaultmap: surface
 persist-ids-by-ip: true
 cyrillic-support: false
 round-coordinates: true
