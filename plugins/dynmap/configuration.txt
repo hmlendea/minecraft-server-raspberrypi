@@ -1,4 +1,4 @@
-deftemplatesuffix: hires
+deftemplatesuffix: vlowres
 
 storage:
   type: filetree
@@ -7,10 +7,10 @@ components:
   - class: org.dynmap.ClientConfigurationComponent
   
   - class: org.dynmap.InternalClientUpdateComponent
-    sendhealth: true
+    sendhealth: false
     sendposition: true
     allowwebchat: true
-    webchat-interval: 5
+    webchat-interval: 10
     hidewebchatip: false
     trustclientname: false
     includehiddenplayers: false
@@ -30,28 +30,6 @@ components:
     allowchat: true
     allowurlname: false
   
-  - class: org.dynmap.MarkersComponent
-    type: markers
-    showlabel: false
-    enablesigns: false
-    default-sign-set: markers
-    showspawn: true
-    spawnicon: world
-    spawnlabel: "Spawn"
-    showofflineplayers: false
-    offlinelabel: "Offline"
-    offlineicon: offlineuser
-    offlinehidebydefault: true
-    offlineminzoom: 0
-    maxofflinetime: 30
-    showspawnbeds: false
-    spawnbedlabel: "Spawn Beds"
-    spawnbedicon: bed
-    spawnbedhidebydefault: true
-    spawnbedminzoom: 0
-    spawnbedformat: "%name%'s bed"
-    showworldborder: true
-    
   - class: org.dynmap.ClientComponent
     type: chat
     allowurlname: false
@@ -63,13 +41,13 @@ components:
   - class: org.dynmap.ClientComponent
     type: chatbox
     showplayerfaces: true
-    messagettl: 5
+    messagettl: 10
     sendbutton: false
 
   - class: org.dynmap.ClientComponent
     type: playermarkers
     showplayerfaces: true
-    showplayerhealth: true
+    showplayerhealth: false
     showplayerbody: false
     smallplayerfaces: false
     hidebydefault: false
@@ -77,24 +55,16 @@ components:
     label: "Players"
     
   - class: org.dynmap.ClientComponent
-    type: link
-    
-  - class: org.dynmap.ClientComponent
-    type: timeofdayclock
-    showdigitalclock: true
-    showweather: true
-
-  - class: org.dynmap.ClientComponent
     type: coord
     label: "Location"
     hidey: false
     show-mcr: false
 
 display-whitelist: false
-renderinterval: 2
-renderacceleratethreshold: 60
+renderinterval: 1800
+renderacceleratethreshold: 30
 renderaccelerateinterval: 0.2
-tiles-rendered-at-once: 2
+tiles-rendered-at-once: 1
 usenormalthreadpriority: true
 saverestorepending: true
 save-pending-period: 900
@@ -102,15 +72,15 @@ zoomoutperiod: 30
 initial-zoomout-validate: true
 tileupdatedelay: 30
 enabletilehash: true
-smooth-lighting: true
-use-brightness-table: true
+smooth-lighting: false
+use-brightness-table: false
 block-id-alias:
 image-format: png
-use-generated-textures: true
-correct-water-lighting: true
+use-generated-textures: false
+correct-water-lighting: false
 transparent-leaves: true
-ctm-support: true
-custom-colors-support: true
+ctm-support: false
+custom-colors-support: false
 skin-url: "http://skins.minecraft.net/MinecraftSkins/%player%.png"
 
 render-triggers:
@@ -121,7 +91,6 @@ render-triggers:
   - blockgrow
   - blockplaced
   - blockspread
-  - chunkloaded
   - chunkgenerated
   - explosion
   - leavesdecay
@@ -137,9 +106,9 @@ allow-symlinks: true
 login-enabled: false
 login-required: false
 timesliceinterval: 0.4
-maxchunkspertick: 100
+maxchunkspertick: 90
 progressloginterval: 100
-updaterate: 500
+updaterate: 5000
 sidebaropened: true
 fullrenderplayerlimit: 0
 updateplayerlimit: 0
