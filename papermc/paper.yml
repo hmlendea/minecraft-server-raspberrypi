@@ -13,6 +13,8 @@
 verbose: false
 config-version: 20
 settings:
+  player-auto-save-rate: -1
+  max-player-auto-save-per-tick: -1
   load-permissions-yml-before-plugins: true
   bungee-online-mode: true
   console-has-all-permissions: false

@@ -100,6 +100,7 @@ render-triggers:
   - leavesdecay
   - structuregrow
 
+webpage-title: "Minecraft DynMap"
 tilespath: /srv/http/tiles
 webpath: /srv/http
 exportpath: export
@@ -132,7 +133,7 @@ spammessage: "You may only chat once every %interval% seconds."
 webmsgformat: "&color;2[WEB] %playername%: &color;f%message%"
 showlayercontrol: true
 check-banned-ips: true
-sidebaropened: true
+sidebaropened: false
 defaultzoom: 6
 defaultworld: world
 defaultmap: surface
