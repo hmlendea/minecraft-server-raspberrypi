@@ -1,0 +1,28 @@
+.container {
+    position: relative;
+}
+.rpi {
+    position: absolute;
+    z-index: 873;
+    bottom: 16px;
+    right: 0;
+    width: 200px;
+    height: 100px;
+    align-content: center;
+    text-align: center;
+    font-size: medium;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+.rpi-logo {
+  background-color: transparent;
+  background-image: url("https://www.raspberrypi.org/homepage-9df4b/favicon.png");
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: auto 50px;
+  display: block;
+  height: 75px;
+}
