@@ -6,7 +6,9 @@ storage:
 components:
   - class: org.dynmap.ClientConfigurationComponent
   
-  - class: org.dynmap.InternalClientUpdateComponent
+  #- class: org.dynmap.InternalClientUpdateComponent
+  - class: org.dynmap.JsonFileClientUpdateComponent
+    writeinterval: 2
     sendhealth: false
     sendposition: true
     allowwebchat: true
@@ -18,14 +20,16 @@ components:
     use-player-login-ip: true
     require-player-login-ip: false
     block-banned-player-chat: true
+    hideifshadow: 0
+    hideifundercover: 0
+    hideifsneaking: false
+    hide-if-invisiblity-potion: true
     webchat-requires-login: false
     webchat-permissions: false
     chatlengthlimit: 256
-    hideifsneaking: false
     protected-player-info: false
-    hide-if-invisiblity-potion: true
     hidenames: false
-   
+  
   - class: org.dynmap.SimpleWebChatComponent
     allowchat: true
     allowurlname: false
@@ -96,12 +100,12 @@ render-triggers:
   - leavesdecay
   - structuregrow
 
-tilespath: web/tiles
-webpath: web
+tilespath: /srv/http/tiles
+webpath: /srv/http
 exportpath: export
+disable-webserver: true
 webserver-port: 25550
 max-sessions: 5
-disable-webserver: false
 allow-symlinks: true
 login-enabled: false
 login-required: false
@@ -109,8 +113,7 @@ timesliceinterval: 0.4
 maxchunkspertick: 90
 progressloginterval: 100
 updaterate: 5000
-sidebaropened: true
-fullrenderplayerlimit: 0
+fullrenderplayerlimit: 1
 updateplayerlimit: 0
 per-tick-time-limit: 50
 update-min-tps: 18.0
@@ -129,6 +132,7 @@ spammessage: "You may only chat once every %interval% seconds."
 webmsgformat: "&color;2[WEB] %playername%: &color;f%message%"
 showlayercontrol: true
 check-banned-ips: true
+sidebaropened: true
 defaultzoom: 6
 defaultworld: world
 defaultmap: surface
