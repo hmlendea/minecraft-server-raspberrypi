@@ -1,6 +1,17 @@
 .container {
     position: relative;
 }
+.server-icon {
+    position: absolute;
+    z-index: 873;
+    width: 64px;
+    height: 64px;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
 .rpi {
     position: absolute;
     z-index: 873;
