@@ -1,13 +1,10 @@
-# minecraft-server-nucicraft
-My Minecraft server optimised for Raspberry Pi 4
+README is still WIP
 
 # Installation
 
-## DynMap
+## Web server
 
-It is recommended to run DynMap using an external web server
-
-### lighttpd
+**Note**: The web server is only required if you want to use the DynMap plugin
 
 Install the following packages: `lighttpd`, `fcgi`, `php-cgi`
 
@@ -53,4 +50,11 @@ fastcgi.server = (
         )
     )
 )
+```
+
+Next we need to allow the web server to send chat messages to the Minecraft server by running the following commands:
+
+```
+touch /srv/http/standalone/dynmap_webchat.json
+chown http /srv/http/standalone/dynmap_webchat.json
 ```
