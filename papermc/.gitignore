@@ -10,9 +10,6 @@ version_history.json
 logs
 *.log
 
-# Branding
-server-icon.png
-
 # Sensitive files
 .console_history
 banned-ips.json
