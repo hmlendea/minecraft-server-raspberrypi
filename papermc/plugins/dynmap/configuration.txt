@@ -76,8 +76,8 @@ zoomoutperiod: 30
 initial-zoomout-validate: true
 tileupdatedelay: 30
 enabletilehash: true
-smooth-lighting: false
-use-brightness-table: false
+smooth-lighting: true
+use-brightness-table: true
 block-id-alias:
 image-format: png
 use-generated-textures: false
@@ -110,9 +110,10 @@ max-sessions: 5
 allow-symlinks: true
 login-enabled: false
 login-required: false
-timesliceinterval: 0.4
+timesliceinterval: 0.0
 maxchunkspertick: 90
 progressloginterval: 100
+parallelrendercnt: 4
 updaterate: 5000
 fullrenderplayerlimit: 1
 updateplayerlimit: 0
