@@ -110,13 +110,13 @@ max-sessions: 5
 allow-symlinks: true
 login-enabled: false
 login-required: false
-timesliceinterval: 0.0
+timesliceinterval: 0.5
 maxchunkspertick: 90
 progressloginterval: 100
-parallelrendercnt: 4
+parallelrendercnt: 2
 updaterate: 5000
 fullrenderplayerlimit: 1
-updateplayerlimit: 0
+updateplayerlimit: 1
 per-tick-time-limit: 50
 update-min-tps: 18.0
 fullrender-min-tps: 18.0
