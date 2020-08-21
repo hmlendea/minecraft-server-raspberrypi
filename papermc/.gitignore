@@ -30,6 +30,7 @@ backup
 
 # Plugins data
 plugins
+wepif.yml
 
 # Allow plugin configs
 !plugins/
