@@ -39,3 +39,6 @@ plugins/*
 plugins/dynmap/*
 !plugins/dynmap/configuration.txt
 !plugins/dynmap/worlds.txt
+
+# Others
+.hawtjni
