@@ -11,14 +11,14 @@ Install the following packages: `lighttpd`, `fcgi`, `php-cgi`
 Update `/etc/lighttpd/lighttpd.conf` to:
 
 ```
-server.port		        = 25550
-server.username		    = "http"
-server.groupname	    = "http"
-server.document-root	= "/srv/http"
-server.errorlog		    = "/var/log/lighttpd/error.log"
-dir-listing.activate	= "enable"
-index-file.names	    = ( "index.html" )
-mimetype.assign	    	= (
+server.port             = 25550
+server.username         = "http"
+server.groupname        = "http"
+server.document-root    = "/srv/http"
+server.errorlog         = "/var/log/lighttpd/error.log"
+dir-listing.activate    = "enable"
+index-file.names        = ( "index.html" )
+mimetype.assign         = (
 				".html" => "text/html",
 				".txt" => "text/plain",
 				".css" => "text/css",
