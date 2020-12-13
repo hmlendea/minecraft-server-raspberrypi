@@ -28,19 +28,6 @@ worlds:
         boostzoom: 0
         append_to_world: ''
         protected: false
-    -   class: org.dynmap.hdmap.HDMap
-        name: surface
-        title: Isometric
-        prefix: t
-        perspective: iso_SE_30_hires
-        shader: stdtexture
-        lighting: shadows
-        image-format: default
-        mapzoomin: 0
-        mapzoomout: 1
-        boostzoom: 0
-        append_to_world: ''
-        protected: false
 -   name: world_nether
     title: Nether
     enabled: false

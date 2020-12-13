@@ -137,7 +137,7 @@ check-banned-ips: true
 sidebaropened: false
 defaultzoom: 6
 defaultworld: world
-defaultmap: surface
+defaultmap: flat
 persist-ids-by-ip: true
 cyrillic-support: false
 round-coordinates: true
