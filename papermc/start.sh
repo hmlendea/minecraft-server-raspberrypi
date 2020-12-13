@@ -1,7 +1,7 @@
 PAPER_DIR_PATH=$(pwd)
 PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
 PAPER_JAR_PATH="${PAPER_DIR_PATH}/${PAPER_JAR_NAME}"
-ALLOCATED_RAM="3G"
+ALLOCATED_RAM="6G"
 
 function clean-server-properties {
     sleep 2m
