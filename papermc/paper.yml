@@ -5,14 +5,16 @@
 # If you need help with the configuration or have any questions related to Paper,
 # join us in our Discord or IRC channel.
 # 
-# Discord: https://paperdiscord.emc.gs
-# IRC: #paper @ irc.spi.gt ( http://irc.spi.gt/iris/?channels=paper )
+# Discord: https://discord.gg/papermc
+# IRC: #paper @ irc.esper.net ( https://webchat.esper.net/?channels=paper ) 
 # Website: https://papermc.io/ 
 # Docs: https://paper.readthedocs.org/ 
 
 verbose: false
 config-version: 20
 settings:
+  track-plugin-scoreboards: false
+  max-joins-per-tick: 3
   player-auto-save-rate: -1
   max-player-auto-save-per-tick: -1
   load-permissions-yml-before-plugins: true
@@ -40,6 +42,7 @@ settings:
     page-max: 2560
     total-multiplier: 0.98
   unsupported-settings:
+    allow-headless-pistons: false
     allow-permanent-block-break-exploits: false
     allow-piston-duplication: false
     allow-permanent-block-break-exploits-readme: This setting controls if players
@@ -48,6 +51,8 @@ settings:
     allow-piston-duplication-readme: This setting controls if player should be able
       to use TNT duplication, but this also allows duplicating carpet, rails and potentially
       other items
+    allow-headless-pistons-readme: This setting controls if players should be able
+      to create headless pistons.
   async-chunks:
     enable: true
     threads: -1
@@ -71,6 +76,10 @@ timings:
   server-name: Unknown Server
 world-settings:
   default:
+    should-remove-dragon: false
+    seed-based-feature-search: true
+    fix-climbing-bypassing-cramming-rule: false
+    zombies-target-turtle-eggs: true
     delay-chunk-unloads-by: 10s
     baby-zombie-movement-modifier: 0.5
     optimize-explosions: true
@@ -124,6 +133,7 @@ world-settings:
     light-queue-size: 20
     auto-save-interval: -1
     game-mechanics:
+      fix-curing-zombie-villager-discount-exploit: true
       scan-for-legacy-ender-dragon: true
       disable-pillager-patrols: false
       nerf-pigmen-from-nether-portals: false
@@ -178,6 +188,7 @@ world-settings:
       impact-sound: -1
       flash: -1
     anti-xray:
+      lava-obscures: false
       enabled: false
       engine-mode: 1
       max-chunk-section-index: 3
@@ -204,6 +215,12 @@ world-settings:
       maximum: 0.0
     generator-settings:
       flat-bedrock: false
+    wandering-trader:
+      spawn-minute-length: 1200
+      spawn-day-length: 24000
+      spawn-chance-failure-increment: 25
+      spawn-chance-min: 25
+      spawn-chance-max: 75
   world_nether:
     keep-spawn-loaded: false
     auto-save-interval: 24000
