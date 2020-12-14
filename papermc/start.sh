@@ -1,7 +1,17 @@
 PAPER_DIR_PATH=$(pwd)
 PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
 PAPER_JAR_PATH="${PAPER_DIR_PATH}/${PAPER_JAR_NAME}"
-ALLOCATED_RAM="6G"
+
+TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/1024/1024)"G"; }')
+
+if [ "${TOTAL_RAM}" == "8G" ]; then
+    ALLOCATED_RAM="6G"
+elif [ "${TOTAL_RAM}" == "4G" ]; then
+    ALLOCATED_RAM="3G"
+else
+    echo "${TOTAL_RAM} total RAM is not supported!"
+    exit 1
+fi
 
 function clean-server-properties {
     sleep 2m
