@@ -131,7 +131,7 @@ trusted-proxies:
 joinmessage: "%playername% joined"
 quitmessage: "%playername% quit"
 spammessage: "You may only chat once every %interval% seconds."
-webmsgformat: "&color;2[WEB] %playername%: &color;f%message%"
+webmsgformat: "<%playername%> %message%"
 showlayercontrol: true
 check-banned-ips: true
 sidebaropened: false
