@@ -12,7 +12,7 @@ components:
     sendhealth: false
     sendposition: true
     allowwebchat: true
-    webchat-interval: 10
+    webchat-interval: 3
     hidewebchatip: false
     trustclientname: false
     includehiddenplayers: false
@@ -45,7 +45,7 @@ components:
   - class: org.dynmap.ClientComponent
     type: chatbox
     showplayerfaces: true
-    messagettl: 10
+    messagettl: 20
     sendbutton: false
 
   - class: org.dynmap.ClientComponent
@@ -114,7 +114,7 @@ timesliceinterval: 0.5
 maxchunkspertick: 90
 progressloginterval: 100
 parallelrendercnt: 2
-updaterate: 5000
+updaterate: 3000
 fullrenderplayerlimit: 1
 updateplayerlimit: 1
 per-tick-time-limit: 50
