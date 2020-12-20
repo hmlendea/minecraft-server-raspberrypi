@@ -20,6 +20,7 @@ whitelist.json
 
 # World files
 world
+world[-_]*
 *_nether
 *_nether_old
 *_the_end
