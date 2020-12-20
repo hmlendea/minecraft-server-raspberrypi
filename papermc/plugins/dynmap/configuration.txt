@@ -20,7 +20,7 @@ components:
     use-player-login-ip: true
     require-player-login-ip: false
     block-banned-player-chat: true
-    hideifshadow: 0
+    #hideifshadow: 0
     #hideifundercover: 0
     hideifsneaking: false
     hide-if-invisiblity-potion: true
