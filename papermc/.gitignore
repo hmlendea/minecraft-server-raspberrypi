@@ -27,6 +27,7 @@ world[-_]*
 *_the_end_old
 
 # Backups
+backup.sh
 backup
 
 # Plugins data
