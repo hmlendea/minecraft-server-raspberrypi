@@ -4,7 +4,8 @@ PAPER_JAR_PATH="${PAPER_DIR_PATH}/${PAPER_JAR_NAME}"
 
 TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/1024/1024)"G"; }')
 
-if [ "${TOTAL_RAM}" == "8G" ]; then
+if [ "${TOTAL_RAM}" == "8G" ] || \
+   [ "${TOTAL_RAM}" == "7G" ]; then
     ALLOCATED_RAM="6G"
 elif [ "${TOTAL_RAM}" == "4G" ]; then
     ALLOCATED_RAM="3G"
