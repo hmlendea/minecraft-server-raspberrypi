@@ -13,6 +13,7 @@
 verbose: false
 config-version: 20
 settings:
+  fix-entity-position-desync: true
   track-plugin-scoreboards: false
   max-joins-per-tick: 3
   player-auto-save-rate: -1
@@ -36,6 +37,8 @@ settings:
     early-warning-every: 5000
     early-warning-delay: 10000
   spam-limiter:
+    recipe-spam-increment: 1
+    recipe-spam-limit: 20
     tab-spam-increment: 1
     tab-spam-limit: 500
   book-size:
@@ -71,6 +74,7 @@ timings:
   hidden-config-entries:
   - database
   - settings.bungeecord-addresses
+  - settings.velocity-support.secret
   history-interval: 300
   history-length: 3600
   server-name: Unknown Server
