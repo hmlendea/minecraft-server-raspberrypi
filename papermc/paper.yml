@@ -10,9 +10,12 @@
 # Website: https://papermc.io/ 
 # Docs: https://paper.readthedocs.org/ 
 
+use-display-name-in-quit-message: false
 verbose: false
-config-version: 20
+config-version: 22
 settings:
+  lag-compensate-block-breaking: true
+  send-full-pos-for-hard-colliding-entities: true
   fix-entity-position-desync: true
   track-plugin-scoreboards: false
   max-joins-per-tick: 3
@@ -59,6 +62,40 @@ settings:
   async-chunks:
     enable: true
     threads: -1
+  use-display-name-in-quit-message: false
+  loggers:
+    deobfuscate-stacktraces: true
+  console:
+    enable-brigadier-highlighting: true
+    enable-brigadier-completions: true
+  item-validation:
+    display-name: 8192
+    loc-name: 8192
+    lore-line: 8192
+    book:
+      title: 8192
+      author: 8192
+      page: 16384
+  chunk-loading:
+    min-load-radius: 2
+    max-concurrent-sends: 2
+    autoconfig-send-distance: true
+    target-player-chunk-send-rate: 100.0
+    global-max-chunk-send-rate: -1.0
+    enable-frustum-priority: false
+    global-max-chunk-load-rate: 300.0
+    player-max-concurrent-loads: 4.0
+    global-max-concurrent-loads: 500.0
+  packet-limiter:
+    kick-message: '&cSent too many packets'
+    limits:
+      all:
+        interval: 7.0
+        max-packet-rate: 500.0
+      PacketPlayInAutoRecipe:
+        interval: 4.0
+        max-packet-rate: 5.0
+        action: DROP
 messages:
   no-permission: '&cI''m sorry, but you do not have permission to perform this command.
     Please contact the server administrators if you believe that this is in error.'
@@ -68,6 +105,7 @@ messages:
     flying-player: Flying is not enabled on this server
     flying-vehicle: Flying is not enabled on this server
 timings:
+  url: https://timings.aikar.co/
   enabled: true
   verbose: true
   server-name-privacy: false
@@ -80,6 +118,21 @@ timings:
   server-name: Unknown Server
 world-settings:
   default:
+    piglins-guard-chests: true
+    ender-dragons-death-always-places-dragon-egg: false
+    allow-using-signs-inside-spawn-protection: false
+    update-pathfinding-on-block-update: true
+    fix-wither-targeting-bug: false
+    map-item-frame-cursor-update-interval: 10
+    allow-player-cramming-damage: false
+    map-item-frame-cursor-limit: 128
+    seed-based-feature-search-loads-chunks: true
+    fix-items-merging-through-walls: false
+    only-players-collide: false
+    allow-vehicle-collisions: true
+    portal-search-vanilla-dimension-scaling: true
+    show-sign-click-command-failure-msgs-to-player: false
+    max-leash-distance: 10.0
     should-remove-dragon: false
     seed-based-feature-search: true
     fix-climbing-bypassing-cramming-rule: false
@@ -137,6 +190,7 @@ world-settings:
     light-queue-size: 20
     auto-save-interval: -1
     game-mechanics:
+      disable-mob-spawner-spawn-egg-transformation: false
       fix-curing-zombie-villager-discount-exploit: true
       scan-for-legacy-ender-dragon: true
       disable-pillager-patrols: false
@@ -159,6 +213,9 @@ world-settings:
     max-growth-height:
       cactus: 3
       reeds: 3
+      bamboo:
+        max: 16
+        min: 11
     fishing-time-range:
       MinimumTicks: 100
       MaximumTicks: 600
@@ -192,6 +249,8 @@ world-settings:
       impact-sound: -1
       flash: -1
     anti-xray:
+      max-block-height: 64
+      use-permission: false
       lava-obscures: false
       enabled: false
       engine-mode: 1
@@ -225,6 +284,45 @@ world-settings:
       spawn-chance-failure-increment: 25
       spawn-chance-min: 25
       spawn-chance-max: 75
+    entity-per-chunk-save-limit:
+      experience_orb: -1
+      snowball: -1
+      ender_pearl: -1
+      arrow: -1
+      fireball: -1
+      small_fireball: -1
+    door-breaking-difficulty:
+      zombie:
+      - HARD
+      vindicator:
+      - NORMAL
+      - HARD
+    mobs-can-always-pick-up-loot:
+      zombies: false
+      skeletons: false
+    mob-effects:
+      undead-immune-to-certain-effects: true
+      spiders-immune-to-poison-effect: true
+      immune-to-wither-effect:
+        wither: true
+        wither-skeleton: true
+    spawn-limits:
+      monsters: -1
+      animals: -1
+      water-animals: -1
+      water-ambient: -1
+      ambient: -1
+    tick-rates:
+      sensor:
+        villager:
+          secondarypoisensor: 40
+      behavior:
+        villager:
+          validatenearbypoi: -1
+    feature-seeds:
+      generate-random-seeds-for-all: false
+    unsupported-settings:
+      fix-invulnerable-end-crystal-exploit: true
   world_nether:
     keep-spawn-loaded: false
     auto-save-interval: 24000
