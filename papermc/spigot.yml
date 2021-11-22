@@ -92,7 +92,7 @@ world-settings:
     zombie-aggressive-towards-villager: true
     nerf-spawner-mobs: true
     end-portal-sound-radius: 0
-    mob-spawn-range: 4
+    mob-spawn-range: 3
     max-entity-collisions: 8
     merge-radius:
       exp: 6.0
@@ -120,7 +120,7 @@ world-settings:
       raiders: 48
       misc: 8
       water: 16
-      villagers: 32
+      villagers: 16
       flying-monsters: 32
       villagers-work-immunity-after: 100
       villagers-work-immunity-for: 20
