@@ -24,6 +24,7 @@ settings:
   shutdown-message: Server closed
   minimum-api: none
 spawn-limits:
+  water-underground-creature: 5
   monsters: 50
   animals: 8
   water-animals: 3
@@ -33,6 +34,7 @@ chunk-gc:
   period-in-ticks: 300
   load-threshold: 300
 ticks-per:
+  water-underground-creature-spawns: 1
   animal-spawns: 400
   monster-spawns: 40
   water-spawns: 1
