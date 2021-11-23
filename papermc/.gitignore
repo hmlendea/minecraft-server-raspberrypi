@@ -9,6 +9,7 @@ version_history.json
 # Logs
 logs
 *.log
+.bash_history
 
 # Sensitive files
 .console_history
