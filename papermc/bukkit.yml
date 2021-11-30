@@ -25,20 +25,20 @@ settings:
   minimum-api: none
 spawn-limits:
   water-underground-creature: 5
-  monsters: 40
-  animals: 5
-  water-animals: 3
-  water-ambient: 3
-  ambient: 1
+  monsters: 50
+  animals: 8
+  water-animals: 7
+  water-ambient: 10
+  ambient: 5
 chunk-gc:
   period-in-ticks: 300
   load-threshold: 300
 ticks-per:
   water-underground-creature-spawns: 400
-  animal-spawns: 400
-  monster-spawns: 40
-  water-spawns: 400
-  water-ambient-spawns: 400
-  ambient-spawns: 400
+  animal-spawns: 31
+  monster-spawns: 5
+  water-spawns: 11
+  water-ambient-spawns: 21
+  ambient-spawns: 31
   autosave: 12000
 aliases: now-in-commands.yml
