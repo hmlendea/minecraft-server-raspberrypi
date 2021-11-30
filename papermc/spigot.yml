@@ -95,8 +95,8 @@ world-settings:
     mob-spawn-range: 3
     max-entity-collisions: 8
     merge-radius:
-      exp: 6.0
-      item: 4.0
+      exp: 5.0 # Too high => annoyances & teleportation
+      item: 3.0 # Too high => annoyances & teleportation
     growth:
       cactus-modifier: 100
       cane-modifier: 100
