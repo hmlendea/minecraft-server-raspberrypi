@@ -22,6 +22,7 @@ whitelist.json
 # World files
 world
 world[-_]*
+world.bak
 *_nether
 *_nether_old
 *_the_end
@@ -33,6 +34,7 @@ backup
 
 # Plugins data
 plugins
+plugins-disabled
 wepif.yml
 
 # Allow plugin configs
