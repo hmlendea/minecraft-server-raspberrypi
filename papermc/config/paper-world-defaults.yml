@@ -12,7 +12,7 @@
 # Discord: https://discord.gg/papermc
 # Website: https://papermc.io/
 
-_version: 29
+_version: 30
 anticheat:
   anti-xray:
     enabled: false
@@ -42,6 +42,7 @@ anticheat:
     items:
       hide-durability: false
       hide-itemmeta: false
+      hide-itemmeta-with-visual-effects: false
 chunks:
   auto-save-interval: default
   delay-chunk-unloads-by: 10s
@@ -78,6 +79,7 @@ entities:
     do-collision-entity-lookups: true
     tick: false
   behavior:
+    allow-spider-world-border-climbing: true
     baby-zombie-movement-modifier: 0.5
     disable-chest-cat-detection: true
     disable-creeper-lingering-effect: false
@@ -103,6 +105,8 @@ entities:
     parrots-are-unaffected-by-player-movement: false
     phantoms-do-not-spawn-on-creative-players: true
     phantoms-only-attack-insomniacs: true
+    phantoms-spawn-attempt-max-seconds: 119
+    phantoms-spawn-attempt-min-seconds: 60
     piglins-guard-chests: true
     pillager-patrols:
       disable: false
@@ -113,6 +117,7 @@ entities:
       start:
         day: 5
         per-player: false
+    player-insomnia-start-ticks: 72000
     should-remove-dragon: false
     spawner-nerfed-mobs-should-jump: true
     zombie-villager-infection-chance: -1.0
@@ -186,7 +191,13 @@ entities:
     duplicate-uuid:
       mode: SAFE_REGEN
       safe-regen-delete-range: 32
-    filter-nbt-data-from-spawn-eggs-and-related: true
+    filter-bad-tile-entity-nbt-from-falling-blocks: true
+    filtered-entity-tag-nbt-paths:
+    - Pos
+    - Motion
+    - SleepingX
+    - SleepingY
+    - SleepingZ
     iron-golems-can-spawn-in-air: false
     monster-spawn-max-light-level: -1
     non-player-arrow-despawn-rate: '60'
@@ -225,6 +236,7 @@ environment:
   disable-ice-and-snow: false
   disable-teleportation-suffocation-check: false
   disable-thunder: false
+  fire-tick-delay: 30
   frosted-ice:
     delay:
       max: 40
