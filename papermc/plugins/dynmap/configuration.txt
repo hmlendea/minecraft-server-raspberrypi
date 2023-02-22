@@ -100,7 +100,7 @@ render-triggers:
   - leavesdecay
   - structuregrow
 
-webpage-title: "Minecraft DynMap"
+webpage-title: "NuciCraft DynMap"
 tilespath: /srv/http/tiles
 webpath: /srv/http
 exportpath: export
