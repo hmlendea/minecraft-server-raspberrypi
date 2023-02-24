@@ -4,7 +4,7 @@
 
 ## Web server
 
-**Note**: The web server is only required if you want to use the DynMap plugin
+**Note**: The web server is only required if you want to use map plugins (such as DynMap, Pl3xMap, etc)
 
 Install the following packages: `lighttpd`, `fcgi`, `php-cgi`
 
@@ -51,6 +51,8 @@ fastcgi.server = (
     )
 )
 ```
+
+### DynMap
 
 Next we need to allow the web server to send chat messages to the Minecraft server by running the following commands:
 
