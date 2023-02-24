@@ -1,1 +1,49 @@
-lost+found/
+# Binaries
+*.jar
+
+# Temporary files
+cache
+usercache.json
+version_history.json
+
+# Logs
+logs
+*.log
+.bash_history
+
+# Sensitive files
+.console_history
+banned-ips.json
+banned-players.json
+eula.txt
+ops.json
+whitelist.json
+
+# World files
+world
+world[-_]*
+world.bak
+*_nether
+*_nether_old
+*_the_end
+*_the_end_old
+
+# Backups
+backup.sh
+backup
+
+# Plugins data
+plugins
+plugins-disabled
+wepif.yml
+
+# Allow plugin configs
+!plugins/
+plugins/*
+!plugins/dynmap/
+plugins/dynmap/*
+!plugins/dynmap/configuration.txt
+!plugins/dynmap/worlds.txt
+
+# Others
+.hawtjni
