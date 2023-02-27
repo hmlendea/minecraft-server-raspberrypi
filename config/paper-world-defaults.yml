@@ -164,28 +164,28 @@ entities:
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
       ambient:
-        hard: 96
+        hard: 64
         soft: 28
       axolotls:
-        hard: 128
+        hard: 64
         soft: 32
       creature:
-        hard: 96
+        hard: 64
         soft: 28
       misc:
-        hard: 96
+        hard: 64
         soft: 28
       monster:
-        hard: 96
+        hard: 64
         soft: 28
       underground_water_creature:
-        hard: 96
+        hard: 64
         soft: 28
       water_ambient:
-        hard: 96
+        hard: 64
         soft: 28
       water_creature:
-        hard: 96
+        hard: 64
         soft: 28
     disable-mob-spawner-spawn-egg-transformation: false
     duplicate-uuid:
