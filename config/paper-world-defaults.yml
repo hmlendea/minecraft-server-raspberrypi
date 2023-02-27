@@ -290,7 +290,7 @@ max-growth-height:
   cactus: 3
   reeds: 3
 misc:
-  disable-end-credits: false
+  disable-end-credits: true
   disable-relative-projectile-velocity: false
   disable-sprint-interruption-on-attack: false
   light-queue-size: 20
