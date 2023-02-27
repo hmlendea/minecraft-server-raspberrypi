@@ -134,8 +134,6 @@ entities:
     alt-item-despawn-rate:
       enabled: true
       items:
-        cactus: 600
-        egg: 600
         acacia_leaves: 6000
         andesite: 6000
         bamboo: 6000
@@ -145,6 +143,7 @@ entities:
         dark_oak_leaves: 6000
         diorite: 6000
         dirt: 6000
+        egg: 600
         granite: 6000
         grass: 6000
         gravel: 6000
@@ -297,7 +296,7 @@ misc:
   disable-sprint-interruption-on-attack: false
   light-queue-size: 20
   max-leash-distance: 10.0
-  redstone-implementation: alternate-current # EIGENCRAFT
+  redstone-implementation: ALTERNATE_CURRENT
   shield-blocking-delay: 5
   show-sign-click-command-failure-msgs-to-player: false
   update-pathfinding-on-block-update: false
