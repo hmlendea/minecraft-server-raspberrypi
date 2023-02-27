@@ -62,7 +62,7 @@ stats:
 world-settings:
   default:
     below-zero-generation-in-existing-chunks: true
-    simulation-distance: 5
+    simulation-distance: default
     hopper-can-load-chunks: false
     seed-nether: 30084232
     seed-ancientcity: 20083232
