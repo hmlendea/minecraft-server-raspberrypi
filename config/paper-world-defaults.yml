@@ -58,11 +58,11 @@ chunks:
     fireball: 8
     firework_rocket: 8
     llama_spit: 3
-    potion: 8
+    potion: 5
     shulker_bullet: 8
     small_fireball: 8
     snowball: 8
-    spectral_arrow: 16
+    spectral_arrow: 5
     trident: 16
     wither_skull: 4
   fixed-chunk-inhabited-time: -1
@@ -71,12 +71,12 @@ chunks:
 collisions:
   allow-player-cramming-damage: false
   allow-vehicle-collisions: true
-  fix-climbing-bypassing-cramming-rule: false
-  max-entity-collisions: 2
+  fix-climbing-bypassing-cramming-rule: true
+  max-entity-collisions: 3
   only-players-collide: false
 entities:
   armor-stands:
-    do-collision-entity-lookups: true
+    do-collision-entity-lookups: false
     tick: false
   behavior:
     allow-spider-world-border-climbing: true
@@ -134,6 +134,8 @@ entities:
     alt-item-despawn-rate:
       enabled: true
       items:
+        cactus: 600
+        egg: 600
         acacia_leaves: 6000
         andesite: 6000
         bamboo: 6000
@@ -274,7 +276,7 @@ hopper:
   disable-move-event: true
   ignore-occluding-blocks: true
 lootables:
-  auto-replenish: false
+  auto-replenish: true
   max-refills: -1
   refresh-max: 2d
   refresh-min: 12h
@@ -295,7 +297,7 @@ misc:
   disable-sprint-interruption-on-attack: false
   light-queue-size: 20
   max-leash-distance: 10.0
-  redstone-implementation: EIGENCRAFT
+  redstone-implementation: alternate-current # EIGENCRAFT
   shield-blocking-delay: 5
   show-sign-click-command-failure-msgs-to-player: false
   update-pathfinding-on-block-update: false

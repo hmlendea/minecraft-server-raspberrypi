@@ -55,7 +55,7 @@ item-validation:
   resolve-selectors-in-books: false
 logging:
   deobfuscate-stacktraces: true
-  log-player-ip-addresses: true
+  log-player-ip-addresses: false
   use-rgb-for-named-text-colors: true
 messages:
   kick:
