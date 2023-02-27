@@ -47,4 +47,5 @@ java \
     -XX:MaxTenuringThreshold=1 \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
+    -Dpaper.maxChunkThreads=3 \
     -jar "${PAPER_JAR_PATH}" nogui
