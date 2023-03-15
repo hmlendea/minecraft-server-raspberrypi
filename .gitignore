@@ -2,7 +2,9 @@
 *.jar
 
 # Temporary files
+.cache
 cache
+map-color-cache.dat
 usercache.json
 version_history.json
 
