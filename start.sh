@@ -1,9 +1,12 @@
-PAPER_DIR_PATH=$(pwd)
-PAPER_JAR_NAME=$(ls "${PAPER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
-PAPER_JAR_PATH="${PAPER_DIR_PATH}/${PAPER_JAR_NAME}"
+SERVER_DIR_PATH=$(pwd)
+
+SERVER_JAR_NAME=$(ls "${SERVER_DIR_PATH}" | grep "purpur-[0-9.]*-[0-9]*.jar" | tail -n 1)
+[ -z "${SERVER_JAR_NAME}" ] && SERVER_JAR_NAME=$(ls "${SERVER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
+
+SERVER_JAR_PATH="${SERVER_DIR_PATH}/${SERVER_JAR_NAME}"
 
 TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/1024/1024)"G"; }')
-
+ 
 if [ "${TOTAL_RAM}" == "8G" ] || \
    [ "${TOTAL_RAM}" == "7G" ]; then
     ALLOCATED_RAM="6G"
@@ -16,14 +19,14 @@ fi
 
 function clean-server-properties {
     sleep 2m
-    SERVER_PROPERTIES_FILE_PATH="${PAPER_DIR_PATH}/server.properties"
+    SERVER_PROPERTIES_FILE_PATH="${SERVER_DIR_PATH}/server.properties"
     sed '/^#/d' -i "${SERVER_PROPERTIES_FILE_PATH}"
     sort -o "${SERVER_PROPERTIES_FILE_PATH}" "${SERVER_PROPERTIES_FILE_PATH}"
 }
 
 clean-server-properties &
 
-echo "Starting '${PAPER_JAR_PATH}' with ${ALLOCATED_RAM} RAM allocated..."
+echo "Starting '${SERVER_JAR_PATH}' with ${ALLOCATED_RAM} RAM allocated..."
 java \
     -Xms${ALLOCATED_RAM} \
     -Xmx${ALLOCATED_RAM} \
@@ -48,4 +51,4 @@ java \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
     -Dpaper.maxChunkThreads=3 \
-    -jar "${PAPER_JAR_PATH}" nogui
+    -jar "${SERVER_JAR_PATH}" nogui
