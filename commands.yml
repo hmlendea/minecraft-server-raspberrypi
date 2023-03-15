@@ -15,3 +15,7 @@ ignore-vanilla-permissions: false
 aliases:
   icanhasbukkit:
   - version $1-
+  kill:
+  - minecraft:kill $1-
+  give:
+  - minecraft:give $1-
