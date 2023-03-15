@@ -118,6 +118,7 @@ timings:
   - proxies.velocity.secret
   history-interval: 300
   history-length: 3600
+  really-enabled: false
   server-name: Unknown Server
   server-name-privacy: false
   url: https://timings.aikar.co/
