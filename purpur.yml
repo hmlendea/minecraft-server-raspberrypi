@@ -1427,8 +1427,8 @@ world-settings:
       thunder-stops-after-sleep: true
       mob-last-hurt-by-player-time: 100
       daylight-cycle-ticks:
-        daytime: 24000
-        nighttime: 12000
+        daytime: 38400
+        nighttime: 19200
       drowning:
         air-ticks: 300
         ticks-per-damage: 20
