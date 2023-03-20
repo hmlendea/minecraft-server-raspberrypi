@@ -169,7 +169,7 @@ world-settings:
     squid-spawn-range:
       min: 45.0
     entity-tracking-range:
-      players: 128
+      players: 192
       animals: 48
       monsters: 48
       misc: 32
