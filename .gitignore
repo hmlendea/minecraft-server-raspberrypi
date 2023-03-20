@@ -9,6 +9,7 @@ usercache.json
 version_history.json
 
 # Logs
+crash-reports/
 logs
 *.log
 .bash_history
@@ -38,14 +39,6 @@ backup
 plugins
 plugins-disabled
 wepif.yml
-
-# Allow plugin configs
-!plugins/
-plugins/*
-!plugins/dynmap/
-plugins/dynmap/*
-!plugins/dynmap/configuration.txt
-!plugins/dynmap/worlds.txt
 
 # Others
 .hawtjni
