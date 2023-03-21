@@ -93,9 +93,9 @@ settings:
       seconds: '%02d seconds'
   blocks:
     barrel:
-      rows: 3
+      rows: 6
     ender_chest:
-      six-rows: false
+      six-rows: true
       use-permissions-for-rows: false
     crying_obsidian:
       valid-for-portal-frame: true
@@ -1112,7 +1112,7 @@ world-settings:
           PARTIAL: 10
           UNSTABLE: 10
       budding_amethyst:
-        silk-touch: false
+        silk-touch: true
       cactus:
         breaks-from-solid-neighbors: true
         affected-by-bonemeal: false
@@ -1191,12 +1191,12 @@ world-settings:
       sculk_shrieker:
         can-summon-default: false
       shulker_box:
-        allow-oversized-stacks: false
+        allow-oversized-stacks: true
       sign:
         right-click-edit: true
         allow-colors: true
       slab:
-        break-individual-slabs-when-sneaking: false
+        break-individual-slabs-when-sneaking: true
       spawner:
         deactivate-by-redstone: false
         fix-mc-238526: false
@@ -1218,7 +1218,7 @@ world-settings:
         infinite-source: true
         infinite-required-sources: 2
       enchantment-table:
-        lapis-persists: false
+        lapis-persists: true
       observer:
         disable-clock: false
     tools:
