@@ -19,3 +19,5 @@ aliases:
   - minecraft:kill $1-
   give:
   - minecraft:give $1-
+  exit:
+  - stop
