@@ -250,7 +250,7 @@ environment:
   portal-search-radius: 128
   portal-search-vanilla-dimension-scaling: true
   treasure-maps:
-    enabled: true
+    enabled: false
     find-already-discovered:
       loot-tables: 'false'
       villager-trade: false
