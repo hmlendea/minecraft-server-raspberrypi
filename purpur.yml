@@ -198,7 +198,7 @@ world-settings:
         attributes:
           max_health: 24.0
         johnny:
-          spawn-chance: 0.0
+          spawn-chance: 0.01
         takes-damage-from-water: false
         always-drop-exp: false
       wandering_trader:
@@ -296,7 +296,7 @@ world-settings:
           movement_speed:
             min: 0.2
             max: 0.2
-        spawn-chance: 0.0
+        spawn-chance: 0.025
         takes-damage-from-water: false
         always-drop-exp: false
       zombie_villager:
@@ -445,7 +445,7 @@ world-settings:
         controllable: true
         attributes:
           max_health: 20.0
-        naturally-charged-chance: 0.01
+        naturally-charged-chance: 0.005
         allow-griefing: false
         bypass-mob-griefing: false
         takes-damage-from-water: false
