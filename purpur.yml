@@ -191,6 +191,13 @@ config-version: 31
 world-settings:
   default:
     mobs:
+      sniffer:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 14.0
+        breeding-delay-ticks: 6000
       vindicator:
         ridable: false
         ridable-in-water: false
@@ -1390,6 +1397,7 @@ world-settings:
         replant-crops: true
         replant-nether-warts: true
     ridable-settings:
+      use-dismounts-underwater-tag: true
       babies-are-ridable: true
       untamed-tamables-are-ridable: true
       use-night-vision: false
@@ -1454,6 +1462,8 @@ world-settings:
           fire: []
           lightning: []
         shears:
+          ignore-in-water: false
+          ignore-in-lava: false
           damage-if-sprinting: false
           sprinting-damage: 1.0
         ender-pearl:
