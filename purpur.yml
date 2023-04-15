@@ -126,13 +126,13 @@ settings:
     allow-infinity-and-mending-together: true
     allow-infinity-on-crossbow: true
     allow-looting-on-shears: true
-    allow-transparent-blocks-in-enchantment-box: false
+    allow-transparent-blocks-in-enchantment-box: true
     anvil:
       allow-unsafe-enchants: false
       allow-inapplicable-enchants: true
       allow-incompatible-enchants: true
       allow-higher-enchants-levels: true
-    allow-unsafe-enchant-command: false
+    allow-unsafe-enchant-command: true
     clamp-levels: true
   entity:
     enderman:
@@ -215,7 +215,7 @@ world-settings:
         attributes:
           max_health: 20.0
         follow-emerald-blocks: false
-        can-be-leashed: false
+        can-be-leashed: true
         takes-damage-from-water: false
         allow-trading: true
         always-drop-exp: false
@@ -1033,7 +1033,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       turtle:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -1057,7 +1057,7 @@ world-settings:
         attributes:
           max_health: 20.0
         follow-emerald-blocks: false
-        can-be-leashed: false
+        can-be-leashed: true
         can-breed: true
         breeding-delay-ticks: 6000
         clerics-farm-warts: false
@@ -1398,7 +1398,7 @@ world-settings:
         replant-nether-warts: true
     ridable-settings:
       use-dismounts-underwater-tag: true
-      babies-are-ridable: true
+      babies-are-ridable: false
       untamed-tamables-are-ridable: true
       use-night-vision: false
     settings:
@@ -1414,7 +1414,7 @@ world-settings:
         do-fall-damage: true
       disable-drops-on-cramming-death: false
       entities-can-use-portals: true
-      entities-pick-up-loot-bypass-mob-griefing: false
+      entities-pick-up-loot-bypass-mob-griefing: true
       fireballs-bypass-mob-griefing: false
       impose-teleport-restrictions-on-gateways: false
       milk-cures-bad-omen: true
@@ -1428,7 +1428,7 @@ world-settings:
       trident-loyalty-void-return-height: 0.0
       void-damage-height: -100.0
       void-damage-dealt: 4.0
-      raid-cooldown-seconds: 0
+      raid-cooldown-seconds: 7200
       animal-breeding-cooldown-seconds: 0
       mobs-ignore-rails: false
       rain-stops-after-sleep: true
@@ -1464,7 +1464,7 @@ world-settings:
         shears:
           ignore-in-water: false
           ignore-in-lava: false
-          damage-if-sprinting: false
+          damage-if-sprinting: true
           sprinting-damage: 1.0
         ender-pearl:
           damage: 5.0
@@ -1502,8 +1502,8 @@ world-settings:
         - minecraft:diamond_pickaxe
         - minecraft:netherite_pickaxe
       halloween:
-        force: false
-        head-chance: 0.25
+        force: true
+        head-chance: 0.05
       mob-effects:
         health-regen-amount: 1.0
         minimal-health-poison-amount: 1.0

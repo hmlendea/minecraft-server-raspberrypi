@@ -123,6 +123,8 @@ entities:
     zombie-villager-infection-chance: -1.0
     zombies-target-turtle-eggs: true
   entities-target-with-follow-range: false
+  markers:
+    tick: true
   mob-effects:
     immune-to-wither-effect:
       wither: true
@@ -246,8 +248,8 @@ environment:
   generate-flat-bedrock: false
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
-  portal-create-radius: 16
-  portal-search-radius: 128
+  portal-create-radius: 48
+  portal-search-radius: 48
   portal-search-vanilla-dimension-scaling: true
   treasure-maps:
     enabled: false

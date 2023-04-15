@@ -71,7 +71,7 @@ world-settings:
     seed-stronghold: default
     thunder-chance: 100000
     verbose: true
-    hopper-amount: 1
+    hopper-amount: 4
     dragon-death-sound-radius: 0
     seed-village: 10387312
     seed-desert: 14357617
@@ -91,7 +91,7 @@ world-settings:
     seed-portal: 34222645
     max-tnt-per-tick: 10
     enable-zombie-pigmen-portal-spawns: true
-    item-despawn-rate: 12000
+    item-despawn-rate: 18000
     view-distance: default
     wither-spawn-sound-radius: 0
     arrow-despawn-rate: 300
@@ -153,7 +153,7 @@ world-settings:
         flying-monsters-every: 200
         flying-monsters-for: 100
     ticks-per:
-      hopper-transfer: 8
+      hopper-transfer: 20
       hopper-check: 1
     hunger:
       jump-walk-exhaustion: 0.05
@@ -169,7 +169,7 @@ world-settings:
     squid-spawn-range:
       min: 45.0
     entity-tracking-range:
-      players: 192
+      players: 256
       animals: 48
       monsters: 48
       misc: 32
