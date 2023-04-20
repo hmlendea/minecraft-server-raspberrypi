@@ -72,7 +72,7 @@ collisions:
   allow-player-cramming-damage: false
   allow-vehicle-collisions: true
   fix-climbing-bypassing-cramming-rule: true
-  max-entity-collisions: 3
+  max-entity-collisions: 2
   only-players-collide: false
 entities:
   armor-stands:
@@ -138,17 +138,22 @@ entities:
       items:
         acacia_leaves: 6000
         andesite: 6000
+        arrow: 600
         bamboo: 6000
         birch_leaves: 6000
+        bone: 600
         cactus: 6000
-        cobblestone: 6000
+        cobbled_deepslate: 1200
+        cobblestone: 1200
         dark_oak_leaves: 6000
         diorite: 6000
         dirt: 6000
-        egg: 600
+        egg: 1200
+        ender_pearl: 1200
         granite: 6000
         grass: 6000
         gravel: 6000
+        ink_sac: 600
         jungle_leaves: 6000
         kelp: 6000
         melon_slice: 6000
@@ -156,40 +161,44 @@ entities:
         oak_leaves: 6000
         pumpkin: 60000
         red_sand: 6000
+        rotten_flesh: 600
         sand: 6000
         scaffolding: 6000
+        spider_eye: 600
         spruce_leaves: 6000
-        stone: 6000
+        stone: 1200
+        string: 600
         sugar_cane: 6000
         twisting_vines: 6000
         weeping_vines: 6000
+        wheat_seeds: 600
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
       ambient:
         hard: 64
-        soft: 28
+        soft: 24
       axolotls:
         hard: 64
-        soft: 32
+        soft: 24
       creature:
         hard: 64
-        soft: 28
+        soft: 24
       misc:
         hard: 64
-        soft: 28
+        soft: 24
       monster:
         hard: 64
-        soft: 28
+        soft: 24
       underground_water_creature:
         hard: 64
-        soft: 28
+        soft: 24
       water_ambient:
         hard: 64
-        soft: 28
+        soft: 24
       water_creature:
         hard: 64
-        soft: 28
+        soft: 24
     disable-mob-spawner-spawn-egg-transformation: false
     duplicate-uuid:
       mode: SAFE_REGEN
@@ -252,7 +261,7 @@ environment:
   portal-search-radius: 48
   portal-search-vanilla-dimension-scaling: true
   treasure-maps:
-    enabled: false
+    enabled: true
     find-already-discovered:
       loot-tables: 'false'
       villager-trade: false
@@ -314,8 +323,8 @@ tick-rates:
     villager:
       acquirepoi: 120
       validatenearbypoi: 60
-  container-update: 2
-  grass-spread: 4
+  container-update: 3
+  grass-spread: 5
   mob-spawner: 2
   sensor:
     villager:

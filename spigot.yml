@@ -62,7 +62,7 @@ stats:
 world-settings:
   default:
     below-zero-generation-in-existing-chunks: true
-    simulation-distance: default
+    simulation-distance: 5
     hopper-can-load-chunks: false
     seed-nether: 30084232
     seed-ancientcity: 20083232
@@ -71,7 +71,7 @@ world-settings:
     seed-stronghold: default
     thunder-chance: 100000
     verbose: true
-    hopper-amount: 4
+    hopper-amount: 10
     dragon-death-sound-radius: 0
     seed-village: 10387312
     seed-desert: 14357617
@@ -92,7 +92,7 @@ world-settings:
     max-tnt-per-tick: 10
     enable-zombie-pigmen-portal-spawns: true
     item-despawn-rate: 18000
-    view-distance: default
+    view-distance: 5
     wither-spawn-sound-radius: 0
     arrow-despawn-rate: 300
     trident-despawn-rate: 1000
@@ -100,8 +100,8 @@ world-settings:
     zombie-aggressive-towards-villager: true
     nerf-spawner-mobs: true
     end-portal-sound-radius: 0
-    mob-spawn-range: 3
-    max-entity-collisions: 8
+    mob-spawn-range: 4
+    max-entity-collisions: 5
     merge-radius:
       exp: 5.0 # Too high => annoyances & teleportation
       item: 3.0 # Too high => annoyances & teleportation
@@ -164,8 +164,8 @@ world-settings:
       sprint-multiplier: 0.1
       other-multiplier: 0.0
     max-tick-time:
-      tile: 50
-      entity: 50
+      tile: 1000
+      entity: 1000
     squid-spawn-range:
       min: 45.0
     entity-tracking-range:

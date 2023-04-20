@@ -462,7 +462,7 @@ world-settings:
         head-visibility-percent: 0.5
         encircle-target: false
       dolphin:
-        ridable: false
+        ridable: true
         controllable: true
         spit:
           cooldown: 20
@@ -1442,7 +1442,7 @@ world-settings:
         ticks-per-damage: 20
         damage-from-drowning: 2.0
       elytra:
-        damage-per-second: 0.5
+        damage-per-second: 1.0
         damage-multiplied-by-speed: 0.0
         ignore-unbreaking: false
         damage-per-boost:
@@ -1492,10 +1492,10 @@ world-settings:
         place-with-arms-visible: false
       silk-touch:
         enabled: true
-        spawner-name: <reset><white>Monster Spawner
+        spawner-name: <reset><white>Mob Spawner
         minimal-level: 1
         spawner-lore:
-        - Spawns a <mob>
+        - Spawns a lobotomised <mob>
         tools:
         - minecraft:iron_pickaxe
         - minecraft:golden_pickaxe
@@ -1503,7 +1503,7 @@ world-settings:
         - minecraft:netherite_pickaxe
       halloween:
         force: true
-        head-chance: 0.05
+        head-chance: 0.0125
       mob-effects:
         health-regen-amount: 1.0
         minimal-health-poison-amount: 1.0

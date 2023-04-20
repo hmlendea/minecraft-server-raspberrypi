@@ -51,4 +51,5 @@ java \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
     -Dpaper.maxChunkThreads=3 \
+    --add-modules=jdk.incubator.vector \
     -jar "${SERVER_JAR_PATH}" nogui
