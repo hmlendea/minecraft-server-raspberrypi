@@ -105,7 +105,9 @@ else
 
     ${USE_AUTHME}           && update_plugin "AuthMe"               "https://github.com/AuthMe/AuthMeReloaded"
     ${USE_DISCORDSRV}       && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"          "%pluginName%-Build-%pluginVersion%.jar"
-    ${USE_ESSENTIALS}       && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials"
+    ${USE_ESSENTIALS}       && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" && \
+                               update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" && \
+                               update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
     ${USE_GSIT}             && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
     ${USE_IMAGEMAPS}        && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"          "%pluginName%.jar"
     ${USE_SKINSRESTORER}    && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"

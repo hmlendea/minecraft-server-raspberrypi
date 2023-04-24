@@ -1,15 +1,3 @@
-# This is the main configuration file for Spigot.
-# As you can see, there's tons to configure. Some options may impact gameplay, so use
-# with caution, and make sure you know what each option does before configuring.
-# For a reference for any variable inside this file, check out the Spigot wiki at
-# http://www.spigotmc.org/wiki/spigot-configuration/
-#
-# If you need help with the configuration or have any questions related to Spigot,
-# join us at the Discord or drop by our forums and leave a post.
-#
-# Discord: https://www.spigotmc.org/go/discord
-# Forums: http://www.spigotmc.org/
-
 config-version: 12
 settings:
   log-named-deaths: true
@@ -20,7 +8,7 @@ settings:
   user-cache-size: 1000
   save-user-cache-on-stop-only: false
   moved-wrongly-threshold: 0.0625
-  moved-too-quickly-multiplier: 10.0
+  moved-too-quickly-multiplier: 10
   log-villager-deaths: true
   timeout-time: 60
   restart-on-crash: true
@@ -28,11 +16,11 @@ settings:
   netty-threads: 4
   attribute:
     maxHealth:
-      max: 2048.0
+      max: 2048
     movementSpeed:
-      max: 2048.0
+      max: 2048
     attackDamage:
-      max: 2048.0
+      max: 2048
 messages:
   whitelist: You are not whitelisted on this server!
   unknown-command: Unknown command. Type "/help" for help.
@@ -43,18 +31,18 @@ messages:
 advancements:
   disable-saving: false
   disabled:
-  - minecraft:story/disabled
+    - minecraft:story/disabled
 commands:
   tab-complete: 0
   send-namespaced: true
   spam-exclusions:
-  - /skill
+    - /skill
   silent-commandblock-console: false
   replace-commands:
-  - setblock
-  - summon
-  - testforblock
-  - tellraw
+    - setblock
+    - summon
+    - testforblock
+    - tellraw
   log: true
 stats:
   disable-saving: false
@@ -71,7 +59,7 @@ world-settings:
     seed-stronghold: default
     thunder-chance: 100000
     verbose: true
-    hopper-amount: 10
+    hopper-amount: 8
     dragon-death-sound-radius: 0
     seed-village: 10387312
     seed-desert: 14357617
@@ -92,8 +80,8 @@ world-settings:
     max-tnt-per-tick: 10
     enable-zombie-pigmen-portal-spawns: true
     item-despawn-rate: 18000
-    view-distance: 5
-    wither-spawn-sound-radius: 0
+    view-distance: 8
+    wither-spawn-sound-radius: 8
     arrow-despawn-rate: 300
     trident-despawn-rate: 1000
     hanging-tick-frequency: 100
@@ -101,10 +89,10 @@ world-settings:
     nerf-spawner-mobs: true
     end-portal-sound-radius: 0
     mob-spawn-range: 4
-    max-entity-collisions: 5
+    max-entity-collisions: 4
     merge-radius:
-      exp: 5.0 # Too high => annoyances & teleportation
-      item: 3.0 # Too high => annoyances & teleportation
+      exp: 5
+      item: 3
     growth:
       twistingvines-modifier: 100
       weepingvines-modifier: 100
@@ -159,15 +147,15 @@ world-settings:
       jump-walk-exhaustion: 0.05
       jump-sprint-exhaustion: 0.2
       combat-exhaustion: 0.1
-      regen-exhaustion: 6.0
+      regen-exhaustion: 6
       swim-multiplier: 0.01
       sprint-multiplier: 0.1
-      other-multiplier: 0.0
+      other-multiplier: 0
     max-tick-time:
       tile: 1000
       entity: 1000
     squid-spawn-range:
-      min: 45.0
+      min: 45
     entity-tracking-range:
       players: 256
       animals: 48
@@ -176,5 +164,9 @@ world-settings:
       other: 64
   worldeditregentempworld:
     verbose: false
+  world_nether:
+    view-distance: 5
+  world_the_end:
+    view-distance: 12
 players:
   disable-saving: false
