@@ -13,11 +13,47 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
-  icanhasbukkit:
-  - version $1-
-  kill:
-  - minecraft:kill $1-
-  give:
-  - minecraft:give $1-
+  b:
+  - back
+  bed:
+  - home bed
   exit:
   - stop
+  g:
+  - minecraft:give $1-
+  give:
+  - minecraft:give $1-
+  itemnbt:
+  - minecraft:data get entity @s SelectedItem
+  kill:
+  - minecraft:kill $1-
+  survival:
+  - gamemode survival
+  creative:
+  - gamemode creative
+  spectate:
+  - gamemode spectator
+  newregion:
+  - rg define $1 $2
+  - rg flag -w world $1 pvp DENY
+  - rg flag -w world $1 block-trampling DENY
+  - rg flag -w world $1 creeper-explosion DENY
+  - rg flag -w world $1 enderdragon-block-damage DENY
+  - rg flag -w world $1 ghast-fireball DENY
+  - rg flag -w world $1 wither-damage DENY
+  - rg flag -w world $1 enderman-grief DENY
+  - rg flag -w world $1 ravager-grief DENY
+  - rg flag -w world $1 fire-spread DENY
+  - rg flag -w world $1 lava-fire DENY
+  - rg flag -w world $1 lightning DENY
+  - rg flag -w world $1 weather-lock clear
+  - rg flag -w world $1 greeting &6You have entered the &b$1&6 region!
+  - rg flag -w world $1 farewell &6You have left the &b$1&6 region!
+  newcustomplayerregion:
+  - newregion $1 $2
+  - rg flag -w world $1 greeting &6You have entered &b$2&6's region!
+  - rg flag -w world $1 farewell &6You have left &b$2&6's region!
+  newplayerregion:
+  - newcustomplayerregion player_$1 $1
+  unop:
+  - minecraft:deop $1-
