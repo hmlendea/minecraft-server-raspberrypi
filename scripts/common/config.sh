@@ -1,6 +1,28 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/status.sh"
 
+function set_config_values() {
+    local FILE="${1}" && shift
+
+    [ ! -f "${FILE}" ] && return
+
+    if [ "$(( $# % 2 ))" -ne 0 ]; then
+        echo "ERROR: Invalid arguments count: $# for set_config_values: ${*}" >$2
+        return
+    fi
+
+    local PAIRS_COUNT=$(($# / 2))
+
+    for PAIR_INDEX in $(seq 1 ${PAIRS_COUNT}); do
+        local KEY="${1}" && shift
+        local VAL="${1}" && shift
+
+        if [ -n "${KEY}" ]; then
+            set_config_value "${FILE}" "${KEY}" "${VAL}"
+        fi
+    done
+}
+
 function set_config_value() {
     local FILE="${1}"
     local KEY="${2}"
