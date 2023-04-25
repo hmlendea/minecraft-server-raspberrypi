@@ -13,6 +13,8 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
+  icanhasbukkit:
+  - version $1-
   b:
   - back
   bed:
@@ -31,10 +33,7 @@ aliases:
   - gamemode survival
   creative:
   - gamemode creative
-  spectate:
-  - gamemode spectator
-  newregion:
-  - rg define $1 $2
+  setregiondefaultflags:
   - rg flag -w world $1 pvp DENY
   - rg flag -w world $1 block-trampling DENY
   - rg flag -w world $1 creeper-explosion DENY
@@ -47,13 +46,29 @@ aliases:
   - rg flag -w world $1 lava-fire DENY
   - rg flag -w world $1 lightning DENY
   - rg flag -w world $1 weather-lock clear
-  - rg flag -w world $1 greeting &6You have entered the &b$1&6 region!
-  - rg flag -w world $1 farewell &6You have left the &b$1&6 region!
-  newcustomplayerregion:
-  - newregion $1 $2
-  - rg flag -w world $1 greeting &6You have entered &b$2&6's region!
-  - rg flag -w world $1 farewell &6You have left &b$2&6's region!
+  - rg flag -w world $1 greeting &6You have entered &b$2&6!
+  - rg flag -w world $1 farewell &6You have left &b$2&6!
+  - rg flag -w world $1 deny-message &c&lSTOP! &rYou can't &e%what%&r in &b$2&r!
+  - rg flag -w world $1 teleport-message &aWhisking ye away to &b$2&a!
+  setregionprivateflags:
+  - setregiondefaultflags $1 $1
+  - rg flag -w world $1 greeting &6You have entered &b$2&6's base!
+  - rg flag -w world $1 farewell &6You have left &b$2&6's base!
+  - rg flag -w world $1 deny-message &c&lSTOP! &rYou can't &e%what%&r in &b$2&r's
+    base!
+  - rg flag -w world $1 teleport-message &aWhisking ye away to &b$2&a's base!
+  newregion:
+  - rg define $1 $3
+  - setregiondefaultflags $1 $2
   newplayerregion:
-  - newcustomplayerregion player_$1 $1
+  - newregion $1 $1 $2
+  - setregionprivateflags $1 $2
+  newplayersubregion:
+  - newregion $1 $1 $2
+  - setregionprivateflags $1 $2
+  - rg flag -w world $1 greeting
+  - rg flag -w world $1 farewell
+  spectate:
+  - gamemode spectator
   unop:
   - minecraft:deop $1-
