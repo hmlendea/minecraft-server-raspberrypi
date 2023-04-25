@@ -1,41 +1,27 @@
-# This is the world defaults configuration file for Paper.
-# As you can see, there's a lot to configure. Some options may impact gameplay, so use
-# with caution, and make sure you know what each option does before configuring.
-# 
-# If you need help with the configuration or have any questions related to Paper,
-# join us in our Discord or check the docs page.
-# 
-# Configuration options here apply to all worlds, unless you specify overrides inside
-# the world-specific config file inside each world folder.
-# 
-# Docs: https://docs.papermc.io/
-# Discord: https://discord.gg/papermc
-# Website: https://papermc.io/
-
 _version: 30
 anticheat:
   anti-xray:
     enabled: false
     engine-mode: 1
     hidden-blocks:
-    - gold_ore
-    - iron_ore
-    - coal_ore
-    - lapis_ore
-    - mossy_cobblestone
-    - obsidian
-    - chest
-    - diamond_ore
-    - redstone_ore
-    - clay
-    - emerald_ore
-    - ender_chest
+      - gold_ore
+      - iron_ore
+      - coal_ore
+      - lapis_ore
+      - mossy_cobblestone
+      - obsidian
+      - chest
+      - diamond_ore
+      - redstone_ore
+      - clay
+      - emerald_ore
+      - ender_chest
     lava-obscures: false
     max-block-height: 64
     max-chunk-section-index: 3
     replacement-blocks:
-    - stone
-    - oak_planks
+      - stone
+      - oak_planks
     update-radius: 2
     use-permission: false
   obfuscation:
@@ -86,16 +72,16 @@ entities:
     disable-player-crits: false
     door-breaking-difficulty:
       husk:
-      - HARD
+        - HARD
       vindicator:
-      - NORMAL
-      - HARD
+        - NORMAL
+        - HARD
       zombie:
-      - HARD
+        - HARD
       zombie_villager:
-      - HARD
+        - HARD
       zombified_piglin:
-      - HARD
+        - HARD
     ender-dragons-death-always-places-dragon-egg: false
     experience-merge-max-value: -1
     mobs-can-always-pick-up-loot:
@@ -120,7 +106,7 @@ entities:
     player-insomnia-start-ticks: 72000
     should-remove-dragon: false
     spawner-nerfed-mobs-should-jump: true
-    zombie-villager-infection-chance: -1.0
+    zombie-villager-infection-chance: -1
     zombies-target-turtle-eggs: true
   entities-target-with-follow-range: false
   markers:
@@ -205,11 +191,11 @@ entities:
       safe-regen-delete-range: 32
     filter-bad-tile-entity-nbt-from-falling-blocks: true
     filtered-entity-tag-nbt-paths:
-    - Pos
-    - Motion
-    - SleepingX
-    - SleepingY
-    - SleepingZ
+      - Pos
+      - Motion
+      - SleepingX
+      - SleepingY
+      - SleepingZ
     iron-golems-can-spawn-in-air: false
     monster-spawn-max-light-level: -1
     non-player-arrow-despawn-rate: '60'
@@ -218,10 +204,10 @@ entities:
     skeleton-horse-thunder-spawn-chance: 0.01
     slime-spawn-height:
       slime-chunk:
-        maximum: 40.0
+        maximum: 40
       surface-biome:
-        maximum: 70.0
-        minimum: 50.0
+        maximum: 70
+        minimum: 50
     spawn-limits:
       ambient: -1
       animals: -1
@@ -306,7 +292,7 @@ misc:
   disable-relative-projectile-velocity: false
   disable-sprint-interruption-on-attack: false
   light-queue-size: 20
-  max-leash-distance: 10.0
+  max-leash-distance: 10
   redstone-implementation: ALTERNATE_CURRENT
   shield-blocking-delay: 5
   show-sign-click-command-failure-msgs-to-player: false

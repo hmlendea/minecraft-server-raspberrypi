@@ -20,7 +20,13 @@ SIMULATION_DISTANCE_MAX=10
 PLAYERS_MAX=8
 PLAYERS_TARGET=6 # The amount of players the server was tested against
 
+KEEP_SPAWN_LOADED=false
+
 LOCALE="en"
+
+AUTOSAVE_MINS=20
+AUTOSAVE_MINS_NETHER=30
+AUTOSAVE_MINS_END=40
 
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_DIR}/common/config.sh"
@@ -50,17 +56,32 @@ MOB_DESPAWN_RANGE_SOFT=$((MOB_SPAWN_RANGE*4))
 MOB_SPAWN_LIMIT_MONSTER=$((14*(MOB_SPAWN_RANGE-3)+7))
 [ ${MOB_SPAWN_LIMIT_MONSTER} -lt 7 ] && MOB_SPAWN_LIMIT_MONSTER=7
 
-set_config_value "${SERVER_PROPERTIES_FILE}"    "max-players"                                   "${PLAYERS_MAX}"
-set_config_value "${SERVER_PROPERTIES_FILE}"    "view-distance"                                 "${VIEW_DISTANCE}"
-set_config_value "${SERVER_PROPERTIES_FILE}"    "simulation-distance"                           "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"        "world-settings.default.view-distance"          "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"        "world-settings.world_nether.view-distance"     "${VIEW_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"        "world-settings.world_the_end.view-distance"    "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"        "simulation-distance"                           "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"        "mob-spawn-range"                               "${MOB_SPAWN_RANGE}"
-set_config_value "${PAPER_WORLD_CONFIG_FILE}"   "hard"                                          "${MOB_DESPAWN_RANGE_HARD}"
-set_config_value "${PAPER_WORLD_CONFIG_FILE}"   "soft"                                          "${MOB_DESPAWN_RANGE_SOFT}"
-set_config_value "${BUKKIT_CONFIG_FILE}"        "monsters"                                      "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                   "${PLAYERS_MAX}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                 "${VIEW_DISTANCE}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                           "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"          "${VIEW_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.world_nether.view-distance"     "${VIEW_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.world_the_end.view-distance"    "${VIEW_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "simulation-distance"                           "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "mob-spawn-range"                               "${MOB_SPAWN_RANGE}"
+set_config_value "${BUKKIT_CONFIG_FILE}"                "monsters"                                      "${MOB_SPAWN_LIMIT_MONSTER}"
+
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "hard"                                          "${MOB_DESPAWN_RANGE_HARD}"
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "soft"                                          "${MOB_DESPAWN_RANGE_SOFT}"
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE}"
+
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "chunks.auto-save-interval"                     $((AUTOSAVE_MINS * 20 * 60))
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE}"
+
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "chunks.auto-save-interval"                     $((AUTOSAVE_MINS_END * 20 * 60))
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_END}"
+
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "chunks.auto-save-interval"                     $((AUTOSAVE_MINS_NETHER * 20 * 60))
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_NETHER}"
 
 if [ -f "${AUTHME_CONFIG_FILE}" ]; then
     set_config_value "${AUTHME_CONFIG_FILE}"    "messagesLanguage"  "${LOCALE}"
@@ -90,24 +111,27 @@ if [ -f "${TREEASSIST_CONFIG_FILE}" ]; then
     reload_plugin "treeassist"
 fi
 
-set_config_values "${VDT_CONFIG_FILE}" \
-    "enabled" true \
-    "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
-    "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
-    "world-settings.default.simulation-distance.exclude" true \
-    "world-settings.default.simulation-distance.maximum-simulation-distance" "${SIMULATION_DISTANCE_MAX}" \
-    "world-settings.default.simulation-distance.minimum-simulation-distance" "${SIMULATION_DISTANCE_MIN}" \
-    "world-settings.default.view-distance.exclude" false \
-    "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
-    "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
-    "world-settings.default.chunk-weight" "1" \
-    "world-settings.world_nether.simulation-distance.exclude" true \
-    "world-settings.world_nether.view-distance.exclude" false \
-    "world-settings.world_nether.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
-    "world-settings.world_nether.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
-    "world-settings.world_nether.chunk-weight" "0.75" \
-    "world-settings.world_the_end.simulation-distance.exclude" true \
-    "world-settings.world_the_end.view-distance.exclude" false \
-    "world-settings.world_the_end.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
-    "world-settings.world_the_end.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
-    "world-settings.world_the_end.chunk-weight" "0.5"
+if [ -f "${VDT_CONFIG_FILE}" ]; then
+    set_config_values "${VDT_CONFIG_FILE}" \
+        "enabled" true \
+        "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
+        "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
+        "world-settings.default.simulation-distance.exclude" true \
+        "world-settings.default.simulation-distance.maximum-simulation-distance" "${SIMULATION_DISTANCE_MAX}" \
+        "world-settings.default.simulation-distance.minimum-simulation-distance" "${SIMULATION_DISTANCE_MIN}" \
+        "world-settings.default.view-distance.exclude" false \
+        "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
+        "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
+        "world-settings.default.chunk-weight" "1" \
+        "world-settings.world_nether.simulation-distance.exclude" true \
+        "world-settings.world_nether.view-distance.exclude" false \
+        "world-settings.world_nether.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
+        "world-settings.world_nether.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
+        "world-settings.world_nether.chunk-weight" "0.75" \
+        "world-settings.world_the_end.simulation-distance.exclude" true \
+        "world-settings.world_the_end.view-distance.exclude" false \
+        "world-settings.world_the_end.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
+        "world-settings.world_the_end.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
+        "world-settings.world_the_end.chunk-weight" "0.5"
+    reload_plugin "viewdistancetweaks"
+fi
