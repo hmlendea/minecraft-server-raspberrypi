@@ -34,6 +34,7 @@ world.bak
 # Backups
 backup.sh
 backup
+**/*.bak
 
 # Plugins data
 plugins
