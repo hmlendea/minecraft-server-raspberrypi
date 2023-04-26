@@ -33,15 +33,18 @@ function set_config_value() {
     local KEY_ESC="${KEY}"
 
     if grep -q "\." <<< "${KEY}"; then
-        KEY_ESC=$(echo "${KEY}" | sed -E 's/([^.]+-[^\.\ ]+)(\.|$)/"\1"\2/g')
-        
+        KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+        VALUE_ESC="${VALUE}"
+
+        grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
+
         if [ ! -f "/usr/bin/yq" ]; then
             echo "ERROR: The 'yq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
             return
         fi
 
         echo "${FILE}: ${KEY}=${VALUE}"
-        sudo yq -yi ".${KEY_ESC} = ${VALUE}" "${FILE}"
+        sudo yq -yi ".${KEY_ESC} = ${VALUE_ESC}" "${FILE}"
     else
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 

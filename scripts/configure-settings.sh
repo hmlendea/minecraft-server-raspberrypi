@@ -23,6 +23,7 @@ PLAYERS_TARGET=6 # The amount of players the server was tested against
 KEEP_SPAWN_LOADED=false
 
 LOCALE="en"
+LOCALE_FALLBACK="en"
 
 AUTOSAVE_MINS=20
 AUTOSAVE_MINS_NETHER=30
@@ -56,15 +57,15 @@ MOB_DESPAWN_RANGE_SOFT=$((MOB_SPAWN_RANGE*4))
 MOB_SPAWN_LIMIT_MONSTER=$((14*(MOB_SPAWN_RANGE-3)+7))
 [ ${MOB_SPAWN_LIMIT_MONSTER} -lt 7 ] && MOB_SPAWN_LIMIT_MONSTER=7
 
-set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                   "${PLAYERS_MAX}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                 "${VIEW_DISTANCE}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                           "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"          "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.world_nether.view-distance"     "${VIEW_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.world_the_end.view-distance"    "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "simulation-distance"                           "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "mob-spawn-range"                               "${MOB_SPAWN_RANGE}"
-set_config_value "${BUKKIT_CONFIG_FILE}"                "monsters"                                      "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                       "${PLAYERS_MAX}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                     "${VIEW_DISTANCE}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                               "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"              "${VIEW_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"    "${VIEW_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance" "${VIEW_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "simulation-distance"                               "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "mob-spawn-range"                                   "${MOB_SPAWN_RANGE}"
+set_config_value "${BUKKIT_CONFIG_FILE}"                "monsters"                                          "${MOB_SPAWN_LIMIT_MONSTER}"
 
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "hard"                                          "${MOB_DESPAWN_RANGE_HARD}"
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "soft"                                          "${MOB_DESPAWN_RANGE_SOFT}"
@@ -92,6 +93,37 @@ if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
     set_config_value "${ESSENTIALS_CONFIG_FILE}"    "ops-name-color"    "\"none\""
     set_config_value "${ESSENTIALS_CONFIG_FILE}"    "locale"            "${LOCALE}"
     reload_plugin "essentials"
+fi
+
+if [ -d "${PLEXMAP_DIR}" ]; then
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.web-directory.path" "/srv/http"
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.internal-webserver" false
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.enabled" true
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.render.background.interval" 450
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.render.background.max-chunks-per-interval" 5
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.zoom.max-out" 2
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.zoom.max-in" 2
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.markers.spawn.enabled" true
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.markers.worldborder.enabled" false
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.ui.enabled" true
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld"
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.zoom.max-out" 3
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_END_NAME}.ui.enabled" true
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_END_NAME}.ui.display-name" "The End"
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.ui.enabled" true
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether"
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 2
+
+    set_config_value "${PLEXMAP_CONFIG_ADVANCED_FILE}" "settings.colors.blocks.minecraft:torch" "#000000"
+    set_config_value "${PLEXMAP_CONFIG_ADVANCED_FILE}" "settings.colors.blocks.minecraft:wall_torch" "#000000"
+
+    if [ -f "${PLEXMAP_DIR}/locale/lang-${LOCALE}.yml" ]; then
+        set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${LOCALE}.yml"
+    else
+        set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${LOCALE_FALLBACK}.yml"
+    fi
+    
+    reload_plugin "pl3xmap"
 fi
 
 if [ -f "${TREEASSIST_CONFIG_FILE}" ]; then
@@ -123,15 +155,15 @@ if [ -f "${VDT_CONFIG_FILE}" ]; then
         "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
         "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
         "world-settings.default.chunk-weight" "1" \
-        "world-settings.world_nether.simulation-distance.exclude" true \
-        "world-settings.world_nether.view-distance.exclude" false \
-        "world-settings.world_nether.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
-        "world-settings.world_nether.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
-        "world-settings.world_nether.chunk-weight" "0.75" \
-        "world-settings.world_the_end.simulation-distance.exclude" true \
-        "world-settings.world_the_end.view-distance.exclude" false \
-        "world-settings.world_the_end.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
-        "world-settings.world_the_end.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
-        "world-settings.world_the_end.chunk-weight" "0.5"
+        "world-settings.${WORLD_END_NAME}.simulation-distance.exclude" true \
+        "world-settings.${WORLD_END_NAME}.view-distance.exclude" false \
+        "world-settings.${WORLD_END_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
+        "world-settings.${WORLD_END_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
+        "world-settings.${WORLD_END_NAME}.chunk-weight" "0.5" \
+        "world-settings.${WORLD_NETHER_NAME}.simulation-distance.exclude" true \
+        "world-settings.${WORLD_NETHER_NAME}.view-distance.exclude" false \
+        "world-settings.${WORLD_NETHER_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
+        "world-settings.${WORLD_NETHER_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
+        "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
     reload_plugin "viewdistancetweaks"
 fi
