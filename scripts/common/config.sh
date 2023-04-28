@@ -30,26 +30,51 @@ function set_config_value() {
 
     [ ! -f "${FILE}" ] && return
 
-    local KEY_ESC="${KEY}"
-
-    if grep -q "\." <<< "${KEY}"; then
-        KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
-        VALUE_ESC="${VALUE}"
-
-        grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
-
-        if [ ! -f "/usr/bin/yq" ]; then
-            echo "ERROR: The 'yq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
-            return
-        fi
-
-        echo "${FILE}: ${KEY}=${VALUE}"
-        sudo yq -yi ".${KEY_ESC} = ${VALUE_ESC}" "${FILE}"
+    if [[ "${FILE}" =~ \.(yml|yaml)$ ]]; then
+        set_yml_value "${FILE}" "${KEY}" "${VALUE}"
     else
+        local KEY_ESC="${KEY}"
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 
         echo "${FILE}: ${KEY}=${VALUE}"
-        sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+        if [ -w "${FILE}" ]; then
+            sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+        else
+            sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+        fi
+    fi
+}
+
+function set_yml_value() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
+
+    local KEY_ESC="${KEY}"
+
+    KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+    VALUE_ESC="${VALUE}"
+
+    grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
+
+    if [ ! -f "/usr/bin/yq" ]; then
+        echo "ERROR: The 'yq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
+        return
+    fi
+
+    YQ_COMMAND=".${KEY_ESC} = ${VALUE_ESC}"
+
+    if [ -z "${VALUE}" ]; then
+        echo "${FILE}: ${KEY} (delete)"
+        YQ_COMMAND="del(.${KEY_ESC})"
+    else
+        echo "${FILE}: ${KEY}=${VALUE}"
+    fi
+
+    if [ -w "${FILE}" ]; then
+        yq -yi "${YQ_COMMAND}" "${FILE}"
+    else
+        sudo yq -yi "${YQ_COMMAND}" "${FILE}"
     fi
 }
 
@@ -61,7 +86,7 @@ function run_server_command() {
         return
     fi
     
-    papermc command $* &> /dev/null
+    papermc command "$@" &> /dev/null
 }
 
 function reload_plugin() {

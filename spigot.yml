@@ -166,7 +166,9 @@ world-settings:
     verbose: false
   world_nether:
     view-distance: 5
+    simulation-distance: 5
   world_the_end:
     view-distance: 12
+    simulation-distance: 5
 players:
   disable-saving: false

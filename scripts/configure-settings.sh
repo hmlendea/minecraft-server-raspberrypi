@@ -1,6 +1,6 @@
 #!/bin/bash
 VIEW_DISTANCE=8
-VIEW_DISTANCE_TARGET=8 # The View Distancethe server was tested against when ${PLAYERS_TARGET} players were online
+VIEW_DISTANCE_TARGET=8 # The View Distance that the server was tested against when ${PLAYERS_TARGET} players were online
 VIEW_DISTANCE_MIN=5
 VIEW_DISTANCE_MAX=12
 
@@ -13,7 +13,7 @@ VIEW_DISTANCE_END_MIN=8
 VIEW_DISTANCE_END_MAX=16
 
 SIMULATION_DISTANCE=5
-SIMULATION_DISTANCE_TARGET=5 # The View Distancethe server was tested against when ${PLAYERS_TARGET} players were online
+SIMULATION_DISTANCE_TARGET=5 # The Simulation Distance that the server was tested against when ${PLAYERS_TARGET} players were online
 SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
 SIMULATION_DISTANCE_MAX=10
 
@@ -40,6 +40,8 @@ source "${SERVER_SCRIPTS_DIR}/common/config.sh"
 [ ${SIMULATION_DISTANCE} -gt ${VIEW_DISTANCE} ] && SIMULATION_DISTANCE=${VIEW_DISTANCE}
 [ ${SIMULATION_DISTANCE} -lt ${SIMULATION_DISTANCE_MIN} ] && SIMULATION_DISTANCE=${SIMULATION_DISTANCE_MIN}
 [ -z "${VIEW_DISTANCE}" ] && VIEW_DISTANCE=${SIMULATION_DISTANCE}
+[ -z "${SIMULATION_DISTANCE_END}" ] && SIMULATION_DISTANCE_END=${SIMULATION_DISTANCE}
+[ -z "${SIMULATION_DISTANCE_NETHER}" ] && SIMULATION_DISTANCE_NETHER=${SIMULATION_DISTANCE}
 
 SIMULATION_CHUNKS_TARGET=$(( (2 * ${SIMULATION_DISTANCE} + 1) ** 2 * ${PLAYERS_MAX} ))
 VIEW_CHUNKS_TARGET=$(( ((2 * ${VIEW_DISTANCE} + 1) ** 2 - (2 * ${SIMULATION_DISTANCE} + 1) ** 2) * PLAYERS_MAX))
@@ -57,18 +59,22 @@ MOB_DESPAWN_RANGE_SOFT=$((MOB_SPAWN_RANGE*4))
 MOB_SPAWN_LIMIT_MONSTER=$((14*(MOB_SPAWN_RANGE-3)+7))
 [ ${MOB_SPAWN_LIMIT_MONSTER} -lt 7 ] && MOB_SPAWN_LIMIT_MONSTER=7
 
-set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                       "${PLAYERS_MAX}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                     "${VIEW_DISTANCE}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                               "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"              "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"    "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance" "${VIEW_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "simulation-distance"                               "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "mob-spawn-range"                                   "${MOB_SPAWN_RANGE}"
-set_config_value "${BUKKIT_CONFIG_FILE}"                "monsters"                                          "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
+set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.mob-spawn-range"                    "${MOB_SPAWN_RANGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.simulation-distance"                "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"                      "${VIEW_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.simulation-distance"      "${SIMULATION_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"            "${VIEW_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
+set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "hard"                                          "${MOB_DESPAWN_RANGE_HARD}"
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "soft"                                          "${MOB_DESPAWN_RANGE_SOFT}"
+for CREATURE_TYPE in "ambient" "axolotls" "creature" "misc" "monster" "underground_water_creature" "water_ambient" "water_creature"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_HARD}"
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.soft"    "${MOB_DESPAWN_RANGE_SOFT}"
+done
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE}"
 
@@ -85,13 +91,24 @@ set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_NETHER}"
 
 if [ -f "${AUTHME_CONFIG_FILE}" ]; then
-    set_config_value "${AUTHME_CONFIG_FILE}"    "messagesLanguage"  "${LOCALE}"
+    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.sessions.enabled" true
+    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.sessions.timeout" 960 # 16 hours
+    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.messagesLanguage" "${LOCALE}"
+    
     reload_plugin "authme"
 fi
 
+if [ -f "${DISCORDSRV_CONFIG_FILE}" ]; then
+    set_config_value "${DISCORDSRV_CONFIG_FILE}"    "ServerWatchdogEnabled" false
+
+    reload_plugin "discordsrv"
+fi
+
 if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
-    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "ops-name-color"    "\"none\""
+    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "auto-afk"          300
+    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "ops-name-color"    "none"
     set_config_value "${ESSENTIALS_CONFIG_FILE}"    "locale"            "${LOCALE}"
+    
     reload_plugin "essentials"
 fi
 
@@ -127,15 +144,15 @@ if [ -d "${PLEXMAP_DIR}" ]; then
 fi
 
 if [ -f "${TREEASSIST_CONFIG_FILE}" ]; then
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Toggle Remember"       false
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Use Permissions"       true
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Use Permissions"   true
 
     # Visuals
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Falling Blocks"        false # Causes lag on low end devices
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Falling Blocks Fancy"  false # Looks a bit odd, may cause lag
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Destruction.Falling Blocks"        false # Causes lag on low end devices
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Destruction.Falling Blocks Fancy"  false # Looks a bit odd, may cause lag
 
     # Telemetry
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Active"         false
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Active" false
 
     # Integrations
     [ -f "${WORLDGUARD_CONFIG_FILE}" ] && set_config_value "${TREEASSIST_CONFIG_FILE}" "Plugins.WorldGuard" true
