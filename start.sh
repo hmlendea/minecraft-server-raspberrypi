@@ -1,9 +1,11 @@
-SERVER_DIR_PATH=$(pwd)
+#!/bin/bash
+SERVER_ROOT_DIR=$(pwd)
+source "${SERVER_ROOT_DIR}/scripts/common/paths.sh"
 
-SERVER_JAR_NAME=$(ls "${SERVER_DIR_PATH}" | grep "purpur-[0-9.]*-[0-9]*.jar" | tail -n 1)
-[ -z "${SERVER_JAR_NAME}" ] && SERVER_JAR_NAME=$(ls "${SERVER_DIR_PATH}" | grep "paper-[0-9]*.jar" | tail -n 1)
+SERVER_JAR_NAME=$(ls "${SERVER_ROOT_DIR}" | grep "purpur-[0-9.]*-[0-9]*.jar" | tail -n 1)
+[ -z "${SERVER_JAR_NAME}" ] && SERVER_JAR_NAME=$(ls "${SERVER_ROOT_DIR}" | grep "paper-[0-9]*.jar" | tail -n 1)
 
-SERVER_JAR_PATH="${SERVER_DIR_PATH}/${SERVER_JAR_NAME}"
+SERVER_JAR_PATH="${SERVER_ROOT_DIR}/${SERVER_JAR_NAME}"
 
 TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/1024/1024)"G"; }')
  
@@ -19,12 +21,14 @@ fi
 
 function clean-server-properties {
     sleep 2m
-    SERVER_PROPERTIES_FILE_PATH="${SERVER_DIR_PATH}/server.properties"
+    SERVER_PROPERTIES_FILE_PATH="${SERVER_ROOT_DIR}/server.properties"
     sed '/^#/d' -i "${SERVER_PROPERTIES_FILE_PATH}"
     sort -o "${SERVER_PROPERTIES_FILE_PATH}" "${SERVER_PROPERTIES_FILE_PATH}"
 }
 
 clean-server-properties &
+bash "${SERVER_SCRIPTS_PATH}/configure-settings.sh"
+bash "${SERVER_SCRIPTS_PATH}/fix-permissions.sh"
 
 echo "Starting '${SERVER_JAR_PATH}' with ${ALLOCATED_RAM} RAM allocated..."
 java \
