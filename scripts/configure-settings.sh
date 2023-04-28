@@ -17,7 +17,7 @@ SIMULATION_DISTANCE_TARGET=5 # The Simulation Distance that the server was teste
 SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
 SIMULATION_DISTANCE_MAX=10
 
-PLAYERS_MAX=8
+PLAYERS_MAX=10
 PLAYERS_TARGET=6 # The amount of players the server was tested against
 
 KEEP_SPAWN_LOADED=false
@@ -112,27 +112,36 @@ if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
     reload_plugin "essentials"
 fi
 
-if [ -d "${PLEXMAP_DIR}" ]; then
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.web-directory.path" "/srv/http"
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.internal-webserver" false
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.enabled" true
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.render.background.interval" 450
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.render.background.max-chunks-per-interval" 5
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.zoom.max-out" 2
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.zoom.max-in" 2
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.markers.spawn.enabled" true
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.default.markers.worldborder.enabled" false
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.ui.enabled" true
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld"
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NAME}.zoom.max-out" 3
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_END_NAME}.ui.enabled" true
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_END_NAME}.ui.display-name" "The End"
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.ui.enabled" true
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether"
-    set_config_value "${PLEXMAP_CONFIG_FILE}" "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 2
+if [ -d "${LUCKPERMS_DIR}" ]; then
+    set_config_value "${LUCKPERMS_CONFIG_FILE}" "use-server-uuid-cache" true
+    set_config_value "${LUCKPERMS_CONFIG_FILE}" "watch-files"           false
 
-    set_config_value "${PLEXMAP_CONFIG_ADVANCED_FILE}" "settings.colors.blocks.minecraft:torch" "#000000"
-    set_config_value "${PLEXMAP_CONFIG_ADVANCED_FILE}" "settings.colors.blocks.minecraft:wall_torch" "#000000"
+    reload_plugin luckperms
+fi
+
+if [ -d "${PLEXMAP_DIR}" ]; then
+    set_config_values "${PLEXMAP_CONFIG_FILE}" \
+        "settings.web-directory.path" "/srv/http" \
+        "settings.internal-webserver" false \
+        "world-settings.default.enabled" true \
+        "world-settings.default.render.background.interval" 450 \
+        "world-settings.default.render.background.max-chunks-per-interval" 5 \
+        "world-settings.default.zoom.max-out" 2 \
+        "world-settings.default.zoom.max-in" 2 \
+        "world-settings.default.markers.spawn.enabled" true \
+        "world-settings.default.markers.worldborder.enabled" false \
+        "world-settings.${WORLD_NAME}.ui.enabled" true \
+        "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld" \
+        "world-settings.${WORLD_NAME}.zoom.max-out" 3 \
+        "world-settings.${WORLD_END_NAME}.ui.enabled" true \
+        "world-settings.${WORLD_END_NAME}.ui.display-name" "The End" \
+        "world-settings.${WORLD_NETHER_NAME}.ui.enabled" true \
+        "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
+        "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 2
+
+    set_config_values "${PLEXMAP_CONFIG_ADVANCED_FILE}" \
+        "settings.colors.blocks.minecraft:torch"        "#000000" \
+        "settings.colors.blocks.minecraft:wall_torch"   "#000000"
 
     if [ -f "${PLEXMAP_DIR}/locale/lang-${LOCALE}.yml" ]; then
         set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${LOCALE}.yml"
@@ -143,7 +152,17 @@ if [ -d "${PLEXMAP_DIR}" ]; then
     reload_plugin "pl3xmap"
 fi
 
-if [ -f "${TREEASSIST_CONFIG_FILE}" ]; then
+if [ -d "${SKINSRESTORER_DIR}" ]; then
+    set_config_value "${SKINSRESTORER_CONFIG_FILE}" "SkinExpiresAfter" 180
+fi
+
+if [ -d "${STACKABLEITEMS_DIR}" ]; then
+    set_config_value "${STACKABLEITEMS_CONFIG_FILE}" "update-check.enabled" false
+
+    reload_plugin "stackableitems"
+fi
+
+if [ -d "${TREEASSIST_DIR}" ]; then
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Use Permissions"   true
 
@@ -160,8 +179,14 @@ if [ -f "${TREEASSIST_CONFIG_FILE}" ]; then
     reload_plugin "treeassist"
 fi
 
-if [ -f "${VDT_CONFIG_FILE}" ]; then
-    set_config_values "${VDT_CONFIG_FILE}" \
+if [ -d "${VIAVERSION_CONFIG_FILE}" ]; then
+    set_config_value "${VIAVERSION_CONFIG_FILE}" "checkforupdates" false
+
+    reload_plugin "viaversion"
+fi
+
+if [ -d "${VIEWDISTANCETWEAKS_DIR}" ]; then
+    set_config_values "${VIEWDISTANCETWEAKS_CONFIG_FILE}" \
         "enabled" true \
         "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
         "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
