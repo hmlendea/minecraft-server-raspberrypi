@@ -27,8 +27,8 @@ function clean-server-properties {
 }
 
 clean-server-properties &
-bash "${SERVER_SCRIPTS_PATH}/configure-settings.sh"
-bash "${SERVER_SCRIPTS_PATH}/fix-permissions.sh"
+#bash "${SERVER_SCRIPTS_DIR}/configure-settings.sh"
+#bash "${SERVER_SCRIPTS_DIR}/fix-permissions.sh"
 
 echo "Starting '${SERVER_JAR_PATH}' with ${ALLOCATED_RAM} RAM allocated..."
 java \

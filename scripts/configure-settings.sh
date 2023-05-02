@@ -31,6 +31,7 @@ AUTOSAVE_MINS_END=40
 
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_DIR}/common/config.sh"
+source "${SERVER_SCRIPTS_DIR}/common/specs.sh"
 
 [ -z "${VIEW_DISTANCE}" ] && VIEW_DISTANCE=${SIMULATION_DISTANCE}
 [ ${VIEW_DISTANCE} -gt ${VIEW_DISTANCE_MAX} ] && VIEW_DISTANCE=${VIEW_DISTANCE_MAX}
@@ -90,10 +91,12 @@ set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "chunks.auto-save-interv
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_NETHER}"
 
-if [ -f "${AUTHME_CONFIG_FILE}" ]; then
-    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.sessions.enabled" true
-    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.sessions.timeout" 960 # 16 hours
-    set_config_value "${AUTHME_CONFIG_FILE}"    "settings.messagesLanguage" "${LOCALE}"
+if [ -s "${AUTHME_DIR}" ]; then
+    set_config_values "${AUTHME_CONFIG_FILE}" \
+        "settings.serverName" "${SERVER_NAME}" \
+        "settings.sessions.enabled" true \
+        "settings.sessions.timeout" 960 \
+        "settings.messagesLanguage" "${LOCALE}"
     
     reload_plugin "authme"
 fi
@@ -120,33 +123,77 @@ if [ -d "${LUCKPERMS_DIR}" ]; then
 fi
 
 if [ -d "${PLEXMAP_DIR}" ]; then
+    # Removed in beta:
+    # - orld-settings.default.render.background.interval
+    # - world-settings.default.render.background.max-chunks-per-interval
+
     set_config_values "${PLEXMAP_CONFIG_FILE}" \
         "settings.web-directory.path" "/srv/http" \
-        "settings.internal-webserver" false \
+        "settings.internal-webserver.enabled" false \
         "world-settings.default.enabled" true \
         "world-settings.default.render.background.interval" 450 \
         "world-settings.default.render.background.max-chunks-per-interval" 5 \
-        "world-settings.default.zoom.max-out" 2 \
-        "world-settings.default.zoom.max-in" 2 \
         "world-settings.default.markers.spawn.enabled" true \
         "world-settings.default.markers.worldborder.enabled" false \
-        "world-settings.${WORLD_NAME}.ui.enabled" true \
+        "world-settings.default.zoom.max-out" 2 \
+        "world-settings.default.zoom.max-in" 2 \
+        "world-settings.${WORLD_NAME}.enabled" true \
         "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld" \
         "world-settings.${WORLD_NAME}.zoom.max-out" 3 \
-        "world-settings.${WORLD_END_NAME}.ui.enabled" true \
+        "world-settings.${WORLD_END_NAME}.enabled" true \
+        "world-settings.${WORLD_END_NAME}.render.biome-blend" 0 \
+        "world-settings.${WORLD_END_NAME}.render.translucent-fluids" false \
         "world-settings.${WORLD_END_NAME}.ui.display-name" "The End" \
-        "world-settings.${WORLD_NETHER_NAME}.ui.enabled" true \
+        "world-settings.${WORLD_NETHER_NAME}.enabled" true \
+        "world-settings.${WORLD_NETHER_NAME}.render.biome-blend" 0 \
+        "world-settings.${WORLD_NETHER_NAME}.render.translucent-fluids" false \
         "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
         "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 2
 
-    set_config_values "${PLEXMAP_CONFIG_ADVANCED_FILE}" \
-        "settings.colors.blocks.minecraft:torch"        "#000000" \
-        "settings.colors.blocks.minecraft:wall_torch"   "#000000"
+    if [ -f "${PLEXMAP_CONFIG_COLOURS_FILE}" ]; then
+        set_config_values "${PLEXMAP_CONFIG_COLOURS_FILE}" \
+            "blocks.colors.minecraft:torch"             "#000000" \
+            "blocks.colors.minecraft:wall_torch"        "#000000" \
+            "blocks.colors.minecraft:soul_torch"        "#000000" \
+            "blocks.colors.minecraft:soul_wall_torch"   "#000000"
+    fi
+    
+    if [ -f "${PLEXMAP_CONFIG_ADVANCED_FILE}" ]; then        
+        set_config_values "${PLEXMAP_CONFIG_ADVANCED_FILE}" \
+            "event-listeners.BlockGrowEvent"            false \
+            "event-listeners.BlockSpreadEvent"          false \
+            "event-listeners.EntityBlockFormEvent"      false \
+            "event-listeners.EntityChangeBlockEvent"    false \
+            "event-listeners.EntityExplodeEvent"        false \
+            "event-listeners.EntityLevelChangeEvent"    false \
+            "blocks.colors.minecraft:torch"             "#000000" \
+            "blocks.colors.minecraft:wall_torch"        "#000000" \
+            "blocks.colors.minecraft:soul_torch"        "#000000" \
+            "blocks.colors.minecraft:soul_wall_torch"   "#000000"
+    fi
 
+    PLEXMAP_PAGE_TITLE="${SERVER_NAME} World Map"
+    PLEXMAP_PLAYERS_LABEL="<online> Players"
+    PLEXMAP_LOCALE="${LOCALE_FALLBACK}"
+
+    if [ "${LOCALE}" == "ro" ]; then
+        PLEXMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
+        PLEXMAP_PLAYERS_LABEL="<online> Jucători"
+    fi
     if [ -f "${PLEXMAP_DIR}/locale/lang-${LOCALE}.yml" ]; then
-        set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${LOCALE}.yml"
-    else
-        set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${LOCALE_FALLBACK}.yml"
+        PLEXMAP_LOCALE="${LOCALE}"
+    fi
+
+    set_config_values "${PLEXMAP_DIR}/locale/lang-${PLEXMAP_LOCALE}.yml" \
+        "ui.title"              "${PLEXMAP_PAGE_TITLE}" \
+        "ui.players.label"      "${PLEXMAP_PLAYERS_LABEL}" \
+        "ui.blockinfo.value"    "${SERVER_NAME}<br />Powered by Raspberry Pi 4" \
+        "ui.coords.value"       "<x>, <z>"
+    set_config_value "${PLEXMAP_CONFIG_FILE}" "settings.language-file" "lang-${PLEXMAP_LOCALE}.yml"
+
+    if cmp -s "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"; then
+        echo "Copying '${SERVER_IMAGE_FILE}' to '${WEBMAP_ICON_FILE}'..."
+        sudo cp "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"
     fi
     
     reload_plugin "pl3xmap"

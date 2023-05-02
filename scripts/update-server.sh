@@ -15,6 +15,7 @@ USE_SKINSRESTORER=true
 USE_STACKABLEITEMS=true
 USE_VIAVERSION=true
 USE_VIEWDISTANCETWEAKS=true
+USE_WANDERINGTRADES=true
 USE_WORLDGUARD=true
 
 function get_latest_github_release_tag() {
@@ -222,9 +223,6 @@ function update_server() {
 if ! papermc status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q "Status: stopped"; then
     echo "ERROR: The server needs to be stopped to update the plugins!"
     exit 1
-elif [ ! -f "/usr/bin/jq" ]; then
-    echo "ERROR: jq is not installed!"
-    exit 2
 else
     update_server
 
@@ -240,5 +238,6 @@ else
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
     ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion"
     ${USE_VIEWDISTANCETWEAKS}   && update_plugin "ViewDistanceTweaks"   "https://ci.froobworld.com"                         "%pluginName%-%pluginVersion%.jar"
+    ${USE_WANDERINGTRADES}      && update_plugin "WanderingTrades"      "https://github.com/jpenilla/WanderingTrades"       "%pluginName%-%pluginVersion%.jar"
     ${USE_WORLDGUARD}           && update_plugin "WorldGuardExtraFlags" "https://github.com/aromaa/WorldGuardExtraFlags"    "%pluginName%.jar"
 fi

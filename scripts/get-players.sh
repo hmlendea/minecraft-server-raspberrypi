@@ -9,11 +9,6 @@ function get_userdata_prop() {
     yq -r ".${PROPERTY_ESC}" "${FILE}"
 }
 
-if [ ! -f "/usr/bin/yq" ]; then
-    echo "ERROR: The 'yq' utility must be installed!"
-    exit 1
-fi
-
 for USERDATA_FILE in "${ESSENTIALS_DIR}/userdata/"*; do
     PLAYER_UUID=$(basename "${USERDATA_FILE}" .yml)
     PLAYER_NAME=$(get_userdata_prop "${USERDATA_FILE}" "last-account-name")

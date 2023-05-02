@@ -4,14 +4,7 @@
 export SERVER_ROOT_DIR="/srv/papermc"
 export SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
 export SERVER_SCRIPTS_DIR="${SERVER_ROOT_DIR}/scripts"
-
-# World
-export WORLD_NAME="world"
-export WORLD_END_NAME="${WORLD_NAME}_the_end"
-export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
-export WORLD_DIR="${SERVER_ROOT_DIR}/${WORLD_NAME}"
-export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
-export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
+export SERVER_SCRIPTS_COMMON_DIR="${SERVER_SCRIPTS_DIR}/common"
 
 # Server configs
 export SERVER_PROPERTIES_FILE="${SERVER_ROOT_DIR}/server.properties"
@@ -21,6 +14,20 @@ export PAPER_WORLD_DEFAULT_CONFIG_FILE="${SERVER_ROOT_DIR}/config/paper-world-de
 export PAPER_WORLD_CONFIG_FILE="${WORLD_DIR}/paper-world.yml"
 export PAPER_WORLD_END_CONFIG_FILE="${WORLD_END_DIR}/paper-world.yml"
 export PAPER_WORLD_NETHER_CONFIG_FILE="${WORLD_NETHER_DIR}/paper-world.yml"
+
+# World
+[ -z "${WORLD_NAME}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
+export WORLD_DIR="${SERVER_ROOT_DIR}/${WORLD_NAME}"
+export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
+export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
+
+# World Webmap
+export WORLD_WEBMAP_DIR="/srv/http"
+export WORLD_WEBMAP_ICON_FILE="${WORLD_WEBMAP_DIR}/favicon.ico"
+export WORLD_WEBMAP_INDEX_FILE="${WORLD_WEBMAP_DIR}/index.html"
+
+# Resources
+export SERVER_IMAGE_FILE="${SERVER_ROOT_DIR}/server-image.png"
 
 # Plugin directories
 export AUTHME_DIR="${SERVER_PLUGINS_DIR}/AuthMe"
@@ -34,6 +41,7 @@ export STACKABLEITEMS_DIR="${SERVER_PLUGINS_DIR}/StackableItems"
 export TREEASSIST_DIR="${SERVER_PLUGINS_DIR}/TreeAssist"
 export VIAVERSION_DIR="${SERVER_PLUGINS_DIR}/ViaVersion"
 export VIEWDISTANCETWEAKS_DIR="${SERVER_PLUGINS_DIR}/ViewDistanceTweaks"
+export WANDERINGTRADES_DIR="${SERVER_PLUGINS_DIR}/WanderingTrades"
 export WORLDGUARD_DIR="${SERVER_PLUGINS_DIR}/WorldGuard"
 
 # Plugin configs
@@ -43,7 +51,7 @@ export DISCORDSRV_CONFIG_FILE="${DISCORDSRV_DIR}/config.yml"
 export ESSENTIALS_CONFIG_FILE="${ESSENTIALS_DIR}/config.yml"
 export LUCKPERMS_CONFIG_FILE="${LUCKPERMS_DIR}/config.yml"
 export PLEXMAP_CONFIG_FILE="${PLEXMAP_DIR}/config.yml"
-export PLEXMAP_CONFIG_ADVANCED_FILE="${PLEXMAP_DIR}/advanced.yml"
+export PLEXMAP_CONFIG_COLOURS_FILE="${PLEXMAP_DIR}/colors.yml"
 export SKINSRESTORER_CONFIG_FILE="${SKINSRESTORER_DIR}/config.yml"
 export STACKABLEITEMS_CONFIG_FILE="${STACKABLEITEMS_DIR}/options.yml"
 export TREEASSIST_CONFIG_FILE="${TREEASSIST_DIR}/config.yml"

@@ -30,7 +30,9 @@ function set_config_value() {
 
     [ ! -f "${FILE}" ] && return
 
-    if [[ "${FILE}" =~ \.(yml|yaml)$ ]]; then
+    if [[ "${FILE}" =~ \.(xml)$ ]]; then
+        set_xml_value "${FILE}" "${KEY}" "${VALUE}"
+    elif [[ "${FILE}" =~ \.(yml|yaml)$ ]]; then
         set_yml_value "${FILE}" "${KEY}" "${VALUE}"
     else
         local KEY_ESC="${KEY}"
@@ -41,6 +43,33 @@ function set_config_value() {
             sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
         else
             sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+        fi
+    fi
+}
+
+function set_xml_value() {
+    local FILE="${1}"
+    local NODE_RAW="${2}"
+    local VALUE_RAW="${@:3}"
+
+    [ ! -f "${FILE}" ] && return
+
+    local NODE="${NODE_RAW}"
+    local NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
+    local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+
+    if [ -n "${NAMESPACE}" ]; then
+        NODE=$(echo "${NODE_RAW}" | sed 's/\/\([^\/]\)/\/x:\1/g')
+    fi
+
+    local OLD_VALUE=$(xmlstarlet sel -N x="${NAMESPACE}" -t -v ''"${NODE}"'' -n "${FILE}")
+
+    if [ "${VALUE}" != "${OLD_VALUE}" ]; then
+        echo "${FILE} >>> ${NODE_RAW} = ${VALUE}"
+        if [ -w "${FILE}" ]; then
+            xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
+        else
+            sudo xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
         fi
     fi
 }
@@ -104,3 +133,16 @@ function set_gamerule() {
     #echo " > Setting gamerule '${GAMERULE}' to '${VALUE}'..."
     run_server_command gamerule "${GAMERULE}" "${VALUE}"
 }
+
+function check_if_utility_exists() {
+    local UTILITY="${1}"
+
+    if [ ! -f "/usr/bin/${UTILITY}" ]; then
+        echo "ERROR: The '${UTILITY}' utility must be installed"
+        exit 400
+    fi
+}
+
+check_if_utility_exists "jq"
+check_if_utility_exists "xmlstarlet"
+check_if_utility_exists "yq"
