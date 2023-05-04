@@ -17,9 +17,6 @@ SIMULATION_DISTANCE_TARGET=5 # The Simulation Distance that the server was teste
 SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
 SIMULATION_DISTANCE_MAX=10
 
-PLAYERS_MAX=10
-PLAYERS_TARGET=6 # The amount of players the server was tested against
-
 KEEP_SPAWN_LOADED=false
 
 LOCALE="en"

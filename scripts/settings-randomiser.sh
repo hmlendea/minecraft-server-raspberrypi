@@ -47,8 +47,8 @@ if [ -f "${CLEANMOTD_CONFIG_FILE}" ]; then
     CURRENT_TIME=$(date +%H%M)
     CURRENT_YEAR=$(date +%Y)
 
-    MAX_PLAYERS=$(get_random_element "112" "314" "420" "613" "666" "873" "911" "8897" "9999" ${CURRENT_DATE} ${CURRENT_TIME} ${CURRENT_YEAR})
+    MAX_PLAYERS=$(get_random_element "112" "314" "420" "613" "666" "873" "911" "8897" "9999" ${CURRENT_DATE} ${CURRENT_TIME} ${CURRENT_YEAR} ${PLAYERS_MAX})
     
-    set_config_value "${CLEANMOTD_CONFIG_FILE}" "maxplayers" "${MAX_PLAYERS}"
+    set_config_value "${CLEANMOTD_CONFIG_FILE}" "maxplayers.maxplayers" "${MAX_PLAYERS}"
     reload_plugin "cleanmotd"
 fi

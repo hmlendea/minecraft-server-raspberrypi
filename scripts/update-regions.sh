@@ -167,6 +167,7 @@ function set_region_messages() {
 set_region_messages "enada_forja" "Enada's Forge" --quiet
 set_region_messages "enada_magazie" "Enada's Local Public Warehouse" --quiet
 set_region_messages "enada_subway" "Enada's Subway" --quiet
+set_region_messages "enada_worldmap" "Enada's Worldmap" --quiet
 set_region_messages "end_portal" "The End Portal"
 
 set_region_messages "player_asunasenko_enada" "AsunaSenko"
