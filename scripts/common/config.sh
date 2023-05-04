@@ -30,7 +30,9 @@ function set_config_value() {
 
     [ ! -f "${FILE}" ] && return
 
-    if [[ "${FILE}" =~ \.(xml)$ ]]; then
+    if [[ "${FILE}" =~ \.(json)$ ]]; then
+        set_json_value "${FILE}" "${KEY}" "${VALUE}"
+    elif [[ "${FILE}" =~ \.(xml)$ ]]; then
         set_xml_value "${FILE}" "${KEY}" "${VALUE}"
     elif [[ "${FILE}" =~ \.(yml|yaml)$ ]]; then
         set_yml_value "${FILE}" "${KEY}" "${VALUE}"
@@ -104,6 +106,41 @@ function set_yml_value() {
         yq -yi "${YQ_COMMAND}" "${FILE}"
     else
         sudo yq -yi "${YQ_COMMAND}" "${FILE}"
+    fi
+}
+
+function set_json_value() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
+
+    local KEY_ESC="${KEY}"
+
+    KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+    VALUE_ESC="${VALUE}"
+
+    grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
+
+    if [ ! -f "/usr/bin/jq" ]; then
+        echo "ERROR: The 'jq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
+        return
+    fi
+
+    JQ_COMMAND=".${KEY_ESC} = ${VALUE_ESC}"
+
+    if [ -z "${VALUE}" ]; then
+        echo "${FILE}: ${KEY} (delete)"
+        JQ_COMMAND="del(.${KEY_ESC})"
+    else
+        echo "${FILE}: ${KEY}=${VALUE}"
+    fi
+
+    if [ -w "${FILE}" ]; then
+        jq -i "${JQ_COMMAND}" "${FILE}"
+    else
+        jq "${JQ_COMMAND}" "${FILE}" | sudo tee "${FILE}.tmp" > /dev/null
+        cat "${FILE}.tmp" | sudo tee "${FILE}" > /dev/null
+        sudo rm "${FILE}.tmp"
     fi
 }
 

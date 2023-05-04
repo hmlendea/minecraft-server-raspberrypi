@@ -200,6 +200,10 @@ if [ -d "${SKINSRESTORER_DIR}" ]; then
     set_config_value "${SKINSRESTORER_CONFIG_FILE}" "SkinExpiresAfter" 180
 fi
 
+if [ -d "${SPARK_DIR}" ]; then
+    set_config_value "${SPARK_CONFIG_FILE}" "backgroundProfiler" false
+fi
+
 if [ -d "${STACKABLEITEMS_DIR}" ]; then
     set_config_value "${STACKABLEITEMS_CONFIG_FILE}" "update-check.enabled" false
 
