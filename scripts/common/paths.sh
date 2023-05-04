@@ -6,10 +6,16 @@ export SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
 export SERVER_SCRIPTS_DIR="${SERVER_ROOT_DIR}/scripts"
 export SERVER_SCRIPTS_COMMON_DIR="${SERVER_SCRIPTS_DIR}/common"
 
-# Server configs
+# Server configs - Server
+export SERVER_OPS_FILE="${SERVER_ROOT_DIR}/ops.json"
 export SERVER_PROPERTIES_FILE="${SERVER_ROOT_DIR}/server.properties"
+export SERVER_USERCACHE_FILE="${SERVER_ROOT_DIR}/usercache.json"
+export SERVER_WHITELIST_FILE="${SERVER_ROOT_DIR}/whitelist.json"
+# Server configs - Bukkit
 export BUKKIT_CONFIG_FILE="${SERVER_ROOT_DIR}/bukkit.yml"
+# Server configs - Spigot
 export SPIGOT_CONFIG_FILE="${SERVER_ROOT_DIR}/spigot.yml"
+# Server configs - Paper
 export PAPER_WORLD_DEFAULT_CONFIG_FILE="${SERVER_ROOT_DIR}/config/paper-world-defaults.yml"
 export PAPER_WORLD_CONFIG_FILE="${WORLD_DIR}/paper-world.yml"
 export PAPER_WORLD_END_CONFIG_FILE="${WORLD_END_DIR}/paper-world.yml"
@@ -18,11 +24,17 @@ export PAPER_WORLD_NETHER_CONFIG_FILE="${WORLD_NETHER_DIR}/paper-world.yml"
 # World
 [ -z "${WORLD_NAME}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 export WORLD_DIR="${SERVER_ROOT_DIR}/${WORLD_NAME}"
+export WORLD_PLAYERDATA_DIR="${WORLD_DIR}/playerdata"
 export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
+export WORLD_END_PLAYERDATA_DIR="${WORLD_END_DIR}/playerdata"
 export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
+export WORLD_NETHER_PLAYERDATA_DIR="${WORLD_NETHER_DIR}/playerdata"
 
 # World Webmap
 export WORLD_WEBMAP_DIR="/srv/http"
+export WORLD_WEBMAP_SKINS_DIR="/srv/http/images/skins"
+export WORLD_WEBMAP_SKINS_2D_UUID_DIR="${WORLD_WEBMAP_SKINS_DIR}/2D"
+export WORLD_WEBMAP_SKINS_2D_USERNAME_DIR="${WORLD_WEBMAP_SKINS_DIR}/2D-ByUsername"
 export WORLD_WEBMAP_ICON_FILE="${WORLD_WEBMAP_DIR}/favicon.ico"
 export WORLD_WEBMAP_INDEX_FILE="${WORLD_WEBMAP_DIR}/index.html"
 
@@ -34,6 +46,7 @@ export AUTHME_DIR="${SERVER_PLUGINS_DIR}/AuthMe"
 export CLEANMOTD_DIR="${SERVER_PLUGINS_DIR}/CleanMOTD"
 export DISCORDSRV_DIR="${SERVER_PLUGINS_DIR}/DiscordSRV"
 export ESSENTIALS_DIR="${SERVER_PLUGINS_DIR}/Essentials"
+export ESSENTIALS_USERDATA_DIR="${ESSENTIALS_DIR}/userdata"
 export LUCKPERMS_DIR="${SERVER_PLUGINS_DIR}/LuckPerms"
 export PLEXMAP_DIR="${SERVER_PLUGINS_DIR}/Pl3xMap"
 export SKINSRESTORER_DIR="${SERVER_PLUGINS_DIR}/SkinsRestorer"

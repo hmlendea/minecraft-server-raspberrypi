@@ -1,5 +1,6 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 
 function get_userdata_prop() {
     local FILE="${1}"
@@ -9,15 +10,14 @@ function get_userdata_prop() {
     yq -r ".${PROPERTY_ESC}" "${FILE}"
 }
 
-for USERDATA_FILE in "${ESSENTIALS_DIR}/userdata/"*; do
-    PLAYER_UUID=$(basename "${USERDATA_FILE}" .yml)
-    PLAYER_NAME=$(get_userdata_prop "${USERDATA_FILE}" "last-account-name")
-    PLAYER_LAST_SEEN_TIMESTAMP=$(get_userdata_prop "${USERDATA_FILE}" "timestamps.logout")
-    PLAYER_LAST_SEEN_DATE=$(date -u -d @"${PLAYER_LAST_SEEN_TIMESTAMP}" +'%Y-%m-%d %H:%M:%S')
-    PLAYER_LAST_IP=$(get_userdata_prop "${USERDATA_FILE}" "ip-address")
+PLAYERS_COUNT=0
+for PLAYERDATA_FILE in "${WORLD_PLAYERDATA_DIR}/"*.dat; do
+    PLAYERS_COUNT=$((PLAYERS_COUNT + 1))
+    PLAYER_UUID=$(basename "${PLAYERDATA_FILE}" .dat)
+    PLAYER_USERNAME=$(get_player_username "${PLAYER_UUID}")
+    PLAYER_IP=$(get_player_ip "${PLAYER_UUID}")
     
-    echo "${PLAYER_NAME}:"
+    echo "${PLAYERS_COUNT}: ${PLAYER_USERNAME}:"
     echo "   - UUID:      ${PLAYER_UUID}"
-    #echo "   - Last seen: ${PLAYER_LAST_SEEN_DATE}"
-    echo "   - Last IP:   ${PLAYER_LAST_IP}"
+    echo "   - Last IP:   ${PLAYER_IP}"
 done

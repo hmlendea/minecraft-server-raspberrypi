@@ -134,6 +134,23 @@ function set_gamerule() {
     run_server_command gamerule "${GAMERULE}" "${VALUE}"
 }
 
+function get_config_value() {
+    local FILE="${1}"
+    local KEY="${2}"
+
+    [ ! -f "${FILE}" ] && return
+
+    get_yml_value "${FILE}" "${KEY}"
+}
+
+function get_yml_value() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local KEY_ESC=$(echo "${KEY}" | sed -E 's/([^.]+-[^\.\ ]+)(\.|$)/"\1"\2/g')
+
+    yq -r ".${KEY_ESC}" "${FILE}"
+}
+
 function check_if_utility_exists() {
     local UTILITY="${1}"
 
