@@ -102,7 +102,7 @@ settings:
     beehive:
       max-bees-inside: 3
     anvil:
-      cumulative-cost: true
+      cumulative-cost: false
     lightning_rod:
       range: 128
     grindstone:
@@ -187,7 +187,7 @@ settings:
       distance: 0.5
     minecraft:light_blue_bed:
       distance: 0.5
-config-version: 31
+config-version: 32
 world-settings:
   default:
     mobs:
@@ -1285,6 +1285,15 @@ world-settings:
           minecraft:oak_wood:
             drops: {}
             into: minecraft:stripped_oak_wood
+          minecraft:cherry_log:
+            into: minecraft:stripped_cherry_log
+            drops: {}
+          minecraft:cherry_wood:
+            into: minecraft:stripped_cherry_wood
+            drops: {}
+          minecraft:bamboo_block:
+            into: minecraft:stripped_bamboo_block
+            drops: {}
         waxables:
           minecraft:waxed_weathered_cut_copper:
             drops: {}
