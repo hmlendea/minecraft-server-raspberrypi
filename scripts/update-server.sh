@@ -10,7 +10,7 @@ USE_DISCORDSRV=true
 USE_ESSENTIALS=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
-USE_PLEXMAP=true
+USE_PLEXMAP=false # Don't update it anymore, until the performance is fixed
 USE_SKINSRESTORER=true
 USE_STACKABLEITEMS=true
 USE_VIAVERSION=true
@@ -236,7 +236,8 @@ else
     ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
-    ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion"
+    ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" &&
+                                   update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
     ${USE_VIEWDISTANCETWEAKS}   && update_plugin "ViewDistanceTweaks"   "https://ci.froobworld.com"                         "%pluginName%-%pluginVersion%.jar"
     ${USE_WANDERINGTRADES}      && update_plugin "WanderingTrades"      "https://github.com/jpenilla/WanderingTrades"       "%pluginName%-%pluginVersion%.jar"
     ${USE_WORLDGUARD}           && update_plugin "WorldGuardExtraFlags" "https://github.com/aromaa/WorldGuardExtraFlags"    "%pluginName%.jar"
