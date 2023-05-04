@@ -19,6 +19,8 @@ aliases:
   - back
   bed:
   - home bed
+  creative:
+  - gamemode creative
   exit:
   - stop
   g:
@@ -29,10 +31,10 @@ aliases:
   - minecraft:data get entity @s SelectedItem
   kill:
   - minecraft:kill $1-
+  ls:
+  - list
   survival:
   - gamemode survival
-  creative:
-  - gamemode creative
   setregiondefaultflags:
   - rg flag -w world $1 pvp DENY
   - rg flag -w world $1 block-trampling DENY
