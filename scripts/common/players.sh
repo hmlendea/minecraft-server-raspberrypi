@@ -35,3 +35,21 @@ function get_player_ip() {
 
     echo "${PLAYER_IP}"
 }
+
+function get_player_discord_id() {
+    local PLAYER_UUID="${1}"
+    local DISCORD_ID=$(jq -r "to_entries | map(select(.value == \"${PLAYER_UUID}\")) | .[0].key" < "${DISCORDSRV_DIR}/linkedaccounts.json")
+
+    [[ "${DISCORD_ID}" == "null" ]] && DISCORD_ID=""
+
+    echo "${DISCORD_ID}"
+}
+
+function get_player_date_registration() {
+    local PLAYER_USERNAME="${1}"
+    local PLAYER_DATE_REGISTRATION=$(grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
+
+    [ -n "${PLAYER_DATE_REGISTRATION}" ] && PLAYER_DATE_REGISTRATION=$(date +"%F %T" -d "$(date +%Y)-${PLAYER_DATE_REGISTRATION}")
+    
+    echo "${PLAYER_DATE_REGISTRATION}"
+}
