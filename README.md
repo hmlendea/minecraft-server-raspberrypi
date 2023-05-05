@@ -1,5 +1,20 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html)
 
+# About
+
+This repository contains a lightweight Minecraft server optimized for running on a Raspberry Pi 4. The server uses PurpurMC, a high-performance Minecraft server implementation that is based on the popular PaperMC software.
+
+The server is pre-configured with optimized settings files and scripts for dynamically changing server and plugin settings to ensure the best possible performance on a Raspberry Pi 4.
+
+## Prerequisites
+
+Before you can use this server, you'll need to make sure you have the following prerequisites:
+
+- A Raspberry Pi 4
+- A compatible power supply
+- An SD card with a Linux-based OS installed
+- Java 16 or later installed on your Raspberry Pi
+
 # Installation
 
 ## Web server
@@ -60,3 +75,22 @@ Next we need to allow the web server to send chat messages to the Minecraft serv
 touch /srv/http/standalone/dynmap_webchat.json
 chown http /srv/http/standalone/dynmap_webchat.json
 ```
+
+## Configuration
+
+The server is pre-configured with optimized settings files and scripts for dynamically changing server and plugin settings. However, if you need to customize the server settings, you can do so by editing the following files:
+
+Updating or customising those configurations should be done through the `scripts/configure-settings.sh` script.
+
+## Usage
+
+This server is designed to be easy to use and maintain. To start the server, simply run the following command:
+```bash
+./start.sh
+```
+
+This will start the server with the pre-configured settings and Java flags. To stop the server, simply use `Ctrl+C` in the terminal.
+
+## Contributing
+
+If you would like to contribute to this project, feel free to submit a pull request or open an issue on GitHub. We welcome all contributions, big or small!
