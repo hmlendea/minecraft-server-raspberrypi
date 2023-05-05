@@ -160,7 +160,11 @@ function reload_plugin() {
 
     ! ${IS_SERVER_RUNNING} && return
 
-    run_server_command "${PLUGIN_CMD}" "reload"
+    if [[ "${PLUGIN_CMD}" == "luckperms" ]]; then
+        run_server_command "${PLUGIN_CMD}" "reloadconfig"
+    else
+        run_server_command "${PLUGIN_CMD}" "reload"
+    fi
 }
 
 function set_gamerule() {

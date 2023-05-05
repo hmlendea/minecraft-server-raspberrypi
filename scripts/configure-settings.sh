@@ -1,65 +1,12 @@
 #!/bin/bash
-VIEW_DISTANCE=8
-VIEW_DISTANCE_TARGET=8 # The View Distance that the server was tested against when ${PLAYERS_TARGET} players were online
-VIEW_DISTANCE_MIN=5
-VIEW_DISTANCE_MAX=12
-
-VIEW_DISTANCE_NETHER=5
-VIEW_DISTANCE_NETHER_MIN=3
-VIEW_DISTANCE_NETHER_MAX=5
-
-VIEW_DISTANCE_END=12
-VIEW_DISTANCE_END_MIN=8
-VIEW_DISTANCE_END_MAX=16
-
-SIMULATION_DISTANCE=5
-SIMULATION_DISTANCE_TARGET=5 # The Simulation Distance that the server was tested against when ${PLAYERS_TARGET} players were online
-SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
-SIMULATION_DISTANCE_MAX=10
-
-KEEP_SPAWN_LOADED=false
-
-LOCALE="en"
-LOCALE_FALLBACK="en"
-
-AUTOSAVE_MINS=20
-AUTOSAVE_MINS_NETHER=30
-AUTOSAVE_MINS_END=40
-
 source "/srv/papermc/scripts/common/paths.sh"
-source "${SERVER_SCRIPTS_DIR}/common/config.sh"
-source "${SERVER_SCRIPTS_DIR}/common/specs.sh"
-
-[ -z "${VIEW_DISTANCE}" ] && VIEW_DISTANCE=${SIMULATION_DISTANCE}
-[ ${VIEW_DISTANCE} -gt ${VIEW_DISTANCE_MAX} ] && VIEW_DISTANCE=${VIEW_DISTANCE_MAX}
-[ ${VIEW_DISTANCE} -lt ${VIEW_DISTANCE_MIN} ] && VIEW_DISTANCE=${VIEW_DISTANCE_MIN}
-[ -z "${SIMULATION_DISTANCE}" ] && SIMULATION_DISTANCE=${VIEW_DISTANCE}
-[ ${SIMULATION_DISTANCE} -gt ${SIMULATION_DISTANCE_MAX} ] && SIMULATION_DISTANCE=${SIMULATION_DISTANCE_MAX}
-[ ${SIMULATION_DISTANCE} -gt ${VIEW_DISTANCE} ] && SIMULATION_DISTANCE=${VIEW_DISTANCE}
-[ ${SIMULATION_DISTANCE} -lt ${SIMULATION_DISTANCE_MIN} ] && SIMULATION_DISTANCE=${SIMULATION_DISTANCE_MIN}
-[ -z "${VIEW_DISTANCE}" ] && VIEW_DISTANCE=${SIMULATION_DISTANCE}
-[ -z "${SIMULATION_DISTANCE_END}" ] && SIMULATION_DISTANCE_END=${SIMULATION_DISTANCE}
-[ -z "${SIMULATION_DISTANCE_NETHER}" ] && SIMULATION_DISTANCE_NETHER=${SIMULATION_DISTANCE}
-
-SIMULATION_CHUNKS_TARGET=$(( (2 * ${SIMULATION_DISTANCE} + 1) ** 2 * ${PLAYERS_MAX} ))
-VIEW_CHUNKS_TARGET=$(( ((2 * ${VIEW_DISTANCE} + 1) ** 2 - (2 * ${SIMULATION_DISTANCE} + 1) ** 2) * PLAYERS_MAX))
-
-MOB_SPAWN_RANGE=$((SIMULATION_DISTANCE-1))
-[ ${MOB_SPAWN_RANGE} -lt 3 ] && MOB_SPAWN_RANGE=3
-[ ${MOB_SPAWN_RANGE} -gt 6 ] && MOB_SPAWN_RANGE=6
-
-MOB_DESPAWN_RANGE_HARD=$((MOB_SPAWN_RANGE*16))
-[ ${MOB_DESPAWN_RANGE_HARD} -lt 32 ] && MOB_DESPAWN_RANGE_HARD=32
-
-MOB_DESPAWN_RANGE_SOFT=$((MOB_SPAWN_RANGE*4))
-[ ${MOB_DESPAWN_RANGE_SOFT} -lt 24 ] && MOB_DESPAWN_RANGE_SOFT=24
-
-MOB_SPAWN_LIMIT_MONSTER=$((14*(MOB_SPAWN_RANGE-3)+7))
-[ ${MOB_SPAWN_LIMIT_MONSTER} -lt 7 ] && MOB_SPAWN_LIMIT_MONSTER=7
+source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.item-despawn-rate"                  $((DESPAWN_RATE_ITEMS_DEFAULT_MINUTES * 60 * 20))
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.mob-spawn-range"                    "${MOB_SPAWN_RANGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.simulation-distance"                "${SIMULATION_DISTANCE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"                      "${VIEW_DISTANCE}"
@@ -68,6 +15,21 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
+
+for ITEM in "diamond" "diamond_axe" "diamond_pickaxe" "diamond_shovel" "diamond_sword"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+done
+for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_MEDIUM_MINUTES * 60 * 20))
+done
+for ITEM in \
+    "acacia_leaves" "birch_leaves" "dark_oak_leaves" "jungle_leaves" "nether_wart_block" "mangrove_leaves" "oak_leaves" "spruce_leaves" "warped_wart_block" \
+    "ender_pearl" "netherrack"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
+done
+for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+done
 
 for CREATURE_TYPE in "ambient" "axolotls" "creature" "misc" "monster" "underground_water_creature" "water_ambient" "water_creature"; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_HARD}"

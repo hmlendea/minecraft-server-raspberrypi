@@ -79,7 +79,7 @@ world-settings:
     seed-portal: 34222645
     max-tnt-per-tick: 10
     enable-zombie-pigmen-portal-spawns: true
-    item-despawn-rate: 18000
+    item-despawn-rate: 24000
     view-distance: 8
     wither-spawn-sound-radius: 8
     arrow-despawn-rate: 300

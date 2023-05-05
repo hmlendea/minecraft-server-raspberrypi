@@ -122,16 +122,16 @@ entities:
     alt-item-despawn-rate:
       enabled: true
       items:
-        acacia_leaves: 6000
+        acacia_leaves: 1200
         andesite: 6000
         arrow: 600
         bamboo: 6000
-        birch_leaves: 6000
+        birch_leaves: 1200
         bone: 600
         cactus: 6000
         cobbled_deepslate: 1200
         cobblestone: 1200
-        dark_oak_leaves: 6000
+        dark_oak_leaves: 1200
         diorite: 6000
         dirt: 6000
         egg: 1200
@@ -140,24 +140,32 @@ entities:
         grass: 6000
         gravel: 6000
         ink_sac: 600
-        jungle_leaves: 6000
+        jungle_leaves: 1200
         kelp: 6000
         melon_slice: 6000
-        netherrack: 6000
-        oak_leaves: 6000
-        pumpkin: 60000
+        netherrack: 1200
+        oak_leaves: 1200
+        pumpkin: 6000
         red_sand: 6000
         rotten_flesh: 600
         sand: 6000
         scaffolding: 6000
         spider_eye: 600
-        spruce_leaves: 6000
+        spruce_leaves: 1200
         stone: 1200
         string: 600
         sugar_cane: 6000
         twisting_vines: 6000
         weeping_vines: 6000
         wheat_seeds: 600
+        nether_wart_block: 1200
+        mangrove_leaves: 1200
+        warped_wart_block: 1200
+        diamond: 72000
+        diamond_axe: 72000
+        diamond_pickaxe: 72000
+        diamond_shovel: 72000
+        diamond_sword: 72000
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
