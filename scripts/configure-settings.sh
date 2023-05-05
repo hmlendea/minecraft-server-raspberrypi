@@ -16,7 +16,14 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
-for ITEM in "diamond" "diamond_axe" "diamond_pickaxe" "diamond_shovel" "diamond_sword"; do
+for MATERIAL in "diamond" "netherite"; do
+    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+    done
+done
+for ITEM in \
+    "ancient_debris" "diamond" "diamond_block" "emerald" "emerald_block" "netherite_block" "netherite_ingot" "netherite_scrap" \
+    "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
 done
 for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
@@ -182,6 +189,7 @@ if [ -d "${TREEASSIST_DIR}" ]; then
 
     # Telemetry
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Active" false
+    set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Full"   false
 
     # Integrations
     [ -f "${WORLDGUARD_CONFIG_FILE}" ] && set_config_value "${TREEASSIST_CONFIG_FILE}" "Plugins.WorldGuard" true

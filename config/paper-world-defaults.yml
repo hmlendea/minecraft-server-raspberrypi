@@ -132,6 +132,11 @@ entities:
         cobbled_deepslate: 1200
         cobblestone: 1200
         dark_oak_leaves: 1200
+        diamond: 72000
+        diamond_axe: 72000
+        diamond_pickaxe: 72000
+        diamond_shovel: 72000
+        diamond_sword: 72000
         diorite: 6000
         dirt: 6000
         egg: 1200
@@ -142,7 +147,9 @@ entities:
         ink_sac: 600
         jungle_leaves: 1200
         kelp: 6000
+        mangrove_leaves: 1200
         melon_slice: 6000
+        nether_wart_block: 1200
         netherrack: 1200
         oak_leaves: 1200
         pumpkin: 6000
@@ -156,16 +163,37 @@ entities:
         string: 600
         sugar_cane: 6000
         twisting_vines: 6000
+        warped_wart_block: 1200
         weeping_vines: 6000
         wheat_seeds: 600
-        nether_wart_block: 1200
-        mangrove_leaves: 1200
-        warped_wart_block: 1200
-        diamond: 72000
-        diamond_axe: 72000
-        diamond_pickaxe: 72000
-        diamond_shovel: 72000
-        diamond_sword: 72000
+        diamond_boots: 72000
+        diamond_chestplate: 72000
+        diamond_helmet: 72000
+        diamond_hoe: 72000
+        diamond_leggings: 72000
+        netherite_axe: 72000
+        netherite_boots: 72000
+        netherite_chestplate: 72000
+        netherite_helmet: 72000
+        netherite_hoe: 72000
+        netherite_leggings: 72000
+        netherite_pickaxe: 72000
+        netherite_shovel: 72000
+        netherite_sword: 72000
+        ancient_debris: 72000
+        netherite_ingot: 72000
+        netherite_scrap: 72000
+        diamond_block: 72000
+        emerald: 72000
+        emerald_block: 72000
+        netherite_block: 72000
+        beacon: 72000
+        elytra: 72000
+        nether_star: 72000
+        shield: 72000
+        totem_of_undying: 72000
+        wither_skeleton_skull: 72000
+        spawner: 72000
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
