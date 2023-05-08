@@ -194,6 +194,33 @@ entities:
         totem_of_undying: 72000
         wither_skeleton_skull: 72000
         spawner: 72000
+        golden_axe: 1200
+        golden_boots: 1200
+        golden_chestplate: 1200
+        golden_helmet: 1200
+        golden_hoe: 1200
+        golden_leggings: 1200
+        golden_pickaxe: 1200
+        golden_shovel: 1200
+        golden_sword: 1200
+        wooden_axe: 600
+        wooden_boots: 600
+        wooden_chestplate: 600
+        wooden_helmet: 600
+        wooden_hoe: 600
+        wooden_leggings: 600
+        wooden_pickaxe: 600
+        wooden_shovel: 600
+        wooden_sword: 600
+        stone_axe: 600
+        stone_boots: 600
+        stone_chestplate: 600
+        stone_helmet: 600
+        stone_hoe: 600
+        stone_leggings: 600
+        stone_pickaxe: 600
+        stone_shovel: 600
+        stone_sword: 600
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
