@@ -43,7 +43,7 @@ for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; d
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
 done
 for MATERIAL in "wooden" "stone"; do
-    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
+    for ITEM in "axe" "hoe" "pickaxe" "shovel" "sword"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
     done
 done
