@@ -2,6 +2,8 @@
 
 # Directories
 export SERVER_ROOT_DIR="/srv/papermc"
+export SERVER_CACHE_DIR="${SERVER_ROOT_DIR}/cache"
+export SERVER_LOGS_DIR="${SERVER_ROOT_DIR}/logs"
 export SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
 export SERVER_SCRIPTS_DIR="${SERVER_ROOT_DIR}/scripts"
 export SERVER_SCRIPTS_COMMON_DIR="${SERVER_SCRIPTS_DIR}/common"
@@ -39,7 +41,9 @@ export WORLD_WEBMAP_ICON_FILE="${WORLD_WEBMAP_DIR}/favicon.ico"
 export WORLD_WEBMAP_INDEX_FILE="${WORLD_WEBMAP_DIR}/index.html"
 
 # Resources
+export PLAYERS_CACHE_FILE="${SERVER_CACHE_DIR}/players.json"
 export SERVER_IMAGE_FILE="${SERVER_ROOT_DIR}/server-image.png"
+export CURRENT_LOG_FILE="${SERVER_LOGS_DIR}/latest.log"
 
 # Plugin directories
 export AUTHME_DIR="${SERVER_PLUGINS_DIR}/AuthMe"

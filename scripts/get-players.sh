@@ -14,14 +14,5 @@ PLAYERS_COUNT=0
 for PLAYERDATA_FILE in "${WORLD_PLAYERDATA_DIR}/"*.dat; do
     PLAYERS_COUNT=$((PLAYERS_COUNT + 1))
     UUID=$(basename "${PLAYERDATA_FILE}" .dat)
-    USERNAME=$(get_player_username "${UUID}")
-    IP_ADDRESS=$(get_player_ip "${UUID}")
-    REGISTRATION_DATE=$(get_player_date_registration "${USERNAME}")
-    DISCORD_ID=$(get_player_discord_id "${UUID}")
-    
-    echo "${PLAYERS_COUNT}: ${USERNAME}:"
-    echo "   - UUID         : ${UUID}"
-    echo "   - Discord ID   : ${DISCORD_ID}"
-    echo "   - Registered on: ${REGISTRATION_DATE}"
-    echo "   - Last IP      : ${IP_ADDRESS}"
+    get_player_info "${UUID}"
 done
