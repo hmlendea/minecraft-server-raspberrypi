@@ -2,8 +2,7 @@
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 
-LOADED_PLAYERS_CACHE_JSON=""
-LOADED_PLAYERS_CACHE_UUID=""
+LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
 
 if [ ! -f "${PLAYERS_CACHE_FILE}" ]; then
     sudo touch "${PLAYERS_CACHE_FILE}"
@@ -16,10 +15,7 @@ function get_playerscache_value() {
     local KEY=$(echo ".${PLAYER_UUID}.${PROPERTY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
     local VALUE=""
 
-    if [[ "${PLAYER_UUID}" != "${LOADED_PLAYERS_CACHE_UUID}" ]]; then
-        LOADED_PLAYERS_CACHE_UUID="${PLAYER_UUID}"
-        LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
-    fi
+    [ -z "${LOADED_PLAYERS_CACHE_JSON}" ] && LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
     
     VALUE=$(jq "${KEY}" "${PLAYERS_CACHE_FILE}" <<< "${LOADED_PLAYERS_CACHE_JSON}")
     [ "${VALUE}" == "null" ] && VALUE=""
@@ -44,6 +40,24 @@ function get_playerdata_value() {
         sed 's/^.*\"'"${PROPERTY}"'\"\s*[\"]*\([^\"]*\).*/\1/g'
 }
 
+function get_player_uuid() {
+    local PLAYER_USERNAME="${1}"
+    local PLAYER_UUID=""
+    local FOUND_IN_CACHE=false
+
+    [ -z "${LOADED_PLAYERS_CACHE_JSON}" ] && LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
+
+    PLAYER_UUID=$(jq -r 'to_entries[] | select(.value.username == "'"${PLAYER_USERNAME}"'") | .key' <<< "${LOADED_PLAYERS_CACHE_JSON}")
+    [ "${PLAYER_UUID}" == "null" ] && PLAYER_UUID=""
+    [ -n "${PLAYER_UUID}" ] && FOUND_IN_CACHE=true
+
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_USERCACHE_FILE}")
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_WHITELIST_FILE}")
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_OPS_FILE}")
+
+    echo "${PLAYER_UUID}"
+}
+
 function get_player_username() {
     local PLAYER_UUID="${1}"
     local PLAYER_USERNAME=""
@@ -57,17 +71,9 @@ function get_player_username() {
             PLAYER_USERNAME=$(get_config_value "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" "last-account-name")
         fi
         
-        if [ -z "${PLAYER_USERNAME}" ]; then
-            PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_USERCACHE_FILE}")
-        fi
-    
-        if [ -z "${PLAYER_USERNAME}" ]; then
-            PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_WHITELIST_FILE}")
-        fi
-    
-        if [ -z "${PLAYER_USERNAME}" ]; then
-            PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_OPS_FILE}")
-        fi
+        [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_USERCACHE_FILE}")
+        [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_WHITELIST_FILE}")
+        [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_OPS_FILE}")
     fi
 
     if [ -f "/usr/bin/nbted" ]; then
@@ -117,12 +123,14 @@ function get_player_date_seen_first() {
     PLAYER_DATE_REGISTRATION=$(get_playerscache_value "${PLAYER_UUID}" "joinTimestamp")
     [ -n "${PLAYER_DATE_REGISTRATION}" ] && FOUND_IN_CACHE=true
 
-    [ -z "${PLAYER_DATE_REGISTRATION}" ] && PLAYER_DATE_REGISTRATION=$(get_playerdata_value "${PLAYER_UUID}" "firstPlayed")
+    if [ -z "${PLAYER_DATE_REGISTRATION}" ]; then
+        PLAYER_DATE_REGISTRATION=$(get_playerdata_value "${PLAYER_UUID}" "firstPlayed")
 
-    if [ -n "${PLAYER_DATE_REGISTRATION}" ]; then
-        PLAYER_DATE_REGISTRATION=$((PLAYER_DATE_REGISTRATION / 1000))
+        if [ -n "${PLAYER_DATE_REGISTRATION}" ]; then
+            PLAYER_DATE_REGISTRATION=$((PLAYER_DATE_REGISTRATION / 1000))
+        fi
     fi
-
+    
     if [ -z "${PLAYER_DATE_REGISTRATION}" ]; then
         local PLAYER_USERNAME=$(get_player_username "${PLAYER_UUID}")
         PLAYER_DATE_REGISTRATION=$(grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
@@ -134,7 +142,7 @@ function get_player_date_seen_first() {
         set_playerscache_value "${PLAYER_UUID}" "joinTimestamp" "${PLAYER_DATE_REGISTRATION}"
     fi
 
-    date -d @"${PLAYER_DATE_REGISTRATION}"
+    date -d @"${PLAYER_DATE_REGISTRATION}" +"%Y/%m/%d %H:%M:%S (%z)"
 }
 
 
@@ -144,10 +152,9 @@ function get_player_date_seen_last() {
 
     if [ -n "${PLAYER_DATE_LASTSEEN}" ]; then
         PLAYER_DATE_LASTSEEN=$((PLAYER_DATE_LASTSEEN / 1000))
-        PLAYER_DATE_LASTSEEN=$(date -d @"${PLAYER_DATE_LASTSEEN}")
     fi
 
-    echo "${PLAYER_DATE_LASTSEEN}"
+    date -d @"${PLAYER_DATE_LASTSEEN}" +"%Y/%m/%d %H:%M:%S (%z)"
 }
 
 function get_player_location() {
@@ -171,7 +178,7 @@ function get_player_info() {
     local IP_ADDRESS=$(get_player_ip "${UUID}")
     local LOCATION=$(get_player_location "${UUID}")
     
-    echo "${PLAYERS_COUNT}: "$(get_player_username "${UUID}")":"
+    echo $(get_player_username "${UUID}")":"
     echo "   - UUID       : ${UUID}"
     echo "   - Discord ID : "$(get_player_discord_id "${UUID}")
     echo "   - Seen first : "$(get_player_date_seen_first "${UUID}")
