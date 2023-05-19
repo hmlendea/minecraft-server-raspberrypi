@@ -124,6 +124,8 @@ if [ -d "${PLEXMAP_DIR}" ]; then
         "world-settings.${WORLD_END_NAME}.render.biome-blend" 0 \
         "world-settings.${WORLD_END_NAME}.render.translucent-fluids" false \
         "world-settings.${WORLD_END_NAME}.ui.display-name" "The End" \
+        "world-settings.${WORLD_END_NAME}.zoom.max-in" 1 \
+        "world-settings.${WORLD_END_NAME}.zoom.max-out" 3 \
         "world-settings.${WORLD_NETHER_NAME}.enabled" true \
         "world-settings.${WORLD_NETHER_NAME}.render.biome-blend" 0 \
         "world-settings.${WORLD_NETHER_NAME}.render.translucent-fluids" false \
