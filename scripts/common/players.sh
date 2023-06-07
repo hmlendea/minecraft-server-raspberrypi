@@ -172,11 +172,21 @@ function get_player_location() {
     echo "${POS_X} ${POS_Y} ${POS_Z}"
 }
 
+function get_player_spawn() {
+    local PLAYER_UUID="${1}"
+
+    local SPAWN_X=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+
+    [ -z "${SPAWN_X}" ] && return
+
+    local SPAWN_Y=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Z=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+
+    echo "${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
+}
+
 function get_player_info() {
     local UUID="${1}"
-    local USERNAME=$(get_player_username "${UUID}")
-    local IP_ADDRESS=$(get_player_ip "${UUID}")
-    local LOCATION=$(get_player_location "${UUID}")
     
     echo $(get_player_username "${UUID}")":"
     echo "   - UUID       : ${UUID}"
@@ -185,4 +195,5 @@ function get_player_info() {
     echo "   - Seen last  : "$(get_player_date_seen_last "${UUID}")
     echo "   - Last IP    : "$(get_player_ip "${UUID}")
     echo "   - Location   : "$(get_player_location "${UUID}")
+    echo "   - Spawn      : "$(get_player_spawn "${UUID}")
 }

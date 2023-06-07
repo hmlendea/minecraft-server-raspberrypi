@@ -16,6 +16,8 @@ function setexe() {
 
 setown "/srv/papermc/"*.jar
 setown "/srv/papermc/world"
+setown "/srv/papermc/world_nether"
+setown "/srv/papermc/world_the_end"
 setown "/srv/papermc/plugins"
 
 setexe "/srv/papermc/"*.jar
