@@ -20,5 +20,7 @@ setown "/srv/papermc/world_nether"
 setown "/srv/papermc/world_the_end"
 setown "/srv/papermc/plugins"
 
+[ -f "/srv/http/pl3xmap.js" ] && setown "/srv/http"
+
 setexe "/srv/papermc/"*.jar
 setexe "/srv/papermc/plugins/"*.jar
