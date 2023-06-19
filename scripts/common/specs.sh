@@ -52,6 +52,12 @@ export DESPAWN_RATE_ITEMS_INSTANT_SECONDS=30
 export LOCALE="en"
 export LOCALE_FALLBACK="en"
 
+if [ "${LOCALE}" == "ro" ]; then
+	export LOCALE_FULL="ro_RO"
+else
+	export LOCALE_FULL="en_US"
+fi
+
 export AUTOSAVE_MINS=20
 export AUTOSAVE_MINS_NETHER=30
 export AUTOSAVE_MINS_END=40

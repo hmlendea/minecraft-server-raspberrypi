@@ -16,6 +16,16 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
+function configure_plugin() {
+	local PLUGIN_CMD="${1}" && shift
+	local PLUGIN_CONFIG_FILE="${2}" && shift
+
+	[ ! -f "${PLUGIN_CONFIG_FILE}" ] && return
+
+	set_config_values "${PLUGIN_CONFIG_FILE}" ${@}
+	reload_plugin "${PLUGIN_CMD}"
+}
+
 for MATERIAL in "diamond" "netherite"; do
     for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
@@ -103,18 +113,10 @@ if [ -d "${LUCKPERMS_DIR}" ]; then
 fi
 
 if [ -d "${PLEXMAP_DIR}" ]; then
-    # Removed in beta:
-    # - orld-settings.default.render.background.interval
-    # - world-settings.default.render.background.max-chunks-per-interval
-
     set_config_values "${PLEXMAP_CONFIG_FILE}" \
         "settings.web-directory.path" "/srv/http" \
         "settings.internal-webserver.enabled" false \
         "world-settings.default.enabled" true \
-        "world-settings.default.render.background.interval" 450 \
-        "world-settings.default.render.background.max-chunks-per-interval" 5 \
-        "world-settings.default.markers.spawn.enabled" true \
-        "world-settings.default.markers.worldborder.enabled" false \
         "world-settings.default.zoom.max-out" 2 \
         "world-settings.default.zoom.max-in" 2 \
         "world-settings.${WORLD_NAME}.enabled" true \
@@ -213,7 +215,7 @@ if [ -d "${TREEASSIST_DIR}" ]; then
     reload_plugin "treeassist"
 fi
 
-if [ -d "${VIAVERSION_CONFIG_FILE}" ]; then
+if [ -f "${VIAVERSION_CONFIG_FILE}" ]; then
     set_config_value "${VIAVERSION_CONFIG_FILE}" "checkforupdates" false
 
     reload_plugin "viaversion"
@@ -243,3 +245,7 @@ if [ -d "${VIEWDISTANCETWEAKS_DIR}" ]; then
         "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
     reload_plugin "viewdistancetweaks"
 fi
+
+configure_plugin "wanderingtrades" "${WANDERINGTRADES_CONFIG_FILE}" \
+	"language" "${LOCALE_FULL}" \
+	"updateChecker" false
