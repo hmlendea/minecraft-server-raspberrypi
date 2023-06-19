@@ -52,6 +52,7 @@ chunks:
     trident: 16
     wither_skull: 4
   fixed-chunk-inhabited-time: -1
+  flush-regions-on-save: false
   max-auto-save-chunks-per-tick: 6
   prevent-moving-into-unloaded-chunks: true
 collisions:
@@ -298,7 +299,7 @@ environment:
   generate-flat-bedrock: false
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
-  portal-create-radius: 48
+  portal-create-radius: 16
   portal-search-radius: 48
   portal-search-vanilla-dimension-scaling: true
   treasure-maps:

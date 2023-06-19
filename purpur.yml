@@ -11,6 +11,7 @@
 verbose: false
 settings:
   messages:
+    afk-broadcast-use-display-name: false
     cannot-ride-mob: <red>You cannot mount that mob
     afk-broadcast-away: <yellow><italic>%s is now AFK
     afk-broadcast-back: <yellow><italic>%s is no longer AFK
@@ -357,6 +358,13 @@ world-settings:
         controllable: true
         ridable-max-y: 320.0
         attributes:
+          follow_range: 16.0
+          knockback_resistance: 0.0
+          movement_speed: 0.6
+          flying_speed: 0.6
+          armor: 0.0
+          armor_toughness: 0.0
+          attack_knockback: 0.0
           max_health: 6.0
         takes-damage-from-water: false
         always-drop-exp: false
@@ -383,6 +391,7 @@ world-settings:
         takes-damage-from-water: true
         always-drop-exp: false
       camel:
+        ridable-in-water: false
         attributes:
           max_health:
             min: 32.0
@@ -1414,6 +1423,7 @@ world-settings:
       entity:
         shared-random: true
     gameplay-mechanics:
+      mending-multiplier: 1.0
       arrow:
         movement-resets-despawn-counter: true
       use-better-mending: true
@@ -1528,6 +1538,8 @@ world-settings:
         village-sieges: default
         ignore-creative-players: false
       player:
+        portal-wait-time: 80
+        creative-portal-wait-time: 1
         netherite-fire-resistance:
           duration: 0
           amplifier: 0

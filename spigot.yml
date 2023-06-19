@@ -94,6 +94,8 @@ world-settings:
       exp: 5
       item: 3
     growth:
+      pitcherplant-modifier: 100
+      torchflower-modifier: 100
       twistingvines-modifier: 100
       weepingvines-modifier: 100
       cavevines-modifier: 100
@@ -157,6 +159,7 @@ world-settings:
     squid-spawn-range:
       min: 45
     entity-tracking-range:
+      display: 128
       players: 256
       animals: 48
       monsters: 48
