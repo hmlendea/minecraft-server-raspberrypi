@@ -1,4 +1,6 @@
 #!/bin/bash
+source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 function setown() {
     for ITEM in "$@"; do
@@ -14,13 +16,13 @@ function setexe() {
     done
 }
 
-setown "/srv/papermc/"*.jar
-setown "/srv/papermc/world"
-setown "/srv/papermc/world_nether"
-setown "/srv/papermc/world_the_end"
-setown "/srv/papermc/plugins"
+setown "${SERVER_ROOT_DIR}/"*.jar
+setown "${SERVER_ROOT_DIR}/${WORLD_NAME}"
+setown "${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
+setown "${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
+setown "${SERVER_PLUGINS_DIR}"
 
 [ -f "/srv/http/pl3xmap.js" ] && setown "/srv/http"
 
-setexe "/srv/papermc/"*.jar
-setexe "/srv/papermc/plugins/"*.jar
+setexe "${SERVER_ROOT_DIR}/"*.jar
+setexe "${SERVER_PLUGINS_DIR}/"*.jar
