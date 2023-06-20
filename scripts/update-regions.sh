@@ -166,7 +166,11 @@ function set_region_messages() {
 
 sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"
 
+set_region_messages "burghezia" "Burghezia"
 set_region_messages "canopis" "Canopis"
+set_region_messages "cratesia" "Cratesia"
+set_region_messages "enada" "Enada"
+set_region_messages "enada_chicken_palace" "The Chicken's Palace" --quiet
 set_region_messages "enada_forja" "Enada's Forge" --quiet
 set_region_messages "enada_magazie" "Enada's Local Public Warehouse" --quiet
 set_region_messages "enada_piata" "Enada's Peaches Square" --quiet
@@ -200,7 +204,6 @@ set_region_messages "player_hori873_survivalisland2" "Hori873"
 # Players - Bloodcraft
 set_region_messages "player_germanlk_bloodcraft" "germanlk"
 set_region_messages "player_hori873_bloodcraft_citadel" "Hori873"
-set_region_messages "player_hori873_bloodcraft_main" "Hori873" "Kamikaze" "Azzuro"
 set_region_messages "player_hori873_bloodcraft_north" "Hori873" "Kamikaze" "Azzuro"
 set_region_messages "player_hori873_bloodcraft_pagoda" "Hori873"
 # Players - Ysmircraft
@@ -234,6 +237,7 @@ set_region_messages "player_skonxsi_kreezcraft1" "skonxsi"
 set_region_messages "player_sory666_kreezcraft1" "Sory666"
 set_region_messages "player_soulsilver_kreezcraft1" "SoulSilver"
 set_region_messages "player_sound453_kreezcraft1" "Sound453"
+set_region_messages "player_t3rm1n4tor_kreezcraft1" "T3RM1N4TOR"
 set_region_messages "player_tnte_bulan8_kreezcraft1" "TnTE_bulan8"
 set_region_messages "player_xenon_kreezcraft1" "Xenon"
 

@@ -3,6 +3,22 @@ source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
+function configure_plugin() {
+	local PLUGIN_CMD="${1}" && shift
+	local PLUGIN_CONFIG_FILE="${1}" && shift
+
+	[ ! -f "${PLUGIN_CONFIG_FILE}" ] && return
+
+	set_config_values "${PLUGIN_CONFIG_FILE}" "${@}"
+	reload_plugin "${PLUGIN_CMD}"
+}
+
+configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
+    "settings.claim.popup.flags" "Protected Region" \
+	"settings.layer.default-hidden" true \
+	"settings.layer.label" "Regions"
+exit
+
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
@@ -15,48 +31,6 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
-
-function configure_plugin() {
-	local PLUGIN_CMD="${1}" && shift
-	local PLUGIN_CONFIG_FILE="${2}" && shift
-
-	[ ! -f "${PLUGIN_CONFIG_FILE}" ] && return
-
-	set_config_values "${PLUGIN_CONFIG_FILE}" ${@}
-	reload_plugin "${PLUGIN_CMD}"
-}
-
-for MATERIAL in "diamond" "netherite"; do
-    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
-    done
-done
-for ITEM in \
-    "ancient_debris" "diamond" "diamond_block" "emerald" "emerald_block" "netherite_block" "netherite_ingot" "netherite_scrap" \
-    "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
-done
-for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_MEDIUM_MINUTES * 60 * 20))
-done
-for ITEM in \
-    "acacia_leaves" "birch_leaves" "dark_oak_leaves" "jungle_leaves" "nether_wart_block" "mangrove_leaves" "oak_leaves" "spruce_leaves" "warped_wart_block" \
-    "ender_pearl" "netherrack"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
-done
-for MATERIAL in "golden"; do
-    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
-    done
-done
-for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
-done
-for MATERIAL in "wooden" "stone"; do
-    for ITEM in "axe" "hoe" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
-    done
-done
 
 for CREATURE_TYPE in "axolotls" "creature" "misc" "monster"; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_HARD}"
@@ -117,22 +91,22 @@ if [ -d "${PLEXMAP_DIR}" ]; then
         "settings.web-directory.path" "/srv/http" \
         "settings.internal-webserver.enabled" false \
         "world-settings.default.enabled" true \
-        "world-settings.default.zoom.max-out" 2 \
         "world-settings.default.zoom.max-in" 2 \
+        "world-settings.default.zoom.max-out" 1 \
         "world-settings.${WORLD_NAME}.enabled" true \
         "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld" \
-        "world-settings.${WORLD_NAME}.zoom.max-out" 3 \
+        "world-settings.${WORLD_NAME}.zoom.max-out" 1 \
         "world-settings.${WORLD_END_NAME}.enabled" true \
         "world-settings.${WORLD_END_NAME}.render.biome-blend" 0 \
         "world-settings.${WORLD_END_NAME}.render.translucent-fluids" false \
         "world-settings.${WORLD_END_NAME}.ui.display-name" "The End" \
         "world-settings.${WORLD_END_NAME}.zoom.max-in" 1 \
-        "world-settings.${WORLD_END_NAME}.zoom.max-out" 3 \
+        "world-settings.${WORLD_END_NAME}.zoom.max-out" 2 \
         "world-settings.${WORLD_NETHER_NAME}.enabled" true \
         "world-settings.${WORLD_NETHER_NAME}.render.biome-blend" 0 \
         "world-settings.${WORLD_NETHER_NAME}.render.translucent-fluids" false \
         "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
-        "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 2
+        "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 0
 
     if [ -f "${PLEXMAP_CONFIG_COLOURS_FILE}" ]; then
         set_config_values "${PLEXMAP_CONFIG_COLOURS_FILE}" \
@@ -182,6 +156,10 @@ if [ -d "${PLEXMAP_DIR}" ]; then
     
     reload_plugin "pl3xmap"
 fi
+configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
+    "settings.claims.popup.flags" "Protected Region" \
+	"settings.layer.default-hidden" true \
+	"settings.layer.label" "Regions"
 
 if [ -d "${SKINSRESTORER_DIR}" ]; then
     set_config_value "${SKINSRESTORER_CONFIG_FILE}" "SkinExpiresAfter" 180
@@ -249,3 +227,36 @@ fi
 configure_plugin "wanderingtrades" "${WANDERINGTRADES_CONFIG_FILE}" \
 	"language" "${LOCALE_FULL}" \
 	"updateChecker" false
+
+# Item despawn rates
+for MATERIAL in "diamond" "netherite"; do
+    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+    done
+done
+for ITEM in \
+    "ancient_debris" "diamond" "diamond_block" "emerald" "emerald_block" "netherite_block" "netherite_ingot" "netherite_scrap" \
+    "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+done
+for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_MEDIUM_MINUTES * 60 * 20))
+done
+for ITEM in \
+    "acacia_leaves" "birch_leaves" "dark_oak_leaves" "jungle_leaves" "nether_wart_block" "mangrove_leaves" "oak_leaves" "spruce_leaves" "warped_wart_block" \
+    "ender_pearl" "netherrack"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
+done
+for MATERIAL in "golden"; do
+    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
+    done
+done
+for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+done
+for MATERIAL in "wooden" "stone"; do
+    for ITEM in "axe" "hoe" "pickaxe" "shovel" "sword"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+    done
+done

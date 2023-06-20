@@ -10,7 +10,7 @@ USE_DISCORDSRV=true
 USE_ESSENTIALS=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
-USE_PLEXMAP=false # Don't update it anymore, until the performance is fixed
+USE_PLEXMAP=true
 USE_SKINSRESTORER=true
 USE_STACKABLEITEMS=true
 USE_VIAVERSION=true
@@ -233,7 +233,8 @@ else
                                    update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
     ${USE_GSIT}                 && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
     ${USE_IMAGEMAPS}            && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"          "%pluginName%.jar"
-    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar"
+    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" && \
+                                   update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
     ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" &&
