@@ -1,3 +1,15 @@
+# This is the main configuration file for Spigot.
+# As you can see, there's tons to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# For a reference for any variable inside this file, check out the Spigot wiki at
+# http://www.spigotmc.org/wiki/spigot-configuration/
+#
+# If you need help with the configuration or have any questions related to Spigot,
+# join us at the Discord or drop by our forums and leave a post.
+#
+# Discord: https://www.spigotmc.org/go/discord
+# Forums: http://www.spigotmc.org/
+
 config-version: 12
 settings:
   log-named-deaths: true
@@ -31,24 +43,25 @@ messages:
 advancements:
   disable-saving: false
   disabled:
-    - minecraft:story/disabled
+  - minecraft:story/disabled
 commands:
   tab-complete: 0
   send-namespaced: true
   spam-exclusions:
-    - /skill
+  - /skill
   silent-commandblock-console: false
   replace-commands:
-    - setblock
-    - summon
-    - testforblock
-    - tellraw
+  - setblock
+  - summon
+  - testforblock
+  - tellraw
   log: true
 stats:
   disable-saving: false
   forced-stats: {}
 world-settings:
   default:
+    seed-trailruins: 83469867
     below-zero-generation-in-existing-chunks: true
     simulation-distance: 5
     hopper-can-load-chunks: false

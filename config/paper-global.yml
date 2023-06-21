@@ -13,9 +13,6 @@
 # Website: https://papermc.io/
 
 _version: 28
-async-chunks:
-  enable: true
-  threads: -1
 chunk-loading:
   autoconfig-send-distance: true
   enable-frustum-priority: false
