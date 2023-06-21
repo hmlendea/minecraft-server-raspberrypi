@@ -34,8 +34,11 @@ function set_playerscache_value() {
 function get_playerdata_value() {
     local PLAYER_UUID="${1}"
     local PROPERTY="${2}"
+    local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
+
+    [ ! -f "${PLAYER_DATA_FILE}" ] && return
     
-    nbted -p "${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat" | \
+    nbted -p "${PLAYER_DATA_FILE}" | \
         grep "${PROPERTY}" | \
         sed 's/^.*\"'"${PROPERTY}"'\"\s*[\"]*\([^\"]*\).*/\1/g'
 }
@@ -142,6 +145,8 @@ function get_player_date_seen_first() {
         set_playerscache_value "${PLAYER_UUID}" "joinTimestamp" "${PLAYER_DATE_REGISTRATION}"
     fi
 
+    [ -z "${PLAYER_DATE_REGISTRATION}" ] && return
+
     date -d @"${PLAYER_DATE_REGISTRATION}" +"%Y/%m/%d %H:%M:%S (%z)"
 }
 
@@ -154,13 +159,18 @@ function get_player_date_seen_last() {
         PLAYER_DATE_LASTSEEN=$((PLAYER_DATE_LASTSEEN / 1000))
     fi
 
+    [ -z "${PLAYER_DATE_LASTSEEN}" ] && return
+
     date -d @"${PLAYER_DATE_LASTSEEN}" +"%Y/%m/%d %H:%M:%S (%z)"
 }
 
 function get_player_location() {
     local PLAYER_UUID="${1}"
+    local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
+
+    [ ! -f "${PLAYER_DATA_FILE}" ] && return
     
-    local POS_ALL=$(nbted -p "${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat" | grep -A3 "List \"Pos\"")
+    local POS_ALL=$(nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
     local POS_X_FULL=$(sed -n 2p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Y_FULL=$(sed -n 3p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Z_FULL=$(sed -n 4p <<< "${POS_ALL}" | sed 's/\s//g')
@@ -174,13 +184,16 @@ function get_player_location() {
 
 function get_player_spawn() {
     local PLAYER_UUID="${1}"
+    local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
 
-    local SPAWN_X=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    [ ! -f "${PLAYER_DATA_FILE}" ] && return
+
+    local SPAWN_X=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     [ -z "${SPAWN_X}" ] && return
 
-    local SPAWN_Y=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
-    local SPAWN_Z=$(nbted -p "world/playerdata/${PLAYER_UUID}.dat" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Y=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Z=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     echo "${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
 }
