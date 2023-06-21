@@ -21,7 +21,7 @@ export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
 export SERVER_NAME=$(get_server_property "server-name" "MineCraft Server")
 
 export PLAYERS_MAX=10
-export PLAYERS_TARGET=6 # The amount of players the server was tested against
+export PLAYERS_TARGET=5 # The amount of players the server was tested against
 
 export VIEW_DISTANCE=8
 export VIEW_DISTANCE_TARGET=7 # The View Distance that the server was tested against when ${PLAYERS_TARGET} players were online

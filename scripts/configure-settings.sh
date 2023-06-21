@@ -13,12 +13,6 @@ function configure_plugin() {
 	reload_plugin "${PLUGIN_CMD}"
 }
 
-configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
-    "settings.claim.popup.flags" "Protected Region" \
-	"settings.layer.default-hidden" true \
-	"settings.layer.label" "Regions"
-exit
-
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
@@ -108,28 +102,6 @@ if [ -d "${PLEXMAP_DIR}" ]; then
         "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
         "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 0
 
-    if [ -f "${PLEXMAP_CONFIG_COLOURS_FILE}" ]; then
-        set_config_values "${PLEXMAP_CONFIG_COLOURS_FILE}" \
-            "blocks.colors.minecraft:torch"             "#000000" \
-            "blocks.colors.minecraft:wall_torch"        "#000000" \
-            "blocks.colors.minecraft:soul_torch"        "#000000" \
-            "blocks.colors.minecraft:soul_wall_torch"   "#000000"
-    fi
-    
-    if [ -f "${PLEXMAP_CONFIG_ADVANCED_FILE}" ]; then        
-        set_config_values "${PLEXMAP_CONFIG_ADVANCED_FILE}" \
-            "event-listeners.BlockGrowEvent"            false \
-            "event-listeners.BlockSpreadEvent"          false \
-            "event-listeners.EntityBlockFormEvent"      false \
-            "event-listeners.EntityChangeBlockEvent"    false \
-            "event-listeners.EntityExplodeEvent"        false \
-            "event-listeners.EntityLevelChangeEvent"    false \
-            "blocks.colors.minecraft:torch"             "#000000" \
-            "blocks.colors.minecraft:wall_torch"        "#000000" \
-            "blocks.colors.minecraft:soul_torch"        "#000000" \
-            "blocks.colors.minecraft:soul_wall_torch"   "#000000"
-    fi
-
     PLEXMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     PLEXMAP_PLAYERS_LABEL="<online> Players"
     PLEXMAP_LOCALE="${LOCALE_FALLBACK}"
@@ -156,8 +128,15 @@ if [ -d "${PLEXMAP_DIR}" ]; then
     
     reload_plugin "pl3xmap"
 fi
+
+configure_plugin "pl3xmap" "${PLEXMAP_CONFIG_COLOURS_FILE}" \
+        "blocks.colors.minecraft:torch"             "#000000" \
+        "blocks.colors.minecraft:wall_torch"        "#000000" \
+        "blocks.colors.minecraft:soul_torch"        "#000000" \
+        "blocks.colors.minecraft:soul_wall_torch"   "#000000"
+
 configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
-    "settings.claims.popup.flags" "Protected Region" \
+    "settings.claim.popup.flags" "Protected Region" \
 	"settings.layer.default-hidden" true \
 	"settings.layer.label" "Regions"
 
