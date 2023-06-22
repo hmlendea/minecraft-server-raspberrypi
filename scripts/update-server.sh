@@ -12,6 +12,7 @@ USE_GSIT=true
 USE_IMAGEMAPS=true
 USE_PLEXMAP=true
 USE_SKINSRESTORER=true
+USE_SPARK=true
 USE_STACKABLEITEMS=true
 USE_VIAVERSION=true
 USE_VIEWDISTANCETWEAKS=true
@@ -76,7 +77,8 @@ function get_latest_jenkins_build_version() {
     local BASE_URL="${1}"
     local JOB_NAME="${2}"
 
-    local ARTIFACT_LIST=$(curl -s "${BASE_URL}/job/${JOB_NAME}/lastSuccessfulBuild/api/json" | jq -r '.artifacts[] | .fileName')
+    local REQUEST_URL="${BASE_URL}/job/${JOB_NAME}/lastSuccessfulBuild/api/json"
+    local ARTIFACT_LIST=$(curl -s "${REQUEST_URL}" | jq -r '.artifacts[] | .fileName')
     local ARTIFACT_VERSION=$(echo "${ARTIFACT_LIST}" | \
                              head -n 1 | \
                              sed \
@@ -159,8 +161,11 @@ function download_from_jenkins() {
     local PLUGIN_NAME="${2}"
     local PLUGIN_VERSION="${3}"
     local ARTIFACT_FILE_NAME=$(transform_asset_file_name "${4}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}")
+    local ARTIFACT_NAME=""
 
-    download_plugin "${JENKINS_BASE_URL}/job/${PLUGIN_NAME}/lastSuccessfulBuild/artifact/build/libs/${ARTIFACT_FILE_NAME}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
+    [[ "${PLUGIN_NAME}" == "spark" ]] && ARTIFACT_NAME="spark-bukkit"
+
+    download_plugin "${JENKINS_BASE_URL}/job/${PLUGIN_NAME}/lastSuccessfulBuild/artifact/${ARTIFACT_NAME}/build/libs/${ARTIFACT_FILE_NAME}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
 }
 
 function update_plugin_github() {
@@ -236,6 +241,7 @@ else
     ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" && \
                                    update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
+    ${USE_SPARK}                && update_plugin "spark"                "https://ci.lucko.me"                               "%pluginName%-%pluginVersion%.jar"
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
     ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" &&
                                    update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
