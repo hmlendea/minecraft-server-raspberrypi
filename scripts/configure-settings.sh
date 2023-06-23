@@ -130,10 +130,16 @@ if [ -d "${PLEXMAP_DIR}" ]; then
 fi
 
 configure_plugin "pl3xmap" "${PLEXMAP_CONFIG_COLOURS_FILE}" \
-        "blocks.colors.minecraft:torch"             "#000000" \
-        "blocks.colors.minecraft:wall_torch"        "#000000" \
-        "blocks.colors.minecraft:soul_torch"        "#000000" \
-        "blocks.colors.minecraft:soul_wall_torch"   "#000000"
+    "blocks.colors.minecraft:torch"             "#000000" \
+    "blocks.colors.minecraft:wall_torch"        "#000000" \
+    "blocks.colors.minecraft:soul_torch"        "#000000" \
+    "blocks.colors.minecraft:soul_wall_torch"   "#000000"
+configure_plugin "pl3xmap" "${PLEXMAP_DIR}/layers/spawn.yml" \
+    "settings.enabled" true \
+    "settings.layer.default-hidden" true
+configure_plugin "pl3xmap" "${PLEXMAP_DIR}/layers/world-border.yml" \
+    "settings.enabled" false \
+    "settings.layer.default-hidden" true
 
 configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
     "settings.claim.popup.flags" "Protected Region" \
