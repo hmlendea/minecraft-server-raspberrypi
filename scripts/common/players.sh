@@ -2,7 +2,9 @@
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 
-LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
+if [ -f "${PLAYERS_CACHE_FILE}" ]; then
+	LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
+fi
 
 if [ ! -f "${PLAYERS_CACHE_FILE}" ]; then
     sudo touch "${PLAYERS_CACHE_FILE}"
