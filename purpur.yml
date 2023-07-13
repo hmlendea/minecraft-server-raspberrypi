@@ -1481,6 +1481,7 @@ world-settings:
           fire: []
           lightning: []
         shears:
+          defuse-tnt-chance: 0.0
           ignore-in-water: false
           ignore-in-lava: false
           damage-if-sprinting: true

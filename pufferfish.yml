@@ -32,4 +32,5 @@ inactive-goal-selector-throttle: true
 misc:
   disable-method-profiler: true
   disable-out-of-order-chat: false
+  suppress-null-id-disconnections: false
 allow-end-crystal-respawn: true

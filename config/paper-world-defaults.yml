@@ -66,7 +66,7 @@ chunks:
     trident: 16
     wither_skull: 4
   fixed-chunk-inhabited-time: -1
-  flush-regions-on-save: false
+  flush-regions-on-save: true
   max-auto-save-chunks-per-tick: 6
   prevent-moving-into-unloaded-chunks: true
 collisions:
@@ -182,6 +182,10 @@ entities:
         ink_sac: 600
         jungle_leaves: 1200
         kelp: 6000
+        leather_boots: 600
+        leather_chestplate: 600
+        leather_helmet: 600
+        leather_leggings: 600
         mangrove_leaves: 1200
         melon_slice: 6000
         nether_star: 72000

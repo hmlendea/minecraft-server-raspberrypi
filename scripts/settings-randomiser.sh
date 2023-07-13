@@ -35,7 +35,7 @@ fi
 randomise_difficulty
 
 randomise_gamerule_bool "doInsomnia" 15
-randomise_gamerule_bool "doWeatherCycle" 50
+randomise_gamerule_bool "doWeatherCycle" 80
 
 if ${RANDOMISE_PILLAGERS}; then
     randomise_gamerule_bool "disableRaids" 33

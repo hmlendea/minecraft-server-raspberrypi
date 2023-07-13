@@ -65,9 +65,11 @@ aliases:
   newplayerregion:
   - newregion $1 $1 $2
   - setregionprivateflags $1 $2
+  - rg setpriority -w world $1 50
   newplayersubregion:
   - newregion $1 $1 $2
   - setregionprivateflags $1 $2
+  - rg setpriority -w world $1 50
   - rg flag -w world $1 greeting
   - rg flag -w world $1 farewell
   spectate:

@@ -186,5 +186,7 @@ world-settings:
   world_the_end:
     view-distance: 12
     simulation-distance: 5
+  faweregentempworld:
+    verbose: false
 players:
   disable-saving: false

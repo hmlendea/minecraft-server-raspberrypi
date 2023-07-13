@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SERVER_ROOT_DIR="/srv/papermc"
-SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
+source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 
@@ -10,6 +10,7 @@ USE_DISCORDSRV=true
 USE_ESSENTIALS=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
+USE_INVSEE=true
 USE_PLEXMAP=false
 USE_SKINSRESTORER=true
 USE_SPARK=true
@@ -17,6 +18,7 @@ USE_STACKABLEITEMS=true
 USE_VIAVERSION=true
 USE_VIEWDISTANCETWEAKS=true
 USE_WANDERINGTRADES=true
+USE_WORLDEDIT=true
 USE_WORLDGUARD=true
 
 function get_latest_github_release_tag() {
@@ -89,10 +91,6 @@ function get_latest_jenkins_build_version() {
     echo "${ARTIFACT_VERSION}"
 }
 
-function get_latest_purpur_minecraft_version() {
-    curl -s "${PURPUR_API_URL}" | jq -r '.versions | sort | .[-1]'
-}
-
 function get_latest_purpur_build_version() {
     local MINECRAFT_VERSION="${1}"
 
@@ -105,10 +103,18 @@ function download_file() {
 
     [ -f "${FILE_PATH}" ] && return
 
-    echo "Downloading '${FILE_URL}' to '${FILE_PATH}'..."
-    sudo wget "${FILE_URL}" -O "${FILE_PATH}"
+    sudo wget --quiet "${FILE_URL}" -O "${FILE_PATH}"
     sudo chown papermc:papermc "${FILE_PATH}"
     sudo chmod +x "${FILE_PATH}"
+
+    if [ -f "${FILE_PATH}" ]; then
+        local FILE_SIZE=$(du "${FILE_PATH}" | awk '{print $1}')
+        if [ ${FILE_SIZE} -eq 0 ]; then
+            sudo rm "${FILE_PATH}"
+        else
+            echo " > Downloaded '${FILE_PATH}'"
+        fi
+    fi
 }
 
 function download_plugin() {
@@ -163,9 +169,16 @@ function download_from_jenkins() {
     local ARTIFACT_FILE_NAME=$(transform_asset_file_name "${4}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}")
     local ARTIFACT_NAME=""
 
+    local PLUGIN_FILE_NAME="${PLUGIN_NAME}_${PLUGIN_VERSION}.jar"
+    local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
+
     [[ "${PLUGIN_NAME}" == "spark" ]] && ARTIFACT_NAME="spark-bukkit"
 
     download_plugin "${JENKINS_BASE_URL}/job/${PLUGIN_NAME}/lastSuccessfulBuild/artifact/${ARTIFACT_NAME}/build/libs/${ARTIFACT_FILE_NAME}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
+
+    if [ ! -f "${PLUGIN_FILE_PATH}" ]; then
+        download_plugin "${JENKINS_BASE_URL}/job/${PLUGIN_NAME}/lastSuccessfulBuild/artifact/artifacts/${ARTIFACT_FILE_NAME}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
+    fi
 }
 
 function update_plugin_github() {
@@ -219,10 +232,9 @@ function update_plugin() {
 }
 
 function update_server() {
-    local LATEST_PURPUR_MINECRAFT_VERSION=$(get_latest_purpur_minecraft_version)
-    local LATEST_PURPUR_BUILD_VERSION=$(get_latest_purpur_build_version "${LATEST_PURPUR_MINECRAFT_VERSION}")
+    local LATEST_PURPUR_BUILD_VERSION=$(get_latest_purpur_build_version "${MINECRAFT_VERSION}")
 
-    download_file "${PURPUR_API_URL}/${LATEST_PURPUR_MINECRAFT_VERSION}/${LATEST_PURPUR_BUILD_VERSION}/download" "purpur-${LATEST_PURPUR_MINECRAFT_VERSION}-${LATEST_PURPUR_BUILD_VERSION}.jar"
+    download_file "${PURPUR_API_URL}/${MINECRAFT_VERSION}/${LATEST_PURPUR_BUILD_VERSION}/download" "purpur-${MINECRAFT_VERSION}-${LATEST_PURPUR_BUILD_VERSION}.jar"
 }
 
 if ! papermc status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q "Status: stopped"; then
@@ -238,6 +250,7 @@ else
                                    update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
     ${USE_GSIT}                 && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
     ${USE_IMAGEMAPS}            && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"          "%pluginName%.jar"
+    ${USE_INVSEE}               && update_plugin "InvSee++"             "https://github.com/Jannyboy11/InvSee-plus-plus"    "%pluginName%.jar"
     ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" && \
                                    update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
@@ -247,5 +260,6 @@ else
                                    update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
     ${USE_VIEWDISTANCETWEAKS}   && update_plugin "ViewDistanceTweaks"   "https://ci.froobworld.com"                         "%pluginName%-%pluginVersion%.jar"
     ${USE_WANDERINGTRADES}      && update_plugin "WanderingTrades"      "https://github.com/jpenilla/WanderingTrades"       "%pluginName%-%pluginVersion%.jar"
+    ${USE_WORLDEDIT}            && update_plugin "FastAsyncWorldEdit"   "https://ci.athion.net"                             "%pluginName%-%pluginVersion%.jar"
     ${USE_WORLDGUARD}           && update_plugin "WorldGuardExtraFlags" "https://github.com/aromaa/WorldGuardExtraFlags"    "%pluginName%.jar"
 fi

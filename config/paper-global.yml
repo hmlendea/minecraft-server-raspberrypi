@@ -13,6 +13,9 @@
 # Website: https://papermc.io/
 
 _version: 28
+block-updates:
+  disable-noteblock-updates: true
+  disable-tripwire-updates: true
 chunk-loading:
   autoconfig-send-distance: true
   enable-frustum-priority: false

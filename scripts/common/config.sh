@@ -80,26 +80,43 @@ function set_yml_value() {
     local FILE="${1}"
     local KEY="${2}"
     local VALUE="${3}"
+    
+    if [ -z "${VALUE}" ]; then
+        delete_yml_setting "${FILE}" "${KEY}"
+        return
+    fi
 
     local KEY_ESC="${KEY}"
+    local VALUE_ESC="${VALUE}"
 
     KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
     VALUE_ESC="${VALUE}"
 
-    grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
+    grep -Eqv "^(\[.*|true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
+
+    echo "${FILE}: ${KEY}=${VALUE}"
+    apply_yml_config "${FILE}" ".${KEY_ESC} = ${VALUE_ESC}"
+}
+
+function delete_yml_setting() {
+    local FILE="${1}"
+    local KEY="${2}"
+
+    local KEY_ESC="${KEY}"
+
+    KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+
+    echo "${FILE}: ${KEY} (delete)"
+    apply_yml_config "${FILE}" "del(.${KEY_ESC})"
+}
+
+function apply_yml_config() {
+    local FILE="${1}"
+    local YQ_COMMAND="${2}"
 
     if [ ! -f "/usr/bin/yq" ]; then
         echo "ERROR: The 'yq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
         return
-    fi
-
-    YQ_COMMAND=".${KEY_ESC} = ${VALUE_ESC}"
-
-    if [ -z "${VALUE}" ]; then
-        echo "${FILE}: ${KEY} (delete)"
-        YQ_COMMAND="del(.${KEY_ESC})"
-    else
-        echo "${FILE}: ${KEY}=${VALUE}"
     fi
 
     if [ -w "${FILE}" ]; then
