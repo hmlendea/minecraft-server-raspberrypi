@@ -80,7 +80,7 @@ fi
 
 if [ -d "${PLEXMAP_DIR}" ]; then
     set_config_values "${PLEXMAP_CONFIG_FILE}" \
-        "settings.web-directory.path" "/srv/http" \
+        "settings.web-directory.path" "${WEBMAP_DIR}" \
         "settings.internal-webserver.enabled" false \
         "settings.performance.render-threads" 1 \
         "settings.performance.gc.when-finished" true \

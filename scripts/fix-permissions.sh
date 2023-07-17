@@ -23,7 +23,7 @@ setown "${SERVER_ROOT_DIR}/${WORLD_NAME}"
 setown "${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
 setown "${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
 setown "${SERVER_PLUGINS_DIR}"
-[ -f "/srv/http/pl3xmap.js" ] && setown "/srv/http"
+[ -f "${WEBMAP_DIR}/pl3xmap.js" ] && setown "${WEBMAP_DIR}"
 
 setexe "${SERVER_ROOT_DIR}/"*.jar
 setexe "${SERVER_PLUGINS_DIR}/"*.jar

@@ -11,6 +11,7 @@ USE_ESSENTIALS=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
 USE_INVSEE=true
+USE_MINIMOTD=true
 USE_PLEXMAP=false
 USE_SKINSRESTORER=true
 USE_SPARK=true
@@ -251,8 +252,9 @@ else
     ${USE_GSIT}                 && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
     ${USE_IMAGEMAPS}            && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"          "%pluginName%.jar"
     ${USE_INVSEE}               && update_plugin "InvSee++"             "https://github.com/Jannyboy11/InvSee-plus-plus"    "%pluginName%.jar"
-    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" && \
-                                   update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
+    ${USE_MINIMOTD}             && update_plugin "MiniMOTD"             "https://github.com/jpenilla/MiniMOTD"              "minimotd-bukkit-%pluginVersion%.jar"
+    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" # && \
+#                                   update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
     ${USE_SPARK}                && update_plugin "spark"                "https://ci.lucko.me"                               "%pluginName%-%pluginVersion%.jar"
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
