@@ -71,12 +71,15 @@ if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
     reload_plugin "essentials"
 fi
 
-if [ -d "${LUCKPERMS_DIR}" ]; then
-    set_config_value "${LUCKPERMS_CONFIG_FILE}" "use-server-uuid-cache" true
-    set_config_value "${LUCKPERMS_CONFIG_FILE}" "watch-files"           false
+configure_plugin "gsit" "${GSIT_CONFIG_FILE}" \
+    "Options.check-for-update" false
 
-    reload_plugin luckperms
-fi
+configure_plugin "invsee" "${INVSEE_CONFIG_FILE}" \
+    "enable-unknown-player-support" false
+
+configure_plugin "luckperms" "${LUCKPERMS_CONFIG_FILE}" \
+    "use-server-uuid-cache" true \
+    "watch-files" false
 
 if [ -d "${PLEXMAP_DIR}" ]; then
     set_config_values "${PLEXMAP_CONFIG_FILE}" \
@@ -164,19 +167,14 @@ configure_plugin "pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
     "world-settings.default.map.zoom.max" 2 \
     "world-settings.default.map.zoom.max-out" 1 \
 
-if [ -d "${SKINSRESTORER_DIR}" ]; then
-    set_config_value "${SKINSRESTORER_CONFIG_FILE}" "SkinExpiresAfter" 180
-fi
+configure_plugin "skinsrestorer" "${SKINSRESTORER_CONFIG_FILE}" \
+    "SkinExpiresAfter" 180
 
-if [ -d "${SPARK_DIR}" ]; then
-    set_config_value "${SPARK_CONFIG_FILE}" "backgroundProfiler" false
-fi
+configure_plugin "spark" "${SPARK_CONFIG_FILE}" \
+    "backgroundProfiler" false
 
-if [ -d "${STACKABLEITEMS_DIR}" ]; then
-    set_config_value "${STACKABLEITEMS_CONFIG_FILE}" "update-check.enabled" false
-
-    reload_plugin "stackableitems"
-fi
+configure_plugin "stackableitems" "${STACKABLEITEMS_CONFIG_FILE}" \
+    "update-check.enabled" false
 
 if [ -d "${TREEASSIST_DIR}" ]; then
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false
@@ -196,40 +194,39 @@ if [ -d "${TREEASSIST_DIR}" ]; then
     reload_plugin "treeassist"
 fi
 
-if [ -f "${VIAVERSION_CONFIG_FILE}" ]; then
-    set_config_value "${VIAVERSION_CONFIG_FILE}" "checkforupdates" false
-
-    reload_plugin "viaversion"
-fi
-
-if [ -d "${VIEWDISTANCETWEAKS_DIR}" ]; then
-    set_config_values "${VIEWDISTANCETWEAKS_CONFIG_FILE}" \
-        "enabled" true \
-        "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
-        "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
-        "world-settings.default.simulation-distance.exclude" true \
-        "world-settings.default.simulation-distance.maximum-simulation-distance" "${SIMULATION_DISTANCE_MAX}" \
-        "world-settings.default.simulation-distance.minimum-simulation-distance" "${SIMULATION_DISTANCE_MIN}" \
-        "world-settings.default.view-distance.exclude" false \
-        "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
-        "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
-        "world-settings.default.chunk-weight" "1" \
-        "world-settings.${WORLD_END_NAME}.simulation-distance.exclude" true \
-        "world-settings.${WORLD_END_NAME}.view-distance.exclude" false \
-        "world-settings.${WORLD_END_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
-        "world-settings.${WORLD_END_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
-        "world-settings.${WORLD_END_NAME}.chunk-weight" "0.5" \
-        "world-settings.${WORLD_NETHER_NAME}.simulation-distance.exclude" true \
-        "world-settings.${WORLD_NETHER_NAME}.view-distance.exclude" false \
-        "world-settings.${WORLD_NETHER_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
-        "world-settings.${WORLD_NETHER_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
-        "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
-    reload_plugin "viewdistancetweaks"
-fi
+configure_plugin "viaversion" "${VIAVERSION_CONFIG_FILE}" \
+    "checkforupdates" false
+    
+configure_plugin "viewdistancetweaks" "${VIEWDISTANCETWEAKS_CONFIG_FILE}" \
+    "enabled" true \
+    "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
+    "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
+    "world-settings.default.simulation-distance.exclude" true \
+    "world-settings.default.simulation-distance.maximum-simulation-distance" "${SIMULATION_DISTANCE_MAX}" \
+    "world-settings.default.simulation-distance.minimum-simulation-distance" "${SIMULATION_DISTANCE_MIN}" \
+    "world-settings.default.view-distance.exclude" false \
+    "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
+    "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
+    "world-settings.default.chunk-weight" "1" \
+    "world-settings.${WORLD_END_NAME}.simulation-distance.exclude" true \
+    "world-settings.${WORLD_END_NAME}.view-distance.exclude" false \
+    "world-settings.${WORLD_END_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
+    "world-settings.${WORLD_END_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_END_MIN}" \
+    "world-settings.${WORLD_END_NAME}.chunk-weight" "0.5" \
+    "world-settings.${WORLD_NETHER_NAME}.simulation-distance.exclude" true \
+    "world-settings.${WORLD_NETHER_NAME}.view-distance.exclude" false \
+    "world-settings.${WORLD_NETHER_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_NETHER_MAX}" \
+    "world-settings.${WORLD_NETHER_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
+    "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
 
 configure_plugin "wanderingtrades" "${WANDERINGTRADES_CONFIG_FILE}" \
 	"language" "${LOCALE_FULL}" \
 	"updateChecker" false
+
+configure_plugin "worldedit" "${WORLDEDIT_CONFIG_FILE}" \
+    "enabled-components.update-notifications" false \
+    "max-memory-percent" 85 \
+    "queue.parallel-threads" ${CPU_THREADS}
 
 # Mob despawn ranges
 for CREATURE_TYPE in "axolotls" "creature" "misc" "monster"; do

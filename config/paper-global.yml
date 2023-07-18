@@ -63,7 +63,7 @@ item-validation:
   resolve-selectors-in-books: false
 logging:
   deobfuscate-stacktraces: true
-  log-player-ip-addresses: false
+  log-player-ip-addresses: true
 messages:
   kick:
     authentication-servers-down: <lang:multiplayer.disconnect.authservers_down>
