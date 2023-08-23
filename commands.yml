@@ -33,6 +33,8 @@ aliases:
   - minecraft:kill $1-
   ls:
   - list
+  movedropstoplayer:
+  - execute as @e[type=item] at @s if entity @s[distance=..$1] run tp @s $2
   survival:
   - gamemode survival
   setregiondefaultflags:
