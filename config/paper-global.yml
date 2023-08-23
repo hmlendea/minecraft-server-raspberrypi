@@ -14,6 +14,8 @@
 
 _version: 28
 block-updates:
+  disable-chorus-plant-updates: true
+  disable-mushroom-block-updates: true
   disable-noteblock-updates: true
   disable-tripwire-updates: true
 chunk-loading:
@@ -135,6 +137,7 @@ unsupported-settings:
   allow-headless-pistons: false
   allow-permanent-block-break-exploits: false
   allow-piston-duplication: false
+  compression-format: ZLIB
   perform-username-validation: true
 watchdog:
   early-warning-delay: 10000

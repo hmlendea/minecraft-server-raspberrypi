@@ -10,7 +10,9 @@
 
 verbose: false
 settings:
+  player-deaths-always-show-item: false
   messages:
+    sleep-not-possible: default
     afk-broadcast-use-display-name: false
     cannot-ride-mob: <red>You cannot mount that mob
     afk-broadcast-away: <yellow><italic>%s is now AFK
@@ -188,7 +190,7 @@ settings:
       distance: 0.5
     minecraft:light_blue_bed:
       distance: 0.5
-config-version: 32
+config-version: 33
 world-settings:
   default:
     mobs:
@@ -738,6 +740,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       ocelot:
+        spawn-below-sea-level: false
         ridable: false
         ridable-in-water: false
         controllable: true
@@ -808,6 +811,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       piglin:
+        ignores-armor-with-gold-trim: false
         ridable: false
         ridable-in-water: false
         controllable: true
@@ -1217,6 +1221,7 @@ world-settings:
         deactivate-by-redstone: false
         fix-mc-238526: false
       sponge:
+        absorbs-water-from-mud: false
         absorption:
           area: 64
           radius: 6
@@ -1414,6 +1419,29 @@ world-settings:
             drops: {}
         replant-crops: true
         replant-nether-warts: true
+      shovel:
+        flattenables:
+          minecraft:coarse_dirt:
+            drops: {}
+            into: minecraft:dirt_path
+          minecraft:dirt:
+            drops: {}
+            into: minecraft:dirt_path
+          minecraft:dirt_path:
+            drops: {}
+            into: minecraft:dirt
+          minecraft:grass_block:
+            drops: {}
+            into: minecraft:dirt_path
+          minecraft:mycelium:
+            drops: {}
+            into: minecraft:dirt_path
+          minecraft:podzol:
+            drops: {}
+            into: minecraft:dirt_path
+          minecraft:rooted_dirt:
+            drops: {}
+            into: minecraft:dirt_path
     ridable-settings:
       use-dismounts-underwater-tag: true
       babies-are-ridable: false
@@ -1587,13 +1615,6 @@ world-settings:
         snowball: 1.0
       projectile-damage:
         snowball: -1
-      shovel-turns-block-to-grass-path:
-      - minecraft:coarse_dirt
-      - minecraft:dirt
-      - minecraft:grass_block
-      - minecraft:mycelium
-      - minecraft:podzol
-      - minecraft:rooted_dirt
       entity-lifespan: 0
       entity-left-handed-chance: 0.05000000074505806
       minecart:

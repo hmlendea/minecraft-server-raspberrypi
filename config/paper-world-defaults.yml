@@ -314,6 +314,14 @@ entities:
     wateranimal-spawn-height:
       maximum: default
       minimum: default
+  tracking-range-y:
+    animal: default
+    display: default
+    enabled: false
+    misc: default
+    monster: default
+    other: default
+    player: default
 environment:
   disable-explosion-knockback: false
   disable-ice-and-snow: false
@@ -329,10 +337,10 @@ environment:
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
   portal-create-radius: 16
-  portal-search-radius: 128
-  portal-search-vanilla-dimension-scaling: true
+  portal-search-radius: 24
+  portal-search-vanilla-dimension-scaling: false
   treasure-maps:
-    enabled: true
+    enabled: false
     find-already-discovered:
       loot-tables: 'false'
       villager-trade: false
@@ -363,6 +371,7 @@ lootables:
   refresh-min: 12h
   reset-seed-on-fill: true
   restrict-player-reloot: true
+  restrict-player-reloot-time: disabled
 maps:
   item-frame-cursor-limit: 128
   item-frame-cursor-update-interval: 10
