@@ -49,7 +49,8 @@ if [ -d "${AUTHME_DIR}" ]; then
         "settings.serverName" "${SERVER_NAME}" \
         "settings.sessions.enabled" true \
         "settings.sessions.timeout" 960 \
-        "settings.messagesLanguage" "${LOCALE}"
+        "settings.messagesLanguage" "${LOCALE}" \
+        "settings.restrictions.teleportUnAuthedToSpawn" false
 
     [ -d "${ESSENTIALS_DIR}" ] && set_config_values "${AUTHME_CONFIG_FILE}" "Hooks.useEssentialsMotd" true
     
@@ -98,7 +99,7 @@ if [ -d "${PLEXMAP_DIR}" ]; then
         "world-settings.${WORLD_NAME}.render.renderers.inhabited" "" \
         "world-settings.${WORLD_NAME}.render.renderers.flowermap" "" \
         "world-settings.${WORLD_NAME}.ui.display-name" "The Overworld" \
-        "world-settings.${WORLD_NAME}.zoom.max-out" 2 \
+        "world-settings.${WORLD_NAME}.zoom.max-out" 3 \
         "world-settings.${WORLD_END_NAME}.enabled" true \
         "world-settings.${WORLD_END_NAME}.render.biome-blend" 0 \
         "world-settings.${WORLD_END_NAME}.render.renderers.basic" "the_end_basic" \
@@ -273,3 +274,5 @@ for MATERIAL in "wooden" "stone"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
     done
 done
+
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "environment.treasure-maps.enabled"    false # They cause too much lag eventually

@@ -21,7 +21,7 @@ export WORLD_END_NAME="${WORLD_NAME}_the_end"
 export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
 export SERVER_NAME=$(get_server_property "server-name" "MineCraft Server")
 
-export PLAYERS_MAX=10
+export PLAYERS_MAX=12
 export PLAYERS_TARGET=5 # The amount of players the server was tested against
 
 export VIEW_DISTANCE=8
@@ -50,7 +50,7 @@ export DESPAWN_RATE_ITEMS_MEDIUM_MINUTES=5
 export DESPAWN_RATE_ITEMS_FAST_MINUTES=1
 export DESPAWN_RATE_ITEMS_INSTANT_SECONDS=30
 
-export LOCALE="en"
+export LOCALE="ro"
 export LOCALE_FALLBACK="en"
 
 if [ "${LOCALE}" == "ro" ]; then

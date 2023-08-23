@@ -1,6 +1,7 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/crypto.sh"
 
 if [ -f "${PLAYERS_CACHE_FILE}" ]; then
 	LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
@@ -110,9 +111,11 @@ function get_player_discord_id() {
         [ -n "${DISCORD_ID}" ] && FOUND_IN_CACHE=true
     fi
     
-    DISCORD_ID=$(jq -r "to_entries | map(select(.value == \"${PLAYER_UUID}\")) | .[0].key" < "${DISCORDSRV_DIR}/linkedaccounts.json")
-    [[ "${DISCORD_ID}" == "null" ]] && DISCORD_ID=""
-
+    if [ -z "${DISCORD_ID}" ]; then
+        DISCORD_ID=$(jq -r "to_entries | map(select(.value == \"${PLAYER_UUID}\")) | .[0].key" < "${DISCORDSRV_DIR}/linkedaccounts.json")
+        [[ "${DISCORD_ID}" == "null" ]] && DISCORD_ID=""
+    fi
+    
     if ! ${FOUND_IN_CACHE} && [ -n "${DISCORD_ID}" ]; then
         set_playerscache_value "${PLAYER_UUID}" "discordId" "${DISCORD_ID}"
     fi
@@ -200,6 +203,25 @@ function get_player_spawn() {
     echo "${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
 }
 
+function get_player_password() {
+    local PLAYER_UUID="${1}"
+    local PLAYER_PASSWORD=""
+    local FOUND_IN_CACHE=false
+
+    if [ -z "${DISCORD_ID}" ]; then
+        PLAYER_PASSWORD=$(get_playerscache_value "${PLAYER_UUID}" "password" | sed 's/\"//g')
+        [ -n "${PLAYER_PASSWORD}" ] && FOUND_IN_CACHE=true
+    fi
+    
+    #[ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(decrypt_authme_password "${PLAYER_UUID}")
+    
+    if ! ${FOUND_IN_CACHE} && [ -n "${PLAYER_PASSWORD}" ]; then
+        set_playerscache_value "${PLAYER_UUID}" "password" "${PLAYER_PASSWORD}"
+    fi
+
+    echo "${PLAYER_PASSWORD}"
+}
+
 function get_player_info() {
     local UUID="${1}"
     
@@ -211,4 +233,7 @@ function get_player_info() {
     echo "   - Last IP    : "$(get_player_ip "${UUID}")
     echo "   - Location   : "$(get_player_location "${UUID}")
     echo "   - Spawn      : "$(get_player_spawn "${UUID}")
+
+    local PLAYER_PASSWORD=$(get_player_password "${UUID}")
+    [ -n "${PLAYER_PASSWORD}" ] && echo "   - Password   : "$(get_player_password "${UUID}")
 }

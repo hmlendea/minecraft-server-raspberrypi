@@ -41,6 +41,7 @@ export WEBMAP_ICON_FILE="${WEBMAP_DIR}/favicon.ico"
 export WEBMAP_INDEX_FILE="${WEBMAP_DIR}/index.html"
 
 # Resources
+export PASSWORDS_DICTIONARY_FILE="${SERVER_CACHE_DIR}/passwords.lst"
 export PLAYERS_CACHE_FILE="${SERVER_CACHE_DIR}/players.json"
 export SERVER_IMAGE_FILE="${SERVER_ROOT_DIR}/server-image.png"
 export CURRENT_LOG_FILE="${SERVER_LOGS_DIR}/latest.log"
@@ -69,6 +70,7 @@ export WORLDGUARD_DIR="${SERVER_PLUGINS_DIR}/WorldGuard"
 
 # Plugin files
 export AUTHME_CONFIG_FILE="${AUTHME_DIR}/config.yml"
+export AUTHME_DATABASE_FILE="${AUTHME_DIR}/authme.db"
 export AUTHME_LOG_FILE="${AUTHME_DIR}/authme.log"
 export CLEANMOTD_CONFIG_FILE="${CLEANMOTD_DIR}/config.yml"
 export DISCORDSRV_CONFIG_FILE="${DISCORDSRV_DIR}/config.yml"

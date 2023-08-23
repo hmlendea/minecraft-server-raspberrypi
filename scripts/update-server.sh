@@ -8,11 +8,12 @@ PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 USE_AUTHME=true
 USE_DISCORDSRV=true
 USE_ESSENTIALS=true
+USE_CUSTOMCRAFTING=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
 USE_INVSEE=true
 USE_MINIMOTD=true
-USE_PLEXMAP=false
+USE_PLEXMAP=true
 USE_SKINSRESTORER=true
 USE_SPARK=true
 USE_STACKABLEITEMS=true
@@ -245,21 +246,23 @@ else
     update_server
 
     ${USE_AUTHME}               && update_plugin "AuthMe"               "https://github.com/AuthMe/AuthMeReloaded"
+    ${USE_CUSTOMCRAFTING}       && update_plugin "CustomCrafting"       "https://modrinth.com/plugin/customcrafting"        "customcrafting-spigot-%pluginVersion%.jar" \
+                                && update_plugin "WolfyUtils"           "https://modrinth.com/plugin/wolfyutils"            "wolfyutils-spigot-%pluginVersion%.jar"
     ${USE_DISCORDSRV}           && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"          "%pluginName%-Build-%pluginVersion%.jar"
-    ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" && \
-                                   update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" && \
-                                   update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
+    ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" \
+                                && update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" \
+                                && update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
     ${USE_GSIT}                 && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
     ${USE_IMAGEMAPS}            && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"          "%pluginName%.jar"
     ${USE_INVSEE}               && update_plugin "InvSee++"             "https://github.com/Jannyboy11/InvSee-plus-plus"    "%pluginName%.jar"
     ${USE_MINIMOTD}             && update_plugin "MiniMOTD"             "https://github.com/jpenilla/MiniMOTD"              "minimotd-bukkit-%pluginVersion%.jar"
-    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" # && \
-#                                   update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
+    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"               "%pluginName%-%pluginVersion%.jar" \
+                                && update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"        "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"   "%pluginName%.jar"
     ${USE_SPARK}                && update_plugin "spark"                "https://ci.lucko.me"                               "%pluginName%-%pluginVersion%.jar"
     ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"         "%pluginName%.jar"
-    ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" &&
-                                   update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
+    ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" \
+                                && update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
     ${USE_VIEWDISTANCETWEAKS}   && update_plugin "ViewDistanceTweaks"   "https://ci.froobworld.com"                         "%pluginName%-%pluginVersion%.jar"
     ${USE_WANDERINGTRADES}      && update_plugin "WanderingTrades"      "https://github.com/jpenilla/WanderingTrades"       "%pluginName%-%pluginVersion%.jar"
     ${USE_WORLDEDIT}            && update_plugin "FastAsyncWorldEdit"   "https://ci.athion.net"                             "%pluginName%-%pluginVersion%.jar"

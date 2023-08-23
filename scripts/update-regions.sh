@@ -9,18 +9,18 @@ if [ ! -d "${WORLDGUARD_DIR}" ]; then
 fi
 
 function does_region_exist() {
-    if ! grep -q "^\s\s*${REGION_ID}:$" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"; then
-        return 1 # False
-    fi
-
-    return 0 # True
+    local REGION_ID="${1}"
+    
+    grep -q "^\s*${REGION_ID}:" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && return 0
+    return 1
 }
 
 function region_name_to_id() {
     local REGION_NAME="${1}"
     local REGION_ID="${REGION_NAME}"
 
-    REGION_ID=$(echo "${REGION_NAME}" |\
+    REGION_ID=$(echo "${REGION_NAME}" | \
+        iconv -f utf-8 -t ascii//TRANSLIT | \
         tr '[:upper:]' '[:lower:]' | \
         sed 's/[_\ ]//g')
 
@@ -66,9 +66,9 @@ function set_deny_message() {
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if ${IS_PRIVATE_REGION}; then
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_TEXT_DENIED}STOP! ${COLOUR_TEXT_MESSAGE}Nu poți face asta în baza lui ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_TEXT_DENIED}STOP! ${COLOUR_TEXT_MESSAGE}Nu poți face asta (%what%) în baza lui ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_TEXT_DENIED}STOP! ${COLOUR_TEXT_MESSAGE}Nu poți face asta în ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_TEXT_DENIED}STOP! ${COLOUR_TEXT_MESSAGE}Nu poți face asta (%what%) în ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
         fi
     else
         if ${IS_PRIVATE_REGION}; then
@@ -101,7 +101,30 @@ function set_teleport_message() {
     fi
 }
 
-function set_greeting_messages() {
+function set_farewell_message() {
+    local REGION_ID="${1}"
+    local REGION_NAME="${2}"
+
+    local IS_PRIVATE_REGION=false
+    [[ "${REGION_ID}" == player_* ]] && IS_PRIVATE_REGION=true
+
+    if [[ "${LOCALE}" == "ro" ]]; then
+        if ${IS_PRIVATE_REGION}; then
+            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}Ai ieșit din baza lui ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
+        else
+            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}Ai ieșit din ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
+        fi
+    else
+        if ${IS_PRIVATE_REGION}; then
+            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}You have left ${REGION_NAME}${COLOUR_TEXT_MESSAGE}'s base!"
+        else
+            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}You have left ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
+        fi
+    fi
+}
+
+
+function set_greeting_message() {
     local REGION_ID="${1}"
     local REGION_NAME="${2}"
 
@@ -111,20 +134,24 @@ function set_greeting_messages() {
     if [[ "${LOCALE}" == "ro" ]]; then
         if ${IS_PRIVATE_REGION}; then
             set_region_flag "${REGION_ID}" "greeting"   "${COLOUR_TEXT_MESSAGE}Ai intrat în baza lui ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
-            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}Ai ieșit din baza lui ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
         else
             set_region_flag "${REGION_ID}" "greeting"   "${COLOUR_TEXT_MESSAGE}Ai intrat în ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
-            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}Ai ieșit din ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
         fi
     else
         if ${IS_PRIVATE_REGION}; then
             set_region_flag "${REGION_ID}" "greeting"   "${COLOUR_TEXT_MESSAGE}You have entered ${REGION_NAME}${COLOUR_TEXT_MESSAGE}'s base!"
-            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}You have left ${REGION_NAME}${COLOUR_TEXT_MESSAGE}'s base!"
         else
             set_region_flag "${REGION_ID}" "greeting"   "${COLOUR_TEXT_MESSAGE}You have entered ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
-            set_region_flag "${REGION_ID}" "farewell"   "${COLOUR_TEXT_MESSAGE}You have left ${REGION_NAME}${COLOUR_TEXT_MESSAGE}!"
         fi
     fi
+}
+
+function set_greeting_messages() {
+    local REGION_ID="${1}"
+    local REGION_NAME="${2}"
+
+    set_farewell_message "${REGION_ID}" "${REGION_NAME}"
+    set_greeting_message "${REGION_ID}" "${REGION_NAME}"
 }
 
 function set_region_messages() {
@@ -174,47 +201,76 @@ function set_region_messages() {
 
 function set_common_region_settings() {
     local REGION_ID="${1}"
-    local REGION_NAME="${2}"
 
     # Natural damage
-    set_region_flag "${REGION_ID}" "block-trampling"    false
-    set_region_flag "${REGION_ID}" "creeper-explosion"  false
-    set_region_flag "${REGION_ID}" "enderman-grief"     false
-    set_region_flag "${REGION_ID}" "fire-spread"        false
-    set_region_flag "${REGION_ID}" "ghast-fireball"     false # Also handles Wither Skulls
-    set_region_flag "${REGION_ID}" "lava-fire"          false
-    set_region_flag "${REGION_ID}" "ravager-grief"      false
-    set_region_flag "${REGION_ID}" "wither-damage"      false
+#    set_region_flag "${REGION_ID}" "block-trampling"    false
+#    set_region_flag "${REGION_ID}" "creeper-explosion"  false
+#    set_region_flag "${REGION_ID}" "enderman-grief"     false
+#    set_region_flag "${REGION_ID}" "fire-spread"        false
+#    set_region_flag "${REGION_ID}" "ghast-fireball"     false # Also handles Wither Skulls
+#    set_region_flag "${REGION_ID}" "lava-fire"          false
+#    set_region_flag "${REGION_ID}" "ravager-grief"      false
+#    set_region_flag "${REGION_ID}" "wither-damage"      false
 
     # Player interactions
     set_region_flag "${REGION_ID}" "pvp"                false
 }
 
-function set_city_region_settings() {
-    local CITY_NAME="${1}"
-    local REGION_ID=$(region_name_to_id "${CITY_NAME}")
+function set_settlement_region_settings() {
+    local SETTLEMENT_NAME="${1}"
+    local COUNTRY_NAME="${2}"
 
-    set_common_region_settings "${REGION_ID}" "${CITY_NAME}"
+    local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")    
+    local REGION_ID="settlement_${SETTLEMENT_ID}_"$(region_name_to_id "${COUNTRY_NAME}")
+
+    set_common_region_settings "${REGION_ID}"
 
     set_region_flag "${REGION_ID}" "deny-spawn" '["cave_spider","creeper","drowned","enderman","husk","phantom","skeleton","spider","stray","witch","zombie","zombie_villager"]'
 
-    set_region_flag "${REGION_ID}" "interact" true
-    set_region_flag "${REGION_ID}" "ride" true
-    set_region_flag "${REGION_ID}" "vehicle-destroy" true
-    set_region_flag "${REGION_ID}" "vehicle-place" true
+    #set_region_flag "${REGION_ID}" "interact" true
+    #set_region_flag "${REGION_ID}" "ride" true
+    #set_region_flag "${REGION_ID}" "vehicle-destroy" true
+    #set_region_flag "${REGION_ID}" "vehicle-place" true
 
-    set_region_messages "${REGION_ID}" "${CITY_NAME}"    
+    set_deny_message        "${REGION_ID}" "${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}"
+    set_teleport_message    "${REGION_ID}" "${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}"
+    set_farewell_message    "${REGION_ID}" "${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}"
+    set_greeting_message    "${REGION_ID}" "${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}${COLOUR_TEXT_MESSAGE} (${COLOUR_TEXT_MENTION_SUBREGION}${COUNTRY_NAME}${COLOUR_TEXT_MESSAGE})"
+
     set_region_priority "${REGION_ID}" 10
+
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_arena_deathcube"  "DeathCube"              "DeathCube-ul"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_arena_pvp"        "PvP Arena"              "Arena PvP"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_farms"            "Farms"                  "Fermele"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_farms_xp"         "XP Farm"                "Ferma de XP"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_forge"            "Forge"                  "Forja"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_maze"             "Maze"                   "Labirintul"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum"           "Museum"                 "Muzeul"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_art"       "Art Museum"             "Muzeul de Artă"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_history"   "History Museum"         "Muzeul de Istorie"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_village"   "Village Museum"         "Muzeul Satului"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_square"           "Public Square"          "Piața"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_subway"           "Subway"                 "Subway-ul"
+    set_settlement_public_building_settings "${SETTLEMENT_ID}_warehouse"        "Local Public Warehouse" "Magazia Publică Locală"
 }
 
-function set_city_public_building_settings() {
+function set_settlement_public_building_settings() {
     local REGION_ID="${1}"
-    local CITY_NAME="${2}"
     local BUILDING_NAME="${2}"
+    local BUILDING_NAME_RO="${3}"
+    local SETTLEMENT_NAME="${4}"
+    local REGION_PRIORITY=20
 
-    set_common_region_settings "${REGION_ID}" "${REGION_NAME}"
+    ! does_region_exist "${REGION_ID}" && return
+
+    REGION_NAME="${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}${COLOUR_TEXT_MESSAGE}'s ${COLOUR_TEXT_MENTION_SUBREGION}${BUILDING_NAME}"
+    [[ "${LOCALE}" == "ro" ]] && [[ -n "${BUILDING_NAME_RO}" ]] && BUILDING_NAME="${COLOUR_TEXT_MENTION_SUBREGION}${BUILDING_NAME_RO}${COLOUR_TEXT_MESSAGE} din ${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}"
+
+    [[ "${REGION_ID}" == *_farms_* ]] && REGION_PRIORITY=30
+
+    set_common_region_settings "${REGION_ID}" "${BUILDING_NAME}"
     set_region_messages "${REGION_ID}" "${BUILDING_NAME}" --quiet
-    set_region_priority "${REGION_ID}" 20
+    set_region_priority "${REGION_ID}" ${REGION_PRIORITY}
 }
 
 function set_player_region_settings() {
@@ -242,18 +298,27 @@ function commit_transaction() {
 
 begin_transaction
 
-for CITY_NAME in "Burghezia" "Canopis" "Cratesia" "Enada" "Hokazuro" "Horidava" "Newport" "Solara"; do
-    set_city_region_settings "${CITY_NAME}"
+for CITY_NAME in "Hokazuro" "Solara"; do
+    set_settlement_region_settings "${CITY_NAME}" "Nucilandia"
+done
+for CITY_NAME in "Naoi"; do
+    set_settlement_region_settings "${CITY_NAME}" "FBU"
 done
 
-set_city_public_building_settings "enada_chicken_palace" "The Chicken's Palace"
-set_city_public_building_settings "enada_forja" "Enada's Forge"
-set_city_public_building_settings "enada_magazie" "Enada's Local Public Warehouse"
-set_city_public_building_settings "enada_piata" "Enada's Peaches Square"
-set_city_public_building_settings "enada_subway" "Enada's Subway"
-set_city_public_building_settings "enada_xp" "Enada's Mob Grinder"
-set_city_public_building_settings "solara_arena" "Solara's Arena"
-set_city_public_building_settings "solara_magazie" "Solara's Local Public Warehouse"
+for TOWN_NAME in "Cratesia" "Horidava" "Newport"; do
+    set_settlement_region_settings "${TOWN_NAME}" "Nucilandia"
+done
+for TOWN_NAME in "Enada"; do
+    set_settlement_region_settings "${TOWN_NAME}" "FBU"
+done
+
+for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Frigonița" "Nordavia" "Newport" "Nordavia" "Veneței"; do
+    set_settlement_region_settings "${VILLAGE_NAME}" "Nucilandia"
+done
+
+commit_transaction
+
+set_settlement_public_building_settings "enada_chicken_palace" "The Chicken's Palace" "Palatul Găinilor din Enada"
 
 set_region_messages "end_portal" "The End Portal"
 
@@ -263,6 +328,7 @@ set_player_region_settings "bloodcraftpagoda" "Hori873"
 set_player_region_settings "enada" "AsunaSenko"
 set_player_region_settings "enada" "beepbeep"
 set_player_region_settings "enada" "Blitzkrieg94"
+set_player_region_settings "enada" "Codrea22"
 set_player_region_settings "enada" "Denisse"
 set_player_region_settings "enada" "ElHori"
 set_player_region_settings "enada" "Emilio"
@@ -270,7 +336,7 @@ set_player_region_settings "enada" "Gerosst"
 set_player_region_settings "enada" "mibu"
 set_player_region_settings "enada" "MoonSoul02"
 set_player_region_settings "enada" "qAviis"
-set_player_region_settings "enada" "radumicro"
+#set_player_region_settings "enada" "radumicro"
 set_player_region_settings "kreezcraft1" "bvr12345"
 set_player_region_settings "kreezcraft1" "Calamithy"
 set_player_region_settings "kreezcraft1" "coR3q"
