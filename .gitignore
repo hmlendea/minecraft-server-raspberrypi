@@ -1,5 +1,11 @@
 motd.txt
 
+# Configs
+server.properties
+
+# Brandings
+server-icon.png
+
 # Binaries
 *.jar
 
@@ -42,6 +48,7 @@ backup
 plugins
 plugins-disabled
 wepif.yml
+webmap/
 
 # Others
 .hawtjni
