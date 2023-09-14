@@ -131,6 +131,7 @@ settings:
     allow-looting-on-shears: true
     allow-transparent-blocks-in-enchantment-box: true
     anvil:
+      replace-incompatible-enchants: false
       allow-unsafe-enchants: false
       allow-inapplicable-enchants: true
       allow-incompatible-enchants: true
@@ -1503,6 +1504,8 @@ world-settings:
         spectral-arrows: false
         tipped-arrows: false
       item:
+        end-crystal:
+          place-anywhere: false
         immune:
           cactus: []
           explosion: []

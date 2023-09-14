@@ -132,6 +132,9 @@ entities:
       wither-skeleton: true
     spiders-immune-to-poison-effect: true
     undead-immune-to-certain-effects: true
+  sniffer:
+    boosted-hatch-time: default
+    hatch-time: default
   spawning:
     all-chunks-are-slime-chunks: false
     alt-item-despawn-rate:
@@ -338,7 +341,7 @@ environment:
   optimize-explosions: true
   portal-create-radius: 16
   portal-search-radius: 24
-  portal-search-vanilla-dimension-scaling: false
+  portal-search-vanilla-dimension-scaling: true
   treasure-maps:
     enabled: false
     find-already-discovered:
