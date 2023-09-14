@@ -26,14 +26,16 @@ export PAPER_WORLD_NETHER_CONFIG_FILE="${WORLD_NETHER_DIR}/paper-world.yml"
 # World
 [ -z "${WORLD_NAME}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 export WORLD_DIR="${SERVER_ROOT_DIR}/${WORLD_NAME}"
+export WORLD_ADVANCEMENTS_DIR="${WORLD_DIR}/advancements"
 export WORLD_PLAYERDATA_DIR="${WORLD_DIR}/playerdata"
+export WORLD_STATS_DIR="${WORLD_DIR}/stats"
 export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
 export WORLD_END_PLAYERDATA_DIR="${WORLD_END_DIR}/playerdata"
 export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
 export WORLD_NETHER_PLAYERDATA_DIR="${WORLD_NETHER_DIR}/playerdata"
 
 # World Webmap
-export WEBMAP_DIR="/srv/http/nucicraft/webmap"
+export WEBMAP_DIR="${SERVER_ROOT_DIR}/webmap"
 export WEBMAP_SKINS_DIR="${WEBMAP_DIR}/images/skins"
 export WEBMAP_SKINS_2D_UUID_DIR="${WEBMAP_SKINS_DIR}/2D"
 export WEBMAP_SKINS_2D_USERNAME_DIR="${WEBMAP_SKINS_DIR}/2D-ByUsername"

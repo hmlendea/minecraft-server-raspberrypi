@@ -21,7 +21,8 @@ export WORLD_END_NAME="${WORLD_NAME}_the_end"
 export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
 export SERVER_NAME=$(get_server_property "server-name" "MineCraft Server")
 
-export PLAYERS_MAX=12
+export PLAYERS_REGISTERED=$(find ${SERVER_ROOT_DIR}/world/playerdata/ -name "*.dat" | wc -l)
+export PLAYERS_MAX=${PLAYERS_REGISTERED} #12
 export PLAYERS_TARGET=5 # The amount of players the server was tested against
 
 export VIEW_DISTANCE=8

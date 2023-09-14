@@ -225,7 +225,7 @@ function set_settlement_region_settings() {
 
     set_common_region_settings "${REGION_ID}"
 
-    set_region_flag "${REGION_ID}" "deny-spawn" '["cave_spider","creeper","drowned","enderman","husk","phantom","skeleton","spider","stray","witch","zombie","zombie_villager"]'
+    set_region_flag "${REGION_ID}" "deny-spawn" '["bat", "cave_spider","creeper","drowned","enderman","husk","phantom","skeleton","spider","stray","witch","zombie","zombie_villager"]'
 
     #set_region_flag "${REGION_ID}" "interact" true
     #set_region_flag "${REGION_ID}" "ride" true
@@ -239,27 +239,30 @@ function set_settlement_region_settings() {
 
     set_region_priority "${REGION_ID}" 10
 
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_arena_deathcube"  "DeathCube"              "DeathCube-ul"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_arena_pvp"        "PvP Arena"              "Arena PvP"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_farms"            "Farms"                  "Fermele"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_farms_xp"         "XP Farm"                "Ferma de XP"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_forge"            "Forge"                  "Forja"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_maze"             "Maze"                   "Labirintul"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum"           "Museum"                 "Muzeul"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_art"       "Art Museum"             "Muzeul de Artă"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_history"   "History Museum"         "Muzeul de Istorie"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_museum_village"   "Village Museum"         "Muzeul Satului"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_square"           "Public Square"          "Piața"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_subway"           "Subway"                 "Subway-ul"
-    set_settlement_public_building_settings "${SETTLEMENT_ID}_warehouse"        "Local Public Warehouse" "Magazia Publică Locală"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"  "DeathCube"              "DeathCube-ul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_pvp"        "PvP Arena"              "Arena PvP"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms"            "Farms"                  "Fermele"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_xp"         "XP Farm"                "Ferma de XP"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "forge"            "Forge"                  "Forja"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "maze"             "Maze"                   "Labirintul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum"           "Museum"                 "Muzeul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_art"       "Art Museum"             "Muzeul de Artă"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_history"   "History Museum"         "Muzeul de Istorie"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_village"   "Village Museum"         "Muzeul Satului"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "square"           "Public Square"          "Piața"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "subway"           "Subway"                 "Subway-ul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "warehouse"        "Local Public Warehouse" "Magazia Publică Locală"
 }
 
 function set_settlement_public_building_settings() {
-    local REGION_ID="${1}"
-    local BUILDING_NAME="${2}"
-    local BUILDING_NAME_RO="${3}"
-    local SETTLEMENT_NAME="${4}"
+    local SETTLEMENT_NAME="${1}"
+    local BUILDING_ID="${2}"
+    local BUILDING_NAME="${3}"
+    local BUILDING_NAME_RO="${4}"
     local REGION_PRIORITY=20
+
+    local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")
+    local REGION_ID="${SETTLEMENT_ID}_${BUILDING_ID}"
 
     ! does_region_exist "${REGION_ID}" && return
 
@@ -305,7 +308,7 @@ for CITY_NAME in "Naoi"; do
     set_settlement_region_settings "${CITY_NAME}" "FBU"
 done
 
-for TOWN_NAME in "Cratesia" "Horidava" "Newport"; do
+for TOWN_NAME in "Bloodorf" "Cratesia" "Flusseland" "Horidava" "Newport"; do
     set_settlement_region_settings "${TOWN_NAME}" "Nucilandia"
 done
 for TOWN_NAME in "Enada"; do
@@ -323,8 +326,8 @@ set_settlement_public_building_settings "enada_chicken_palace" "The Chicken's Pa
 set_region_messages "end_portal" "The End Portal"
 
 set_player_region_settings "bloodcraft" "germanlk"
-set_player_region_settings "bloodcraftcitadel" "Hori873"
-set_player_region_settings "bloodcraftpagoda" "Hori873"
+set_player_region_settings "bloodcraft_citadel" "Hori873"
+set_player_region_settings "bloodcraft_pagoda" "Hori873"
 set_player_region_settings "enada" "AsunaSenko"
 set_player_region_settings "enada" "beepbeep"
 set_player_region_settings "enada" "Blitzkrieg94"

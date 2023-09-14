@@ -1,10 +1,9 @@
 #!/bin/bash
+source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
+
 OLD_UUID="${1}"
 NEW_UUID="${2}"
-
-SERVER_ROOT_DIR="/srv/papermc"
-SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
-SERVER_SCRIPTS_DIR="${SERVER_ROOT_DIR}/scripts"
 
 if [ -z "${OLD_UUID}" ]; then
     echo "Please proide the old UUID!"
@@ -33,10 +32,13 @@ function move-file() {
     sudo mv "${OLD_FILE}" "${NEW_FILE}"
 }
 
-move-file "${WORLD_DIR}/advancements/${OLD_UUID}.json" "${SERVER_ROOT_DIR}/world/advancements/${NEW_UUID}.json"
-move-file "${WORLD_DIR}/playerdata/${OLD_UUID}.dat" "${SERVER_ROOT_DIR}/world/playerdata/${NEW_UUID}.dat"
-move-file "${WORLD_DIR}/playerdata/${OLD_UUID}.dat_old" "${SERVER_ROOT_DIR}/world/playerdata/${NEW_UUID}.dat_old"
-move-file "${WORLD_DIR}/stats/${OLD_UUID}.json" "${SERVER_ROOT_DIR}/world/stats/${NEW_UUID}.json"
-move-file "${SERVER_PLUGINS_DIR}/Essentials/userdata/${OLD_UUID}.yml" "${SERVER_ROOT_DIR}/plugins/Essentials/userdata/${NEW_UUID}.yml"
+sudo sed -i "${WORLDGUARD_WORLD_REGIONS_FILE}" 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g'
+reload_plugin "worldguard"
+
+move-file "${WORLD_ADVANCEMENTS_DIR}/${OLD_UUID}.json" "${WORLD_ADVANCEMENTS_DIR}/${NEW_UUID}.json"
+move-file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat"
+move-file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat_old" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat_old"
+move-file "${WORLD_STATS_DIR}/${OLD_UUID}.json" "${WORLD_STATS_DIR}/${NEW_UUID}.json"
+move-file "${ESSENTIALS_DIR}/userdata/${OLD_UUID}.yml" "${ESSENTIALS_DIR}/userdata/${NEW_UUID}.yml"
 
 ${SHELL} "${SERVER_SCRIPTS_DIR}/fix-permissions.sh"
