@@ -76,5 +76,6 @@ aliases:
   - rg flag -w world $1 farewell
   spectate:
   - gamemode spectator
+  - minecraft:tp @s $1
   unop:
   - minecraft:deop $1-
