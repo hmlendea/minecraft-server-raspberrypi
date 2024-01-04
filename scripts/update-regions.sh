@@ -1,7 +1,7 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
-source "${SERVER_SCRIPTS_DIR}/common/colours.sh"
-source "${SERVER_SCRIPTS_DIR}/common/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 
 if [ ! -d "${WORLDGUARD_DIR}" ]; then
     echo "ERROR: The WorldGuard plugin is not installed!"
@@ -304,11 +304,12 @@ begin_transaction
 for CITY_NAME in "Hokazuro" "Solara"; do
     set_settlement_region_settings "${CITY_NAME}" "Nucilandia"
 done
+commit_transaction
 for CITY_NAME in "Naoi"; do
     set_settlement_region_settings "${CITY_NAME}" "FBU"
 done
 
-for TOWN_NAME in "Bloodorf" "Cratesia" "Flusseland" "Horidava" "Newport"; do
+for TOWN_NAME in "Bloodorf" "Cornova" "Cratesia" "Flusseland" "Horidava" "Newport"; do
     set_settlement_region_settings "${TOWN_NAME}" "Nucilandia"
 done
 for TOWN_NAME in "Enada"; do
@@ -317,6 +318,9 @@ done
 
 for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Frigonița" "Nordavia" "Newport" "Nordavia" "Veneței"; do
     set_settlement_region_settings "${VILLAGE_NAME}" "Nucilandia"
+done
+for VILLAGE_NAME in "Bastonia"; do
+    set_settlement_region_settings "${VILLAGE_NAME}" "FBU"
 done
 
 commit_transaction
@@ -376,6 +380,7 @@ set_player_region_settings "solara" "Denisse"
 set_player_region_settings "solara" "ElHori"
 set_player_region_settings "solara" "Mary" "Ionut22"
 set_player_region_settings "solara" "mibu"
+set_player_region_settings "solara" "nnivrim"
 set_player_region_settings "solara" "qAviis"
 set_player_region_settings "survivalisland" "Hori873" "Kamikaze" "Azzuro"
 set_player_region_settings "survivalisland2" "Hori873"
