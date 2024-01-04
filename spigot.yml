@@ -61,6 +61,7 @@ stats:
   forced-stats: {}
 world-settings:
   default:
+    seed-trialchambers: 94251327
     seed-trailruins: 83469867
     below-zero-generation-in-existing-chunks: true
     simulation-distance: 5

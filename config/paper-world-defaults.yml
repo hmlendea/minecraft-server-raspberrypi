@@ -121,7 +121,7 @@ entities:
     player-insomnia-start-ticks: 72000
     should-remove-dragon: false
     spawner-nerfed-mobs-should-jump: true
-    zombie-villager-infection-chance: -1.0
+    zombie-villager-infection-chance: default
     zombies-target-turtle-eggs: true
   entities-target-with-follow-range: false
   markers:
@@ -285,7 +285,7 @@ entities:
     - SleepingY
     - SleepingZ
     iron-golems-can-spawn-in-air: false
-    monster-spawn-max-light-level: -1
+    monster-spawn-max-light-level: default
     non-player-arrow-despawn-rate: '60'
     per-player-mob-spawns: true
     scan-for-legacy-ender-dragon: true
@@ -356,7 +356,6 @@ fishing-time-range:
 fixes:
   disable-unloaded-chunk-enderpearl-exploit: true
   falling-block-height-nerf: disabled
-  fix-curing-zombie-villager-discount-exploit: true
   fix-items-merging-through-walls: false
   fix-wither-targeting-bug: false
   prevent-tnt-from-moving-in-water: false
@@ -407,6 +406,7 @@ tick-rates:
       acquirepoi: 120
       validatenearbypoi: 60
   container-update: 3
+  dry-farmland: 1
   grass-spread: 5
   mob-spawner: 2
   sensor:
@@ -416,5 +416,6 @@ tick-rates:
       playersensor: 40
       secondarypoisensor: 80
       villagerbabiessensor: 40
+  wet-farmland: 1
 unsupported-settings:
   fix-invulnerable-end-crystal-exploit: true

@@ -14,7 +14,7 @@ function get_server_property() {
     echo "${VALUE}"
 }
 
-export MINECRAFT_VERSION="1.20.1"
+export MINECRAFT_VERSION="1.20.4"
 export WORLD_NAME=$(get_server_property "level-name" "world")
 
 export WORLD_END_NAME="${WORLD_NAME}_the_end"
