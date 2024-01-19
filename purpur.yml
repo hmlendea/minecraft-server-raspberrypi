@@ -795,7 +795,7 @@ world-settings:
             max: -1
         burn-in-light: 0
         burn-in-daylight: true
-        ignore-players-with-torch: false
+        ignore-players-with-torch: true
         flames-on-swoop: false
         takes-damage-from-water: false
         always-drop-exp: false
@@ -808,7 +808,7 @@ world-settings:
         controllable: true
         attributes:
           max_health: 10.0
-        give-saddle-back: false
+        give-saddle-back: true
         breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
@@ -1017,7 +1017,7 @@ world-settings:
         attributes:
           max_health: 20.0
         breeding-delay-ticks: 6000
-        give-saddle-back: false
+        give-saddle-back: true
         takes-damage-from-water: true
         always-drop-exp: false
       tadpole:
