@@ -241,15 +241,25 @@ function set_settlement_region_settings() {
 
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"  "DeathCube"              "DeathCube-ul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_pvp"        "PvP Arena"              "Arena PvP"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "cemetery"         "Cemetery"               "Cimitirul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms"            "Farms"                  "Fermele"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_raid"       "Raid Farm"              "Ferma de Raiduri"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_sugarcane"  "Sugar Cane Farm"        "Ferma de Trestie"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_xp"         "XP Farm"                "Ferma de XP"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "forge"            "Forge"                  "Forja"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "horarie"          "Horary"                 "Horăria"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "library"          "Library"                "Librăria"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "maze"             "Maze"                   "Labirintul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum"           "Museum"                 "Muzeul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_art"       "Art Museum"             "Muzeul de Artă"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_history"   "History Museum"         "Muzeul de Istorie"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_village"   "Village Museum"         "Muzeul Satului"
-    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "square"           "Public Square"          "Piața"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "post"             "Post Office"            "Poșta"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "palace"           "Palace"                 "Palatul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "palace_chicken"   "Chicken Palace"         "Palatul Găinilor"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "square"           "Public Square"          "Piața Publică"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "station_police"   "Police Station"         "Stația de Poliție"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "station_train"    "Train Station"          "Gara"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "subway"           "Subway"                 "Subway-ul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "warehouse"        "Local Public Warehouse" "Magazia Publică Locală"
 }
@@ -269,11 +279,14 @@ function set_settlement_public_building_settings() {
     REGION_NAME="${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}${COLOUR_TEXT_MESSAGE}'s ${COLOUR_TEXT_MENTION_SUBREGION}${BUILDING_NAME}"
     [[ "${LOCALE}" == "ro" ]] && [[ -n "${BUILDING_NAME_RO}" ]] && BUILDING_NAME="${COLOUR_TEXT_MENTION_SUBREGION}${BUILDING_NAME_RO}${COLOUR_TEXT_MESSAGE} din ${COLOUR_TEXT_MENTION_REGION}${SETTLEMENT_NAME}"
 
+    [[ "${REGION_ID}" == *_arena_* ]] && REGION_PRIORITY=30
     [[ "${REGION_ID}" == *_farms_* ]] && REGION_PRIORITY=30
 
     set_common_region_settings "${REGION_ID}" "${BUILDING_NAME}"
     set_region_messages "${REGION_ID}" "${BUILDING_NAME}" --quiet
     set_region_priority "${REGION_ID}" ${REGION_PRIORITY}
+
+    [[ "${REGION_ID}" == *_arena_pvp ]] && set_region_flag "${REGION_ID}" "pvp" true
 }
 
 function set_player_region_settings() {
@@ -289,6 +302,8 @@ function set_player_region_settings() {
 }
 
 function begin_transaction() {
+    reload_plugin "worldguard"
+
     sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}.bak"
     sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"
 }
@@ -296,6 +311,8 @@ function begin_transaction() {
 function commit_transaction() {
     sudo cp "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}"
     sudo chown papermc:papermc "${WORLDGUARD_WORLD_REGIONS_FILE}"
+
+    reload_plugin "worldguard"
     exit
 }
 
@@ -304,7 +321,7 @@ begin_transaction
 for CITY_NAME in "Hokazuro" "Solara"; do
     set_settlement_region_settings "${CITY_NAME}" "Nucilandia"
 done
-commit_transaction
+
 for CITY_NAME in "Naoi"; do
     set_settlement_region_settings "${CITY_NAME}" "FBU"
 done
@@ -312,9 +329,10 @@ done
 for TOWN_NAME in "Bloodorf" "Cornova" "Cratesia" "Flusseland" "Horidava" "Newport"; do
     set_settlement_region_settings "${TOWN_NAME}" "Nucilandia"
 done
-for TOWN_NAME in "Enada"; do
+for TOWN_NAME in "Enada" "Iahim"; do
     set_settlement_region_settings "${TOWN_NAME}" "FBU"
 done
+commit_transaction
 
 for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Frigonița" "Nordavia" "Newport" "Nordavia" "Veneței"; do
     set_settlement_region_settings "${VILLAGE_NAME}" "Nucilandia"
@@ -344,6 +362,7 @@ set_player_region_settings "enada" "mibu"
 set_player_region_settings "enada" "MoonSoul02"
 set_player_region_settings "enada" "qAviis"
 #set_player_region_settings "enada" "radumicro"
+set_player_region_settings "hokazuro" "Hori873"
 set_player_region_settings "kreezcraft1" "bvr12345"
 set_player_region_settings "kreezcraft1" "Calamithy"
 set_player_region_settings "kreezcraft1" "coR3q"
