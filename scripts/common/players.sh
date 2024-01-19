@@ -111,7 +111,7 @@ function get_player_discord_id() {
         [ -n "${DISCORD_ID}" ] && FOUND_IN_CACHE=true
     fi
     
-    if [ -z "${DISCORD_ID}" ]; then
+    if [ -z "${DISCORD_ID}" ] && [ -f "${DISCORDSRV_DIR}/linkedaccounts.json" ]; then
         DISCORD_ID=$(jq -r "to_entries | map(select(.value == \"${PLAYER_UUID}\")) | .[0].key" < "${DISCORDSRV_DIR}/linkedaccounts.json")
         [[ "${DISCORD_ID}" == "null" ]] && DISCORD_ID=""
     fi
