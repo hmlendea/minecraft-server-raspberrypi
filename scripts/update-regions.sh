@@ -2,6 +2,7 @@
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 
 if [ ! -d "${WORLDGUARD_DIR}" ]; then
     echo "ERROR: The WorldGuard plugin is not installed!"
@@ -243,6 +244,7 @@ function set_settlement_region_settings() {
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_pvp"        "PvP Arena"              "Arena PvP"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "cemetery"         "Cemetery"               "Cimitirul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms"            "Farms"                  "Fermele"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_gunpowder"  "Gunpowder Farm"         "Ferma de Praf de Pușcă"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_raid"       "Raid Farm"              "Ferma de Raiduri"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_sugarcane"  "Sugar Cane Farm"        "Ferma de Trestie"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_xp"         "XP Farm"                "Ferma de XP"
@@ -262,6 +264,10 @@ function set_settlement_region_settings() {
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "station_train"    "Train Station"          "Gara"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "subway"           "Subway"                 "Subway-ul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "warehouse"        "Local Public Warehouse" "Magazia Publică Locală"
+
+    for PLAYER_USERNAME in $(get_players_usernames); do
+        set_player_region_settings "${SETTLEMENT_NAME}" "${PLAYER_USERNAME}"
+    done
 }
 
 function set_settlement_public_building_settings() {
@@ -287,14 +293,17 @@ function set_settlement_public_building_settings() {
     set_region_priority "${REGION_ID}" ${REGION_PRIORITY}
 
     [[ "${REGION_ID}" == *_arena_pvp ]] && set_region_flag "${REGION_ID}" "pvp" true
+    [[ "${REGION_ID}" == *_farms_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat", "cave_spider","drowned","enderman","husk","phantom","skeleton","spider","stray","witch","zombie","zombie_villager"]'
 }
 
 function set_player_region_settings() {
-    local ZONE_ID="${1}" && shift
+    local ZONE_ID=$(region_name_to_id "${1}") && shift 
     local MAIN_PLAYER_NAME="${1}"
 
     local PLAYER_REGION_ID=$(region_name_to_id "${MAIN_PLAYER_NAME}")
     local REGION_ID="player_${PLAYER_REGION_ID}_${ZONE_ID}"
+
+    ! does_region_exist "${REGION_ID}" && return
 
     set_common_region_settings "${REGION_ID}" "${REGION_NAME}"
     set_region_messages "${REGION_ID}" $@
@@ -318,21 +327,19 @@ function commit_transaction() {
 
 begin_transaction
 
-for CITY_NAME in "Hokazuro" "Solara"; do
+for CITY_NAME in "Flusseland" "Hokazuro" "Solara"; do
     set_settlement_region_settings "${CITY_NAME}" "Nucilandia"
 done
-
-for CITY_NAME in "Naoi"; do
+for CITY_NAME in "Enada" "Naoi"; do
     set_settlement_region_settings "${CITY_NAME}" "FBU"
 done
 
-for TOWN_NAME in "Bloodorf" "Cornova" "Cratesia" "Flusseland" "Horidava" "Newport"; do
+for TOWN_NAME in "Bloodorf" "Cornova" "Cratesia" "Horidava" "Newport"; do
     set_settlement_region_settings "${TOWN_NAME}" "Nucilandia"
 done
-for TOWN_NAME in "Enada" "Iahim"; do
+for TOWN_NAME in "Iahim"; do
     set_settlement_region_settings "${TOWN_NAME}" "FBU"
 done
-commit_transaction
 
 for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Frigonița" "Nordavia" "Newport" "Nordavia" "Veneței"; do
     set_settlement_region_settings "${VILLAGE_NAME}" "Nucilandia"
@@ -343,26 +350,11 @@ done
 
 commit_transaction
 
-set_settlement_public_building_settings "enada_chicken_palace" "The Chicken's Palace" "Palatul Găinilor din Enada"
-
 set_region_messages "end_portal" "The End Portal"
 
 set_player_region_settings "bloodcraft" "germanlk"
 set_player_region_settings "bloodcraft_citadel" "Hori873"
 set_player_region_settings "bloodcraft_pagoda" "Hori873"
-set_player_region_settings "enada" "AsunaSenko"
-set_player_region_settings "enada" "beepbeep"
-set_player_region_settings "enada" "Blitzkrieg94"
-set_player_region_settings "enada" "Codrea22"
-set_player_region_settings "enada" "Denisse"
-set_player_region_settings "enada" "ElHori"
-set_player_region_settings "enada" "Emilio"
-set_player_region_settings "enada" "Gerosst"
-set_player_region_settings "enada" "mibu"
-set_player_region_settings "enada" "MoonSoul02"
-set_player_region_settings "enada" "qAviis"
-#set_player_region_settings "enada" "radumicro"
-set_player_region_settings "hokazuro" "Hori873"
 set_player_region_settings "kreezcraft1" "bvr12345"
 set_player_region_settings "kreezcraft1" "Calamithy"
 set_player_region_settings "kreezcraft1" "coR3q"
@@ -394,13 +386,6 @@ set_player_region_settings "kreezcraft1" "T3RM1N4TOR"
 set_player_region_settings "kreezcraft1" "TnTE_bulan8"
 set_player_region_settings "kreezcraft1" "Xenon"
 set_player_region_settings "kreezcraft1wilderness" "Remus"
-set_player_region_settings "solara" "Blitzkrieg94"
-set_player_region_settings "solara" "Denisse"
-set_player_region_settings "solara" "ElHori"
-set_player_region_settings "solara" "Mary" "Ionut22"
-set_player_region_settings "solara" "mibu"
-set_player_region_settings "solara" "nnivrim"
-set_player_region_settings "solara" "qAviis"
 set_player_region_settings "survivalisland" "Hori873" "Kamikaze" "Azzuro"
 set_player_region_settings "survivalisland2" "Hori873"
 set_player_region_settings "wilderness" "beepbeep"

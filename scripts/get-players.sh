@@ -11,8 +11,7 @@ function get_userdata_prop() {
 }
 
 PLAYERS_COUNT=0
-for PLAYERDATA_FILE in "${WORLD_PLAYERDATA_DIR}/"*.dat; do
+for PLAYER_UUID in $(get_players_uuids); do
     PLAYERS_COUNT=$((PLAYERS_COUNT + 1))
-    UUID=$(basename "${PLAYERDATA_FILE}" .dat)
-    echo -n "(${PLAYERS_COUNT}) " && get_player_info "${UUID}"
+    echo -n "(${PLAYERS_COUNT}) " && get_player_info "${PLAYER_UUID}"
 done

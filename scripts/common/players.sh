@@ -237,3 +237,15 @@ function get_player_info() {
     local PLAYER_PASSWORD=$(get_player_password "${UUID}")
     [ -n "${PLAYER_PASSWORD}" ] && echo "   - Password   : "$(get_player_password "${UUID}")
 }
+
+function get_players_uuids() {
+    for PLAYERDATA_FILE in "${WORLD_PLAYERDATA_DIR}/"*.dat; do
+        basename "${PLAYERDATA_FILE}" ".dat"
+    done
+}
+
+function get_players_usernames() {
+    for PLAYER_UUID in $(get_players_uuids); do
+        get_player_username "${PLAYER_UUID}"
+    done
+}
