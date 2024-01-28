@@ -243,6 +243,7 @@ function set_settlement_region_settings() {
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"  "DeathCube"              "DeathCube-ul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "arena_pvp"        "PvP Arena"              "Arena PvP"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "cemetery"         "Cemetery"               "Cimitirul"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "church"           "Church"                 "Biserica"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms"            "Farms"                  "Fermele"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_gunpowder"  "Gunpowder Farm"         "Ferma de Praf de Pușcă"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_raid"       "Raid Farm"              "Ferma de Raiduri"
@@ -250,7 +251,9 @@ function set_settlement_region_settings() {
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "farms_xp"         "XP Farm"                "Ferma de XP"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "forge"            "Forge"                  "Forja"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "horarie"          "Horary"                 "Horăria"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "hospital"         "Hospital"               "Spitalul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "library"          "Library"                "Librăria"
+    set_settlement_public_building_settings "${SETTLEMENT_NAME}" "mall"             "Mall"                   "Mall-ul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "maze"             "Maze"                   "Labirintul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum"           "Museum"                 "Muzeul"
     set_settlement_public_building_settings "${SETTLEMENT_NAME}" "museum_art"       "Art Museum"             "Muzeul de Artă"
@@ -287,6 +290,7 @@ function set_settlement_public_building_settings() {
 
     [[ "${REGION_ID}" == *_arena_* ]] && REGION_PRIORITY=30
     [[ "${REGION_ID}" == *_farms_* ]] && REGION_PRIORITY=30
+    [[ "${REGION_ID}" == *_mall_shop* ]] && REGION_PRIORITY=30
 
     set_common_region_settings "${REGION_ID}" "${BUILDING_NAME}"
     set_region_messages "${REGION_ID}" "${BUILDING_NAME}" --quiet
@@ -341,56 +345,29 @@ for TOWN_NAME in "Iahim"; do
     set_settlement_region_settings "${TOWN_NAME}" "FBU"
 done
 
-for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Frigonița" "Nordavia" "Newport" "Nordavia" "Veneței"; do
+for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Faun" "Frigonița" "Nordavia" "Veneței"; do
     set_settlement_region_settings "${VILLAGE_NAME}" "Nucilandia"
 done
 for VILLAGE_NAME in "Bastonia"; do
     set_settlement_region_settings "${VILLAGE_NAME}" "FBU"
 done
 
+for PLAYER_USERNAME in $(get_players_usernames); do
+    for OTHER_REGION in 'BloodCraft' 'KreezCraft 1' 'Wilderness' 'YsmirCraft'; do
+        set_player_region_settings "${OTHER_REGION}" "${PLAYER_USERNAME}"
+    done
+done
+
 commit_transaction
 
 set_region_messages "end_portal" "The End Portal"
 
-set_player_region_settings "bloodcraft" "germanlk"
 set_player_region_settings "bloodcraft_citadel" "Hori873"
 set_player_region_settings "bloodcraft_pagoda" "Hori873"
-set_player_region_settings "kreezcraft1" "bvr12345"
-set_player_region_settings "kreezcraft1" "Calamithy"
-set_player_region_settings "kreezcraft1" "coR3q"
-set_player_region_settings "kreezcraft1" "Csaby"
-set_player_region_settings "kreezcraft1" "Cucu"
-set_player_region_settings "kreezcraft1" "deliric004"
-set_player_region_settings "kreezcraft1" "DeZaD1007"
-set_player_region_settings "kreezcraft1" "Doctorasshole"
-set_player_region_settings "kreezcraft1" "DropDeadCRAIGG"
-set_player_region_settings "kreezcraft1" "GeAsPa"
-set_player_region_settings "kreezcraft1" "GuessWho"
-set_player_region_settings "kreezcraft1" "Halavar105"
-set_player_region_settings "kreezcraft1" "Honeydew"
-set_player_region_settings "kreezcraft1" "Legomaster"
-set_player_region_settings "kreezcraft1" "loadme"
-set_player_region_settings "kreezcraft1" "MrNkkiHD"
-set_player_region_settings "kreezcraft1" "oOTaGsTeROo"
-set_player_region_settings "kreezcraft1" "P1epi3"
-set_player_region_settings "kreezcraft1" "poliphocet"
-set_player_region_settings "kreezcraft1" "Qurlles"
-set_player_region_settings "kreezcraft1" "Remus"
-set_player_region_settings "kreezcraft1" "RoLunaris"
-set_player_region_settings "kreezcraft1" "Seby"
 set_player_region_settings "kreezcraft1" "skonxsi"
-set_player_region_settings "kreezcraft1" "Sory666"
 set_player_region_settings "kreezcraft1" "SoulSilver"
-set_player_region_settings "kreezcraft1" "Sound453"
-set_player_region_settings "kreezcraft1" "T3RM1N4TOR"
-set_player_region_settings "kreezcraft1" "TnTE_bulan8"
 set_player_region_settings "kreezcraft1" "Xenon"
-set_player_region_settings "kreezcraft1wilderness" "Remus"
 set_player_region_settings "survivalisland" "Hori873" "Kamikaze" "Azzuro"
 set_player_region_settings "survivalisland2" "Hori873"
-set_player_region_settings "wilderness" "beepbeep"
-set_player_region_settings "wilderness" "KamiSarma"
-set_player_region_settings "wilderness" "Mary"
-set_player_region_settings "ysmircraft" "Gazz"
 
 commit_transaction
