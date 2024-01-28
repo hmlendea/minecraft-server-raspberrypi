@@ -7,13 +7,14 @@ PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 
 USE_AUTHME=true
 USE_DISCORDSRV=true
+USE_DYNMAP=true
 USE_ESSENTIALS=true
 USE_CUSTOMCRAFTING=true
 USE_GSIT=true
 USE_IMAGEMAPS=true
 USE_INVSEE=true
 USE_MINIMOTD=true
-USE_PLEXMAP=true
+USE_PLEXMAP=false
 USE_SKINSRESTORER=true
 USE_SPARK=true
 USE_STACKABLEITEMS=true
@@ -22,6 +23,10 @@ USE_VIEWDISTANCETWEAKS=true
 USE_WANDERINGTRADES=true
 USE_WORLDEDIT=true
 USE_WORLDGUARD=true
+
+if ${USE_DYNMAP}; then
+    USE_PLEXMAP=false
+fi
 
 function get_latest_github_release_tag() {
     local GH_REPOSITORY_URL=(${1//\// })
@@ -56,25 +61,28 @@ function get_modrinth_version_id() {
     echo "${VERSION_ID}"
 }
 
-function get_latest_modrinth_version() {
-    local PROJECT_ID="${1}"
-
-    local APIREQUEST="https://api.modrinth.com/v2/project/${PROJECT_ID}/version"
-    local APIRESPONSE=$(curl -s "${APIREQUEST}")
-    local LATEST_VERSION=$(echo "${APIRESPONSE}" | jq -r '.[0].version_number')
-
-    echo "${LATEST_VERSION}"
-}
-
-function get_modrinth_download_url() {
+function get_modrinth_asset_name() {
     local PROJECT_ID="${1}"
     local VERSION_ID="${2}"
 
     local APIREQUEST="https://api.modrinth.com/v2/project/${PROJECT_ID}/version/${VERSION_ID}"
     local APIRESPONSE=$(curl -s "${APIREQUEST}")
-    local DOWNLOAD_URL=$(echo "${APIRESPONSE}" | jq -r '.files[0].url')
+    local ASSET_NAME=$(echo "${APIRESPONSE}" | jq -r '.files.[0].filename')
 
-    echo "${DOWNLOAD_URL}"
+    echo "${ASSET_NAME}"
+}
+
+function get_latest_modrinth_version() {
+    local PROJECT_ID="${1}"
+
+    local APIREQUEST="https://api.modrinth.com/v2/project/${PROJECT_ID}/version"
+    local APIRESPONSE=$(curl -s "${APIREQUEST}")
+    local LATEST_VERSION=""
+
+    [ -z "${LATEST_VERSION}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq '[.[] | select(.loaders | to_entries[] | .value | IN("paper", "spigt", "bukkit"))]' | jq -r '.[0].version_number')
+    [ -z "${LATEST_VERSION}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq -r '.[0].version_number')
+
+    echo "${LATEST_VERSION}"
 }
 
 function get_latest_jenkins_build_version() {
@@ -158,8 +166,9 @@ function download_from_modrinth() {
     local PROJECT_ID="${1}"
     local PLUGIN_NAME="${2}"
     local PLUGIN_VERSION="${3}"
-    local ASSET_FILE_NAME=$(transform_asset_file_name "${4}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}")
+#    local ASSET_FILE_NAME=$(transform_asset_file_name "${4}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}")
     local VERSION_ID=$(get_modrinth_version_id "${PROJECT_ID}" "${PLUGIN_VERSION}")
+    local ASSET_FILE_NAME=$(get_modrinth_asset_name "${PROJECT_ID}" "${VERSION_ID}")
 
     download_plugin "https://cdn.modrinth.com/data/${PROJECT_ID}/versions/${VERSION_ID}/${ASSET_FILE_NAME}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
 }
@@ -249,6 +258,7 @@ else
     ${USE_CUSTOMCRAFTING}       && update_plugin "CustomCrafting"       "https://modrinth.com/plugin/customcrafting"        "customcrafting-spigot-%pluginVersion%.jar" \
                                 && update_plugin "WolfyUtils"           "https://modrinth.com/plugin/wolfyutils"            "wolfyutils-spigot-%pluginVersion%.jar"
     ${USE_DISCORDSRV}           && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"          "%pluginName%-Build-%pluginVersion%.jar"
+    ${USE_DYNMAP}               && update_plugin "Dynmap"               "https://modrinth.com/plugin/dynmap"                "%pluginName%-%pluginVersion%-spigot.jar"
     ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" \
                                 && update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" \
                                 && update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"

@@ -38,13 +38,14 @@ function set_config_value() {
         set_yml_value "${FILE}" "${KEY}" "${VALUE}"
     else
         local KEY_ESC="${KEY}"
+        local VAL_ESC=$(echo "${VALUE}" | sed -e 's/[]\/$*.^|[]/\\&/g')
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 
         echo "${FILE}: ${KEY}=${VALUE}"
         if [ -w "${FILE}" ]; then
-            sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+            sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
         else
-            sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VALUE}"'/g' "${FILE}"
+            sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
         fi
     fi
 }
