@@ -25,3 +25,21 @@ function function_exists() {
 
     return 1
 }
+
+function move-file() {
+    local OLD_FILE="${1}"
+    local NEW_FILE="${2}"
+
+    if [ ! -f "${OLD_FILE}" ]; then
+        echo "There is no such file '${OLD_FILE}'!"
+        return
+    fi
+
+    if [ -f "${NEW_FILE}" ]; then
+        echo "The file '${NEW_FILE}' already exists!"
+        return
+    fi
+
+    echo "Moving '${OLD_FILE}' to '${NEW_FILE}'..."
+    sudo mv "${OLD_FILE}" "${NEW_FILE}"
+}

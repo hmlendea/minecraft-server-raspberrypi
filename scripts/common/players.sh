@@ -41,7 +41,7 @@ function get_playerdata_value() {
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
     
-    nbted -p "${PLAYER_DATA_FILE}" | \
+    sudo nbted -p "${PLAYER_DATA_FILE}" | \
         grep "${PROPERTY}" | \
         sed 's/^.*\"'"${PROPERTY}"'\"\s*[\"]*\([^\"]*\).*/\1/g'
 }
@@ -61,6 +61,21 @@ function get_player_uuid() {
     [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_WHITELIST_FILE}")
     [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_OPS_FILE}")
 
+    if [ -z "${PLAYER_UUID}" ]; then
+        local INPUT="OfflinePlayer:${PLAYER_USERNAME}"
+        local HASH=$(echo -n "${INPUT}" | md5sum | awk '{print $1}')
+        local BYTE_ARRAY=""
+
+        for ((I = 0; I < 32; I+=2)); do
+            BYTE_ARRAY+="${HASH:$I:2}"
+        done
+    
+        BYTE6=$((0x${BYTE_ARRAY:6:2} & 0x0f | 0x30))
+        BYTE8=$((0x${BYTE_ARRAY:8:2} & 0x3f | 0x80))
+        BYTE_ARRAY="${BYTE_ARRAY:0:6}$(printf "%02x" "${BYTE6}")${BYTE_ARRAY:8:2}$(printf "%02x" "${BYTE8}")${BYTE_ARRAY:10}"
+        PLAYER_UUID="${BYTE_ARRAY:0:8}-${BYTE_ARRAY:8:4}-${BYTE_ARRAY:12:4}-${BYTE_ARRAY:16:4}-${BYTE_ARRAY:20}"
+    fi
+    
     echo "${PLAYER_UUID}"
 }
 
@@ -111,6 +126,10 @@ function get_player_discord_id() {
         [ -n "${DISCORD_ID}" ] && FOUND_IN_CACHE=true
     fi
     
+    if [ -z "${DISCORD_ID}" ] && [ -f "${DISCORDSRV_ACCOUNTS_FILE}" ]; then
+        DISCORD_ID=$(sudo grep "${PLAYER_UUID}" "${DISCORDSRV_ACCOUNTS_FILE}" | awk '{print $1}')
+    fi
+    
     if [ -z "${DISCORD_ID}" ] && [ -f "${DISCORDSRV_DIR}/linkedaccounts.json" ]; then
         DISCORD_ID=$(jq -r "to_entries | map(select(.value == \"${PLAYER_UUID}\")) | .[0].key" < "${DISCORDSRV_DIR}/linkedaccounts.json")
         [[ "${DISCORD_ID}" == "null" ]] && DISCORD_ID=""
@@ -141,7 +160,7 @@ function get_player_date_seen_first() {
     
     if [ -z "${PLAYER_DATE_REGISTRATION}" ]; then
         local PLAYER_USERNAME=$(get_player_username "${PLAYER_UUID}")
-        PLAYER_DATE_REGISTRATION=$(grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
+        PLAYER_DATE_REGISTRATION=$(sudo grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
 
 #        [ -n "${PLAYER_DATE_REGISTRATION}" ] && PLAYER_DATE_REGISTRATION=$(date +"%F %T" -d "$(date +%Y)-${PLAYER_DATE_REGISTRATION}")
     fi
@@ -175,7 +194,7 @@ function get_player_location() {
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
     
-    local POS_ALL=$(nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
+    local POS_ALL=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
     local POS_X_FULL=$(sed -n 2p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Y_FULL=$(sed -n 3p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Z_FULL=$(sed -n 4p <<< "${POS_ALL}" | sed 's/\s//g')
@@ -193,12 +212,12 @@ function get_player_spawn() {
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
 
-    local SPAWN_X=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_X=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     [ -z "${SPAWN_X}" ] && return
 
-    local SPAWN_Y=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
-    local SPAWN_Z=$(nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Y=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Z=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     echo "${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
 }
