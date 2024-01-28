@@ -34,3 +34,4 @@ misc:
   disable-out-of-order-chat: false
   suppress-null-id-disconnections: false
 allow-end-crystal-respawn: true
+tps-catchup: true

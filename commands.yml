@@ -79,3 +79,7 @@ aliases:
   - minecraft:tp @s $1
   unop:
   - minecraft:deop $1-
+  changedroppedbookauthor:
+  - minecraft:/data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1"}}}
+  renameitem:
+  - essentials:itemname &f$1

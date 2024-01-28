@@ -143,93 +143,115 @@ entities:
     alt-item-despawn-rate:
       enabled: true
       items:
-        acacia_leaves: 1200
-        ancient_debris: 72000
+        acacia_leaves: 2400
+        ancient_debris: 144000
         andesite: 6000
         arrow: 600
-        azalea_leaves: 1200
-        bamboo: 6000
-        beacon: 72000
-        birch_leaves: 1200
+        azalea_leaves: 2400
+        bamboo: 12000
+        beacon: 144000
+        birch_leaves: 2400
         bone: 600
-        cactus: 6000
-        cherry_leaves: 1200
+        cactus: 12000
+        cherry_leaves: 2400
+        coal: 144000
+        coal_block: 144000
+        coal_ore: 144000
         cobbled_deepslate: 1200
         cobblestone: 1200
-        dark_oak_leaves: 1200
-        diamond: 72000
-        diamond_axe: 72000
-        diamond_block: 72000
-        diamond_boots: 72000
-        diamond_chestplate: 72000
-        diamond_helmet: 72000
-        diamond_hoe: 72000
-        diamond_leggings: 72000
-        diamond_pickaxe: 72000
-        diamond_shovel: 72000
-        diamond_sword: 72000
+        copper_block: 144000
+        copper_ingot: 144000
+        copper_ore: 144000
+        dark_oak_leaves: 2400
+        deepslate_coal_ore: 144000
+        deepslate_copper_ore: 144000
+        deepslate_diamond_ore: 144000
+        deepslate_emerald_ore: 144000
+        deepslate_iron_ore: 144000
+        deepslate_redstone_ore: 144000
+        diamond: 144000
+        diamond_axe: 144000
+        diamond_block: 144000
+        diamond_boots: 144000
+        diamond_chestplate: 144000
+        diamond_helmet: 144000
+        diamond_hoe: 144000
+        diamond_leggings: 144000
+        diamond_ore: 144000
+        diamond_pickaxe: 144000
+        diamond_shovel: 144000
+        diamond_sword: 144000
         diorite: 6000
         dirt: 6000
         egg: 1200
-        elytra: 72000
-        emerald: 72000
-        emerald_block: 72000
-        ender_pearl: 1200
-        golden_axe: 1200
-        golden_boots: 1200
-        golden_chestplate: 1200
-        golden_helmet: 1200
-        golden_hoe: 1200
-        golden_leggings: 1200
-        golden_pickaxe: 1200
-        golden_shovel: 1200
-        golden_sword: 1200
+        elytra: 144000
+        emerald: 144000
+        emerald_block: 144000
+        emerald_ore: 144000
+        ender_pearl: 2400
+        golden_axe: 2400
+        golden_boots: 2400
+        golden_chestplate: 2400
+        golden_helmet: 2400
+        golden_hoe: 2400
+        golden_leggings: 2400
+        golden_pickaxe: 2400
+        golden_shovel: 2400
+        golden_sword: 2400
         granite: 6000
-        grass: 6000
         gravel: 6000
         ink_sac: 600
-        iron_axe: 1200
-        iron_boots: 1200
-        iron_chestplate: 1200
-        iron_helmet: 1200
-        iron_hoe: 1200
-        iron_leggings: 1200
-        iron_pickaxe: 1200
-        iron_shovel: 1200
-        iron_sword: 1200
-        jungle_leaves: 1200
-        kelp: 6000
+        iron_axe: 2400
+        iron_boots: 2400
+        iron_chestplate: 2400
+        iron_helmet: 2400
+        iron_hoe: 2400
+        iron_ingot: 144000
+        iron_leggings: 2400
+        iron_ore: 144000
+        iron_pickaxe: 2400
+        iron_shovel: 2400
+        iron_sword: 2400
+        jungle_leaves: 2400
+        kelp: 12000
         leather_boots: 600
         leather_chestplate: 600
         leather_helmet: 600
         leather_leggings: 600
-        mangrove_leaves: 1200
-        melon_slice: 6000
-        nether_star: 72000
-        nether_wart_block: 1200
-        netherite_axe: 72000
-        netherite_block: 72000
-        netherite_boots: 72000
-        netherite_chestplate: 72000
-        netherite_helmet: 72000
-        netherite_hoe: 72000
-        netherite_ingot: 72000
-        netherite_leggings: 72000
-        netherite_pickaxe: 72000
-        netherite_scrap: 72000
-        netherite_shovel: 72000
-        netherite_sword: 72000
-        netherrack: 1200
-        oak_leaves: 1200
-        pumpkin: 6000
+        mangrove_leaves: 2400
+        melon_slice: 12000
+        nether_star: 144000
+        nether_wart_block: 2400
+        netherite_axe: 144000
+        netherite_block: 144000
+        netherite_boots: 144000
+        netherite_chestplate: 144000
+        netherite_helmet: 144000
+        netherite_hoe: 144000
+        netherite_ingot: 144000
+        netherite_leggings: 144000
+        netherite_pickaxe: 144000
+        netherite_scrap: 144000
+        netherite_shovel: 144000
+        netherite_sword: 144000
+        netherrack: 2400
+        oak_leaves: 2400
+        pumpkin: 12000
+        quartz: 144000
+        quartz_ore: 144000
+        raw_copper: 144000
+        raw_iron: 144000
         red_sand: 6000
+        redstone: 144000
+        redstone_block: 144000
+        redstone_ore: 144000
         rotten_flesh: 600
         sand: 6000
         scaffolding: 6000
-        shield: 72000
-        spawner: 72000
+        shield: 144000
+        spawner: 144000
         spider_eye: 600
-        spruce_leaves: 1200
+        spruce_leaves: 2400
         stone: 1200
         stone_axe: 600
         stone_hoe: 600
@@ -238,12 +260,13 @@ entities:
         stone_sword: 600
         string: 600
         sugar_cane: 6000
-        totem_of_undying: 72000
+        tall_grass: 6000
+        totem_of_undying: 144000
         twisting_vines: 6000
-        warped_wart_block: 1200
+        warped_wart_block: 2400
         weeping_vines: 6000
         wheat_seeds: 600
-        wither_skeleton_skull: 72000
+        wither_skeleton_skull: 144000
         wooden_axe: 600
         wooden_hoe: 600
         wooden_pickaxe: 600
@@ -343,8 +366,8 @@ environment:
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
   portal-create-radius: 16
-  portal-search-radius: 24
-  portal-search-vanilla-dimension-scaling: true
+  portal-search-radius: 16
+  portal-search-vanilla-dimension-scaling: false
   treasure-maps:
     enabled: false
     find-already-discovered:

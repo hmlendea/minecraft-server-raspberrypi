@@ -13,6 +13,11 @@ function configure_plugin() {
 	reload_plugin "${PLUGIN_CMD}"
 }
 
+WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
+
+if [ "${LOCALE}" == "ro" ]; then
+    WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
+fi
 
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
@@ -61,6 +66,44 @@ if [ -f "${DISCORDSRV_CONFIG_FILE}" ]; then
     set_config_value "${DISCORDSRV_CONFIG_FILE}"    "ServerWatchdogEnabled" false
 
     reload_plugin "discordsrv"
+fi
+
+if [ -f "${DYNMAP_CONFIG_FILE}" ]; then
+    set_config_value "${DYNMAP_CONFIG_FILE}" "max-sessions"                 5
+    set_config_value "${DYNMAP_CONFIG_FILE}" "disable-webserver"            true
+    set_config_value "${DYNMAP_CONFIG_FILE}" "webserver-port"               25550
+    set_config_value "${DYNMAP_CONFIG_FILE}" "webpath"                      "${WEBMAP_DIR}"
+    set_config_value "${DYNMAP_CONFIG_FILE}" "tilespath"                    "${WEBMAP_TILES_DIR}"
+    set_config_value "${DYNMAP_CONFIG_FILE}" "webpage-title"                "${WEBMAP_PAGE_TITLE}"
+
+    set_config_value "${DYNMAP_CONFIG_FILE}" "allowchat"                    false
+    set_config_value "${DYNMAP_CONFIG_FILE}" "allowwebchat"                 false
+
+    # Optimisations
+    set_config_value "${DYNMAP_CONFIG_FILE}" "enabletilehash"               true
+    set_config_value "${DYNMAP_CONFIG_FILE}" "tiles-rendered-at-once"       1
+    set_config_value "${DYNMAP_CONFIG_FILE}" "tileupdatedelay"              60
+    set_config_value "${DYNMAP_CONFIG_FILE}" "timesliceinterval"            0.5
+    set_config_value "${DYNMAP_CONFIG_FILE}" "maxchunkspertick"             90
+    set_config_value "${DYNMAP_CONFIG_FILE}" "renderacceleratethreshold"    30
+    set_config_value "${DYNMAP_CONFIG_FILE}" "updaterate"                   3000
+
+    set_config_value "${DYNMAP_CONFIG_FILE}" "fullrender-min-tps"           19.5
+    set_config_value "${DYNMAP_CONFIG_FILE}" "update-min-tps"               19.0
+    set_config_value "${DYNMAP_CONFIG_FILE}" "zoomout-min-tps"              18.0
+
+    set_config_value "${DYNMAP_CONFIG_FILE}" "fullrenderplayerlimit"        2
+    set_config_value "${DYNMAP_CONFIG_FILE}" "updateplayerlimit"            3
+
+    #
+    set_config_value "${DYNMAP_CONFIG_FILE}" "smooth-lighting"              true
+    set_config_value "${DYNMAP_CONFIG_FILE}" "image-format"                 "png"
+    set_config_value "${DYNMAP_CONFIG_FILE}" "use-generated-textures"       false
+    set_config_value "${DYNMAP_CONFIG_FILE}" "correct-water-lighting"       false
+    set_config_value "${DYNMAP_CONFIG_FILE}" "transparent-leaves"           true # Might affect performance tho
+    set_config_value "${DYNMAP_CONFIG_FILE}" "ctm-support"                  false
+    set_config_value "${DYNMAP_CONFIG_FILE}" "skinsrestorer-integration"    true
+    set_config_value "${DYNMAP_CONFIG_FILE}" "defaultzoom"                  6
 fi
 
 if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
@@ -122,12 +165,10 @@ if [ -d "${PLEXMAP_DIR}" ]; then
         "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
         "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 0
 
-    PLEXMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     PLEXMAP_PLAYERS_LABEL="<online> Players"
     PLEXMAP_LOCALE="${LOCALE_FALLBACK}"
 
     if [ "${LOCALE}" == "ro" ]; then
-        PLEXMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
         PLEXMAP_PLAYERS_LABEL="<online> Jucători"
     fi
     if [ -f "${PLEXMAP_DIR}/locale/lang-${LOCALE}.yml" ]; then
@@ -135,7 +176,7 @@ if [ -d "${PLEXMAP_DIR}" ]; then
     fi
 
     set_config_values "${PLEXMAP_DIR}/locale/lang-${PLEXMAP_LOCALE}.yml" \
-        "ui.title"              "${PLEXMAP_PAGE_TITLE}" \
+        "ui.title"              "${WEBMAP_PAGE_TITLE}" \
         "ui.players.label"      "${PLEXMAP_PLAYERS_LABEL}" \
         "ui.blockinfo.value"    "${SERVER_NAME}<br />Powered by Raspberry Pi 4" \
         "ui.coords.value"       "<x>, <z>"
@@ -221,8 +262,8 @@ configure_plugin "viewdistancetweaks" "${VIEWDISTANCETWEAKS_CONFIG_FILE}" \
     "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
 
 configure_plugin "wanderingtrades" "${WANDERINGTRADES_CONFIG_FILE}" \
-	"language" "${LOCALE_FULL}" \
 	"updateChecker" false
+#	"language" "${LOCALE_FULL}" \
 
 configure_plugin "worldedit" "${WORLDEDIT_CONFIG_FILE}" \
     "enabled-components.update-notifications" false \
@@ -246,7 +287,11 @@ for MATERIAL in "diamond" "netherite"; do
     done
 done
 for ITEM in \
-    "ancient_debris" "diamond" "diamond_block" "emerald" "emerald_block" "netherite_block" "netherite_ingot" "netherite_scrap" \
+    "coal" "coal_block" "coal_ore" "deepslate_coal_ore" "copper_ingot" "raw_copper" "copper_block" "copper_ore" "deepslate_copper_ore" \
+    "diamond" "diamond_block" "diamond_ore" "deepslate_diamond_ore" "emerald" "emerald_block" "emerald_ore" "deepslate_emerald_ore" \
+    "iron_ingot" "raw_iron" "iron_ore" "deepslate_iron_ore" "redstone" "redstone_block" "redstone_ore" "deepslate_redstone_ore" \
+    "quartz" "quartz_ore" \
+    "ancient_debris" "netherite_block" "netherite_ingot" "netherite_scrap" \
     "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
 done
