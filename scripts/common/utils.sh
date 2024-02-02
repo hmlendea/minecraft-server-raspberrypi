@@ -26,6 +26,11 @@ function function_exists() {
     return 1
 }
 
+function string_is_null_or_whitespace() {
+    [[ -z "${1// }" ]] && return 0
+    return 1
+}
+
 function move-file() {
     local OLD_FILE="${1}"
     local NEW_FILE="${2}"

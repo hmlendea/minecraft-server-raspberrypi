@@ -34,6 +34,7 @@ if [ -f "${ESSENTIALS_USERDATA_DIR}/${NEW_UUID}.yml" ] \
 || [ -f "${SKINSRESTORER_DIR}/legacy/skins/${NEW_USERNAME_LOWERCASE}.legacyskin" ] \
 || [ -f "${SKINSRESTORER_DIR}/players/${NEW_UUID}.player" ] \
 || [ -f "${SKINSRESTORER_DIR}/skins/ ${NEW_USERNAME_LOWERCASE}.customskin" ] \
+|| [ -f "${TRADESHOP_PLAYER_DATA_DIR}/${NEW_UUID}.json" ] \
 || [ -f "${WORLD_ADVANCEMENTS_DIR}/${NEW_UUID}.json" ] \
 || [ -f "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat" ] \
 || [ -f "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat_old" ] \
@@ -56,6 +57,9 @@ move-file "${SKINSRESTORER_DIR}/legacy/skins/${OLD_USERNAME_LOWERCASE}.legacyski
 move-file "${SKINSRESTORER_DIR}/players/${OLD_UUID}.player" "${SKINSRESTORER_DIR}/players/${NEW_UUID}.player"
 move-file "${SKINSRESTORER_DIR}/skins/ ${OLD_USERNAME_LOWERCASE}.customskin" "${SKINSRESTORER_DIR}/skins/ ${NEW_USERNAME_LOWERCASE}.customskin"
 reload_plugin "skinsrestorer"
+
+move-file "${TRADESHOP_PLAYER_DATA_DIR}/${OLD_UUID}.json" "${TRADESHOP_PLAYER_DATA_DIR}/${NEW_UUID}.json"
+reload_plugin "tradeshop"
 
 sudo sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${WORLDGUARD_WORLD_REGIONS_FILE}"
 reload_plugin "worldguard"
