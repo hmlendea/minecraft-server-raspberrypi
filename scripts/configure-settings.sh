@@ -62,11 +62,9 @@ if [ -d "${AUTHME_DIR}" ]; then
     reload_plugin "authme"
 fi
 
-if [ -f "${DISCORDSRV_CONFIG_FILE}" ]; then
-    set_config_value "${DISCORDSRV_CONFIG_FILE}"    "ServerWatchdogEnabled" false
-
-    reload_plugin "discordsrv"
-fi
+configure_plugin "discordsrv" "${DISCORDSRV_CONFIG_FILE}" \
+    "ServerWatchdogEnabled" false \
+    "UpdateCheckDisabled"   true
 
 if [ -f "${DYNMAP_CONFIG_FILE}" ]; then
     set_config_value "${DYNMAP_CONFIG_FILE}" "max-sessions"                 5
@@ -106,14 +104,13 @@ if [ -f "${DYNMAP_CONFIG_FILE}" ]; then
     set_config_value "${DYNMAP_CONFIG_FILE}" "defaultzoom"                  6
 fi
 
-if [ -f "${ESSENTIALS_CONFIG_FILE}" ]; then
-    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "auto-afk"              300
-    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "ops-name-color"        "none"
-    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "locale"                "${LOCALE}"
-    set_config_value "${ESSENTIALS_CONFIG_FILE}"    "per-warp-permissions"  true
-    
-    reload_plugin "essentials"
-fi
+configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
+    "auto-afk"                  300 \
+    "ops-name-color"            "none" \
+    "locale"                    "${LOCALE}" \
+    "per-warp-permissions"      true \
+    "world-change-fly-reset"    false \
+    "world-change-speed-reset"  false
 
 configure_plugin "gsit" "${GSIT_CONFIG_FILE}" \
     "Options.check-for-update" false
@@ -217,6 +214,15 @@ configure_plugin "spark" "${SPARK_CONFIG_FILE}" \
 
 configure_plugin "stackableitems" "${STACKABLEITEMS_CONFIG_FILE}" \
     "update-check.enabled" false
+
+# TODO: check-updates to false once it can be updated via script
+configure_plugin "tradeshop" "${TRADESHOP_CONFIG_FILE}" \
+    "system-options.allow-metrics" false \
+    "system-options.check-updates" true \
+    "system-options.unlimited-admin" true \
+    "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
+    "global-options.allow-sign-break" true \
+    "global-options.allow-chest-break" true
 
 if [ -d "${TREEASSIST_DIR}" ]; then
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false

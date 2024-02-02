@@ -7,6 +7,7 @@ PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 
 USE_AUTHME=true
 USE_DISCORDSRV=true
+USE_DYNAMICLIGHTS=true
 USE_DYNMAP=true
 USE_ESSENTIALS=true
 USE_CUSTOMCRAFTING=true
@@ -18,6 +19,7 @@ USE_PLEXMAP=false
 USE_SKINSRESTORER=true
 USE_SPARK=true
 USE_STACKABLEITEMS=true
+USE_TRADESHOP=true
 USE_VIAVERSION=true
 USE_VIEWDISTANCETWEAKS=true
 USE_WANDERINGTRADES=true
@@ -258,6 +260,7 @@ else
     ${USE_CUSTOMCRAFTING}       && update_plugin "CustomCrafting"       "https://modrinth.com/plugin/customcrafting"        "customcrafting-spigot-%pluginVersion%.jar" \
                                 && update_plugin "WolfyUtils"           "https://modrinth.com/plugin/wolfyutils"            "wolfyutils-spigot-%pluginVersion%.jar"
     ${USE_DISCORDSRV}           && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"          "%pluginName%-Build-%pluginVersion%.jar"
+    ${USE_DYNAMICLIGHTS}        && update_plugin "DynamicLights"        "https://github.com/xCykrix/DynamicLights"          "%pluginName%-%pluginVersion%.jar"
     ${USE_DYNMAP}               && update_plugin "Dynmap"               "https://modrinth.com/plugin/dynmap"                "%pluginName%-%pluginVersion%-spigot.jar"
     ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" \
                                 && update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" \
