@@ -1,13 +1,3 @@
-# This is the main configuration file for Purpur.
-# As you can see, there's tons to configure. Some options may impact gameplay, so use
-# with caution, and make sure you know what each option does before configuring.
-#
-# If you need help with the configuration or have any questions related to Purpur,
-# join us in our Discord guild.
-#
-# Website: https://purpurmc.org 
-# Docs: https://purpurmc.org/docs 
-
 verbose: false
 settings:
   player-deaths-always-show-item: false
@@ -34,7 +24,7 @@ settings:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
   tps-catchup: true
-  server-mod-name: Purpur
+  server-mod-name: NuciCraft
   clamp-attributes: true
   use-alternate-keepalive: true
   disable-give-dropping: false
@@ -110,8 +100,8 @@ settings:
       range: 128
     grindstone:
       ignored-enchants:
-      - minecraft:binding_curse
-      - minecraft:vanishing_curse
+        - minecraft:binding_curse
+        - minecraft:vanishing_curse
       remove-attributes: false
       remove-name-and-lore: false
     cave_vines:
@@ -152,7 +142,7 @@ settings:
     upnp-port-forwarding: false
     max-joins-per-second: false
     kick-for-out-of-order-chat: true
-  username-valid-characters: ^[a-zA-Z0-9_.]*$
+  username-valid-characters: ^[a-zA-Z0-9_]*$
   food-properties: {}
   fix-network-serialized-items-in-creative: false
   blast-resistance-overrides: {}
@@ -196,7 +186,7 @@ world-settings:
   default:
     mobs:
       sniffer:
-        ridable: false
+        ridable: true
         ridable-in-water: true
         controllable: true
         attributes:
@@ -259,7 +249,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       wolf:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -447,7 +437,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       cow:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -718,7 +708,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       mooshroom:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -879,16 +869,16 @@ world-settings:
         bypass-mob-griefing: false
         takes-damage-from-water: false
         griefable-blocks:
-        - minecraft:oak_leaves
-        - minecraft:spruce_leaves
-        - minecraft:birch_leaves
-        - minecraft:jungle_leaves
-        - minecraft:acacia_leaves
-        - minecraft:dark_oak_leaves
-        - minecraft:beetroots
-        - minecraft:carrots
-        - minecraft:potatoes
-        - minecraft:wheat
+          - minecraft:oak_leaves
+          - minecraft:spruce_leaves
+          - minecraft:birch_leaves
+          - minecraft:jungle_leaves
+          - minecraft:acacia_leaves
+          - minecraft:dark_oak_leaves
+          - minecraft:beetroots
+          - minecraft:carrots
+          - minecraft:potatoes
+          - minecraft:wheat
         always-drop-exp: false
       salmon:
         ridable: false
@@ -1025,7 +1015,7 @@ world-settings:
         ridable-in-water: false
         controllable: true
       trader_llama:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -1100,10 +1090,10 @@ world-settings:
           distance: 8.0
           damage-amount: 4.0
         valid-ring-blocks:
-        - minecraft:prismarine
-        - minecraft:prismarine_bricks
-        - minecraft:sea_lantern
-        - minecraft:dark_prismarine
+          - minecraft:prismarine
+          - minecraft:prismarine_bricks
+          - minecraft:sea_lantern
+          - minecraft:dark_prismarine
       cauldron:
         fill-chances:
           rain: 0.05000000074505806
@@ -1145,13 +1135,13 @@ world-settings:
       nether_wart:
         affected-by-bonemeal: false
       campfire:
-        lit-when-placed: true
+        lit-when-placed: false
       chest:
-        open-with-solid-block-on-top: false
+        open-with-solid-block-on-top: true
       composter:
         sneak-to-bulk-process: false
       coral:
-        die-outside-water: true
+        die-outside-water: false
       dispenser:
         apply-cursed-to-armor-slots: true
         place-anvils: false
@@ -1179,6 +1169,7 @@ world-settings:
         only-players-trample: false
         feather-fall-distance-affects-trampling: true
         trample-height: -1.0
+        get-moist-from-below: true
       flowering_azalea:
         growth-chance: 0.0
       furnace:
@@ -1229,9 +1220,10 @@ world-settings:
         absorption:
           area: 64
           radius: 6
+          range: 8
         absorbs-lava: false
       stonecutter:
-        damage: 0.0
+        damage: 1.0
       turtle_egg:
         break-from-exp-orbs: true
         break-from-items: true
@@ -1246,6 +1238,8 @@ world-settings:
         lapis-persists: true
       observer:
         disable-clock: false
+      respawn-anchor:
+        explode: false
     tools:
       axe:
         strippables:
@@ -1526,6 +1520,26 @@ world-settings:
             into: minecraft:farmland
             condition: air_above
             drops: {}
+          minecraft:tube_coral_block:
+            into: minecraft:dead_tube_coral_block
+            condition: air_above
+            drops: {}
+          minecraft:brain_coral_block:
+            into: minecraft:dead_brain_coral_block
+            condition: air_above
+            drops: {}
+          minecraft:bubble_coral_block:
+            into: minecraft:dead_bubble_coral_block
+            condition: air_above
+            drops: {}
+          minecraft:fire_coral_block:
+            into: minecraft:dead_fire_coral_block
+            condition: air_above
+            drops: {}
+          minecraft:horn_coral_block:
+            into: minecraft:dead_horn_coral_block
+            condition: air_above
+            drops: {}
         replant-crops: true
         replant-nether-warts: true
       shovel:
@@ -1560,7 +1574,7 @@ world-settings:
       entity:
         shared-random: true
     gameplay-mechanics:
-      disable-oxidation-proximity-penalty: false
+      disable-oxidation-proximity-penalty: true
       mending-multiplier: 1.0
       arrow:
         movement-resets-despawn-counter: true
@@ -1577,15 +1591,15 @@ world-settings:
       milk-cures-bad-omen: true
       milk-clears-beneficial-effects: true
       note-block-ignore-above: false
-      persistent-tileentity-display-names-and-lore: false
-      persistent-droppable-entity-display-names: false
+      persistent-tileentity-display-names-and-lore: true
+      persistent-droppable-entity-display-names: true
       projectiles-bypass-mob-griefing: false
       tick-fluids: true
       entity-blindness-multiplier: 1.0
       trident-loyalty-void-return-height: 0.0
-      void-damage-height: -100.0
-      void-damage-dealt: 4.0
-      raid-cooldown-seconds: 7200
+      void-damage-height: -150.0
+      void-damage-dealt: 3.0
+      raid-cooldown-seconds: 300
       animal-breeding-cooldown-seconds: 0
       mobs-ignore-rails: false
       rain-stops-after-sleep: true
@@ -1595,7 +1609,7 @@ world-settings:
         daytime: 38400
         nighttime: 19200
       drowning:
-        air-ticks: 300
+        air-ticks: 450
         ticks-per-damage: 20
         damage-from-drowning: 2.0
       elytra:
@@ -1644,23 +1658,23 @@ world-settings:
             campfires: true
       armorstand:
         step-height: 0.0
-        set-name-visible-when-placing-with-custom-name: false
+        set-name-visible-when-placing-with-custom-name: true
         fix-nametags: false
         can-movement-tick: true
         can-move-in-water: true
         can-move-in-water-over-fence: true
-        place-with-arms-visible: false
+        place-with-arms-visible: true
       silk-touch:
         enabled: true
         spawner-name: <reset><white>Mob Spawner
         minimal-level: 1
         spawner-lore:
-        - Spawns a lobotomised <mob>
+          - Spawns a lobotomised <mob>
         tools:
-        - minecraft:iron_pickaxe
-        - minecraft:golden_pickaxe
-        - minecraft:diamond_pickaxe
-        - minecraft:netherite_pickaxe
+          - minecraft:iron_pickaxe
+          - minecraft:golden_pickaxe
+          - minecraft:diamond_pickaxe
+          - minecraft:netherite_pickaxe
       halloween:
         force: true
         head-chance: 0.0125
@@ -1677,7 +1691,7 @@ world-settings:
         phantoms: default
         wandering-traders: default
         village-sieges: default
-        ignore-creative-players: false
+        ignore-creative-players: true
       player:
         portal-wait-time: 80
         creative-portal-wait-time: 1
@@ -1694,10 +1708,10 @@ world-settings:
           update-tab-list: false
           mobs-target: true
         spawn-invulnerable-ticks: 60
-        invulnerable-while-accepting-resource-pack: false
+        invulnerable-while-accepting-resource-pack: true
         exp-dropped-on-death:
           equation: expLevel * 7
-          maximum: 100
+          maximum: 100000
         teleport-if-outside-border: false
         teleport-on-nether-ceiling-damage: false
         totem-of-undying-works-in-inventory: true
@@ -1714,7 +1728,7 @@ world-settings:
         ridable-in-water: false
         curse-of-binding:
           remove-with-weakness: false
-        shift-right-click-repairs-mending-points: 0
+        shift-right-click-repairs-mending-points: 10
         exp-pickup-delay-ticks: 2
         allow-void-trading: false
       projectile-offset:
@@ -1731,11 +1745,11 @@ world-settings:
       entity-left-handed-chance: 0.05000000074505806
       minecart:
         max-speed: 0.4
-        place-anywhere: false
+        place-anywhere: true
         powered-rail:
           boost-modifier: 0.06
         controllable:
-          enabled: false
+          enabled: true
           step-height: 1.0
           hop-boost: 0.5
           fall-damage: true

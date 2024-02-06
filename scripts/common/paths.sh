@@ -13,15 +13,14 @@ export SERVER_OPS_FILE="${SERVER_ROOT_DIR}/ops.json"
 export SERVER_PROPERTIES_FILE="${SERVER_ROOT_DIR}/server.properties"
 export SERVER_USERCACHE_FILE="${SERVER_ROOT_DIR}/usercache.json"
 export SERVER_WHITELIST_FILE="${SERVER_ROOT_DIR}/whitelist.json"
-# Server configs - Bukkit
 export BUKKIT_CONFIG_FILE="${SERVER_ROOT_DIR}/bukkit.yml"
-# Server configs - Spigot
-export SPIGOT_CONFIG_FILE="${SERVER_ROOT_DIR}/spigot.yml"
-# Server configs - Paper
+export PAPER_GLOBAL_CONFIG_FILE="${SERVER_ROOT_DIR}/config/paper-global.yml"
 export PAPER_WORLD_DEFAULT_CONFIG_FILE="${SERVER_ROOT_DIR}/config/paper-world-defaults.yml"
 export PAPER_WORLD_CONFIG_FILE="${WORLD_DIR}/paper-world.yml"
 export PAPER_WORLD_END_CONFIG_FILE="${WORLD_END_DIR}/paper-world.yml"
 export PAPER_WORLD_NETHER_CONFIG_FILE="${WORLD_NETHER_DIR}/paper-world.yml"
+export PURPUR_CONFIG_FILE="${SERVER_ROOT_DIR}/purpur.yml"
+export SPIGOT_CONFIG_FILE="${SERVER_ROOT_DIR}/spigot.yml"
 
 # World
 [ -z "${WORLD_NAME}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"

@@ -22,7 +22,8 @@ fi
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.item-despawn-rate"                  $((DESPAWN_RATE_ITEMS_DEFAULT_MINUTES * 60 * 20))
+set_config_value "${SERVER_PROPERTIES_FILE}"            "enforce-secure-profile"                                    "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.item-despawn-rate"                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.mob-spawn-range"                    "${MOB_SPAWN_RANGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.simulation-distance"                "${SIMULATION_DISTANCE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.view-distance"                      "${VIEW_DISTANCE}"
@@ -31,6 +32,8 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
+
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" "timings.server-name" "${SERVER_NAME}"
 
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                  true
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
@@ -47,6 +50,24 @@ set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "spawn.keep-spawn-loaded
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "chunks.auto-save-interval"                     $((AUTOSAVE_MINS_NETHER * 20 * 60))
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_NETHER}"
+
+set_config_value "${PURPUR_CONFIG_FILE}" "settings.server-mod-name"                                                                     "${SERVER_NAME}"
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.campfire.lit-when-placed"                                       false
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.chest.open-with-solid-block-on-top"                             true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.coral.die-outside-water"                                        false
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.farmland.get-moist-from-below"                                  true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.respawn-anchor.explode"                                         false
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.sponge.absorption.range"                                        8
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.stonecutter.damage"                                             1.0
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible"                 true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty"                true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players"               true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-droppable-display-names-and-lore"        true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore"       true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum"                100000
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack"  true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points"    10
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.use-better-mending"                                 true
 
 if [ -d "${AUTHME_DIR}" ]; then
     set_config_values "${AUTHME_CONFIG_FILE}" \
@@ -109,6 +130,8 @@ configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
     "ops-name-color"            "none" \
     "locale"                    "${LOCALE}" \
     "per-warp-permissions"      true \
+    "update-check"              false \
+    "unsafe-enchantments"       true \
     "world-change-fly-reset"    false \
     "world-change-speed-reset"  false
 
@@ -218,7 +241,7 @@ configure_plugin "stackableitems" "${STACKABLEITEMS_CONFIG_FILE}" \
 # TODO: check-updates to false once it can be updated via script
 configure_plugin "tradeshop" "${TRADESHOP_CONFIG_FILE}" \
     "system-options.allow-metrics" false \
-    "system-options.check-updates" true \
+    "system-options.check-updates" false \
     "system-options.unlimited-admin" true \
     "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
     "global-options.allow-sign-break" true \
@@ -289,40 +312,53 @@ done
 # Item despawn rates
 for MATERIAL in "diamond" "netherite"; do
     for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" ${DESPAWN_RATE_ITEMS_RARE_TICKS}
+    done
+done
+
+for OVERWORLD_MATERIAL in "coal" "copper" "iron" "gold" "redstone" "lapis" "diamond" "emerald"; do
+    for BLOCK in "${OVERWORLD_MATERIAL}_block" "${OVERWORLD_MATERIAL}_ore" "deepslate_${OVERWORLD_MATERIAL}_ore"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" ${DESPAWN_RATE_ITEMS_RARE_TICKS}
+    done
+done
+for NETHER_MATERIAL in "quartz" "gold"; do
+    for BLOCK in "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" ${DESPAWN_RATE_ITEMS_RARE_TICKS}
+    done
+done
+for OVERWORLD_MATERIAL_WITH_INGOT in "copper" "iron" "gold"; do
+    for ITEM in "raw_${OVERWORLD_MATERIAL_WITH_INGOT}" "raw_${OVERWORLD_MATERIAL_WITH_INGOT}_block" "${OVERWORLD_MATERIAL_WITH_INGOT}_ingot"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" ${DESPAWN_RATE_ITEMS_RARE_TICKS}
     done
 done
 for ITEM in \
-    "coal" "coal_block" "coal_ore" "deepslate_coal_ore" "copper_ingot" "raw_copper" "copper_block" "copper_ore" "deepslate_copper_ore" \
-    "diamond" "diamond_block" "diamond_ore" "deepslate_diamond_ore" "emerald" "emerald_block" "emerald_ore" "deepslate_emerald_ore" \
-    "iron_ingot" "raw_iron" "iron_ore" "deepslate_iron_ore" "redstone" "redstone_block" "redstone_ore" "deepslate_redstone_ore" \
-    "quartz" "quartz_ore" \
+    "coal" "redstone" "diamond" "emerald" \
     "ancient_debris" "netherite_block" "netherite_ingot" "netherite_scrap" \
     "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" ${DESPAWN_RATE_ITEMS_RARE_TICKS}
 done
 for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_MEDIUM_MINUTES * 60 * 20))
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" ${DESPAWN_RATE_ITEMS_MEDIUM_TICKS}
 done
 for ITEM in \
     "acacia_leaves" "azalea_leaves" "birch_leaves" "cherry_leaves" "dark_oak_leaves" "jungle_leaves" "nether_wart_block" "mangrove_leaves" "oak_leaves" "spruce_leaves" "warped_wart_block" \
     "ender_pearl" "netherrack"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" ${DESPAWN_RATE_ITEMS_FAST_TICKS}
 done
 for MATERIAL in "golden" "iron"; do
     for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_FAST_MINUTES * 60 * 20))
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" ${DESPAWN_RATE_ITEMS_FAST_TICKS}
     done
 done
 for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" ${DESPAWN_RATE_ITEMS_INSTANT_TICKS}
 done
 for ITEM in "boots" "chestplate" "helmet" "leggings"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.leather_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.leather_${ITEM}" ${DESPAWN_RATE_ITEMS_INSTANT_TICKS}
 done
 for MATERIAL in "wooden" "stone"; do
     for ITEM in "axe" "hoe" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" $((DESPAWN_RATE_ITEMS_INSTANT_SECONDS * 20))
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" ${DESPAWN_RATE_ITEMS_INSTANT_TICKS}
     done
 done
 
