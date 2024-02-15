@@ -1,27 +1,41 @@
+# This is the world defaults configuration file for Paper.
+# As you can see, there's a lot to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# 
+# If you need help with the configuration or have any questions related to Paper,
+# join us in our Discord or check the docs page.
+# 
+# Configuration options here apply to all worlds, unless you specify overrides inside
+# the world-specific config file inside each world folder.
+# 
+# Docs: https://docs.papermc.io/
+# Discord: https://discord.gg/papermc
+# Website: https://papermc.io/
+
 _version: 30
 anticheat:
   anti-xray:
     enabled: false
     engine-mode: 1
     hidden-blocks:
-      - gold_ore
-      - iron_ore
-      - coal_ore
-      - lapis_ore
-      - mossy_cobblestone
-      - obsidian
-      - chest
-      - diamond_ore
-      - redstone_ore
-      - clay
-      - emerald_ore
-      - ender_chest
+    - gold_ore
+    - iron_ore
+    - coal_ore
+    - lapis_ore
+    - mossy_cobblestone
+    - obsidian
+    - chest
+    - diamond_ore
+    - redstone_ore
+    - clay
+    - emerald_ore
+    - ender_chest
     lava-obscures: false
     max-block-height: 64
     max-chunk-section-index: 3
     replacement-blocks:
-      - stone
-      - oak_planks
+    - stone
+    - oak_planks
     update-radius: 2
     use-permission: false
   obfuscation:
@@ -76,16 +90,16 @@ entities:
     disable-player-crits: false
     door-breaking-difficulty:
       husk:
-        - HARD
+      - HARD
       vindicator:
-        - NORMAL
-        - HARD
+      - NORMAL
+      - HARD
       zombie:
-        - HARD
+      - HARD
       zombie_villager:
-        - HARD
+      - HARD
       zombified_piglin:
-        - HARD
+      - HARD
     ender-dragons-death-always-places-dragon-egg: false
     experience-merge-max-value: -1
     mobs-can-always-pick-up-loot:
@@ -153,7 +167,9 @@ entities:
         deepslate_copper_ore: 144000
         deepslate_diamond_ore: 144000
         deepslate_emerald_ore: 144000
+        deepslate_gold_ore: 144000
         deepslate_iron_ore: 144000
+        deepslate_lapis_ore: 144000
         deepslate_redstone_ore: 144000
         diamond: 144000
         diamond_axe: 144000
@@ -175,6 +191,8 @@ entities:
         emerald_block: 144000
         emerald_ore: 144000
         ender_pearl: 2400
+        gold_block: 144000
+        gold_ore: 144000
         golden_axe: 2400
         golden_boots: 2400
         golden_chestplate: 2400
@@ -188,6 +206,7 @@ entities:
         gravel: 6000
         ink_sac: 600
         iron_axe: 2400
+        iron_block: 144000
         iron_boots: 2400
         iron_chestplate: 2400
         iron_helmet: 2400
@@ -200,12 +219,15 @@ entities:
         iron_sword: 2400
         jungle_leaves: 2400
         kelp: 12000
+        lapis_block: 144000
+        lapis_ore: 144000
         leather_boots: 600
         leather_chestplate: 600
         leather_helmet: 600
         leather_leggings: 600
         mangrove_leaves: 2400
         melon_slice: 12000
+        nether_gold_ore: 144000
         nether_quartz_ore: 144000
         nether_star: 144000
         nether_wart_block: 2400
@@ -225,6 +247,7 @@ entities:
         oak_leaves: 2400
         pumpkin: 12000
         quartz: 144000
+        quartz_block: 144000
         raw_copper: 144000
         raw_iron: 144000
         red_sand: 6000
@@ -258,15 +281,6 @@ entities:
         wooden_pickaxe: 600
         wooden_shovel: 600
         wooden_sword: 600
-        iron_block: 144000
-        gold_block: 144000
-        gold_ore: 144000
-        deepslate_gold_ore: 144000
-        lapis_block: 144000
-        lapis_ore: 144000
-        deepslate_lapis_ore: 144000
-        quartz_block: 144000
-        nether_gold_ore: 144000
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
     despawn-ranges:
@@ -300,11 +314,11 @@ entities:
       safe-regen-delete-range: 32
     filter-bad-tile-entity-nbt-from-falling-blocks: true
     filtered-entity-tag-nbt-paths:
-      - Pos
-      - Motion
-      - SleepingX
-      - SleepingY
-      - SleepingZ
+    - Pos
+    - Motion
+    - SleepingX
+    - SleepingY
+    - SleepingZ
     iron-golems-can-spawn-in-air: false
     monster-spawn-max-light-level: default
     non-player-arrow-despawn-rate: '60'

@@ -69,6 +69,18 @@ set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechan
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points"    10
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.use-better-mending"                                 true
 
+configure_plugin "purpurextras" "${PURPUR_EXTRAS_CONFIG_FILE}" \
+    "settings.blocks.shift-right-click-for-invisible-item-frames" true \
+    "settings.gameplay-settings.cancel-damage-from-pet-owner" true \
+    "settings.items.beehive-lore.enabled" true \
+    "settings.lightning-transforms-entities.enabled" true \
+    "settings.mobs.snow_golem.drop-pumpkin-when-sheared" true \
+    "settings.mobs.sheep.jeab-shear-random-color" true \
+    "settings.mobs.unlock-all-recipes-on-join" true \
+    "settings.protect-blocks-with-loot.enabled" true \
+    "settings.anvil-splits-boats" true \
+    "settings.anvil-splits-minecarts" true \
+
 if [ -d "${AUTHME_DIR}" ]; then
     set_config_values "${AUTHME_CONFIG_FILE}" \
         "settings.restrictions.displayOtherAccounts" false \
@@ -82,6 +94,9 @@ if [ -d "${AUTHME_DIR}" ]; then
     
     reload_plugin "authme"
 fi
+
+configure_plugin "coreprotect" "${COREPROTECT_CONFIG_FILE}" \
+    "check-updates" true
 
 configure_plugin "discordsrv" "${DISCORDSRV_CONFIG_FILE}" \
     "ServerWatchdogEnabled" false \
@@ -141,9 +156,50 @@ configure_plugin "gsit" "${GSIT_CONFIG_FILE}" \
 configure_plugin "invsee" "${INVSEE_CONFIG_FILE}" \
     "enable-unknown-player-support" false
 
+configure_plugin "invunload" "${INVUNLOAD_CONFIG_FILE}" \
+    "max-chest-radius" 128 \
+    "default-chest-radius" 24 \
+    "cooldown" 2 \
+    "ignore-blocked-chests" false \
+    "check-for-updates" false \
+    "message-prefix" "&r"
+
 configure_plugin "luckperms" "${LUCKPERMS_CONFIG_FILE}" \
     "use-server-uuid-cache" true \
     "watch-files" false
+
+configure_plugin "oldcombatmechanics" "${OLDCOMBATMECHANICS_CONFIG_FILE}" \
+    "disable-chorus-fruit.enabled" true \
+    "disable-crafting.enabled" false \
+    "disable-enderpearl-cooldown.enabled" false \
+    "disable-offhand.enabled" false \
+    "disable-sword-sweep.enabled" false \
+    "update-checker.auto-update" false \
+    "update-checker.enabled" false
+
+
+if [ -d "${PAPERTWEAKS_DIR}" ]; then
+    set_config_values "${PAPERTWEAKS_CONFIG_FILE}" \
+        "enable-bstats" false \
+        "items.player-head-drops" true \
+        "mobs.more-mob-heads" true \
+        "survival.durability-ping" true \
+        "survival.unlock-all-recipes" true
+
+    set_config_values "${PAPERTWEAKS_MODULES_FILE}" \
+        "items.player-head-drops" true \
+        "mobs.more-mob-heads" true \
+        "survival.durability-ping" true \
+        "survival.unlock-all-recipes" true
+
+    set_config_values "${PAPERTWEAKS_MODULES_DIR}/moremobheads/config.yml" \
+        "require-player-kill" true
+
+    set_config_values "${PAPERTWEAKS_MODULES_DIR}/playerheaddrops/config.yml" \
+        "require-player-kill" true
+
+    reload_plugin "papertweaks"
+fi
 
 if [ -d "${PLEXMAP_DIR}" ]; then
     set_config_values "${PLEXMAP_CONFIG_FILE}" \
@@ -245,7 +301,13 @@ configure_plugin "tradeshop" "${TRADESHOP_CONFIG_FILE}" \
     "system-options.unlimited-admin" true \
     "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
     "global-options.allow-sign-break" true \
-    "global-options.allow-chest-break" true
+    "global-options.allow-chest-break" true \
+    "shop-sign-options.sign-default.colours.birch-sign" "&f" \
+    "shop-sign-options.sign-default.colours.crimson-sign" "&f" \
+    "shop-sign-options.sign-default.colours.oak-sign" "&f" \
+    "shop-sign-options.sign-default.colours.mangrove-sign" "&f" \
+    "shop-sign-options.sign-default.colours.spruce-sign" "&f" \
+    "shop-sign-options.sign-default.colours.warped-sign" "&f"
 
 if [ -d "${TREEASSIST_DIR}" ]; then
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false

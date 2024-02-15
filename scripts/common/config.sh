@@ -154,7 +154,8 @@ function set_json_value() {
     fi
 
     if [ -w "${FILE}" ]; then
-        jq -i "${JQ_COMMAND}" "${FILE}"
+        #jq -i "${JQ_COMMAND}" "${FILE}"
+        jq "${JQ_COMMAND}" "${FILE}"
     else
         jq "${JQ_COMMAND}" "${FILE}" | sudo tee "${FILE}.tmp" > /dev/null
         cat "${FILE}.tmp" | sudo tee "${FILE}" > /dev/null
