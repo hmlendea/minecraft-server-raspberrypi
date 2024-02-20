@@ -62,7 +62,7 @@ set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.stonecut
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible"                 true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty"                true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players"               true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-droppable-display-names-and-lore"        true
+set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-droppable-display-names"                 true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore"       true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum"                100000
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack"  true
@@ -180,11 +180,7 @@ configure_plugin "oldcombatmechanics" "${OLDCOMBATMECHANICS_CONFIG_FILE}" \
 
 if [ -d "${PAPERTWEAKS_DIR}" ]; then
     set_config_values "${PAPERTWEAKS_CONFIG_FILE}" \
-        "enable-bstats" false \
-        "items.player-head-drops" true \
-        "mobs.more-mob-heads" true \
-        "survival.durability-ping" true \
-        "survival.unlock-all-recipes" true
+        "enable-bstats" false
 
     set_config_values "${PAPERTWEAKS_MODULES_FILE}" \
         "items.player-head-drops" true \
@@ -322,6 +318,7 @@ if [ -d "${TREEASSIST_DIR}" ]; then
     set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Full"   false
 
     # Integrations
+    [ -f "${COREPROTECT_CONFIG_FILE}" ] && set_config_value "${TREEASSIST_CONFIG_FILE}" "Placed Blocks.Plugin Name" "CoreProtect"
     [ -f "${WORLDGUARD_CONFIG_FILE}" ] && set_config_value "${TREEASSIST_CONFIG_FILE}" "Plugins.WorldGuard" true
 
     reload_plugin "treeassist"

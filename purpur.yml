@@ -10,6 +10,8 @@
 
 verbose: false
 settings:
+  register-minecraft-debug-commands: false
+  bee-count-payload: false
   player-deaths-always-show-item: false
   messages:
     sleep-not-possible: default
