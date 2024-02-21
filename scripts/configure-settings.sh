@@ -150,6 +150,18 @@ configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
     "world-change-fly-reset"    false \
     "world-change-speed-reset"  false
 
+if [ "${LOCALE}" == "ro" ]; then
+    configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
+        "custom-join-message"           "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}a intrat în joc!" \
+        "custom-quit-message"           "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}a ieșit din joc!" \
+        "custom-new-username-message"   "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}a intrat în joc!"
+else
+    configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
+        "custom-join-message"           "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}joined the game!" \
+        "custom-quit-message"           "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}left the game!" \
+        "custom-new-username-message"   "${COLOUR_TEXT_MENTION_PLAYER}{PLAYER} ${COLOUR_TEXT_MESSAGE_PUBLIC}joined the game!"
+fi
+
 configure_plugin "gsit" "${GSIT_CONFIG_FILE}" \
     "Options.check-for-update" false
 
