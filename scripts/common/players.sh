@@ -227,7 +227,7 @@ function get_player_password() {
     local PLAYER_PASSWORD=""
     local FOUND_IN_CACHE=false
 
-    if [ -z "${DISCORD_ID}" ]; then
+    if [ -z "${PLAYER_PASSWORD}" ]; then
         PLAYER_PASSWORD=$(get_playerscache_value "${PLAYER_UUID}" "password" | sed 's/\"//g')
         [ -n "${PLAYER_PASSWORD}" ] && FOUND_IN_CACHE=true
     fi
@@ -241,6 +241,21 @@ function get_player_password() {
     echo "${PLAYER_PASSWORD}"
 }
 
+function get_player_playtime() {
+    local PLAYER_UUID="${1}"
+    local PLAYER_STATS_FILE="${WORLD_STATS_DIR}/${PLAYER_UUID}.json"
+
+    if [ ! -f "${PLAYER_STATS_FILE}" ]; then
+        echo "Unknown"
+        return
+    fi
+
+    local PLAYTIME_TICKS=$(jq ".stats.\"minecraft:custom\".\"minecraft:play_time\"" "${PLAYER_STATS_FILE}")
+    local PLAYTIME_SECS=$((PLAYTIME_TICKS/20))
+
+    echo "${PLAYTIME_SECS}" | awk '{printf "%d hour%s %d minute%s %d second%s\n", $1/3600, ($1/3600)==1?"":"s", ($1%3600)/60, (($1%3600)/60)==1?"":"s", $1%60, ($1%60)==1?"":"s"}'
+}
+
 function get_player_info() {
     local UUID="${1}"
     
@@ -249,6 +264,7 @@ function get_player_info() {
     echo "   - Discord ID : "$(get_player_discord_id "${UUID}")
     echo "   - Seen first : "$(get_player_date_seen_first "${UUID}")
     echo "   - Seen last  : "$(get_player_date_seen_last "${UUID}")
+    echo "   - Play time  : "$(get_player_playtime "${UUID}")
     echo "   - Last IP    : "$(get_player_ip "${UUID}")
     echo "   - Location   : "$(get_player_location "${UUID}")
     echo "   - Spawn      : "$(get_player_spawn "${UUID}")

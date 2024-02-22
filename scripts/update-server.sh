@@ -7,7 +7,7 @@ PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 
 USE_AUTHME=true
 USE_DISCORDSRV=true
-USE_DYNAMICLIGHTS=true
+USE_DYNAMICLIGHTS=false
 USE_DYNMAP=true
 USE_ESSENTIALS=true
 USE_CUSTOMCRAFTING=true
@@ -18,6 +18,8 @@ USE_MINIMOTD=true
 USE_OLDCOMBATMECHANICS=true
 USE_PAPERTWEAKS=true
 USE_PLEXMAP=false
+USE_PLUGMAN=true
+USE_PROTOCOLLIB=false
 USE_PURPUREXTRAS=true
 USE_SKINSRESTORER=true
 USE_SPARK=true
@@ -264,7 +266,7 @@ else
     ${USE_CUSTOMCRAFTING}       && update_plugin "CustomCrafting"       "https://modrinth.com/plugin/customcrafting"            "customcrafting-spigot-%pluginVersion%.jar" \
                                 && update_plugin "WolfyUtils"           "https://modrinth.com/plugin/wolfyutils"                "wolfyutils-spigot-%pluginVersion%.jar"
     ${USE_DISCORDSRV}           && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"              "%pluginName%-Build-%pluginVersion%.jar"
-    ${USE_DYNAMICLIGHTS}        && update_plugin "DynamicLights"        "https://github.com/xCykrix/DynamicLights"              "%pluginName%-%pluginVersion%.jar"
+    ${USE_DYNAMICLIGHTS}        && update_plugin "DynamicLights"        "https://github.com/xCykrix/DynamicLights"              "%pluginName%-%pluginVersion%-SNAPSHOT.jar"
     ${USE_DYNMAP}               && update_plugin "Dynmap"               "https://modrinth.com/plugin/dynmap"                    "%pluginName%-%pluginVersion%-spigot.jar"
     ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" \
                                 && update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" \
@@ -277,6 +279,8 @@ else
     ${USE_PAPERTWEAKS}          && update_plugin "PaperTweaks"          "https://github.com/MC-Machinations/VanillaTweaks"      "%pluginName%.jar"
     ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"                   "%pluginName%-%pluginVersion%.jar" \
                                 && update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"            "%pluginName%-%pluginVersion%.jar"
+    ${USE_PLUGMAN}              && update_plugin "PlugManX"             "https://github.com/TheBlackEntity/PlugManX"            "%pluginName%.jar"
+    ${USE_PROTOCOLLIB}          && update_plugin "ProtocolLib"          "https://github.com/dmulloy2/ProtocolLib"               "%pluginName%.jar"
     ${USE_PURPUREXTRAS}         && update_plugin "PurpurExtras"         "https://modrinth.com/plugin/purpurextras"              "%pluginName%-%pluginVersion%.jar"
     ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"       "%pluginName%.jar"
     ${USE_SPARK}                && update_plugin "spark"                "https://ci.lucko.me"                                   "%pluginName%-%pluginVersion%.jar"
