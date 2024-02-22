@@ -6,7 +6,7 @@ export COLOUR_RED="§c"
 export COLOUR_YELLOW="§e"
 
 export COLOUR_BOLD="§l"
-exoirt COLOUR_RESET="§r"
+export COLOUR_RESET="§r"
 
 export COLOUR_TEXT_DENIED="${COLOUR_RED}${COLOUR_BOLD}"
 export COLOUR_TEXT_MENTION_PLAYER="${COLOUR_GREEN_DARK}"
