@@ -80,7 +80,7 @@ aliases:
   unop:
   - minecraft:deop $1-
   renameitem:
-  - essentials:itemname &f$1-
+  - essentials:itemname &r$1-
   setbookauthor:
   - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1-"}}}
   rtp:
@@ -91,3 +91,5 @@ aliases:
   - essentials:warp shop
   setregiontp:
   - worldguard:region flag $1 teleport here
+  tpregion:
+  - worldguard:region teleport $1

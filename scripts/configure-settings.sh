@@ -1,5 +1,6 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
@@ -142,6 +143,8 @@ fi
 
 configure_plugin "essentials" "${ESSENTIALS_CONFIG_FILE}" \
     "auto-afk"                  300 \
+    "change-tab-complete-name"  true \
+    "chat.format"               "${COLOUR_TEXT_MENTION_PLAYER}{DISPLAYNAME}${COLOUR_RESET}: {MESSAGE}"
     "ops-name-color"            "none" \
     "locale"                    "${LOCALE}" \
     "per-warp-permissions"      true \
