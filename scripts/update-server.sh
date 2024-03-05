@@ -5,37 +5,6 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
 
-USE_AUTHME=true
-USE_DISCORDSRV=true
-USE_DYNAMICLIGHTS=false
-USE_DYNMAP=true
-USE_ESSENTIALS=true
-USE_CUSTOMCRAFTING=true
-USE_GSIT=true
-USE_IMAGEMAPS=true
-USE_INVSEE=true
-USE_MINIMOTD=true
-USE_OLDCOMBATMECHANICS=true
-USE_PAPERTWEAKS=true
-USE_PLEXMAP=false
-USE_PLUGMAN=true
-USE_PROTOCOLLIB=false
-USE_PURPUREXTRAS=true
-USE_SKINSRESTORER=true
-USE_SPARK=true
-USE_STACKABLEITEMS=true
-USE_TRADESHOP=true
-USE_ULTIMATEINVENTORY=true
-USE_VIAVERSION=true
-USE_VIEWDISTANCETWEAKS=true
-USE_WANDERINGTRADES=true
-USE_WORLDEDIT=true
-USE_WORLDGUARD=true
-
-if ${USE_DYNMAP}; then
-    USE_PLEXMAP=false
-fi
-
 function get_latest_github_release_tag() {
     local GH_REPOSITORY_URL=(${1//\// })
     local GH_REPOSITORY_NAME=${GH_REPOSITORY_URL[3]}
@@ -236,6 +205,9 @@ function update_plugin_jenkins() {
 
 function update_plugin() {
     local PLUGIN_NAME="${1}"
+
+    ! is_plugin_installed "${PLUGIN_NAME}" && return
+
     local URL="${2}"
     local ASSET_FILE_NAME_PATTERN="${3}"
     [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
@@ -262,34 +234,41 @@ if ! papermc status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q "Status: stopped"; 
 else
     update_server
 
-    ${USE_AUTHME}               && update_plugin "AuthMe"               "https://github.com/AuthMe/AuthMeReloaded"
-    ${USE_CUSTOMCRAFTING}       && update_plugin "CustomCrafting"       "https://modrinth.com/plugin/customcrafting"            "customcrafting-spigot-%pluginVersion%.jar" \
-                                && update_plugin "WolfyUtils"           "https://modrinth.com/plugin/wolfyutils"                "wolfyutils-spigot-%pluginVersion%.jar"
-    ${USE_DISCORDSRV}           && update_plugin "DiscordSRV"           "https://github.com/DiscordSRV/DiscordSRV"              "%pluginName%-Build-%pluginVersion%.jar"
-    ${USE_DYNAMICLIGHTS}        && update_plugin "DynamicLights"        "https://github.com/xCykrix/DynamicLights"              "%pluginName%-%pluginVersion%-SNAPSHOT.jar"
-    ${USE_DYNMAP}               && update_plugin "Dynmap"               "https://modrinth.com/plugin/dynmap"                    "%pluginName%-%pluginVersion%-spigot.jar"
-    ${USE_ESSENTIALS}           && update_plugin "EssentialsX"          "https://github.com/EssentialsX/Essentials" \
-                                && update_plugin "EssentialsXChat"      "https://github.com/EssentialsX/Essentials" \
-                                && update_plugin "EssentialsXSpawn"     "https://github.com/EssentialsX/Essentials"
-    ${USE_GSIT}                 && update_plugin "GSit"                 "https://github.com/Gecolay/GSit"
-    ${USE_IMAGEMAPS}            && update_plugin "ImageMaps"            "https://github.com/SydMontague/ImageMaps"              "%pluginName%.jar"
-    ${USE_INVSEE}               && update_plugin "InvSee++"             "https://github.com/Jannyboy11/InvSee-plus-plus"        "%pluginName%.jar"
-    ${USE_MINIMOTD}             && update_plugin "MiniMOTD"             "https://github.com/jpenilla/MiniMOTD"                  "minimotd-bukkit-%pluginVersion%.jar"
-    ${USE_OLDCOMBATMECHANICS}   && update_plugin "OldCombatMechanics"   "https://github.com/kernitus/BukkitOldCombatMechanics"  "%pluginName%.jar"
-    ${USE_PAPERTWEAKS}          && update_plugin "PaperTweaks"          "https://github.com/MC-Machinations/VanillaTweaks"      "%pluginName%.jar"
-    ${USE_PLEXMAP}              && update_plugin "Pl3xMap"              "https://modrinth.com/plugin/pl3xmap"                   "%pluginName%-%pluginVersion%.jar" \
-                                && update_plugin "Pl3xMap-Claims"       "https://modrinth.com/plugin/pl3xmap-claims"            "%pluginName%-%pluginVersion%.jar"
-    ${USE_PLUGMAN}              && update_plugin "PlugManX"             "https://github.com/TheBlackEntity/PlugManX"            "%pluginName%.jar"
-    ${USE_PROTOCOLLIB}          && update_plugin "ProtocolLib"          "https://github.com/dmulloy2/ProtocolLib"               "%pluginName%.jar"
-    ${USE_PURPUREXTRAS}         && update_plugin "PurpurExtras"         "https://modrinth.com/plugin/purpurextras"              "%pluginName%-%pluginVersion%.jar"
-    ${USE_SKINSRESTORER}        && update_plugin "SkinsRestorer"        "https://github.com/SkinsRestorer/SkinsRestorerX"       "%pluginName%.jar"
-    ${USE_SPARK}                && update_plugin "spark"                "https://ci.lucko.me"                                   "%pluginName%-%pluginVersion%.jar"
-    ${USE_STACKABLEITEMS}       && update_plugin "StackableItems"       "https://github.com/haveric/StackableItems"             "%pluginName%.jar"
-    ${USE_ULTIMATEINVENTORY}    && update_plugin "UltimateInventory"    "https://github.com/percyqaz/UltimateInventory"         "%pluginName%-%pluginVersion%.jar"
-    ${USE_VIAVERSION}           && update_plugin "ViaVersion"           "https://github.com/ViaVersion/ViaVersion" \
-                                && update_plugin "ViaBackwards"         "https://github.com/ViaVersion/ViaBackwards"
-    ${USE_VIEWDISTANCETWEAKS}   && update_plugin "ViewDistanceTweaks"   "https://ci.froobworld.com"                             "%pluginName%-%pluginVersion%.jar"
-    ${USE_WANDERINGTRADES}      && update_plugin "WanderingTrades"      "https://github.com/jpenilla/WanderingTrades"           "%pluginName%-%pluginVersion%.jar"
-    ${USE_WORLDEDIT}            && update_plugin "FastAsyncWorldEdit"   "https://ci.athion.net"                                 "%pluginName%-%pluginVersion%.jar"
-    ${USE_WORLDGUARD}           && update_plugin "WorldGuardExtraFlags" "https://github.com/aromaa/WorldGuardExtraFlags"        "%pluginName%.jar"
+    update_plugin "AuthMe"                  "https://github.com/AuthMe/AuthMeReloaded"
+    update_plugin "CustomCrafting"          "https://modrinth.com/plugin/customcrafting"            "customcrafting-spigot-%pluginVersion%.jar"
+    update_plugin "WolfyUtils"              "https://modrinth.com/plugin/wolfyutils"                "wolfyutils-spigot-%pluginVersion%.jar"
+    update_plugin "DeluxeMenus"             "https://ci.extendedclip.com"                           "%pluginName%-%pluginVersion%.jar"
+    update_plugin "DiscordSRV"              "https://github.com/DiscordSRV/DiscordSRV"              "%pluginName%-Build-%pluginVersion%.jar"
+    update_plugin "DynamicLights"           "https://github.com/xCykrix/DynamicLights"              "%pluginName%-%pluginVersion%-SNAPSHOT.jar"
+    update_plugin "Dynmap"                  "https://modrinth.com/plugin/dynmap"                    "%pluginName%-%pluginVersion%-spigot.jar"
+    update_plugin "EssentialsX"             "https://github.com/EssentialsX/Essentials"
+    update_plugin "EssentialsXSpawn"        "https://github.com/EssentialsX/Essentials"
+    update_plugin "EssentialsXChat"         "https://github.com/EssentialsX/Essentials"
+    update_plugin "GSit"                    "https://github.com/Gecolay/GSit"
+    update_plugin "ImageMaps"               "https://github.com/SydMontague/ImageMaps"              "%pluginName%.jar"
+    update_plugin "InvSee++"                "https://github.com/Jannyboy11/InvSee-plus-plus"        "%pluginName%.jar"
+    update_plugin "MiniMOTD"                "https://github.com/jpenilla/MiniMOTD"                  "minimotd-bukkit-%pluginVersion%.jar"
+    update_plugin "NuVotifier"              "https://github.com/NuVotifier/NuVotifier"              "%pluginName%.jar"
+    update_plugin "OldCombatMechanics"      "https://github.com/kernitus/BukkitOldCombatMechanics"  "%pluginName%.jar"
+    update_plugin "PaperTweaks"             "https://github.com/MC-Machinations/VanillaTweaks"      "%pluginName%.jar"
+    update_plugin "Pl3xMap"                 "https://modrinth.com/plugin/pl3xmap"                   "%pluginName%-%pluginVersion%.jar"
+    update_plugin "Pl3xMap-Claims"          "https://modrinth.com/plugin/pl3xmap-claims"            "%pluginName%-%pluginVersion%.jar"
+    update_plugin "PlugManX"                "https://github.com/TheBlackEntity/PlugManX"            "%pluginName%.jar"
+    update_plugin "ProtocolLib"             "https://github.com/dmulloy2/ProtocolLib"               "%pluginName%.jar"
+    update_plugin "PurpurExtras"            "https://modrinth.com/plugin/purpurextras"              "%pluginName%-%pluginVersion%.jar"
+    update_plugin "SkinsRestorer"           "https://github.com/SkinsRestorer/SkinsRestorerX"       "%pluginName%.jar"
+    update_plugin "spark"                   "https://ci.lucko.me"                                   "%pluginName%-%pluginVersion%.jar"
+    update_plugin "StackableItems"          "https://github.com/haveric/StackableItems"             "%pluginName%.jar"
+    update_plugin "TAB"                     "https://github.com/NEZNAMY/TAB"                        "%plugiNName%.v%pluginVersion%.jar"
+    update_plugin "TChat"                   "https://github.com/TectHost/TChat"                     "%pluginName%.jar"
+    update_plugin "UltimateInventory"       "https://github.com/percyqaz/UltimateInventory"         "%pluginName%-%pluginVersion%.jar"
+    update_plugin "Vault"                   "https://github.com/MilkBowl/Vault"                     "%pluginName%.jar"
+    update_plugin "ViaVersion"              "https://github.com/ViaVersion/ViaVersion"
+    update_plugin "ViaBackwards"            "https://github.com/ViaVersion/ViaBackwards"
+    update_plugin "ViewDistanceTweaks"      "https://ci.froobworld.com"                             "%pluginName%-%pluginVersion%.jar"
+    update_plugin "WanderingTrades"         "https://github.com/jpenilla/WanderingTrades"           "%pluginName%-%pluginVersion%.jar"
+    update_plugin "FastAsyncWorldEdit"      "https://ci.athion.net"                                 "%pluginName%-%pluginVersion%.jar"
+    update_plugin "VotingPlugin"            "https://bencodez.com"                                  "%pluginName%.jar"
+    update_plugin "WorldEditSUI"            "https://github.com/kennytv/WorldEditSUI"               "%pluginName%-%pluginVersion%.jar"
+    update_plugin "WorldGuardExtraFlags"    "https://github.com/aromaa/WorldGuardExtraFlags"        "%pluginName%.jar"
 fi

@@ -48,3 +48,54 @@ function move-file() {
     echo "Moving '${OLD_FILE}' to '${NEW_FILE}'..."
     sudo mv "${OLD_FILE}" "${NEW_FILE}"
 }
+
+function copy-file() {
+    local SOURCE_FILE="${1}"
+    local TARGET_FILE="${2}"
+
+    if [ ! -f "${SOURCE_FILE}" ]; then
+        echo "There is no such file '${SOURCE_FILE}'!"
+        return
+    fi
+
+    if [ -f "${TARGET_FILE}" ]; then
+        echo "The file '${TARGET_FILE}' already exists!"
+        return
+    fi
+
+    echo "Copying '${SOURCE_FILE}' to '${TARGET_FILE}'..."
+    sudo cp "${SOURCE_FILE}" "${TARGET_FILE}"
+}
+
+function copy-file-if-needed() {
+    local SOURCE_FILE="${1}"
+    local TARGET_FILE="${2}"
+
+    if [ ! -f "${SOURCE_FILE}" ]; then
+        echo "There is no such file '${SOURCE_FILE}'!"
+        return
+    fi
+
+    if [ -f "${TARGET_FILE}" ]; then
+        return
+    fi
+
+    copy-file "${SOURCE_FILE}" "${TARGET_FILE}"
+    sudo chown papermc:papermc "${TARGET_FILE}"
+}
+
+function create-file() {
+    local FILE_PATH="${*}"
+
+    [ -z "${FILE_PATH}" ] && return
+    [ -f "${FILE_PATH}" ] && return
+
+    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
+
+    mkdir -p "${DIRECTORY_PATH}"
+    if [ -w "${DIRECTORY_PATH}" ]; then
+        touch "${FILE_PATH}"
+    else
+        sudo touch "${FILE_PATH}"
+    fi
+}

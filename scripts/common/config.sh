@@ -42,10 +42,18 @@ function set_config_value() {
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 
         echo "${FILE}: ${KEY}=${VALUE}"
-        if [ -w "${FILE}" ]; then
-            sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
+        if grep -q "^\s*${KEY}\s*=" "${FILE}"; then
+            if [ -w "${FILE}" ]; then
+                sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
+            else
+                sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
+            fi
         else
-            sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
+            if [ -w "${FILE}" ]; then
+                echo "${KEY}=${VALUE}" >> "${FILE}"
+            else
+                echo "${KEY}=${VALUE}" | sudo tee -a "${FILE}" > /dev/null
+            fi
         fi
     fi
 }
@@ -132,9 +140,40 @@ function set_json_value() {
     local KEY="${2}"
     local VALUE="${3}"
 
+    if [[ ${KEY} =~ ^\.*[a-zA-Z0-9_-]*\.\.[a-zA-Z0-9_-]*$ ]]; then
+        set_json_value_with_sed "${FILE}" "${KEY}" "${VALUE}"
+    else
+        set_json_value_with_jq "${FILE}" "${KEY}" "${VALUE}"
+    fi
+}
+
+function set_json_value_with_sed() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
+
     local KEY_ESC="${KEY}"
 
-    KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+    KEY_ESC=$(echo "${KEY_ESC}" | sed -e 's/^\.//g' -e 's/\.\././g' -e 's/\./\\./g')
+    VALUE_ESC="${VALUE}"
+
+    echo "${FILE}: ${KEY}=${VALUE}"
+
+    if [ -w "${FILE}" ]; then
+        sed -i 's/\(\s*\"'"${KEY_ESC}"'\": \).*\"\(,\)*/\1\"'"${VALUE}"'\"\2/g' "${FILE}"
+    else
+        sudo sed -i 's/\(\s*\"'"${KEY_ESC}"'\": \).*\"\(,\)*/\1\"'"${VALUE}"'\"\2/g' "${FILE}"
+    fi
+}
+
+function set_json_value_with_jq() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
+
+    local KEY_ESC="${KEY}"
+
+    KEY_ESC=$(echo "${KEY_ESC}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
     VALUE_ESC="${VALUE}"
 
     grep -Eqv "^(true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
@@ -172,18 +211,7 @@ function run_server_command() {
     fi
     
     papermc command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
-}
-
-function reload_plugin() {
-    local PLUGIN_CMD="${1}"
-
-    ! ${IS_SERVER_RUNNING} && return
-
-    if [[ "${PLUGIN_CMD}" == "luckperms" ]]; then
-        run_server_command "${PLUGIN_CMD}" "reloadconfig"
-    else
-        run_server_command "${PLUGIN_CMD}" "reload"
-    fi
+    tput sgr0
 }
 
 function set_gamerule() {
