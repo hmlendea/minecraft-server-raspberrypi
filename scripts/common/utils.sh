@@ -1,4 +1,23 @@
 #!/bin/bash
+[ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
+
+function run_server_command() {
+    echo " > Running command: /"$*
+
+    if ! ${IS_SERVER_RUNNING}; then
+        echo "    > Error: The server is not running!"
+        return
+    fi
+    
+    papermc command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
+    tput sgr0
+}
+
+function send_broadcast_message() {
+    local MESSAGE="${1}"
+
+    run_server_command "broadcast" "${MESSAGE}"
+}
 
 function is_guid() {
     local GUID="${1}"
@@ -29,6 +48,11 @@ function function_exists() {
 function string_is_null_or_whitespace() {
     [[ -z "${1// }" ]] && return 0
     return 1
+}
+
+function find_in_logs() {
+    find "${SERVER_LOGS_DIR}" -name "*.log.gz" -exec zgrep -a --color --text "$*" {} +
+    grep -a --color --text "$@" "${SERVER_LOGS_DIR}"/*.log
 }
 
 function move-file() {
@@ -97,5 +121,25 @@ function create-file() {
         touch "${FILE_PATH}"
     else
         sudo touch "${FILE_PATH}"
+    fi
+}
+
+function download-file() {
+    local FILE_URL="${1}"
+    local FILE_PATH="${2}"
+
+    [ -z "${FILE_URL}" ] && return
+    [ -z "${FILE_PATH}" ] && return
+    [ -f "${FILE_PATH}" ] && return
+
+    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
+
+    mkdir -p "${DIRECTORY_PATH}"
+    if [ -w "${DIRECTORY_PATH}" ]; then
+        wget "${FILE_URL}" -O "${FILE_PATH}"
+        chown papermc:papermc "${FILE_PATH}"
+    else
+        sudo wget "${FILE_URL}" -O "${FILE_PATH}"
+        sudo chown papermc:papermc "${FILE_PATH}"
     fi
 }

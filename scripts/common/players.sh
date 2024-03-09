@@ -224,6 +224,10 @@ function get_player_spawn() {
 
 function get_player_password() {
     local PLAYER_UUID="${1}"
+
+    [ ! -f "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" ] && return
+
+    local PLAYER_USERNAME=$(get_player_username "${PLAYER_UUID}")
     local PLAYER_PASSWORD=""
     local FOUND_IN_CACHE=false
 
@@ -231,7 +235,8 @@ function get_player_password() {
         PLAYER_PASSWORD=$(get_playerscache_value "${PLAYER_UUID}" "password" | sed 's/\"//g')
         [ -n "${PLAYER_PASSWORD}" ] && FOUND_IN_CACHE=true
     fi
-    
+
+    [ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(find_in_logs "${PLAYER_USERNAME}" | grep "/\(auth\|l\|log\|login\) " | tail -n 1 | awk '{print $9}')
     #[ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(decrypt_authme_password "${PLAYER_UUID}")
     
     if ! ${FOUND_IN_CACHE} && [ -n "${PLAYER_PASSWORD}" ]; then
@@ -270,7 +275,7 @@ function get_player_info() {
     echo "   - Spawn      : "$(get_player_spawn "${UUID}")
 
     local PLAYER_PASSWORD=$(get_player_password "${UUID}")
-    [ -n "${PLAYER_PASSWORD}" ] && echo "   - Password   : "$(get_player_password "${UUID}")
+    [ -n "${PLAYER_PASSWORD}" ] && echo "   - Password   : ${PLAYER_PASSWORD}"
 }
 
 function get_players_uuids() {

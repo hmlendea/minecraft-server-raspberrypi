@@ -1,5 +1,6 @@
 #!/bin/bash
-source "/srv/papermc/scripts/common/status.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
 function set_config_values() {
     local FILE="${1}" && shift
@@ -42,7 +43,7 @@ function set_config_value() {
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 
         echo "${FILE}: ${KEY}=${VALUE}"
-        if grep -q "^\s*${KEY}\s*=" "${FILE}"; then
+        if grep -q "^\s*${KEY}\s*[=:]" "${FILE}"; then
             if [ -w "${FILE}" ]; then
                 sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
             else
@@ -140,7 +141,7 @@ function set_json_value() {
     local KEY="${2}"
     local VALUE="${3}"
 
-    if [[ ${KEY} =~ ^\.*[a-zA-Z0-9_-]*\.\.[a-zA-Z0-9_-]*$ ]]; then
+    if [[ ${KEY} == *".."* ]]; then
         set_json_value_with_sed "${FILE}" "${KEY}" "${VALUE}"
     else
         set_json_value_with_jq "${FILE}" "${KEY}" "${VALUE}"
@@ -200,18 +201,6 @@ function set_json_value_with_jq() {
         cat "${FILE}.tmp" | sudo tee "${FILE}" > /dev/null
         sudo rm "${FILE}.tmp"
     fi
-}
-
-function run_server_command() {
-    echo " > Running command: /"$*
-
-    if ! ${IS_SERVER_RUNNING}; then
-        echo "    > Error: The server is not running!"
-        return
-    fi
-    
-    papermc command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
-    tput sgr0
 }
 
 function set_gamerule() {

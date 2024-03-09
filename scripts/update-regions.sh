@@ -2,6 +2,7 @@
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
@@ -67,42 +68,67 @@ function set_region_priority() {
     set_config_value "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "regions.${REGION_ID}.priority" "${PRIORITY}"
 }
 
+function get_region_colour() {
+    local REGION_TYPE_ID="${1}"
+    local COLOUR_REGION="${COLOUR_HIGHLIGHT}"
+
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
+
+    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
+        COLOUR_REGION="${COLOUR_PLAYER}"
+    fi
+
+    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
+        COLOUR_REGION="${COLOUR_SETTLEMENT}"
+    fi
+
+    echo "${COLOUR_SUBREGION}"
+}
+
+function get_zone_colour() {
+    local REGION_TYPE_ID="${1}"
+    local COLOUR_ZONE="${COLOUR_AQUA}"
+
+    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
+        [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
+        [[ "${REGION_TYPE_ID}" == player_home* ]] && COLOUR_ZONE="${COLOUR_SETTLEMENT}"
+    fi
+
+    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
+        COLOUR_ZONE="${COLOUR_COUNTRY}"
+    fi
+
+    echo "${COLOUR_ZONE}"
+}
+
 function set_deny_message() {
     local REGION_ID="${1}"
     local REGION_TYPE="${2}"
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    local COLOUR_SUBREGION="${COLOUR_SUBREGION}"
-    local COLOUR_ZONE="${COLOUR_HIGHLIGHT}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_PLAYER}"
-
-        [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
-        [[ "${REGION_TYPE_ID}" == player_home* ]] && COLOUR_ZONE="${COLOUR_SETTLEMENT}"
-    fi
-
-    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_SETTLEMENT}"
-        COLOUR_ZONE="${COLOUR_COUNTRY}"
-    fi
+    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}INTERZIS! ${COLOUR_MESSAGE}Nu poți să faci asta (%what%) în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}INTERZIS! ${COLOUR_MESSAGE}Nu poți să faci asta (%what%) în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}INTERZIS! ${COLOUR_MESSAGE}Nu poți să faci asta (%what%) în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}DENIED! ${COLOUR_MESSAGE}You can't %what% in the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}DENIED! ${COLOUR_MESSAGE}You can't %what% in the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "${COLOUR_DENIED}DENIED! ${COLOUR_MESSAGE}You can't %what% in the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -113,36 +139,27 @@ function set_teleport_message() {
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    local COLOUR_SUBREGION="${COLOUR_SUBREGION}"
-    local COLOUR_ZONE="${COLOUR_HIGHLIGHT}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_PLAYER}"
-
-        [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
-        [[ "${REGION_TYPE_ID}" == player_home* ]] && COLOUR_ZONE="${COLOUR_SETTLEMENT}"
-    fi
-
-    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_SETTLEMENT}"
-        COLOUR_ZONE="${COLOUR_COUNTRY}"
-    fi
+    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Te teleportezi la ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Te teleportezi la ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Te teleportezi la ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Whisking ye away to the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Whisking ye away to the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "${COLOUR_MESSAGE}Whisking ye away to the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -153,40 +170,30 @@ function set_farewell_message() {
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    local COLOUR_SUBREGION="${COLOUR_SUBREGION}"
-    local COLOUR_ZONE="${COLOUR_HIGHLIGHT}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_PLAYER}"
-
-        [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
-        [[ "${REGION_TYPE_ID}" == player_home* ]] && COLOUR_ZONE="${COLOUR_SETTLEMENT}"
-    fi
-
-    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_SETTLEMENT}"
-        COLOUR_ZONE="${COLOUR_COUNTRY}"
-    fi
+    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}Ai ieșit din ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}Ai ieșit din ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}Ai ieșit din ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}You have left the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}You have left the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "${COLOUR_MESSAGE}You have left the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
-
 
 function set_greeting_message() {
     local REGION_ID="${1}"
@@ -194,36 +201,27 @@ function set_greeting_message() {
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    local COLOUR_SUBREGION="${COLOUR_SUBREGION}"
-    local COLOUR_ZONE="${COLOUR_HIGHLIGHT}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_PLAYER}"
-
-        [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
-        [[ "${REGION_TYPE_ID}" == player_home* ]] && COLOUR_ZONE="${COLOUR_SETTLEMENT}"
-    fi
-
-    if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
-        COLOUR_SUBREGION="${COLOUR_SETTLEMENT}"
-        COLOUR_ZONE="${COLOUR_COUNTRY}"
-    fi
+    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
     
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}Ai intrat în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}Ai intrat în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}Ai intrat în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}You have entered the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}You have entered the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "${COLOUR_MESSAGE}You have entered the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME}${COLOUR_MESSAGE}!"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -253,7 +251,9 @@ function set_region_messages() {
     if [[ "${LOCALE}" == "ro" ]]; then
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="turnul vamal de veghe"
+        [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="buncărul de apărare"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="turela de apărare"
+        [[ "${REGION_TYPE_ID}" == "defence_wall" ]] && REGION_TYPE="turela de apărare"
         [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_TYPE="baza militară"
         [[ "${REGION_TYPE_ID}" == "player_base" ]] && REGION_TYPE="baza lui"
         [[ "${REGION_TYPE_ID}" == "player_home" ]] && REGION_TYPE="casa lui"
@@ -266,6 +266,7 @@ function set_region_messages() {
     else
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="border watchtower"
+        [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="defence bunker"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="defence turret"
         [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_TYPE="military base"
         [[ "${REGION_TYPE_ID}" == "player_base" ]] && REGION_TYPE="base"
@@ -329,6 +330,8 @@ function set_settlement_region_settings() {
     local SETTLEMENT_NAME="${2}"
     local COUNTRY_NAME="${3}"
     local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")
+
+    echo "${SETTLEMENT_NAME}"
 
     set_region_flag "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
@@ -433,12 +436,12 @@ function set_building_settings() {
             REGION_PRIORITY=35
         fi
         
-        set_region_flag "${REGION_ID}" "blocked-cmds" '["/b","/back","/bed","/home","/homes","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tpo","/tpr"."/tprandom","/tpregion","/tprg","/warp","/warps"]'
+        set_region_flag "${REGION_ID}" "blocked-cmds" '["/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps"]'
     fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","cave_spider","creeper","dolphin""drowned","enderman","husk","phantom","skeleton","spider","squid","stray","witch","zombie","zombie_villager"]'
+        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","cave_spider","creeper","dolphin","drowned","enderman","husk","phantom","skeleton","spider","squid","stray","witch","zombie","zombie_villager"]'
         [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","blaze","cave_spider","dolphin","drowned","enderman","husk","phantom","skeleton","spider","squid","stray","zombie","zombie_villager"]'
         [[ "${REGION_ID}" == *_xp ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","blaze","creeper","dolphin","drowned","enderman","husk","phantom","squid","stray","witch","zombie_villager"]'
     fi
@@ -567,6 +570,7 @@ for NATION in "FBU" "Nucilandia"; do
     done
 
     set_structure_region_settings "${NATION}" "border_watchtower"
+    set_structure_region_settings "${NATION}" "defence_bunker"
     set_structure_region_settings "${NATION}" "defence_turret"
     set_structure_region_settings "${NATION}" "road_rail"
 done

@@ -246,6 +246,7 @@ else
     update_plugin "EssentialsXChat"         "https://github.com/EssentialsX/Essentials"
     update_plugin "GSit"                    "https://github.com/Gecolay/GSit"
     update_plugin "ImageMaps"               "https://github.com/SydMontague/ImageMaps"              "%pluginName%.jar"
+    update_plugin "InteractionVisualizer"   "https://ci.loohpjames.com"                             "%pluginName%-%pluginVersion%.jar"
     update_plugin "InvSee++"                "https://github.com/Jannyboy11/InvSee-plus-plus"        "%pluginName%.jar"
     update_plugin "MiniMOTD"                "https://github.com/jpenilla/MiniMOTD"                  "minimotd-bukkit-%pluginVersion%.jar"
     update_plugin "NuVotifier"              "https://github.com/NuVotifier/NuVotifier"              "%pluginName%.jar"
