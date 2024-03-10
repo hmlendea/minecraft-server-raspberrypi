@@ -249,8 +249,9 @@ function set_region_messages() {
     [[ "${*}" == *"--quiet"* ]] && USE_GREETINGS=false
 
     if [[ "${LOCALE}" == "ro" ]]; then
-        [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
+        [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="punctul vamal"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="turnul vamal de veghe"
+        [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="zidul vamal"
         [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="buncărul de apărare"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="turela de apărare"
         [[ "${REGION_TYPE_ID}" == "defence_wall" ]] && REGION_TYPE="turela de apărare"
@@ -265,6 +266,7 @@ function set_region_messages() {
         [[ "${REGION_TYPE_ID}" == "settlement_village" ]] && REGION_TYPE="satul"
     else
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
+        [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="border wall"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="border watchtower"
         [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="defence bunker"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="defence turret"
@@ -570,6 +572,7 @@ for NATION in "FBU" "Nucilandia"; do
     done
 
     set_structure_region_settings "${NATION}" "border_watchtower"
+    set_structure_region_settings "${NATION}" "border_wall"
     set_structure_region_settings "${NATION}" "defence_bunker"
     set_structure_region_settings "${NATION}" "defence_turret"
     set_structure_region_settings "${NATION}" "road_rail"

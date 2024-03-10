@@ -242,7 +242,7 @@ if is_plugin_installed "EssentialsX"; then
             "newbies.announce-format"       "$(get_announcement_message Bun venit ${COLOUR_PLAYER}${PLACEHOLDER_DISPLAYNAME} ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
-        configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages_ro.properties" \
+        configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
             "action"                        "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}!)" \
             "backOther"                     "$(get_formatted_message_minimessage info teleport ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}s-a întors la locația anterioară)" \
             "backUsageMsg"                  "$(get_formatted_message_minimessage info teleport Te întorci la locația anterioară)" \
@@ -254,12 +254,13 @@ if is_plugin_installed "EssentialsX"; then
             "gameMode"                      "$(get_formatted_message_minimessage success gamemode Modul de joc a fost schimbat la ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
             "godMode"                       "$(get_formatted_message_minimessage success gamemode Modul invincibil ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
             "homeSet"                       "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
-            "itemnameSuccess"               "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit ca \"${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE_MINIMESSAGE}\".)" \
+            "itemnameSuccess"               "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit în \"${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE_MINIMESSAGE}\".)" \
             "kitResetOther"                 "$(get_formatted_message_minimessage info kit Perioada de așteptare a kit-ului ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a fost resetată pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
             "meRecipient"                   "${COLOUR_HIGHLIGHT_MINIMESSAGE}eu" \
             "meSender"                      "${COLOUR_HIGHLIGHT_MINIMESSAGE}eu" \
             "msgFormat"                     "$(get_formatted_message_minimessage info message ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}→ ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1}${COLOUR_CHAT_PRIVATE_MINIMESSAGE}: ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
             "noAccessCommand"               "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
+            "noPendingRequest"              "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
             "noPerm"                        "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
             "pendingTeleportCancelled"      "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
             "playerNeverOnServer"           "$(get_formatted_message_minimessage error inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_AG0} ${COLOUR_MESSAGE_MINIMESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT_MINIMESSAGE}${SERVER_NAME})" \
@@ -273,7 +274,7 @@ if is_plugin_installed "EssentialsX"; then
             "requestTimedOutFrom"           "$(get_formatted_message_minimessage error player Cererea de teleportare de la ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a expirat)" \
             "seenOffline"                   "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}este ${COLOUR_RED_DARK_MINIMESSAGE}offline ${COLOUR_MESSAGE_MINIMESSAGE}de ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
             "seenOnline"                    "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}este ${COLOUR_GREEN_LIGHT_XML}online ${COLOUR_MESSAGE_MINIMESSAGE}de ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "teleporting"                   "$(get_formatted_message_minimessage success teleport Te-ai teleportat la locația specificată)" \
+            "teleporting"                   "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
             "teleportBottom"                "$(get_formatted_message_minimessage sucess teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT_MINIMESSAGE}jos ${COLOUR_MESSAGE_MINIMESSAGE}spațiu liber de la locația curentă)" \
             "teleportHereRequest"           "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}ți-a cerut să te teleportezi la locația sa)" \
             "teleportHome"                  "$(get_formatted_message_minimessage success home Te-ai teleportat la ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}.)" \
@@ -282,7 +283,7 @@ if is_plugin_installed "EssentialsX"; then
             "teleportTop"                   "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT_MINIMESSAGE}sus ${COLOUR_MESSAGE_MINIMESSAGE}spațiu liber de la locația curentă)" \
             "teleportToPlayer"              "$(get_formatted_message_minimessage success player Te-ai teleportat la ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0}.)" \
             "timeBeforeTeleport"            "$(get_formatted_message_minimessage error teleport Trebuie să aștepți ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}înainte de a te putea teleporta din nou)" \
-            "typeTpacancel"                 "$(get_formatted_message_minimessage info player Pentru a o retrage, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpcancel${COLOUR_MESSAGE_MINIMESSAGE}.)" \
+            "typeTpacancel"                 "$(get_formatted_message_minimessage info player Pentru a o retrage, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpacancel${COLOUR_MESSAGE_MINIMESSAGE}.)" \
             "typeTpaccept"                  "$(get_formatted_message_minimessage info player Pentru a o aproba, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpyes${COLOUR_MESSAGE_MINIMESSAGE}.)" \
             "typeTpdeny"                    "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpno${COLOUR_MESSAGE_MINIMESSAGE}.)" \
             "unsafeTeleportDestination"     "$(get_formatted_message_minimessage error teleport Destinația aleasă pentru teleportare nu poate să fie setată deoarece nu este sigură)" \
@@ -319,6 +320,7 @@ if is_plugin_installed "EssentialsX"; then
             "meSender"                      "${COLOUR_HIGHLIGHT_MINIMESSAGE}me" \
             "msgFormat"                     "$(get_formatted_message_minimessage info message ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}→ ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1}${COLOUR_CHAT_PRIVATE_MINIMESSAGE}: ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
             "noAccessCommand"               "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
+            "noPendingRequest"              "$(get_formatted_message_minimessage error player There are no pending requests)" \
             "noPerm"                        "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
             "pendingTeleportCancelled"      "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
             "playerNeverOnServer"           "$(get_formatted_message_minimessage error inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}never played on ${COLOUR_HIGHLIGHT_MINIMESSAGE}${SERVER_NAME})" \
@@ -332,7 +334,7 @@ if is_plugin_installed "EssentialsX"; then
             "requestTimedOutFrom"           "$(get_formatted_message_minimessage error player The teleportation request from ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has timed out)" \
             "seenOffline"                   "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been ${COLOUR_RED_DARK_XML}offline ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
             "seenOnline"                    "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been ${COLOUR_GREEN_LIGHT_XML}online ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "teleporting"                   "$(get_formatted_message_minimessage success teleport Teleported to the specified location)" \
+            "teleporting"                   "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
             "teleportBottom"                "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT_MINIMESSAGE}lowest ${COLOUR_MESSAGE_MINIMESSAGE}empty space at your current location)" \
             "teleportHereRequest"           "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}asked you to teleport to them)" \
             "teleportRequestTimeoutInfo"    "$(get_formatted_message_minimessage info player This request will time out after ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} seconds)" \
@@ -341,7 +343,7 @@ if is_plugin_installed "EssentialsX"; then
             "teleportTop"                   "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT_MINIMESSAGE}highest ${COLOUR_MESSAGE_MINIMESSAGE}empty space at your current location)" \
             "teleportToPlayer"              "$(get_formatted_message_minimessage success player Teleported to ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0})" \
             "timeBeforeTeleport"            "$(get_formatted_message_minimessage error teleport You must wait ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}before teleporting again)" \
-            "typeTpacancel"                 "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND_MINIMESSAGE}/tpcancel)" \
+            "typeTpacancel"                 "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND_MINIMESSAGE}/tpacancel)" \
             "typeTpaccept"                  "$(get_formatted_message_minimessage info player To approve it, use ${COLOUR_COMMAND_MINIMESSAGE}/tpyes)" \
             "typeTpdeny"                    "$(get_formatted_message_minimessage info player To deny this request, use ${COLOUR_COMMAND_MINIMESSAGE}/tpno)" \
             "unsafeTeleportDestination"     "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
@@ -759,14 +761,16 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "FastAsyncWorldEdit" "${WORLDEDIT_DIR}/lang/strings.json" \
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
-            "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit Selecția a fost scurtată cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocuri)" \
+            "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
+            "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Au fost copiate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit Selecția a fost scurtată cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit Nu s-a făcut nici o selecție)" \
-            "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocuri)" \
-            "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocuri)" \
-            "worldedit..move..moved"                                "$(get_formatted_message success worldedit Au fost mutate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocuri)" \
+            "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..move..moved"                                "$(get_formatted_message success worldedit Au fost mutate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Poziția a fost deja setată)" \
             "worldedit..redo..none"                                 "$(get_formatted_message error worldedit Nu există modificări de refăcut)" \
-            "worldedit..redo..redone"                               "$(get_formatted_message success worldedit S-au refăcut ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}modificări)" \
+            "worldedit..redo..redone"                               "$(get_formatted_message success worldedit S-au refăcut ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} modificări)" \
             "worldedit..reload..config"                             "$(get_reload_message FastAsyncWorldEdit)" \
             "worldedit..select..cleared"                            "$(get_formatted_message success worldedit Selecția a fost ștearsă)" \
             "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit Poziția ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
@@ -784,14 +788,16 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
     else
         configure_plugin "FastAsyncWorldEdit" "${WORLDEDIT_DIR}/lang/strings.json" \
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
-            "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit The selection was shrunk by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocks)" \
+            "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
+            "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Copied ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit The selection was shrunk by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit No selection has been made)" \
-            "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocks)" \
-            "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocks)" \
-            "worldedit..move..moved"                                "$(get_formatted_message success worldedit Moved ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}blocks)" \
+            "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..move..moved"                                "$(get_formatted_message success worldedit Moved ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Position alreay set)" \
             "worldedit..redo..none"                                 "$(get_formatted_message error worldedit Nothing to redo)" \
-            "worldedit..redo..redone"                               "$(get_formatted_message success worldedit Redid ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}edits)" \
+            "worldedit..redo..redone"                               "$(get_formatted_message success worldedit Redid ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} edits)" \
             "worldedit..reload..config"                             "$(get_reload_message FastAsyncWorldEdit)" \
             "worldedit..select..cleared"                            "$(get_formatted_message success worldedit The selection was cleared)" \
             "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit Position ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
