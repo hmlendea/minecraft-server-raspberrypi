@@ -8,6 +8,7 @@ server-icon.png
 
 # Binaries
 *.jar
+libraries
 
 # Temporary files
 .cache
