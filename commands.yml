@@ -13,6 +13,8 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
+  auth:
+  - authme:log $$1
   icanhasbukkit:
   - version $1-
   b:
@@ -21,8 +23,27 @@ aliases:
   - home bed
   creative:
   - gamemode creative
+  - vanish off
+  spectator:
+  - gamemode spectator
+  - vanish on
+  spectate:
+  - minecraft:tp @s $$1
+  - spectator
+  spec:
+  - spectate $1
+  surv:
+  - survival
   exit:
   - stop
+  broadcast:
+  - essentials:broadcast $1-
+  - discordsrv:discordsrv broadcast $1-
+  announcement:
+  - essentials:broadcast $$1-!!!
+  - discordsrv:discordsrv broadcast @everyone $$1-!!!
+  god:
+  - essentials:god $1-
   g:
   - minecraft:give $1-
   give:
@@ -74,9 +95,6 @@ aliases:
   - rg setpriority -w world $1 50
   - rg flag -w world $1 greeting
   - rg flag -w world $1 farewell
-  spectate:
-  - gamemode spectator
-  - minecraft:tp @s $1
   unop:
   - minecraft:deop $1-
   renameitem:
@@ -88,8 +106,64 @@ aliases:
   wild:
   - essentials:tprandom
   shop:
-  - essentials:warp shop
+  - essentials:warp Shop
   setregiontp:
-  - worldguard:region flag $1 teleport here
+  - worldguard:region flag $$1 teleport here
   tpregion:
-  - worldguard:region teleport $1
+  - worldguard:region teleport $$1
+  rgtp:
+  - tpregion $$1
+  reloadconfigs:
+  - authme:authme reload
+  - bukkit:reload commands
+  - bukkit:reload permissions
+  - coreprotect:co reload
+  - customcrafting:cc reload
+  - discordsrv:discordsrv reload
+  - easycarts:easycarts reload
+  - essentials:essentials reload
+  - gsit:gsitreload
+  - invunload:invunload reload
+  - luckperms:lp reloadconfig
+  - minimotd:minimotd reload
+  - oldcombatmechanics:ocm reload
+  - papertweaks:pt reload
+  - purpurextras:purpurextras reload
+  - skinsrestorer:sr reload
+  - stackableitems:si reload
+  - tab:tab reload
+  - tradeshop:ts reload
+  - treeassist:ta reload
+  - superbvote:sv reload
+  - viaversion:viaversion reload
+  - votifier:nvreload
+  - superbvote:sv reload
+  - viewdistancetweaks:vdt reload
+  - wanderingtrades:wt reload
+  - worldeditsui:wesui reload
+  - worldguard:wg reload
+  wexpandh:
+  - /expand $1 north
+  - /expand $1 west
+  - /expand $1 south
+  - /expand $1 east
+  wexpandv:
+  - /expand $1 up
+  - /expand $1 down
+  wexpandall:
+  - wexpandv $1
+  - wexpandh $1
+  weshrink:
+  - /contract $1
+  wesel1:
+  - /pos1
+  wesel2:
+  - /pos2
+  wesel:
+  - wesel1
+  - wesel2
+  createregion:
+  - rg define $$1 $2-
+  - rg priority $$1 50
+  testcmd:
+  - msg $sender test $sender test
