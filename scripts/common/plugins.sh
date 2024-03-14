@@ -62,10 +62,11 @@ function get_plugin_dir() {
 
 function get_plugin_file() {
     local PLUGIN_NAME="${1}" && shift
-
     ! is_plugin_installed "${PLUGIN_NAME}" && return
 
     local PLUGIN_DIR="$(get_plugin_dir ${PLUGIN_NAME})"
+    [ ! -d "${PLUGIN_DIR}" ] && return
+
 	local PLUGIN_FILE="${1}" && shift
 
     if [ -f "${PLUGIN_FILE}" ]; then
@@ -113,13 +114,11 @@ function reload_plugin() {
 
 function configure_plugin() {
     local PLUGIN_NAME="${1}" && shift
-    local PLUGIN_DIR="$(get_plugin_dir ${PLUGIN_NAME})"
-
     ! is_plugin_installed "${PLUGIN_NAME}" && return
 
-	local PLUGIN_CONFIG_FILE="$(get_plugin_file ${1})" && shift
-    [ ! -f "${PLUGIN_CONFIG_FILE}" ] && return
+	local PLUGIN_FILE="$(get_plugin_file ${PLUGIN_NAME} ${1})" && shift
+    [ ! -f "${PLUGIN_FILE}" ] && return
 
-	set_config_values "${PLUGIN_CONFIG_FILE}" "${@}"
+	set_config_values "${PLUGIN_FILE}" "${@}"
 	reload_plugin "${PLUGIN_NAME}"
 }

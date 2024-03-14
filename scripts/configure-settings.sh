@@ -20,6 +20,7 @@ PLACEHOLDER_PLAYER_PERCENT="%player%"
 PLACEHOLDER_DISPLAYNAME="{DISPLAYNAME}"
 PLACEHOLDER_MESSAGE="{MESSAGE}"
 PLACEHOLDER_MESSAGE_PERCENT="%message%"
+PLACEHOLDER_MESSAGE_POINTY="<message>"
 PLACEHOLDER_NAME_PERCENT="%name%"
 PLACEHOLDER_REPLY_PERCENT="%reply%"
 
@@ -253,6 +254,7 @@ configure_plugin "Dynmap" config \
 
 
 if is_plugin_installed "EssentialsX"; then
+    echo EssentialsX
     configure_plugin "EssentialsX" config \
         "auto-afk"                              300 \
         "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
@@ -647,12 +649,12 @@ if is_plugin_installed "SkinsRestorer"; then
     if [ "${LOCALE}" == "ro" ]; then
         copy-file-if-needed "${SKINSRESTORER_DIR}/locales/repository/locale_ro.json" "${SKINSRESTORER_DIR}/locales/custom/locale_ro.json"
         configure_plugin "SkinsRestorer" "${SKINSRESTORER_DIR}/locales/custom/locale.json" \
-            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE}<message>" \
-            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE}!)" \
+            "skinsrestorer..prefix_format" "$(convert_message_to_minimessage ${COLOUR_MESSAGE}${PLACEHOLDER_MESSAGE_POINTY})" \
+            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin URL-ul sau formatul skin-ului este invalid. Asigură-te că se termină cu ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
-            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE}Se încarcă skin-ul..." \
+            "skinsrestorer..ms_uploading_skin" "$(get_formatted_message_minimessage info skin Se încarcă skin-ul...)" \
             "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
-            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE}.)" \
+            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost schimbat)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost schimbat)" \
             "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost actualizat)" \
@@ -660,12 +662,12 @@ if is_plugin_installed "SkinsRestorer"; then
     else
         copy-file-if-needed "${SKINSRESTORER_DIR}/locales/repository/locale.json" "${SKINSRESTORER_DIR}/locales/custom/locale.json"
         configure_plugin "SkinsRestorer" "${SKINSRESTORER_DIR}/locales/custom/locale.json" \
-            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE}<message>" \
-            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE}!)" \
+            "skinsrestorer..prefix_format" "$(convert_message_to_minimessage ${COLOUR_MESSAGE}${PLACEHOLDER_MESSAGE_POINTY})" \
+            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin The skin\'s URL or format is invalid. Make sure it ends with ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
-            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE}Uploading the skin..." \
+            "skinsrestorer..ms_uploading_skin" "$(get_formatted_message_minimessage info skin Uploading the skin...)" \
             "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
-            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE}.)" \
+            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Your skin has been changed)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been changed)" \
             "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Your skin has been updated)" \
