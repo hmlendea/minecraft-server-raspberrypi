@@ -7,39 +7,42 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
+ensure-su-access
+
 WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
 
 PLACEHOLDER_ARG0="{0}"
 PLACEHOLDER_ARG1="{1}"
 PLACEHOLDER_ARG2="{2}"
+PLACEHOLDER_NAME_POINTY="<name>"
 PLACEHOLDER_PLAYER="{PLAYER}"
+PLACEHOLDER_PLAYER_PERCENT="%player%"
 PLACEHOLDER_DISPLAYNAME="{DISPLAYNAME}"
 PLACEHOLDER_MESSAGE="{MESSAGE}"
+PLACEHOLDER_MESSAGE_PERCENT="%message%"
+PLACEHOLDER_NAME_PERCENT="%name%"
+PLACEHOLDER_REPLY_PERCENT="%reply%"
 
 if [ "${LOCALE}" == "ro" ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
-
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executata)"
-    INVALID_COMMAND_MESSAGE_MINIMESSAGE="$(get_formatted_message_minimessage error command Această comandă nu se poate executa)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
 
-    set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" "messages.no-permission" "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}"
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Nu poți călări acest mob)"
-    set_config_value "${SPIGOT_CONFIG_FILE}" "messages.unknown-command" "${INVALID_COMMAND_MESSAGE}"
 else
+    WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command This command cannot be executed)"
-    INVALID_COMMAND_MESSAGE_MINIMESSAGE="$(get_formatted_message_minimessage error command This command cannot be executed)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} joined the game)"
 
-    set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" "messages.no-permission" "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}"
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount You cannot mount that mob)"
-    set_config_value "${SPIGOT_CONFIG_FILE}" "messages.unknown-command" "${INVALID_COMMAND_MESSAGE}"
 fi
 
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "enforce-secure-profile"                                    "${SIMULATION_DISTANCE}"
+
+set_config_value "${SPIGOT_CONFIG_FILE}"                "messages.unknown-command" "${INVALID_COMMAND_MESSAGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.item-despawn-rate"                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.mob-spawn-range"                    "${MOB_SPAWN_RANGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.simulation-distance"                "${SIMULATION_DISTANCE}"
@@ -48,11 +51,12 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"            "${VIEW_DISTANCE_END}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
+
 set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "messages.no-permission" "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "timings.server-name" "${SERVER_NAME}"
 
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                          true
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                          true
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-chance-max"   125         
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-day-length"   "${DAYTIME_LENGTH_TICKS}"         
@@ -92,7 +96,7 @@ set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechan
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.use-better-mending"                                 true
 
 if is_plugin_installed "PurpurExtras"; then
-    configure_plugin "PurpurExtras" "config" \
+    configure_plugin "PurpurExtras" config \
         "settings.blocks.shift-right-click-for-invisible-item-frames" true \
         "settings.gameplay-settings.cancel-damage-from-pet-owner" true \
         "settings.items.beehive-lore.enabled" true \
@@ -105,11 +109,11 @@ if is_plugin_installed "PurpurExtras"; then
         "settings.anvil-splits-minecarts" true \
 
     if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "PurpurExtras" "config" \
-            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block Acest container este regenerabil. Dacă vrei neapărat să-l distrugi, trebuie să o faci în timp ce ești ${COLOUR_HIGHLIGHT_MINIMESSAGE}aplecat)"
+        configure_plugin "PurpurExtras" config \
+            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block Cuferele cu comori se pot distruge decât în timp ce ești ${COLOUR_HIGHLIGHT}aplecat)"
     else
-        configure_plugin "PurpurExtras" "config" \
-            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block This container is regenerable. If you really want to break it, you must do it while ${COLOUR_HIGHLIGHT_MINIMESSAGE}sneaking)"
+        configure_plugin "PurpurExtras" config \
+            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block Treasure chests can only be broken while ${COLOUR_HIGHLIGHT}sneaking)"
     fi
 fi
 
@@ -129,7 +133,7 @@ if is_plugin_installed "AuthMe"; then
         "settings.useWelcomeMessage" $(is_plugin_not_installed_bool "EssentialsX")
 
     if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "AuthMe" "${AUTHME_DIR}/messages/messages_ro.yml" \
+        configure_plugin "AuthMe" "$(get_plugin_dir AuthMe)/messages/messages_ro.yml" \
             "error.denied_chat" "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea vorbi)" \
             "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
             "error.logged_in" "$(get_formatted_message error auth Ești autentificat deja)" \
@@ -144,7 +148,7 @@ if is_plugin_installed "AuthMe"; then
             "registration.success" "$(get_formatted_message success auth Te-ai înregistrat)" \
             "session.valid_session" "$(get_formatted_message success auth Te-ai autentificat automat de data trecută)"
     else
-        configure_plugin "AuthMe" "${AUTHME_DIR}/messages/messages_en.yml" \
+        configure_plugin "AuthMe" "$(get_plugin_dir AuthMe)/messages/messages_en.yml" \
             "error.denied_chat" "$(get_formatted_message error auth You must authenticate in order to chat)" \
             "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
             "error.logged_in" "$(get_formatted_message error auth You are already authenticated)" \
@@ -165,53 +169,95 @@ fi
 configure_plugin "CoreProtect" config \
     "check-updates" true
 
-configure_plugin "DiscordSRV" config \
-    "ServerWatchdogEnabled" false \
-    "UpdateCheckDisabled"   true
+if is_plugin_installed "DeathMessages"; then
+    configure_plugin "DeathMessages" config \
+        "Add-Prefix-To-All-Messages" false \
+        "Hooks.Discord.Enabled" "$(is_plugin_installed_bool DiscordSRV)" \
+        "Hooks.MythicMobs.Enabled" "$(is_plugin_installed_bool MythicMobs)" \
+        "Hooks.WorldGuard.Enabled" "$(is_plugin_installed_bool WorldGuard)"
 
-if [ -f "${DYNMAP_CONFIG_FILE}" ]; then
-    set_config_value "${DYNMAP_CONFIG_FILE}" "max-sessions"                 5
-    set_config_value "${DYNMAP_CONFIG_FILE}" "disable-webserver"            true
-    set_config_value "${DYNMAP_CONFIG_FILE}" "webserver-port"               25550
-    set_config_value "${DYNMAP_CONFIG_FILE}" "webpath"                      "${WEBMAP_DIR}"
-    set_config_value "${DYNMAP_CONFIG_FILE}" "tilespath"                    "${WEBMAP_TILES_DIR}"
-    set_config_value "${DYNMAP_CONFIG_FILE}" "webpage-title"                "${WEBMAP_PAGE_TITLE}"
+    configure_plugin "DeathMessages" messages \
+        "Commands.DeathMessages.No-Permission" "${INVALID_COMMAND_MESSAGE}" \
+        "Commands.DeathMessages.Sub-Commands.Reload.Reloaded" "$(get_reload_message DeathMessages)" \
+        "Discord.DeathMessage.Color" "BLACK" \
+        "Discord.DeathMessage.Content" " " \
+        "Discord.DeathMessage.Description" " " \
+        "Discord.DeathMessage.Footer.Text" " " \
+        "Discord.DeathMessage.Image" " " \
+        "Discord.DeathMessage.Remove-Plugin-Prefix" true \
+        "Discord.DeathMessage.Timestamp" false \
+        "Discord.DeathMessage.Title" " " \
+        "Prefix" "${COLOUR_RESET}"
 
-    set_config_value "${DYNMAP_CONFIG_FILE}" "allowchat"                    false
-    set_config_value "${DYNMAP_CONFIG_FILE}" "allowwebchat"                 false
+    if [ "${LOCALE}" == "ro" ]; then
+        configure_plugin "DeathMessages" messages \
+            "Mobs.Bat" "Liliac" \
+            "Mobs.Skeleton" "Schelet"
 
-    # Optimisations
-    set_config_value "${DYNMAP_CONFIG_FILE}" "enabletilehash"               true
-    set_config_value "${DYNMAP_CONFIG_FILE}" "tiles-rendered-at-once"       1
-    set_config_value "${DYNMAP_CONFIG_FILE}" "tileupdatedelay"              60
-    set_config_value "${DYNMAP_CONFIG_FILE}" "timesliceinterval"            0.5
-    set_config_value "${DYNMAP_CONFIG_FILE}" "maxchunkspertick"             90
-    set_config_value "${DYNMAP_CONFIG_FILE}" "renderacceleratethreshold"    30
-    set_config_value "${DYNMAP_CONFIG_FILE}" "updaterate"                   3000
+        #configure_plugin "DeathMessages" "PlayerDeathMessages.yml" \
+         #   "Mobs.player.Solo.Weapon" "$(get_action_message ${PLACEHOLDER_PLAYER_PERCENT} a fost ucis de $(get_player_mention %killer%) ${COLOUR_MESSAGE}folosind ${COLOUR_HIGHLIGHT}%weapon%)"
+    else
+        configure_plugin "DeathMessages" messages \
+            "Mobs.Bat" "Bat" \
+            "Mobs.Skeleton" "Skeleton"
 
-    set_config_value "${DYNMAP_CONFIG_FILE}" "fullrender-min-tps"           19.5
-    set_config_value "${DYNMAP_CONFIG_FILE}" "update-min-tps"               19.0
-    set_config_value "${DYNMAP_CONFIG_FILE}" "zoomout-min-tps"              18.0
-
-    set_config_value "${DYNMAP_CONFIG_FILE}" "fullrenderplayerlimit"        3
-    set_config_value "${DYNMAP_CONFIG_FILE}" "updateplayerlimit"            4
-
-    set_config_value "${DYNMAP_CONFIG_FILE}" "smooth-lighting"              true
-    set_config_value "${DYNMAP_CONFIG_FILE}" "image-format"                 "png"
-    set_config_value "${DYNMAP_CONFIG_FILE}" "use-generated-textures"       false
-    set_config_value "${DYNMAP_CONFIG_FILE}" "correct-water-lighting"       false
-    set_config_value "${DYNMAP_CONFIG_FILE}" "transparent-leaves"           true # Might affect performance tho
-    set_config_value "${DYNMAP_CONFIG_FILE}" "ctm-support"                  false
-    set_config_value "${DYNMAP_CONFIG_FILE}" "skinsrestorer-integration"    $(is_plugin_installed_bool "SkinsRestorer")
-    set_config_value "${DYNMAP_CONFIG_FILE}" "defaultzoom"                  6
+        #configure_plugin "DeathMessages" "PlayerDeathMessages.yml" \
+         #   "Mobs.player.Solo.Weapon" "$(get_action_message ${PLACEHOLDER_PLAYER_PERCENT} was slain by $(get_player_mention %killer%) ${COLOUR_MESSAGE}using ${COLOUR_HIGHLIGHT}%weapon%)"
+    fi
 fi
+
+if is_plugin_installed "DiscordSRV"; then
+    configure_plugin "DiscordSRV" config \
+        "ServerWatchdogEnabled" false \
+        "UpdateCheckDisabled"   true
+
+    configure_plugin "DiscordSRV" messages \
+        "DiscordToMinecraftChatMessageFormat" "$(get_player_mention ${PLACEHOLDER_NAME_PERCENT})${COLOUR_CHAT}:${COLOUR_MESSAGE}${PLACEHOLDER_REPLY_PERCENT} ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE_PERCENT}" \
+        "MinecraftPlayerDeathMessage.Enabled" $(is_plugin_not_installed_bool DeathMessages)
+fi
+
+configure_plugin "Dynmap" config \
+    "max-sessions"                 5 \
+    "disable-webserver"            true \
+    "webserver-port"               25550 \
+    "webpath"                      "${WEBMAP_DIR}" \
+    "tilespath"                    "${WEBMAP_TILES_DIR}" \
+    "webpage-title"                "${WEBMAP_PAGE_TITLE}" \
+    \
+    "allowchat"                    false \
+    "allowwebchat"                 false \
+    \
+    "enabletilehash"               true \
+    "tiles-rendered-at-once"       1 \
+    "tileupdatedelay"              60 \
+    "timesliceinterval"            0.5 \
+    "maxchunkspertick"             90 \
+    "renderacceleratethreshold"    30 \
+    "updaterate"                   3000 \
+    \
+    "fullrender-min-tps"           19.5 \
+    "update-min-tps"               19.0 \
+    "zoomout-min-tps"              18.0 \
+    \
+    "fullrenderplayerlimit"        3 \
+    "updateplayerlimit"            4 \
+    \
+    "smooth-lighting"              true \
+    "image-format"                 "png" \
+    "use-generated-textures"       false \
+    "correct-water-lighting"       false \
+    "transparent-leaves"           true \
+    "ctm-support"                  false \
+    "skinsrestorer-integration"    $(is_plugin_installed_bool "SkinsRestorer") \
+    "defaultzoom"                  6
+
 
 if is_plugin_installed "EssentialsX"; then
     configure_plugin "EssentialsX" config \
         "auto-afk"                              300 \
         "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
         "change-tab-complete-name"              true \
-        "chat.format"                           "${COLOUR_PLAYER}${PLACEHOLDER_DISPLAYNAME}${COLOUR_RESET}: ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE}" \
+        "chat.format"                           "$(get_player_mention ${PLACEHOLDER_DISPLAYNAME}): ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE}" \
         "command-cooldowns.tpr"                 300 \
         "currency-symbol"                       "₦" \
         "disable-item-pickup-while-afk"         true \
@@ -235,125 +281,175 @@ if is_plugin_installed "EssentialsX"; then
         "world-change-speed-reset"              false
 
     if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "EssentialsX" "${ESSENTIALS_CONFIG_FILE}" \
+        configure_plugin "EssentialsX" config \
             "custom-join-message"           "${JOIN_MESSAGE}" \
             "custom-quit-message"           "$(get_action_message ${PLACEHOLDER_PLAYER} a ieșit din joc)" \
             "custom-new-username-message"   "${JOIN_MESSAGE}" \
-            "newbies.announce-format"       "$(get_announcement_message Bun venit ${COLOUR_PLAYER}${PLACEHOLDER_DISPLAYNAME} ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
+            "newbies.announce-format"       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
-            "action"                        "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}!)" \
-            "backOther"                     "$(get_formatted_message_minimessage info teleport ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}s-a întors la locația anterioară)" \
-            "backUsageMsg"                  "$(get_formatted_message_minimessage info teleport Te întorci la locația anterioară)" \
-            "broadcast"                     "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
-            "deleteHome"                    "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a fost ștearsă)" \
-            "deleteWarp"                    "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a fost șters)" \
-            "essentialsReload"              "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
-            "flyMode"                       "$(get_formatted_message_minimessage success gamemode Zborul ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "gameMode"                      "$(get_formatted_message_minimessage success gamemode Modul de joc a fost schimbat la ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "godMode"                       "$(get_formatted_message_minimessage success gamemode Modul invincibil ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "homeSet"                       "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
-            "itemnameSuccess"               "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit în \"${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE_MINIMESSAGE}\".)" \
-            "kitResetOther"                 "$(get_formatted_message_minimessage info kit Perioada de așteptare a kit-ului ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a fost resetată pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "meRecipient"                   "${COLOUR_HIGHLIGHT_MINIMESSAGE}eu" \
-            "meSender"                      "${COLOUR_HIGHLIGHT_MINIMESSAGE}eu" \
-            "msgFormat"                     "$(get_formatted_message_minimessage info message ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}→ ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1}${COLOUR_CHAT_PRIVATE_MINIMESSAGE}: ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
-            "noAccessCommand"               "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
-            "noPendingRequest"              "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
-            "noPerm"                        "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
-            "pendingTeleportCancelled"      "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
-            "playerNeverOnServer"           "$(get_formatted_message_minimessage error inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_AG0} ${COLOUR_MESSAGE_MINIMESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT_MINIMESSAGE}${SERVER_NAME})" \
-            "playerNotFound"                "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
-            "requestAccepted"               "$(get_formatted_message_minimessage success player Cererea de teleportare a fost acceptată)" \
-            "requestAcceptedFrom"           "$(get_formatted_message_minimessage success player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}ți-a acceptat cererea de telportare)" \
-            "requestDenied"                 "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
-            "requestDeniedFrom"             "$(get_formatted_message_minimessage error player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE} ți-a respins cererea de teleportare)" \
-            "requestSent"                   "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE_MINIMESSAGE}.)" \
-            "requestTimedOut"               "$(get_formatted_message_minimessage error player Cererea de teleportare a expirat)" \
-            "requestTimedOutFrom"           "$(get_formatted_message_minimessage error player Cererea de teleportare de la ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a expirat)" \
-            "seenOffline"                   "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}este ${COLOUR_RED_DARK_MINIMESSAGE}offline ${COLOUR_MESSAGE_MINIMESSAGE}de ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "seenOnline"                    "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}este ${COLOUR_GREEN_LIGHT_XML}online ${COLOUR_MESSAGE_MINIMESSAGE}de ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "teleporting"                   "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
-            "teleportBottom"                "$(get_formatted_message_minimessage sucess teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT_MINIMESSAGE}jos ${COLOUR_MESSAGE_MINIMESSAGE}spațiu liber de la locația curentă)" \
-            "teleportHereRequest"           "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}ți-a cerut să te teleportezi la locația sa)" \
-            "teleportHome"                  "$(get_formatted_message_minimessage success home Te-ai teleportat la ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}.)" \
-            "teleportRequest"               "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}ți-a cerut să se teleporteze la locația ta)" \
-            "teleportRequestTimeoutInfo"    "$(get_formatted_message_minimessage info player Această cerere va expira după ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} secunde)" \
-            "teleportTop"                   "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT_MINIMESSAGE}sus ${COLOUR_MESSAGE_MINIMESSAGE}spațiu liber de la locația curentă)" \
-            "teleportToPlayer"              "$(get_formatted_message_minimessage success player Te-ai teleportat la ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0}.)" \
-            "timeBeforeTeleport"            "$(get_formatted_message_minimessage error teleport Trebuie să aștepți ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}înainte de a te putea teleporta din nou)" \
-            "typeTpacancel"                 "$(get_formatted_message_minimessage info player Pentru a o retrage, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpacancel${COLOUR_MESSAGE_MINIMESSAGE}.)" \
-            "typeTpaccept"                  "$(get_formatted_message_minimessage info player Pentru a o aproba, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpyes${COLOUR_MESSAGE_MINIMESSAGE}.)" \
-            "typeTpdeny"                    "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND_MINIMESSAGE}/tpno${COLOUR_MESSAGE_MINIMESSAGE}.)" \
-            "unsafeTeleportDestination"     "$(get_formatted_message_minimessage error teleport Destinația aleasă pentru teleportare nu poate să fie setată deoarece nu este sigură)" \
-            "vanish"                        "$(get_formatted_message_minimessage success gamemode Modul invizibil ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE_MINIMESSAGE}pentru ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0})" \
-            "vanished"                      "" \
-            "warpingTo"                     "$(get_formatted_message_minimessage success warp Te-ai teleportat la ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0})" \
-            "warpsCount"                    "$(get_formatted_message_minimessage info warp Există ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}de warp-uri. Pagina ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE_MINIMESSAGE}/${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
-            "warpNotExist"                  "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
-            "warpSet"                       "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}a fost setat la locația curentă)" \
-            "warpUsePermission"             "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)"
+            "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}!)" \
+            "backAfterDeath"                    "$(get_formatted_message_minimessage info teleport Folosește ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}pentru a te întoarce unde ai murit)" \
+            "backOther"                         "$(get_formatted_message_minimessage info teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
+            "backUsageMsg"                      "$(get_formatted_message_minimessage info teleport Te-ai întors la locația anterioară)" \
+            "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
+            "deleteHome"                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
+            "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost șters)" \
+            "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
+            "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            "flyMode"                           "$(get_formatted_message_minimessage success gamemode Zborul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "gameMode"                          "$(get_formatted_message_minimessage success gamemode Modul de joc a fost schimbat la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "godModeDisabledFor"                "$(convert_message_to_minimessage ${COLOUR_ERROR}dezactivat ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "godModeEnabledFor"                 "$(convert_message_to_minimessage ${COLOUR_SUCCESS}activat ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "godMode"                           "$(get_formatted_message_minimessage success gamemode Modul invincibil ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "homes"                             "$(get_formatted_message_minimessage info home Case: ${PLACEHOLDER_ARG0})" \
+            "homeSet"                           "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
+            "itemnameSuccess"                   "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit în \"${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE}\".)" \
+            "kitResetOther"                     "$(get_formatted_message_minimessage info kit Perioada de așteptare a kit-ului ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost resetată pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
+            "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
+            "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
+            "noAccessCommand"                   "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "noPendingRequest"                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
+            "noPerm"                            "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
+            "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "playerNotFound"                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
+            "playtime"                          "$(get_formatted_message_minimessage info inspect Ai petrecut un total de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}jucându-te pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "playtimeOther"                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) a petrecut un total de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}jucându-se pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "requestAccepted"                   "$(get_formatted_message_minimessage success player Cererea de teleportare a fost acceptată)" \
+            "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}a acceptat cererea de telportare)" \
+            "requestDenied"                     "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
+            "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE} ți-a respins cererea de teleportare)" \
+            "requestSent"                       "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către $(get_player_message ${PLACEHOLDER_ARG0}))" \
+            "requestSentAlready"                "$(get_formatted_message_minimessage error player Ai trimis deja o cerere de teleportare către $(get_player_message ${PLACEHOLDER_ARG0}))" \
+            "requestTimedOut"                   "$(get_formatted_message_minimessage error player Cererea de teleportare a expirat)" \
+            "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player Cererea de teleportare de la $(get_player_message ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}a expirat)" \
+            "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "teleporting"                       "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
+            "teleportBottom"                    "$(get_formatted_message_minimessage sucess teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT}jos ${COLOUR_MESSAGE}spațiu liber de la locația curentă)" \
+            "teleportHereRequest"               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}ți-a cerut să te teleportezi la locația sa)" \
+            "teleportHome"                      "$(get_formatted_message_minimessage success home Te-ai teleportat la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "teleportRequest"                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}ți-a cerut să se teleporteze la locația ta)" \
+            "teleportRequestSpecificCancelled"  "$(get_formatted_message_minimessage info player Cererea de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}a fost anulată)" \
+            "teleportRequestTimeoutInfo"        "$(get_formatted_message_minimessage info player Această cerere va expira după ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} secunde)" \
+            "teleportTop"                       "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cea mai de ${COLOUR_HIGHLIGHT}sus ${COLOUR_MESSAGE}spațiu liber de la locația curentă)" \
+            "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Te-ai teleportat la $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport Trebuie să aștepți ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}înainte de a te putea teleporta din nou)" \
+            "tprSuccess"                        "$(get_formatted_message_minimessage error teleport Te-ai teleportat la o locație aleatorie)" \
+            "typeTpacancel"                     "$(get_formatted_message_minimessage info player Pentru a o anula, folosește ${COLOUR_COMMAND}/tpacancel)" \
+            "typeTpaccept"                      "$(get_formatted_message_minimessage info player Pentru a o aproba, folosește ${COLOUR_COMMAND}/tpyes)" \
+            "typeTpdeny"                        "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND}/tpno)" \
+            "unsafeTeleportDestination"         "$(get_formatted_message_minimessage error teleport Destinația aleasă pentru teleportare nu poate să fie setată deoarece nu este sigură)" \
+            "vanish"                            "$(get_formatted_message_minimessage success gamemode Modul invizibil ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "vanished"                          "" \
+            "warpingTo"                         "$(get_formatted_message_minimessage success warp Te-ai teleportat la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "warpsCount"                        "$(get_formatted_message_minimessage info warp Există ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}de warp-uri. Pagina ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE}/${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2})" \
+            "warpNotExist"                      "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
+            "warpSet"                           "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost setat la locația curentă)" \
+            "warpUsePermission"                 "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
+            "whoisTop"                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
+            "whoisExp"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experiență: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisFly"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Zbor: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisGamemode"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Mod de joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisGod"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibilitate: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisHealth"                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viață: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisHunger"                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Foame: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisJail"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Arestat: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisLocation"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Locație: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisMoney"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Bani: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisNick"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Nume: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisOp"                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisPlaytime"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Timp petrecut în joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisSpeed"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viteză: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisUuid"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identificator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     else
         configure_plugin "EssentialsX" "${ESSENTIALS_CONFIG_FILE}" \
             "custom-join-message"           "${JOIN_MESSAGE}" \
             "custom-quit-message"           "$(get_action_message ${PLACEHOLDER_PLAYER} left the game)" \
             "custom-new-username-message"   "${JOIN_MESSAGE}" \
-            "newbies.announce-format"       "$(get_announcement_message Welcome ${COLOUR_PLAYER}${PLACEHOLDER_DISPLAYNAME} ${COLOUR_ANNOUNCEMENT}to ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
+            "newbies.announce-format"       "$(get_announcement_message Welcome $(get_player_mention ${PLACEHOLDER_DISPLAYNAME}) ${COLOUR_ANNOUNCEMENT}to ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_en.properties"
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_en.properties" \
-            "action"                        "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
-            "backOther"                     "$(get_formatted_message_minimessage info teleport Returned ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}to their preivous location)" \
-            "backUsageMsg"                  "$(get_formatted_message_minimessage info teleport Returning to your previous location)" \
-            "broadcast"                     "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
-            "deleteHome"                    "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been deleted)" \
-            "deleteWarp"                    "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been deleted)" \
-            "essentialsReload"              "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
-            "flyMode"                       "$(get_formatted_message_minimessage success gamemode Flight ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "gameMode"                      "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "godMode"                       "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "homeSet"                       "$(get_formatted_message_minimessage success home Home set at the current location)" \
-            "itemnameSuccess"               "$(get_formatted_message_minimessage success other The held item has been renamed as \"${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE_MINIMESSAGE}\".)" \
-            "kitResetOther"                 "$(get_formatted_message_minimessage info kit The cooldown for kit ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been reset for ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1})" \
-            "meRecipient"                   "${COLOUR_HIGHLIGHT_MINIMESSAGE}me" \
-            "meSender"                      "${COLOUR_HIGHLIGHT_MINIMESSAGE}me" \
-            "msgFormat"                     "$(get_formatted_message_minimessage info message ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}→ ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG1}${COLOUR_CHAT_PRIVATE_MINIMESSAGE}: ${COLOUR_CHAT_PRIVATE_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
-            "noAccessCommand"               "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
-            "noPendingRequest"              "$(get_formatted_message_minimessage error player There are no pending requests)" \
-            "noPerm"                        "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
-            "pendingTeleportCancelled"      "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
-            "playerNeverOnServer"           "$(get_formatted_message_minimessage error inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}never played on ${COLOUR_HIGHLIGHT_MINIMESSAGE}${SERVER_NAME})" \
-            "playerNotFound"                "$(get_formatted_message_minimessage error other The specified player is not online)" \
-            "requestAccepted"               "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
-            "requestAcceptedFrom"           "$(get_formatted_message_minimessage success player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}accepted your teleportation request)" \
-            "requestDenied"                 "$(get_formatted_message_minimessage error player Teleportation request denied)" \
-            "requestDeniedFrom"             "$(get_formatted_message_minimessage error player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE} denied your teleportation request)" \
-            "requestSent"                   "$(get_formatted_message_minimessage info player Teleportation request sent to ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0})" \
-            "requestTimedOut"               "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
-            "requestTimedOutFrom"           "$(get_formatted_message_minimessage error player The teleportation request from ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has timed out)" \
-            "seenOffline"                   "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been ${COLOUR_RED_DARK_XML}offline ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "seenOnline"                    "$(get_formatted_message_minimessage info inspect ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}has been ${COLOUR_GREEN_LIGHT_XML}online ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1})" \
-            "teleporting"                   "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
-            "teleportBottom"                "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT_MINIMESSAGE}lowest ${COLOUR_MESSAGE_MINIMESSAGE}empty space at your current location)" \
-            "teleportHereRequest"           "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}asked you to teleport to them)" \
-            "teleportRequestTimeoutInfo"    "$(get_formatted_message_minimessage info player This request will time out after ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} seconds)" \
-            "teleportHome"                  "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0})" \
-            "teleportRequest"               "$(get_formatted_message_minimessage info player ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}asked you to let them teleport to you)" \
-            "teleportTop"                   "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT_MINIMESSAGE}highest ${COLOUR_MESSAGE_MINIMESSAGE}empty space at your current location)" \
-            "teleportToPlayer"              "$(get_formatted_message_minimessage success player Teleported to ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0})" \
-            "timeBeforeTeleport"            "$(get_formatted_message_minimessage error teleport You must wait ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}before teleporting again)" \
-            "typeTpacancel"                 "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND_MINIMESSAGE}/tpacancel)" \
-            "typeTpaccept"                  "$(get_formatted_message_minimessage info player To approve it, use ${COLOUR_COMMAND_MINIMESSAGE}/tpyes)" \
-            "typeTpdeny"                    "$(get_formatted_message_minimessage info player To deny this request, use ${COLOUR_COMMAND_MINIMESSAGE}/tpno)" \
-            "unsafeTeleportDestination"     "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
-            "vanish"                        "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE_MINIMESSAGE}for ${COLOUR_PLAYER_XML}${PLACEHOLDER_ARG0})" \
-            "vanished"                      "" \
-            "warpingTo"                     "$(get_formatted_message_minimessage success warp Teleported to ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0})" \
-            "warpNotExist"                  "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
-            "warpsCount"                    "$(get_formatted_message_minimessage info warp There are ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}warps. Page ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE_MINIMESSAGE}/${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG2})" \
-            "warpSet"                       "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE_MINIMESSAGE}set at the current location)" \
-            "warpUsePermission"             "$(get_formatted_message_minimessage error warp The specified warp is invalid)"
+            "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
+            "backAfterDeath"                    "$(get_formatted_message_minimessage info teleport Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
+            "backOther"                         "$(get_formatted_message_minimessage info teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
+            "backUsageMsg"                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
+            "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
+            "deleteHome"                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
+            "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
+            "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
+            "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            "flyMode"                           "$(get_formatted_message_minimessage success gamemode Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "gameMode"                          "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "godModeDisabledFor"                "$(convert_message_to_minimessage ${COLOUR_ERROR}disabled ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "godModeEnabledFor"                 "$(convert_message_to_minimessage ${COLOUR_SUCCESS}enabled ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "godMode"                           "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "homes"                             "$(get_formatted_message_minimessage success home Homes: ${PLACEHOLDER_ARG0})" \
+            "homeSet"                           "$(get_formatted_message_minimessage success home Home set at the current location)" \
+            "itemnameSuccess"                   "$(get_formatted_message_minimessage success other The held item has been renamed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "kitResetOther"                     "$(get_formatted_message_minimessage info kit The cooldown for kit ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
+            "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
+            "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
+            "noAccessCommand"                   "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "noPendingRequest"                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
+            "noPerm"                            "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
+            "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}never played on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "playerNotFound"                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
+            "playtime"                          "$(get_formatted_message_minimessage info inspect You spent a total of ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}playing on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "playtimeOther"                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent a total of ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}playing on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "requestAccepted"                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
+            "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}accepted your teleportation request)" \
+            "requestDenied"                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
+            "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE} denied your teleportation request)" \
+            "requestSent"                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "requestSentAlready"                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "requestTimedOut"                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
+            "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
+            "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "teleporting"                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
+            "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT}lowest ${COLOUR_MESSAGE}empty space at your current location)" \
+            "teleportHereRequest"               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}asked you to teleport to them)" \
+            "teleportRequestSpecificCancelled"  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}cancelled)" \
+            "teleportRequestTimeoutInfo"        "$(get_formatted_message_minimessage info player This request will time out after ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} seconds)" \
+            "teleportHome"                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "teleportRequest"                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}asked you to let them teleport to you)" \
+            "teleportTop"                       "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT}highest ${COLOUR_MESSAGE}empty space at your current location)" \
+            "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport You must wait ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}before teleporting again)" \
+            "tprSuccess"                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
+            "typeTpacancel"                     "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND}/tpacancel)" \
+            "typeTpaccept"                      "$(get_formatted_message_minimessage info player To approve it, use ${COLOUR_COMMAND}/tpyes)" \
+            "typeTpdeny"                        "$(get_formatted_message_minimessage info player To deny this request, use ${COLOUR_COMMAND}/tpno)" \
+            "unsafeTeleportDestination"         "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
+            "vanish"                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "vanished"                          "" \
+            "warpingTo"                         "$(get_formatted_message_minimessage success warp Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "warpNotExist"                      "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
+            "warpsCount"                        "$(get_formatted_message_minimessage info warp There are ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}warps. Page ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE}/${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2})" \
+            "warpSet"                           "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}set at the current location)" \
+            "warpUsePermission"                 "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
+            "whoisTop"                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
+            "whoisExp"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experience: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisFly"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Flight: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisGamemode"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Gamemode: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisGod"                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibility: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisHealth"                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Health: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisHunger"                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Hunger: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisJail"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Jailed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisLocation"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Location: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisMoney"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Money: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisNick"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Name: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisOp"                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisPlaytime"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Time spent in-game: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisSpeed"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Speed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "whoisUuid"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     fi
 fi
 
@@ -361,24 +457,26 @@ if is_plugin_installed "GSit"; then
     configure_plugin "GSit" config \
         "Options.check-for-update" false
 
-    configure_plugin "GSit" "${GSIT_DIR}/lang/en_en.yml" \
-        "Messages.command-permission-error" "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
-        "Messages.command-sender-error" "${INVALID_COMMAND_MESSAGE_MINIMESSAGE}" \
+    configure_plugin "GSit" "$(get_plugin_dir GSit)/lang/en_en.yml" \
+        "Messages.command-permission-error" "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+        "Messages.command-sender-error" "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
         "Plugin.plugin-reload" "$(get_reload_message_minimessage GSit)"
 fi
 
-configure_plugin "InvSee++" "${INVSEE_CONFIG_FILE}" \
+configure_plugin "InvSee++" config \
     "enable-unknown-player-support" false
 
 if is_plugin_installed "InvUnload"; then
     INVUNLOAD_COOLDOWN=2
     configure_plugin "InvUnload" config \
-        "max-chest-radius" 128 \
+        "check-for-updates" false \
         "default-chest-radius" 24 \
         "cooldown" "${INVUNLOAD_COOLDOWN}" \
         "ignore-blocked-chests" false \
-        "check-for-updates" false \
-        "message-prefix" "&r"
+        "laser-animation" false \
+        "laser-default-duration" 5 \
+        "max-chest-radius" 128 \
+        "message-prefix" "${COLOUR_RESET}"
 
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "InvUnload" config \
@@ -386,6 +484,7 @@ if is_plugin_installed "InvUnload"; then
             "message-could-not-unload" "$(get_formatted_message error inventory Nu au fost găsite containere pentru restul obiectelor)" \
             "message-error-not-a-number" "$(get_formatted_message error inventory Distanța specificată nu este un număr valid)" \
             "message-inventory-empty" "$(get_formatted_message error inventory Inventarul tău este deja gol)" \
+            "message-no-chests-nearby" "$(get_formatted_message error inventory Nu există containere de depozitare în apropriere)" \
             "message-radius-too-high" "$(get_formatted_message error inventory Distanța poate să fie maximum ${COLOUR_HIGHLIGHT}%d${COLOUR_MESSAGE} blocuri)"
     else
         configure_plugin "InvUnload" config \
@@ -393,6 +492,7 @@ if is_plugin_installed "InvUnload"; then
             "message-could-not-unload" "$(get_formatted_message error inventory There are no containers for the remaining items)" \
             "message-error-not-a-number" "$(get_formatted_message error inventory The specified distance is not a valid number)" \
             "message-inventory-empty" "$(get_formatted_message error inventory Your inventory is already empty)" \
+            "message-no-chests-nearby" "$(get_formatted_message error inventory There are no storage containers nearby)" \
             "message-radius-too-high" "$(get_formatted_message error inventory The distance can be at most ${COLOUR_HIGHLIGHT}%d${COLOUR_MESSAGE} blocks)"
     fi
 fi
@@ -547,29 +647,29 @@ if is_plugin_installed "SkinsRestorer"; then
     if [ "${LOCALE}" == "ro" ]; then
         copy-file-if-needed "${SKINSRESTORER_DIR}/locales/repository/locale_ro.json" "${SKINSRESTORER_DIR}/locales/custom/locale_ro.json"
         configure_plugin "SkinsRestorer" "${SKINSRESTORER_DIR}/locales/custom/locale.json" \
-            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE_MINIMESSAGE}<message>" \
-            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE_MINIMESSAGE}!)" \
-            "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin URL-ul sau formatul skin-ului este invalid. Asigură-te că se termină cu ${COLOUR_HIGHLIGHT_MINIMESSAGE}.png${COLOUR_MESSAGE_MINIMESSAGE})" \
-            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE_MINIMESSAGE}Se încarcă skin-ul..." \
+            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE}<message>" \
+            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE}!)" \
+            "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin URL-ul sau formatul skin-ului este invalid. Asigură-te că se termină cu ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
+            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE}Se încarcă skin-ul..." \
             "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
-            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE_MINIMESSAGE}.)" \
+            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE}.)" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost schimbat)" \
-            "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin Skin-ul lui ${COLOUR_PLAYER_XML}<name> ${COLOUR_MESSAGE_MINIMESSAGE}a fost schimbat)" \
+            "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost schimbat)" \
             "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost actualizat)" \
-            "skinsrestorer..success_skin_updating_other" "$(success_message_minimessage skin Skin-ul lui ${COLOUR_PLAYER_XML}<name> ${COLOUR_MESSAGE_MINIMESSAGE}a fost actualizat)"
+            "skinsrestorer..success_skin_updating_other" "$(success_message_minimessage skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost actualizat)"
     else
         copy-file-if-needed "${SKINSRESTORER_DIR}/locales/repository/locale.json" "${SKINSRESTORER_DIR}/locales/custom/locale.json"
         configure_plugin "SkinsRestorer" "${SKINSRESTORER_DIR}/locales/custom/locale.json" \
-            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE_MINIMESSAGE}<message>" \
-            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE_MINIMESSAGE}!)" \
-            "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin The skin\'s URL or format is invalid. Make sure it ends with ${COLOUR_HIGHLIGHT_MINIMESSAGE}.png${COLOUR_MESSAGE_MINIMESSAGE})" \
-            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE_MINIMESSAGE}Uploading the skin..." \
+            "skinsrestorer..prefix_format" "${COLOUR_MESSAGE}<message>" \
+            "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin <message>${COLOUR_MESSAGE}!)" \
+            "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin The skin\'s URL or format is invalid. Make sure it ends with ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
+            "skinsrestorer..ms_uploading_skin" "${COLOUR_MESSAGE}Uploading the skin..." \
             "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
-            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE_MINIMESSAGE}.)" \
+            "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin <message>${COLOUR_MESSAGE}.)" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Your skin has been changed)" \
-            "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin ${COLOUR_PLAYER_XML}<name>${COLOUR_MESSAGE_MINIMESSAGE}\'s skin has been changed)" \
+            "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been changed)" \
             "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Your skin has been updated)" \
-            "skinsrestorer..success_skin_updating_other" "$(get_formatted_message_minimessage success skin ${COLOUR_PLAYER_XML}<name>${COLOUR_MESSAGE_MINIMESSAGE}\'s skin has been updated)"
+            "skinsrestorer..success_skin_updating_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been updated)"
     fi
 fi
 
@@ -672,23 +772,20 @@ if is_plugin_installed "TradeShop"; then
     fi
 fi
 
-if [ -d "${TREEASSIST_DIR}" ]; then
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Toggle Remember"   false
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "General.Use Permissions"   true
-
-    # Visuals
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Destruction.Falling Blocks"        true
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "Destruction.Falling Blocks Fancy"  false # Looks a bit odd, may cause lag
-
-    # Telemetry
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Active" false
-    set_config_value "${TREEASSIST_CONFIG_FILE}"    "bStats.Full"   false
-
+if is_plugin_installed "TreeAssist"; then
     # Integrations
-    is_plugin_installed "CoreProtect" && set_config_value "${TREEASSIST_CONFIG_FILE}" "Placed Blocks.Plugin Name" "CoreProtect"
-    set_config_value "${TREEASSIST_CONFIG_FILE}" "Plugins.WorldGuard" $(is_plugin_installed "WorldGuard")
+    is_plugin_installed "CoreProtect" && set_config_value "$(get_plugin_file TreeAssist config)" "Placed Blocks.Plugin Name" "CoreProtect"
+    for PLUGIN_NAME in "AureliumSkills" "CustomEvents" "Jobs" "mcMMO" "WorldGuard"; do
+        set_config_value "$(get_plugin_file TreeAssist config)" "Plugins.${PLUGIN_NAME}" "$(is_plugin_installed_bool ${PLUGIN_NAME})"
+    done
 
-    reload_plugin "treeassist"
+    configure_plugin "TreeAssist" config \
+        "bStats.Active"                     false \
+        "bStats.Full"                       false \
+        "Destruction.Falling Blocks"        true \
+        "Destruction.Falling Blocks Fancy"  false \
+        "General.Toggle Remember"           false \
+        "General.Use Permissions"           true
 fi
 
 configure_plugin "Vault" config \
@@ -728,11 +825,11 @@ if is_plugin_installed "VotingPlugin"; then
 
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "VotingPlugin" config \
-            "Format.BroadcastMsg"  "${COLOUR_PLAYER}%player% ${COLOUR_ACTION}a fost recompensat pentru votul pe ${COLOUR_HIGHLIGHT}%SiteName%${COLOUR_ACTION}." \
+            "Format.BroadcastMsg"  "$(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT}) ${COLOUR_ACTION}a fost recompensat pentru votul pe ${COLOUR_HIGHLIGHT}%SiteName%${COLOUR_ACTION}." \
             "VoteReminding.Rewards.Messages.Player"  "${COLOUR_MESSAGE}Încă mai ai ${COLOUR_HIGHLIGHT}%sitesavailable% site-uri ${COLOUR_MESSAGE}pe care să votezi."
     else
         configure_plugin "VotingPlugin" config \
-            "Format.BroadcastMsg"  "${COLOUR_PLAYER}%player% ${COLOUR_ACTION}was rewarded for voting on ${COLOUR_HIGHLIGHT}%SiteName%${COLOUR_ACTION}." \
+            "Format.BroadcastMsg"  "$(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT}) ${COLOUR_ACTION}was rewarded for voting on ${COLOUR_HIGHLIGHT}%SiteName%${COLOUR_ACTION}." \
             "VoteReminding.Rewards.Messages.Player"  "${COLOUR_MESSAGE}You have ${COLOUR_HIGHLIGHT}%sitesavailable% sites ${COLOUR_MESSAGE}left to vote on."
     fi
 fi
@@ -743,27 +840,29 @@ if is_plugin_installed "WanderingTrades"; then
     	"language" "${LOCALE_FULL}"
 
     if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "WanderingTrades" "${WANDERINGTRADES_DIR}/lang/ro_RO.yml" \
-            "command.reload.message" "$(get_formatted_message_minimessage info plugin Se reîncarcă ${COLOUR_PLUGIN_XML}WanderingTrades${COLOUR_MESSAGE_MINIMESSAGE}...)"
+        configure_plugin "WanderingTrades" "$(get_plugin_dir WanderingTrades)/lang/ro_RO.yml" \
+            "command.reload.message" "$(get_formatted_message_minimessage info plugin Se reîncarcă ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
     else
-        configure_plugin "WanderingTrades" "${WANDERINGTRADES_DIR}/lang/en_US.yml" \
-            "command.reload.message" "$(get_formatted_message_minimessage info plugin Reloading ${COLOUR_PLUGIN_XML}WanderingTrades${COLOUR_MESSAGE_MINIMESSAGE}...)"
+        configure_plugin "WanderingTrades" "$(get_plugin_dir WanderingTrades)/lang/en_US.yml" \
+            "command.reload.message" "$(get_formatted_message_minimessage info plugin Reloading ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
     fi
 fi
 
 if is_plugin_installed "FastAsyncWorldEdit"; then
-    configure_plugin "FastAsyncWorldEdit" "${WORLDEDIT_CONFIG_FILE}" \
+    configure_plugin "FastAsyncWorldEdit" config \
         "enabled-components.update-notifications" false \
         "max-memory-percent" 85 \
         "queue.parallel-threads" "${CPU_THREADS_HALF}" \
         "queue.target-size" $((CPU_THREADS_HALF * 5))
 
     if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "FastAsyncWorldEdit" "${WORLDEDIT_DIR}/lang/strings.json" \
+        configure_plugin "FastAsyncWorldEdit" messages \
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
             "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
             "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Au fost copiate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..command..time-elapsed"                      "$(get_formatted_message info worldedit Au trecut ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} secunde ${COLOUR_MESSAGE}modificând ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} blocuri${COLOUR_MESSAGE}, cu viteza de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2} blocuri/s)" \
             "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit Selecția a fost scurtată cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..count..counted"                             "$(get_formatted_message success worldedit Au fost numărate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit Nu s-a făcut nici o selecție)" \
             "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
@@ -773,10 +872,11 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..redo..redone"                               "$(get_formatted_message success worldedit S-au refăcut ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} modificări)" \
             "worldedit..reload..config"                             "$(get_reload_message FastAsyncWorldEdit)" \
             "worldedit..select..cleared"                            "$(get_formatted_message success worldedit Selecția a fost ștearsă)" \
-            "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit Poziția ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..primary-area"   "$(get_formatted_message success worldedit Poziția ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..secondary"      "$(get_formatted_message success worldedit Poziția ${COLOUR_HIGHLIGHT}#2 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..secondary-area" "$(get_formatted_message success worldedit Poziția ${COLOUR_HIGHLIGHT}#2 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Poziția 1 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..primary-area"   "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Poziția 1 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..secondary"      "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Poziția 2 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..secondary-area" "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Poziția 2 ${COLOUR_MESSAGE}a fost setată la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..set..done"                                  "$(get_formatted_message success worldedit Au fost schimbate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..shift..shifted"                             "$(get_formatted_message success worldedit Selecția a fost mutată)" \
             "worldedit..size..blocks"                               "$(get_formatted_message info worldedit Blocuri: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..size..distance"                             "$(get_formatted_message info worldedit Distanță: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
@@ -786,24 +886,27 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..undo..undone"                               "$(get_formatted_message success worldedit S-au anulat ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}modificări)" \
             "worldedit..wand..selwand..info"                        "$(get_formatted_message info worldedit ${COLOUR_COMMAND}Click Stânga ${COLOUR_MESSAGE}setează ${COLOUR_HIGHLIGHT}Poziția 1${COLOUR_MESSAGE}, ${COLOUR_COMMAND}Click Dreapta ${COLOUR_MESSAGE}setează ${COLOUR_HIGHLIGHT}Poziția 2)"
     else
-        configure_plugin "FastAsyncWorldEdit" "${WORLDEDIT_DIR}/lang/strings.json" \
+        configure_plugin "FastAsyncWorldEdit" messages \
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
             "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
             "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Copied ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..command..time-elapsed"                      "$(get_formatted_message info worldedit ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} seconds ${COLOUR_MESSAGE}elapsed while changing ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} blocks${COLOUR_MESSAGE}, at the speed of ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2} blocks/s)" \
             "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit The selection was shrunk by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..count..counted"                             "$(get_formatted_message success worldedit Counted ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit No selection has been made)" \
             "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..move..moved"                                "$(get_formatted_message success worldedit Moved ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
-            "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Position alreay set)" \
+            "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Position already set)" \
             "worldedit..redo..none"                                 "$(get_formatted_message error worldedit Nothing to redo)" \
             "worldedit..redo..redone"                               "$(get_formatted_message success worldedit Redid ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} edits)" \
             "worldedit..reload..config"                             "$(get_reload_message FastAsyncWorldEdit)" \
             "worldedit..select..cleared"                            "$(get_formatted_message success worldedit The selection was cleared)" \
-            "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit Position ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..primary-area"   "$(get_formatted_message success worldedit Position ${COLOUR_HIGHLIGHT}#1 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..secondary"      "$(get_formatted_message success worldedit Position ${COLOUR_HIGHLIGHT}#2 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "worldedit..selection..cuboid..explain..secondary-area" "$(get_formatted_message success worldedit Position ${COLOUR_HIGHLIGHT}#2 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..primary"        "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Position 1 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..primary-area"   "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Position 1 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..secondary"      "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Position 2 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..selection..cuboid..explain..secondary-area" "$(get_formatted_message success worldedit ${COLOUR_HIGHLIGHT}Position 2 ${COLOUR_MESSAGE}set to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            "worldedit..set..done"                                  "$(get_formatted_message success worldedit Set ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..shift..shifted"                             "$(get_formatted_message success worldedit The selection was shifted)" \
             "worldedit..size..blocks"                               "$(get_formatted_message info worldedit Blocks: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..size..distance"                             "$(get_formatted_message info worldedit Distance: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \

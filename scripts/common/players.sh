@@ -1,7 +1,6 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
-source "${SERVER_SCRIPTS_COMMON_DIR}/crypto.sh"
 
 if [ -f "${PLAYERS_CACHE_FILE}" ]; then
 	LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
@@ -146,6 +145,7 @@ function get_player_date_seen_first() {
     local PLAYER_UUID="${1}"
     local PLAYER_DATE_REGISTRATION=""
     local FOUND_IN_CACHE=false
+    local AUTHME_LOG_FILE="$(get_plugin_dir AuthMe)/authme.log"
 
     PLAYER_DATE_REGISTRATION=$(get_playerscache_value "${PLAYER_UUID}" "joinTimestamp")
     [ -n "${PLAYER_DATE_REGISTRATION}" ] && FOUND_IN_CACHE=true
@@ -237,7 +237,6 @@ function get_player_password() {
     fi
 
     [ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(find_in_logs "${PLAYER_USERNAME}" | grep "/\(auth\|l\|log\|login\) " | tail -n 1 | awk '{print $9}')
-    #[ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(decrypt_authme_password "${PLAYER_UUID}")
     
     if ! ${FOUND_IN_CACHE} && [ -n "${PLAYER_PASSWORD}" ]; then
         set_playerscache_value "${PLAYER_UUID}" "password" "${PLAYER_PASSWORD}"

@@ -143,3 +143,7 @@ function download-file() {
         sudo chown papermc:papermc "${FILE_PATH}"
     fi
 }
+
+function ensure-su-access() {
+    sudo echo "SU access achieved!"
+}

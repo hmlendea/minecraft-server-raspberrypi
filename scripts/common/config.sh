@@ -8,7 +8,7 @@ function set_config_values() {
     [ ! -f "${FILE}" ] && return
 
     if [ "$(( $# % 2 ))" -ne 0 ]; then
-        echo "ERROR: Invalid arguments count: $# for set_config_values: ${*}" >$2
+        echo "ERROR: Invalid arguments count: $# for set_config_values: ${*}" >&2
         return
     fi
 
@@ -40,6 +40,7 @@ function set_config_value() {
     else
         local KEY_ESC="${KEY}"
         local VAL_ESC=$(echo "${VALUE}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        local VAL_ESC=$(echo "${VAL_ESC}" | sed 's/\([!:]\)/\\\1/g')
         grep -q "\s${KEY}" "${FILE}" && KEY_ESC="\s${KEY}"
 
         echo "${FILE}: ${KEY}=${VALUE}"

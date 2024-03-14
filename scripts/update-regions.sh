@@ -6,10 +6,10 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
-if [ ! -d "${WORLDGUARD_DIR}" ]; then
-    echo "ERROR: The WorldGuard plugin is not installed!"
-    exit 1
-fi
+DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
+TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
+
+ensure_plugin_is_installed "WorldGuard"
 
 function does_region_exist() {
     local REGION_ID="${1}"
@@ -76,7 +76,7 @@ function get_region_colour() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
     if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_REGION="${COLOUR_PLAYER}"
+        COLOUR_REGION="${COLOUR_HIGHLIGHT}@${COLOUR_PLAYER}"
     fi
 
     if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
@@ -88,7 +88,7 @@ function get_region_colour() {
 
 function get_zone_colour() {
     local REGION_TYPE_ID="${1}"
-    local COLOUR_ZONE="${COLOUR_AQUA}"
+    local COLOUR_ZONE="${COLOUR_HIGHLIGHT}"
 
     if [[ "${REGION_TYPE_ID}" == player_* ]]; then
         [[ "${REGION_TYPE_ID}" == player_base ]] && COLOUR_ZONE="${COLOUR_COUNTRY}"
@@ -140,7 +140,7 @@ function set_teleport_message() {
     local ZONE_NAME="${4}"
 
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
-    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
+    [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="teleport"
 
     local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
@@ -312,7 +312,7 @@ function set_location_region_settings_by_id() {
     local LOCATION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    set_region_flag "${REGION_ID}" "deny-spawn" '["bat","blaze","cave_spider","creeper","dolphin","drowned","enderman","husk","phantom","skeleton","spider","squid","stray","witch","zombie","zombie_villager"]'
+    set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
 
     #set_region_flag "${REGION_ID}" "ride" true
     #set_region_flag "${REGION_ID}" "vehicle-destroy" true
@@ -335,6 +335,7 @@ function set_settlement_region_settings() {
 
     echo "${SETTLEMENT_NAME}"
 
+    set_region_flag "${SETTLEMENT_ID}" "frost-walker" false
     set_region_flag "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
@@ -431,21 +432,23 @@ function set_building_settings() {
         REGION_PRIORITY=30
         [[ "${REGION_ID}" == *_deathcube ]] && set_region_flag "${REGION_ID}" "fall-damage" false
 
-        if [[ "${REGION_ID}" == "${SETTLEMENT_ID}_arena_pvp_ring" ]]; then
-            set_region_flag "${REGION_ID}" "pvp" true
+        if [[ "${REGION_ID}" == *_ring ]]; then
+            set_region_flag "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
             set_region_flag "${REGION_ID}" "enderpearl" false
             set_region_flag "${REGION_ID}" "chorus-fruit-teleport" false
             REGION_PRIORITY=35
+
+            if [[ "${REGION_ID}" == *_pvp_* ]]; then
+                set_region_flag "${REGION_ID}" "pvp" true
+            fi
         fi
-        
-        set_region_flag "${REGION_ID}" "blocked-cmds" '["/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps"]'
     fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","cave_spider","creeper","dolphin","drowned","enderman","husk","phantom","skeleton","spider","squid","stray","witch","zombie","zombie_villager"]'
-        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","blaze","cave_spider","dolphin","drowned","enderman","husk","phantom","skeleton","spider","squid","stray","zombie","zombie_villager"]'
-        [[ "${REGION_ID}" == *_xp ]] && set_region_flag "${REGION_ID}" "deny-spawn" '["bat","blaze","creeper","dolphin","drowned","enderman","husk","phantom","squid","stray","witch","zombie_villager"]'
+        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"cave_spider","creeper",,"skeleton","spider","squid","witch","zombie"]'
+        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","cave_spider","skeleton","spider","squid","zombie"]'
+        [[ "${REGION_ID}" == *_xp ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","creeper","squid","witch"]'
     fi
 
     if [[ "${REGION_ID}" == *_hospital ]]; then
@@ -534,6 +537,8 @@ function rollback_transaction() {
 }
 
 begin_transaction
+    set_settlement_region_settings "settlement_village" "Emeraldia" "FBU"
+commit_transaction
 
 for CITY_NAME in "Flusseland" "Hokazuro" "Solara"; do
     set_settlement_region_settings "settlement_city" "${CITY_NAME}" "Nucilandia"
@@ -549,7 +554,7 @@ for TOWN_NAME in "Iahim"; do
     set_settlement_region_settings "settlement_town" "${TOWN_NAME}" "FBU"
 done
 
-for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Faun" "Frigonița" "Nordavia" "Pandora" "Veneței"; do
+for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Cerc" "Faun" "Frigonița" "Nordavia" "Pandora" "Veneței"; do
     set_settlement_region_settings "settlement_village" "${VILLAGE_NAME}" "Nucilandia"
 done
 for VILLAGE_NAME in "Bastonia" "Emeraldia"; do

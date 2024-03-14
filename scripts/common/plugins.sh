@@ -32,6 +32,65 @@ function is_plugin_not_installed_bool() {
     fi
 }
 
+function ensure_plugin_is_installed() {
+    local PLUGIN_NAME="${1}"
+
+    if ! is_plugin_installed "${PLUGIN_NAME}"; then
+        echo "ERROR: ${PLUGIN_NAME} is not installed!"
+        exit 1
+    fi
+}
+
+function get_plugin_dir() {
+    local PLUGIN_NAME="${1}"
+    local PLUGIN_DIR_NAME="${PLUGIN_NAME}"
+
+    if [ "${PLUGIN_NAME}" == "Dynmap" ]; then
+        PLUGIN_DIR_NAME="dynmap"
+    elif [ "${PLUGIN_NAME}" == "EssentialsX" ]; then
+        PLUGIN_DIR_NAME="Essentials"
+    elif [ "${PLUGIN_NAME}" == "InvSee++" ]; then
+        PLUGIN_DIR_NAME="InvSeePlusPlus"
+    elif [ "${PLUGIN_NAME}" == "NuVotifier" ]; then
+        PLUGIN_DIR_NAME="Votifier"
+    elif [ "${PLUGIN_NAME}" == "WolfyUtils" ]; then
+        PLUGIN_DIR_NAME="WolfyUtilities"
+    fi
+
+    echo "${SERVER_PLUGINS_DIR}/${PLUGIN_DIR_NAME}"
+}
+
+function get_plugin_file() {
+    local PLUGIN_NAME="${1}" && shift
+
+    ! is_plugin_installed "${PLUGIN_NAME}" && return
+
+    local PLUGIN_DIR="$(get_plugin_dir ${PLUGIN_NAME})"
+	local PLUGIN_FILE="${1}" && shift
+
+    if [ -f "${PLUGIN_FILE}" ]; then
+        PLUGIN_FILE="${PLUGIN_FILE}"
+    elif [ -f "${PLUGIN_DIR}/${PLUGIN_FILE}" ]; then
+        PLUGIN_FILE="${PLUGIN_DIR}/${PLUGIN_FILE}"
+    elif [ "${PLUGIN_FILE}" == "config" ]; then
+        for FILE_NAME in "config.yml" "Config.yml" "config.json" "configuration.txt" "main.yml" "options.yml" "Settings.yml"; do
+            if [ -f "${PLUGIN_DIR}/${FILE_NAME}" ]; then
+                PLUGIN_FILE="${PLUGIN_DIR}/${FILE_NAME}"
+                break
+            fi
+        done
+    elif [ "${PLUGIN_FILE}" == "messages" ]; then
+        for FILE_NAME in "lang/strings.json" "language.yml" "messages.yml" "Messages.yml"; do
+            if [ -f "${PLUGIN_DIR}/${FILE_NAME}" ]; then
+                PLUGIN_FILE="${PLUGIN_DIR}/${FILE_NAME}"
+                break
+            fi
+        done
+    fi
+
+    echo "${PLUGIN_FILE}"
+}
+
 function reload_plugin() {
     local PLUGIN_NAME="${1}"
 
@@ -54,27 +113,11 @@ function reload_plugin() {
 
 function configure_plugin() {
     local PLUGIN_NAME="${1}" && shift
+    local PLUGIN_DIR="$(get_plugin_dir ${PLUGIN_NAME})"
 
     ! is_plugin_installed "${PLUGIN_NAME}" && return
 
-	local PLUGIN_CONFIG_FILE="${1}" && shift
-
-    if [ "${PLUGIN_CONFIG_FILE}" == "config" ]; then
-        for FILE_NAME in "config.yml" "Config.yml" "config.json" "main.yml" "options.yml"; do
-            if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}/${FILE_NAME}" ]; then
-                PLUGIN_CONFIG_FILE="${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}/${FILE_NAME}"
-                break
-            fi
-        done
-    elif [ "${PLUGIN_CONFIG_FILE}" == "messages" ]; then
-        for FILE_NAME in "language.yml" "messages.yml"; do
-            if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}/${FILE_NAME}" ]; then
-                PLUGIN_CONFIG_FILE="${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}/${FILE_NAME}"
-                break
-            fi
-        done
-    fi
-
+	local PLUGIN_CONFIG_FILE="$(get_plugin_file ${1})" && shift
     [ ! -f "${PLUGIN_CONFIG_FILE}" ] && return
 
 	set_config_values "${PLUGIN_CONFIG_FILE}" "${@}"

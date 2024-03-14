@@ -3,6 +3,9 @@
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
+export BULLETPOINT_LIST_MARKER="${COLOUR_RESET} ${COLOUR_RESET} ${COLOUR_RESET} ${COLOUR_MESSAGE}• "
+INCLUDE_HANDLE_SIGN_IN_PLAYER_NAMES=false
+
 function normalise_message() {
     local MESSAGE_COLOUR="${1}" && shift
     local MESSAGE_SUFFIX="${1}" && shift
@@ -43,7 +46,8 @@ function get_symbol_by_category() {
     local AUTHENTICATION_SYMBOL="🔑"
     local COMBAT_SYMBOL="🗡"
     local DEFENCE_SYMBOL="⛨"
-    local ECONOMY_SYMBOL="💰"
+    local ECONOMY_SYMBOL="💰" # "₦"
+    local FARM_SYMBOL="🚜"
     local GAMEMODE_SYMBOL="◎"
     local HOME_SYMBOL="🛏"
     local INSPECT_SYMBOL="🔍"
@@ -67,6 +71,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "defence_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "denied" "${ERROR_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "error" "${ERROR_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "farm.*" "${FARM_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "fail.*" "${ERROR_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "gamemode" "${GAMEMODE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "home" "${HOME_SYMBOL}")
@@ -77,13 +82,13 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "mount" "${MOUNT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "other" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player" "${PLAYER_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player_base" "${HOME_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player_home.*" "${HOME_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player_.*" "${HOME_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "settlement_.*" "${SETTLEMENT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "skin" "${SKIN_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "teleport" "${TELEPORT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "trade" "${ECONOMY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "vote" "${VOTE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "warehouse" "${INVENTORY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "warp" "${TELEPORT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "worldedit" "${WORLDEDIT_SYMBOL}")
 
@@ -106,17 +111,8 @@ function get_formatted_message() {
 }
 
 function get_formatted_message_minimessage() {
-    local STATUS="${1}" && shift
-    local CATEGORY="${1}" && shift
-    local CATEGORY_COLOUR="${COLOUR_ACTION}"
-    local SYMBOL=$(get_symbol_by_category "${STATUS}" "${CATEGORY}")
-    local MESSAGE="$(normalise_message ${COLOUR_MESSAGE_MINIMESSAGE} . ${*})"
-
-    [[ "${STATUS}" == "info" ]] && CATEGORY_COLOUR="${COLOUR_ACTION_XML}"
-    [[ "${STATUS}" == "success" ]] && CATEGORY_COLOUR="${COLOUR_SUCCESS_XML}"
-    [[ "${STATUS}" == "error" ]] && CATEGORY_COLOUR="${COLOUR_ERROR_XML}"
-
-    echo "${CATEGORY_COLOUR}${SYMBOL} ${COLOUR_MESSAGE_MINIMESSAGE}${MESSAGE}"
+    local LEGACY_MESSAGE="$(get_formatted_message ${@})"
+    convert_message_to_minimessage "${LEGACY_MESSAGE}"
 }
 
 function get_reload_message() {
@@ -164,9 +160,7 @@ function get_action_message() {
 }
 
 function get_action_message_minimessage() {
-    local PLAYER_NAME="${1}" && shift
-    local MESSAGE="$(normalise_message ${COLOUR_MESSAGE_MINIMESSAGE} ! ${*})"
-    echo "${COLOUR_PLAYER_XML}${PLAYER_NAME} ${COLOUR_ACTION_XML}${MESSAGE}"
+    convert_message_to_minimessage "$(get_action_message ${*})"
 }
 
 function get_announcement_message() {
@@ -177,4 +171,40 @@ function get_announcement_message() {
 function get_announcement_message_minimessage() {
     local MESSAGE="$(normalise_message ${COLOUR_ANNOUNCEMENT_MINIMESSAGE} !!! ${*})"
     echo "${COLOUR_YELLOW_MINIMESSAGE}☀ ${COLOUR_ANNOUNCEMENT_MINIMESSAGE}${MESSAGE}"
+}
+
+function get_death_by_mob_message() {
+    local PLAYER_NAME="${1}" && shift
+    local MOB_NAME="${2}" && shift
+    get_action_message "${PLAYER_NAME}" "was killed by ${COLOUR_HIGHLIGHT}${MOB_NAME}" 
+}
+
+function get_player_mention() {
+    local PLAYER_NAME="${1}"
+    local TEXT=""
+
+    if ${INCLUDE_HANDLE_SIGN_IN_PLAYER_NAMES}; then
+        TEXT="${COLOUR_HIGHLIGHT}@"
+    fi
+
+    TEXT="${TEXT}${COLOUR_PLAYER}${PLAYER_NAME}${COLOUR_MESSAGE}"
+
+    echo "${TEXT}"
+}
+
+function convert_message_to_minimessage() {
+    local MESSAGE="${@}"
+    echo "${MESSAGE}" | sed \
+        -e 's/'"${COLOUR_AQUA}"'/'"${COLOUR_AQUA_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_GREEN_DARK}"'/'"${COLOUR_GREEN_DARK_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_GREEN_LIGHT}"'/'"${COLOUR_GREEN_LIGHT_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_GREY}"'/'"${COLOUR_GREY_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_ORANGE}"'/'"${COLOUR_ORANGE_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_PINK}"'/'"${COLOUR_PINK_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_PURPLE_DARK}"'/'"${COLOUR_PURPLE_DARK_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_RED}"'/'"${COLOUR_RED_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_RED_DARK}"'/'"${COLOUR_RED_DARK_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_WHITE}"'/'"${COLOUR_WHITE_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_YELLOW}"'/'"${COLOUR_YELLOW_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_RESET}"'/'"${COLOUR_RESET_MINIMESSAGE}"'/g'
 }
