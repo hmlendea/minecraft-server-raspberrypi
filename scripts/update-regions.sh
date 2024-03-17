@@ -7,7 +7,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
-TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
+TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 
 ensure_plugin_is_installed "WorldGuard"
 
@@ -340,6 +340,7 @@ function set_settlement_region_settings() {
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
     set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"             "DeathCube-ul"
+    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"        "Ringul DeathCube-ului"
     set_building_settings "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"             "Arena PvP"
     set_building_settings "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"        "Ringul Arenei PvP"
     set_building_settings "${SETTLEMENT_NAME}" "bank"                   "Bank"                  "Banca"
@@ -383,6 +384,7 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" "station_police"         "Police Station"        "Stația de Poliție"
     set_building_settings "${SETTLEMENT_NAME}" "station_train"          "Train Station"         "Gara"
     set_building_settings "${SETTLEMENT_NAME}" "subway"                 "Subway"                "Subway-ul"
+    set_building_settings "${SETTLEMENT_NAME}" "university"             "University"            "Universitatea"
     set_building_settings "${SETTLEMENT_NAME}" "warehouse"              "Warehouse"             "Magazia"
     set_building_settings "${SETTLEMENT_NAME}" "workshop"               "Workshop"              "Atelierul"
 
@@ -430,7 +432,6 @@ function set_building_settings() {
     
     if [[ "${REGION_ID}" == *_arena_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_deathcube ]] && set_region_flag "${REGION_ID}" "fall-damage" false
 
         if [[ "${REGION_ID}" == *_ring ]]; then
             set_region_flag "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
@@ -438,9 +439,8 @@ function set_building_settings() {
             set_region_flag "${REGION_ID}" "chorus-fruit-teleport" false
             REGION_PRIORITY=35
 
-            if [[ "${REGION_ID}" == *_pvp_* ]]; then
-                set_region_flag "${REGION_ID}" "pvp" true
-            fi
+            [[ "${REGION_ID}" == *_deathcube_* ]] && set_region_flag "${REGION_ID}" "fall-damage" false
+            [[ "${REGION_ID}" == *_pvp_* ]] && set_region_flag "${REGION_ID}" "pvp" true
         fi
     fi
     
@@ -537,8 +537,6 @@ function rollback_transaction() {
 }
 
 begin_transaction
-    set_settlement_region_settings "settlement_village" "Emeraldia" "FBU"
-commit_transaction
 
 for CITY_NAME in "Flusseland" "Hokazuro" "Solara"; do
     set_settlement_region_settings "settlement_city" "${CITY_NAME}" "Nucilandia"
