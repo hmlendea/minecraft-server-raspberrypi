@@ -343,12 +343,20 @@ entities:
       water-animals: -1
       water_ambient: -1
       water_creature: -1
+    ticks-per-spawn:
+      ambient: -1
+      axolotls: -1
+      creature: -1
+      monster: -1
+      underground_water_creature: -1
+      water_ambient: -1
+      water_creature: -1
     wandering-trader:
       spawn-chance-failure-increment: 25
-      spawn-chance-max: 75
+      spawn-chance-max: 125
       spawn-chance-min: 25
-      spawn-day-length: 24000
-      spawn-minute-length: 1200
+      spawn-day-length: 18000
+      spawn-minute-length: 300
     wateranimal-spawn-height:
       maximum: default
       minimum: default
@@ -372,6 +380,8 @@ environment:
       min: 20
     enabled: true
   generate-flat-bedrock: false
+  max-block-ticks: 65536
+  max-fluid-ticks: 65536
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
   portal-create-radius: 16
@@ -453,4 +463,5 @@ tick-rates:
       villagerbabiessensor: 40
   wet-farmland: 1
 unsupported-settings:
+  disable-world-ticking-when-empty: false
   fix-invulnerable-end-crystal-exploit: true

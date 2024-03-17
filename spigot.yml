@@ -36,12 +36,12 @@ settings:
 messages:
   whitelist: |-
     You are not whitelisted on this server.
-    To get access, contact us on Discrod: https://tinyurl.com/nucicraft-discord
-  unknown-command: Unknown command. Type "/help" for help.
+    To get access, contact us on Discord: &9tinyurl.com/nc-discord
   server-full: The server is full!
   outdated-client: Outdated client! Please use {0}
   outdated-server: Outdated server! I'm still on {0}
   restart: Server is restarting
+  unknown-command: §r§c✘ §r§7This command cannot be executed§r§7.
 advancements:
   disable-saving: false
   disabled:
@@ -75,7 +75,7 @@ world-settings:
     seed-stronghold: default
     thunder-chance: 100000
     verbose: true
-    hopper-amount: 8
+    hopper-amount: 1
     dragon-death-sound-radius: 0
     seed-village: 10387312
     seed-desert: 14357617
@@ -159,7 +159,7 @@ world-settings:
         flying-monsters-every: 200
         flying-monsters-for: 100
     ticks-per:
-      hopper-transfer: 20
+      hopper-transfer: 8
       hopper-check: 1
     hunger:
       jump-walk-exhaustion: 0.05
