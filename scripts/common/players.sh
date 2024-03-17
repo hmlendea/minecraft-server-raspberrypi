@@ -1,6 +1,7 @@
 #!/bin/bash
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 if [ -f "${PLAYERS_CACHE_FILE}" ]; then
 	LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
@@ -52,13 +53,13 @@ function get_player_uuid() {
 
     [ -z "${LOADED_PLAYERS_CACHE_JSON}" ] && LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
 
-    PLAYER_UUID=$(jq -r 'to_entries[] | select(.value.username == "'"${PLAYER_USERNAME}"'") | .key' <<< "${LOADED_PLAYERS_CACHE_JSON}")
+    PLAYER_UUID=$(jq -r 'to_entries[] | select(.value.username == "'"${PLAYER_USERNAME}"'") | .key' <<< "${LOADED_PLAYERS_CACHE_JSON}" | head -n 1)
     [ "${PLAYER_UUID}" == "null" ] && PLAYER_UUID=""
     [ -n "${PLAYER_UUID}" ] && FOUND_IN_CACHE=true
 
-    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_USERCACHE_FILE}")
-    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_WHITELIST_FILE}")
-    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_OPS_FILE}")
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_USERCACHE_FILE}" | head -n 1)
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_WHITELIST_FILE}" | head -n 1)
+    [ -z "${PLAYER_UUID}" ] && PLAYER_UUID=$(jq -r --arg username "${PLAYER_USERNAME}" '.[] | select(.name == $username) | .uuid' "${SERVER_OPS_FILE}" | head -n 1)
 
     if [ -z "${PLAYER_UUID}" ]; then
         local INPUT="OfflinePlayer:${PLAYER_USERNAME}"
