@@ -13,14 +13,23 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
-  auth:
-  - authme:log $$1
-  icanhasbukkit:
-  - version $1-
-  b:
-  - back
-  bed:
-  - home bed
+  # Use vanilla Minecraft commands
+  give:
+  - minecraft:give $1-
+  kill:
+  - minecraft:kill $1-
+  locate:
+  - minecraft:locate $1-
+  
+  # Use Essentials commands
+  god:
+  - essentials:god $1-
+  rtp:
+  - essentials:tprandom
+  wild:
+  - essentials:tprandom
+  
+  # Game modes
   creative:
   - gamemode creative
   - vanish off
@@ -28,120 +37,16 @@ aliases:
   - gamemode spectator
   - vanish on
   spectate:
-  - minecraft:tp @s $$1
+  - teleport $$1
   - spectator
   spec:
   - spectate $1
-  surv:
-  - survival
-  exit:
-  - stop
-  broadcast:
-  - essentials:broadcast $1-
-  - discordsrv:discordsrv broadcast $1-
-  announcement:
-  - essentials:broadcast $$1-!!!
-  - discordsrv:discordsrv broadcast @everyone $$1-!!!
-  god:
-  - essentials:god $1-
-  g:
-  - minecraft:give $1-
-  give:
-  - minecraft:give $1-
-  itemnbt:
-  - minecraft:data get entity @s SelectedItem
-  kill:
-  - minecraft:kill $1-
-  ls:
-  - list
-  movedropstoplayer:
-  - execute as @e[type=item] at @s if entity @s[distance=..$1] run tp @s $2
   survival:
   - gamemode survival
-  setregiondefaultflags:
-  - rg flag -w world $1 pvp DENY
-  - rg flag -w world $1 block-trampling DENY
-  - rg flag -w world $1 creeper-explosion DENY
-  - rg flag -w world $1 enderdragon-block-damage DENY
-  - rg flag -w world $1 ghast-fireball DENY
-  - rg flag -w world $1 wither-damage DENY
-  - rg flag -w world $1 enderman-grief DENY
-  - rg flag -w world $1 ravager-grief DENY
-  - rg flag -w world $1 fire-spread DENY
-  - rg flag -w world $1 lava-fire DENY
-  - rg flag -w world $1 lightning DENY
-  - rg flag -w world $1 weather-lock clear
-  - rg flag -w world $1 greeting &6You have entered &b$2&6!
-  - rg flag -w world $1 farewell &6You have left &b$2&6!
-  - rg flag -w world $1 deny-message &c&lSTOP! &rYou can't &e%what%&r in &b$2&r!
-  - rg flag -w world $1 teleport-message &aWhisking ye away to &b$2&a!
-  setregionprivateflags:
-  - setregiondefaultflags $1 $1
-  - rg flag -w world $1 greeting &6You have entered &b$2&6's base!
-  - rg flag -w world $1 farewell &6You have left &b$2&6's base!
-  - rg flag -w world $1 deny-message &c&lSTOP! &rYou can't &e%what%&r in &b$2&r's
-    base!
-  - rg flag -w world $1 teleport-message &aWhisking ye away to &b$2&a's base!
-  newregion:
-  - rg define $1 $3
-  - setregiondefaultflags $1 $2
-  newplayerregion:
-  - newregion $1 $1 $2
-  - setregionprivateflags $1 $2
-  - rg setpriority -w world $1 50
-  newplayersubregion:
-  - newregion $1 $1 $2
-  - setregionprivateflags $1 $2
-  - rg setpriority -w world $1 50
-  - rg flag -w world $1 greeting
-  - rg flag -w world $1 farewell
-  unop:
-  - minecraft:deop $1-
-  renameitem:
-  - essentials:itemname &r$1-
-  setbookauthor:
-  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1-"}}}
-  rtp:
-  - essentials:tprandom
-  wild:
-  - essentials:tprandom
-  shop:
-  - essentials:warp Shop
-  setregiontp:
-  - worldguard:region flag $$1 teleport here
-  tpregion:
-  - worldguard:region teleport $$1
-  rgtp:
-  - tpregion $$1
-  reloadconfigs:
-  - authme:authme reload
-  - bukkit:reload commands
-  - bukkit:reload permissions
-  - coreprotect:co reload
-  - customcrafting:cc reload
-  - discordsrv:discordsrv reload
-  - easycarts:easycarts reload
-  - essentials:essentials reload
-  - gsit:gsitreload
-  - invunload:invunload reload
-  - luckperms:lp reloadconfig
-  - minimotd:minimotd reload
-  - oldcombatmechanics:ocm reload
-  - papertweaks:pt reload
-  - purpurextras:purpurextras reload
-  - skinsrestorer:sr reload
-  - stackableitems:si reload
-  - tab:tab reload
-  - tradeshop:ts reload
-  - treeassist:ta reload
-  - superbvote:sv reload
-  - viaversion:viaversion reload
-  - votifier:nvreload
-  - superbvote:sv reload
-  - viewdistancetweaks:vdt reload
-  - wanderingtrades:wt reload
-  - worldeditsui:wesui reload
-  - worldguard:wg reload
+  surv:
+  - survival
+  
+  # WorldEdit
   wexpandh:
   - /expand $1 north
   - /expand $1 west
@@ -162,8 +67,50 @@ aliases:
   wesel:
   - wesel1
   - wesel2
-  createregion:
-  - rg define $$1 $2-
-  - rg priority $$1 50
-  testcmd:
-  - msg $sender test $sender test
+  #
+  auth:
+  - authme:log $$1
+  b:
+  - back
+  bed:
+  - home bed
+  broadcast:
+  - essentials:broadcast $1-
+  - discordsrv:discordsrv broadcast $1-
+  announcement:
+  - essentials:broadcast $$1-!!!
+  - discordsrv:discordsrv broadcast @everyone $$1-!!!
+  announce:
+  - announcement: $$1-
+  itemnbt:
+  - minecraft:data get entity $sender SelectedItem
+  ls:
+  - list
+  movedropstome:
+  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
+    tp @s $sender
+  movedropstoplayer:
+  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
+    tp @s $$2
+  setupregion:
+  - worldguard:region priority $$1 30
+  - worldguard:region flag $$1 pvp DENY
+  - setregiontp $$1
+  renameitem:
+  - essentials:itemname &r$$1-
+  setbookauthor:
+  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1-"}}}
+  shop:
+  - essentials:warp Shop
+  setregiontp:
+  - worldguard:region flag $$1 teleport here
+  setrgtp:
+  - setregiontp: $$1
+  tpregion:
+  - worldguard:region teleport $$1
+  rgtp:
+  - tpregion $$1
+  slap:
+  - me slaps $$1
+  whoami:
+  - echo I'm $sender
