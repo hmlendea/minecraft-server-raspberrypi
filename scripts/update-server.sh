@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source "/srv/papermc/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 PURPUR_API_URL="https://api.purpurmc.org/v2/purpur"
@@ -108,7 +109,7 @@ function download_plugin() {
     local ASSET_URL="${1}"
     local PLUGIN_NAME="${2}"
     local PLUGIN_VERSION="${3}"
-    local PLUGIN_FILE_NAME="${PLUGIN_NAME}_${PLUGIN_VERSION}.jar"
+    local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
     if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}_"*".jar" ] && \
@@ -157,7 +158,7 @@ function download_from_jenkins() {
     local ARTIFACT_FILE_NAME=$(transform_asset_file_name "${4}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}")
     local ARTIFACT_NAME=""
 
-    local PLUGIN_FILE_NAME="${PLUGIN_NAME}_${PLUGIN_VERSION}.jar"
+    local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
     [[ "${PLUGIN_NAME}" == "spark" ]] && ARTIFACT_NAME="spark-bukkit"
@@ -235,6 +236,7 @@ else
     update_server
 
     update_plugin "AuthMe"                  "https://github.com/AuthMe/AuthMeReloaded"
+    update_plugin "BetterMessages"          "https://modrinth.com/plugin/bettermessages"            "%pluginName%-%pluginVersion%.jar"
     update_plugin "CustomCrafting"          "https://modrinth.com/plugin/customcrafting"            "customcrafting-spigot-%pluginVersion%.jar"
     update_plugin "WolfyUtils"              "https://modrinth.com/plugin/wolfyutils"                "wolfyutils-spigot-%pluginVersion%.jar"
     update_plugin "DeluxeMenus"             "https://ci.extendedclip.com"                           "%pluginName%-%pluginVersion%.jar"

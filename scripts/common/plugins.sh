@@ -1,6 +1,10 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/github.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/modrinth.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/jenkins.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/web.sh"
 
 function is_plugin_installed() {
     local PLUGIN_NAME="${1}"
@@ -122,3 +126,48 @@ function configure_plugin() {
 	set_config_values "${PLUGIN_FILE}" "${@}"
 	reload_plugin "${PLUGIN_NAME}"
 }
+
+function transform_plugin_asset_file_name() {
+    local ASSET_FILE_NAME_PATTERN="${1}"
+    local PLUGIN_NAME="${2}"
+    local PLUGIN_VERSION="${3}"
+    
+    echo "${ASSET_FILE_NAME_PATTERN}" | sed \
+            -e 's/%pluginName%/'"${PLUGIN_NAME}"'/g' \
+            -e 's/%pluginVersion%/'"${PLUGIN_VERSION}"'/g'
+}
+
+function download_plugin() {
+    local ASSET_URL="${1}"
+    local PLUGIN_NAME="${2}"
+    local PLUGIN_VERSION="${3}"
+    local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
+    local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
+
+    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}_"*".jar" ] && \
+       [ ! -f "${PLUGIN_FILE_PATH}" ]; then
+        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}_"*".jar"
+    fi
+
+    download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
+}
+
+function update_plugin() {
+    local PLUGIN_NAME="${1}"
+
+    ! is_plugin_installed "${PLUGIN_NAME}" && return
+
+    local URL="${2}"
+    local ASSET_FILE_NAME_PATTERN="${3}"
+    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
+
+    echo "Checking for updates for plugin '${PLUGIN_NAME}'..."
+    if [[ ${2} == *"github"* ]]; then
+        update_plugin_github "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
+    elif [[ ${2} == *"modrinth"* ]]; then
+        update_plugin_modrinth "${PLUGIN_NAME}" "${ASSET_FILE_NAME_PATTERN}"
+    else
+        update_plugin_jenkins "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
+    fi
+}
+
