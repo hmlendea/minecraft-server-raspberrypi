@@ -8,7 +8,9 @@ REASON="${*}"
 
 if ${IS_SERVER_RUNNING}; then
     KICK_REASON="Server shutdown"
-    send_broadcast_message "The server is shutting down..."
+    send_broadcast_message "The server will be shutting down in a moment..."
+    run_server_command save-all
+    sleep 10
 
     if [ -n "${REASON}" ]; then
         send_broadcast_message "Reason: ${REASON}"
