@@ -95,11 +95,15 @@ aliases:
   setupregion:
   - worldguard:region priority $$1 30
   - worldguard:region flag $$1 pvp DENY
-  - setregiontp $$1
+  - worldguard:region flag $$1 teleport here
   renameitem:
   - essentials:itemname &r$$1-
   setbookauthor:
   - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1-"}}}
+  setpaintingname:
+  - essentials:itemlore clear
+  - essentials:itemname &e$$1-
+  - essentials:itemlore add &9Painting &f(for Item Frame)
   shop:
   - essentials:warp Shop
   setregiontp:
@@ -114,3 +118,5 @@ aliases:
   - me slaps $$1
   whoami:
   - echo I'm $sender
+  topvotes:
+  - superbvote:sv top
