@@ -355,7 +355,7 @@ entities:
       spawn-chance-failure-increment: 25
       spawn-chance-max: 125
       spawn-chance-min: 25
-      spawn-day-length: 18000
+      spawn-day-length: 27600
       spawn-minute-length: 300
     wateranimal-spawn-height:
       maximum: default
@@ -388,7 +388,7 @@ environment:
   portal-search-radius: 16
   portal-search-vanilla-dimension-scaling: false
   treasure-maps:
-    enabled: false
+    enabled: true
     find-already-discovered:
       loot-tables: 'false'
       villager-trade: false

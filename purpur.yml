@@ -34,7 +34,7 @@ settings:
     death-message:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
-    cannot-ride-mob: §r§c🐎 §r§7You cannot mount that mob§r§7.
+    cannot-ride-mob: §r§c🐎 §r§7This mob cannot be mounted§r§7.
   tps-catchup: true
   server-mod-name: NuciCraft
   clamp-attributes: true
@@ -1618,7 +1618,7 @@ world-settings:
       thunder-stops-after-sleep: true
       mob-last-hurt-by-player-time: 100
       daylight-cycle-ticks:
-        daytime: 18000
+        daytime: 15600
         nighttime: 12000
       drowning:
         air-ticks: 450

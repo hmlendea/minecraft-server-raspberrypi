@@ -83,7 +83,7 @@ function get_region_colour() {
         COLOUR_REGION="${COLOUR_SETTLEMENT}"
     fi
 
-    echo "${COLOUR_SUBREGION}"
+    echo "${COLOUR_REGION}"
 }
 
 function get_zone_colour() {
@@ -111,24 +111,24 @@ function set_deny_message() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(%what%\) în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot %what% in the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot f${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -142,24 +142,24 @@ function set_teleport_message() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="teleport"
 
-    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -173,24 +173,24 @@ function set_farewell_message() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You have left the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -204,24 +204,24 @@ function set_greeting_message() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
-    local COLOUR_SUBREGION="$(get_region_colour ${REGION_TYPE_ID})"
+    local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
     
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${REGION_TYPE} ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${COLOUR_SUBREGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You have entered the ${REGION_TYPE} of ${COLOUR_SUBREGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -555,7 +555,7 @@ done
 for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Cerc" "Faun" "Frigonița" "Nordavia" "Pandora" "Veneței"; do
     set_settlement_region_settings "settlement_village" "${VILLAGE_NAME}" "Nucilandia"
 done
-for VILLAGE_NAME in "Bastonia" "Emeraldia"; do
+for VILLAGE_NAME in "Aecrim" "Bastonia" "Emeraldia"; do
     set_settlement_region_settings "settlement_village" "${VILLAGE_NAME}" "FBU"
 done
 

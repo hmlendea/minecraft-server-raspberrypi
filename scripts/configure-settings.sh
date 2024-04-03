@@ -26,16 +26,16 @@ PLACEHOLDER_REPLY_PERCENT="%reply%"
 
 if [ "${LOCALE}" == "ro" ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
-    INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executata)"
+    INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executa)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
 
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Nu poți călări acest mob)"
+    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu poate fi călărit)"
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command This command cannot be executed)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} joined the game)"
 
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount You cannot mount that mob)"
+    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob cannot be mounted)"
 fi
 
 set_config_value "${SERVER_PROPERTIES_FILE}"            "max-players"                                               "${PLAYERS_MAX}"
@@ -60,7 +60,7 @@ set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "timings.server-name" "$
 
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                          true
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-chance-max"   125         
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-day-length"   "${DAYTIME_LENGTH_TICKS}"         
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-day-length"   "${DAY_LENGTH_TICKS}"
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded"                               "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "spawn.keep-spawn-loaded-range"                         "${VIEW_DISTANCE}"
 
@@ -139,13 +139,13 @@ if is_plugin_installed "AuthMe"; then
             "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
             "error.logged_in" "$(get_formatted_message error auth Ești autentificat deja)" \
             "login.command_usage" "$(get_formatted_message info auth Utilizare: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            "login.login_request" "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${COLOUR_MESSAGE}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE}!)" \
+            "login.login_request" "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE})" \
             "login.success" "$(get_formatted_message success auth Te-ai autentificat)" \
             "login.wrong_password" "$(get_formatted_message error auth Parola este greșită)" \
             "misc.logout" "$(get_formatted_message success auth Te-ai deautentificat)" \
             "misc.reload" "$(get_reload_message AuthMe)" \
             "password.match_error" "$(get_formatted_message error auth Parola de confirmare nu se potrivește)" \
-            "registration.register_request" "$(get_formatted_message error auth Trebuie să te înregistrezi pentru a putea juca.\\n${COLOUR_MESSAGE}Folosește ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'${COLOUR_MESSAGE}!)" \
+            "registration.register_request" "$(get_formatted_message error auth Trebuie să te înregistrezi pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'${COLOUR_MESSAGE})" \
             "registration.success" "$(get_formatted_message success auth Te-ai înregistrat)" \
             "session.valid_session" "$(get_formatted_message success auth Te-ai autentificat automat de data trecută)"
     else
@@ -154,13 +154,13 @@ if is_plugin_installed "AuthMe"; then
             "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
             "error.logged_in" "$(get_formatted_message error auth You are already authenticated)" \
             "login.command_usage" "$(get_formatted_message info auth Usage: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            "login.login_request" "$(get_formatted_message error auth You must authenticate in order to play.\\n${COLOUR_MESSAGE}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE}!)" \
+            "login.login_request" "$(get_formatted_message error auth You must authenticate in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE})" \
             "login.success" "$(get_formatted_message success auth You are now authenticated)" \
             "login.wrong_password" "$(get_formatted_message error auth The password is incorrect)" \
             "misc.logout" "$(get_formatted_message success auth You are now deauthenticated)" \
             "misc.reload" "$(get_reload_message AuthMe)" \
             "password.match_error" "$(get_formatted_message error auth The confirmation password does not match)" \
-            "registration.register_request" "$(get_formatted_message error auth You must register in order to play.\\n${COLOUR_MESSAGE}Use ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Password>' '<ConfirmPassword>'${COLOUR_MESSAGE}!)" \
+            "registration.register_request" "$(get_formatted_message error auth You must register in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Password>' '<ConfirmPassword>'${COLOUR_MESSAGE})" \
             "registration.success" "$(get_formatted_message success auth You are now registered)" \
             "session.valid_session" "$(get_formatted_message success auth You authenticated automatically from the previous session)"
     fi
@@ -194,16 +194,10 @@ if is_plugin_installed "DeathMessages"; then
         configure_plugin "DeathMessages" messages \
             "Mobs.Bat" "Liliac" \
             "Mobs.Skeleton" "Schelet"
-
-        #configure_plugin "DeathMessages" "PlayerDeathMessages.yml" \
-         #   "Mobs.player.Solo.Weapon" "$(get_action_message ${PLACEHOLDER_PLAYER_PERCENT} a fost ucis de $(get_player_mention %killer%) ${COLOUR_MESSAGE}folosind ${COLOUR_HIGHLIGHT}%weapon%)"
     else
         configure_plugin "DeathMessages" messages \
             "Mobs.Bat" "Bat" \
             "Mobs.Skeleton" "Skeleton"
-
-        #configure_plugin "DeathMessages" "PlayerDeathMessages.yml" \
-         #   "Mobs.player.Solo.Weapon" "$(get_action_message ${PLACEHOLDER_PLAYER_PERCENT} was slain by $(get_player_mention %killer%) ${COLOUR_MESSAGE}using ${COLOUR_HIGHLIGHT}%weapon%)"
     fi
 fi
 
@@ -291,24 +285,26 @@ if is_plugin_installed "EssentialsX"; then
 
         create-file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
-            "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}!)" \
+            "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})" \
             "backAfterDeath"                    "$(get_formatted_message_minimessage info teleport Folosește ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}pentru a te întoarce unde ai murit)" \
-            "backOther"                         "$(get_formatted_message_minimessage info teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
-            "backUsageMsg"                      "$(get_formatted_message_minimessage info teleport Te-ai întors la locația anterioară)" \
+            "backOther"                         "$(get_formatted_message_minimessage success teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
+            "backUsageMsg"                      "$(get_formatted_message_minimessage success teleport Te-ai întors la locația anterioară)" \
             "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             "deleteHome"                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
             "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost șters)" \
             "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
             "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            "false"                             "$(covert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
             "flyMode"                           "$(get_formatted_message_minimessage success gamemode Zborul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             "gameMode"                          "$(get_formatted_message_minimessage success gamemode Modul de joc a fost schimbat la ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             "godModeDisabledFor"                "$(convert_message_to_minimessage ${COLOUR_ERROR}dezactivat ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "godModeEnabledFor"                 "$(convert_message_to_minimessage ${COLOUR_SUCCESS}activat ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "godMode"                           "$(get_formatted_message_minimessage success gamemode Modul invincibil ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "homes"                             "$(get_formatted_message_minimessage info home Case: ${PLACEHOLDER_ARG0})" \
+            "homes"                             "$(get_formatted_message_minimessage info home Case: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "homeSet"                           "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
-            "itemnameSuccess"                   "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit în \"${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE}\".)" \
+            "itemnameSuccess"                   "$(get_formatted_message_minimessage success other Obiectul din mână a fost redenumit în \"${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}${COLOUR_MESSAGE}\")" \
             "kitResetOther"                     "$(get_formatted_message_minimessage info kit Perioada de așteptare a kit-ului ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost resetată pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "listAmount"                        "$(get_formatted_message_minimessage info inspect Sunt ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}jucători online)" \
             "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
@@ -341,6 +337,7 @@ if is_plugin_installed "EssentialsX"; then
             "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Te-ai teleportat la $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport Trebuie să aștepți ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}înainte de a te putea teleporta din nou)" \
             "tprSuccess"                        "$(get_formatted_message_minimessage error teleport Te-ai teleportat la o locație aleatorie)" \
+            "true"                              "$(covert_message_to_minimessage ${COLOUR_GREEN_LIGHT}da${COLOUR_MESSAGE})" \
             "typeTpacancel"                     "$(get_formatted_message_minimessage info player Pentru a o anula, folosește ${COLOUR_COMMAND}/tpacancel)" \
             "typeTpaccept"                      "$(get_formatted_message_minimessage info player Pentru a o aproba, folosește ${COLOUR_COMMAND}/tpyes)" \
             "typeTpdeny"                        "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND}/tpno)" \
@@ -378,22 +375,24 @@ if is_plugin_installed "EssentialsX"; then
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_en.properties" \
             "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
             "backAfterDeath"                    "$(get_formatted_message_minimessage info teleport Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
-            "backOther"                         "$(get_formatted_message_minimessage info teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
+            "backOther"                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
             "backUsageMsg"                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
             "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             "deleteHome"                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
             "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
             "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
             "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            "false"                             "$(covert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
             "flyMode"                           "$(get_formatted_message_minimessage success gamemode Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             "gameMode"                          "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             "godModeDisabledFor"                "$(convert_message_to_minimessage ${COLOUR_ERROR}disabled ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "godModeEnabledFor"                 "$(convert_message_to_minimessage ${COLOUR_SUCCESS}enabled ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "godMode"                           "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "homes"                             "$(get_formatted_message_minimessage success home Homes: ${PLACEHOLDER_ARG0})" \
+            "homes"                             "$(get_formatted_message_minimessage success home Homes: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "homeSet"                           "$(get_formatted_message_minimessage success home Home set at the current location)" \
             "itemnameSuccess"                   "$(get_formatted_message_minimessage success other The held item has been renamed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "kitResetOther"                     "$(get_formatted_message_minimessage info kit The cooldown for kit ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            "listAmount"                        "$(get_formatted_message_minimessage info inspect There are ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}players online)" \
             "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
@@ -426,6 +425,7 @@ if is_plugin_installed "EssentialsX"; then
             "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport You must wait ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}before teleporting again)" \
             "tprSuccess"                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
+            "true"                              "$(covert_message_to_minimessage ${COLOUR_GREEN_LIGHT}yes${COLOUR_MESSAGE})" \
             "typeTpacancel"                     "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND}/tpacancel)" \
             "typeTpaccept"                      "$(get_formatted_message_minimessage info player To approve it, use ${COLOUR_COMMAND}/tpyes)" \
             "typeTpdeny"                        "$(get_formatted_message_minimessage info player To deny this request, use ${COLOUR_COMMAND}/tpno)" \
@@ -477,7 +477,7 @@ if is_plugin_installed "InvUnload"; then
         "ignore-blocked-chests" false \
         "laser-animation" false \
         "laser-default-duration" 5 \
-        "max-chest-radius" 128 \
+        "max-chest-radius" 80 \
         "message-prefix" "${COLOUR_RESET}"
 
     if [ "${LOCALE}" == "ro" ]; then
@@ -885,7 +885,7 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..size..size"                                 "$(get_formatted_message info worldedit Dimensiune: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..size..type"                                 "$(get_formatted_message info worldedit Tip: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..undo..none"                                 "$(get_formatted_message error worldedit Nu există modificări de anulat)" \
-            "worldedit..undo..undone"                               "$(get_formatted_message success worldedit S-au anulat ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}modificări)" \
+            "worldedit..undo..undone"                               "$(get_formatted_message success worldedit S-au anulat ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} modificări)" \
             "worldedit..wand..selwand..info"                        "$(get_formatted_message info worldedit ${COLOUR_COMMAND}Click Stânga ${COLOUR_MESSAGE}setează ${COLOUR_HIGHLIGHT}Poziția 1${COLOUR_MESSAGE}, ${COLOUR_COMMAND}Click Dreapta ${COLOUR_MESSAGE}setează ${COLOUR_HIGHLIGHT}Poziția 2)"
     else
         configure_plugin "FastAsyncWorldEdit" messages \
@@ -915,7 +915,7 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..size..size"                                 "$(get_formatted_message info worldedit Size: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..size..type"                                 "$(get_formatted_message info worldedit Type: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "worldedit..undo..none"                                 "$(get_formatted_message error worldedit Nothing to undo)" \
-            "worldedit..undo..undone"                               "$(get_formatted_message success worldedit Undid ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}edits)" \
+            "worldedit..undo..undone"                               "$(get_formatted_message success worldedit Undid ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} edits)" \
             "worldedit..wand..selwand..info"                        "$(get_formatted_message info worldedit ${COLOUR_COMMAND}Left Click ${COLOUR_MESSAGE}sets ${COLOUR_HIGHLIGHT}Position 1${COLOUR_MESSAGE}, ${COLOUR_COMMAND}Right Click ${COLOUR_MESSAGE} sets ${COLOUR_HIGHLIGHT}Position 2)"
     fi
 fi
@@ -1004,4 +1004,4 @@ for MATERIAL in "wooden" "stone"; do
     done
 done
 
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "environment.treasure-maps.enabled"    false # They cause too much lag eventually
+set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "environment.treasure-maps.enabled"    true #false # They cause too much lag eventually
