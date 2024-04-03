@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Directories
+# Main directories
 export SERVER_ROOT_DIR="/srv/papermc"
 export SERVER_CACHE_DIR="${SERVER_ROOT_DIR}/cache"
 export SERVER_LOGS_DIR="${SERVER_ROOT_DIR}/logs"
@@ -32,6 +32,8 @@ export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
 export WORLD_END_PLAYERDATA_DIR="${WORLD_END_DIR}/playerdata"
 export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
 export WORLD_NETHER_PLAYERDATA_DIR="${WORLD_NETHER_DIR}/playerdata"
+
+export SERVER_DATAPACKS_DIR="${WORLD_DIR}/datapacks"
 
 # World Webmap
 export WEBMAP_DIR="${SERVER_ROOT_DIR}/webmap"

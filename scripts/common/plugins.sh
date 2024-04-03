@@ -6,6 +6,16 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/modrinth.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/jenkins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/web.sh"
 
+function is_datapack_installed() {
+    local DATAPACK_NAME="${1}"
+
+    for FILE in "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}"*".zip"; do
+        [ -e "${FILE}" ] && return 0
+    done
+    
+    return 1
+}
+
 function is_plugin_installed() {
     local PLUGIN_NAME="${1}"
 
@@ -129,12 +139,29 @@ function configure_plugin() {
 
 function transform_plugin_asset_file_name() {
     local ASSET_FILE_NAME_PATTERN="${1}"
-    local PLUGIN_NAME="${2}"
-    local PLUGIN_VERSION="${3}"
+    local NAME="${2}"
+    local VERSION="${3}"
     
     echo "${ASSET_FILE_NAME_PATTERN}" | sed \
-            -e 's/%pluginName%/'"${PLUGIN_NAME}"'/g' \
-            -e 's/%pluginVersion%/'"${PLUGIN_VERSION}"'/g'
+            -e 's/%dataPackName%/'"${NAME}"'/g' \
+            -e 's/%dataPackVersion%/'"${VERSION}"'/g' \
+            -e 's/%pluginName%/'"${NAME}"'/g' \
+            -e 's/%pluginVersion%/'"${VERSION}"'/g'
+}
+
+function download_datapack() {
+    local ASSET_URL="${1}"
+    local DATAPACK_NAME="${2}"
+    local DATAPACK_VERSION="${3}"
+    local DATAPACK_FILE_NAME="${DATAPACK_NAME}-${DATAPACK_VERSION}.jar"
+    local DATAPACK_FILE_PATH="${SERVER_DATAPACKS_DIR}/${DATAPACK_FILE_NAME}"
+
+    if [ -f "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip" ] && \
+       [ ! -f "${DATAPACK_FILE_PATH}" ]; then
+        sudo rm "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip"
+    fi
+
+    download_file "${ASSET_URL}" "${DATAPACK_FILE_PATH}"
 }
 
 function download_plugin() {
@@ -144,12 +171,27 @@ function download_plugin() {
     local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
-    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}_"*".jar" ] && \
+    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ] && \
        [ ! -f "${PLUGIN_FILE_PATH}" ]; then
-        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}_"*".jar"
+        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar"
     fi
 
     download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
+}
+
+function update_datapack() {
+    local DATAPACK_NAME="${1}"
+
+    ! is_datapack_installed "${DATAPACK_NAME}" && return
+
+    local URL="${2}"
+    local ASSET_FILE_NAME_PATTERN="${3}"
+    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%datapackName%-%datapackVersion%.jar"
+
+    echo "Checking for updates for datapack '${DATAPACK_NAME}'..."
+    if [[ ${2} == *"modrinth"* ]]; then
+        update_datapack_modrinth "${DATAPACK_NAME}" "${ASSET_FILE_NAME_PATTERN}"
+    fi
 }
 
 function update_plugin() {
