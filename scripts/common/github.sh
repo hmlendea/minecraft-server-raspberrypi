@@ -1,6 +1,5 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
-source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 function get_latest_github_release_tag() {
     local GH_REPOSITORY_URL=(${1//\// })

@@ -153,7 +153,7 @@ function download_datapack() {
     local ASSET_URL="${1}"
     local DATAPACK_NAME="${2}"
     local DATAPACK_VERSION="${3}"
-    local DATAPACK_FILE_NAME="${DATAPACK_NAME}-${DATAPACK_VERSION}.jar"
+    local DATAPACK_FILE_NAME="${DATAPACK_NAME}-${DATAPACK_VERSION}.zip"
     local DATAPACK_FILE_PATH="${SERVER_DATAPACKS_DIR}/${DATAPACK_FILE_NAME}"
 
     if [ -f "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip" ] && \
@@ -186,11 +186,11 @@ function update_datapack() {
 
     local URL="${2}"
     local ASSET_FILE_NAME_PATTERN="${3}"
-    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%datapackName%-%datapackVersion%.jar"
+    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%datapackName%-%datapackVersion%.zip"
 
     echo "Checking for updates for datapack '${DATAPACK_NAME}'..."
-    if [[ ${2} == *"modrinth"* ]]; then
-        update_datapack_modrinth "${DATAPACK_NAME}" "${ASSET_FILE_NAME_PATTERN}"
+    if [[ ${URL} == *"modrinth"* ]]; then
+        update_datapack_modrinth "${DATAPACK_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
     fi
 }
 
@@ -204,10 +204,10 @@ function update_plugin() {
     [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
 
     echo "Checking for updates for plugin '${PLUGIN_NAME}'..."
-    if [[ ${2} == *"github"* ]]; then
+    if [[ ${URL} == *"github"* ]]; then
         update_plugin_github "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
-    elif [[ ${2} == *"modrinth"* ]]; then
-        update_plugin_modrinth "${PLUGIN_NAME}" "${ASSET_FILE_NAME_PATTERN}"
+    elif [[ ${URL} == *"modrinth"* ]]; then
+        update_plugin_modrinth "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
     else
         update_plugin_jenkins "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
     fi

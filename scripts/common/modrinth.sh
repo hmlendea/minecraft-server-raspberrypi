@@ -1,7 +1,13 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
-source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/web.sh"
+
+function get_modrinth_project_name() {
+    local URL="${1}"
+    local PROJECT_NAME=$(basename "${URL%/}")
+
+    echo "${PROJECT_NAME}"
+}
 
 function get_modrinth_project_id() {
     local PROJECT_NAME="${1}"
@@ -37,12 +43,23 @@ function get_modrinth_asset_name() {
 
 function get_latest_modrinth_version() {
     local PROJECT_ID="${1}"
+    local PROJECT_TYPE="${2}"
 
     local APIREQUEST="https://api.modrinth.com/v2/project/${PROJECT_ID}/version"
     local APIRESPONSE=$(curl -s "${APIREQUEST}")
-    local LATEST_VERSION=""
+    local VERSIONS=""
 
-    [ -z "${LATEST_VERSION}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq '[.[] | select(.loaders | to_entries[] | .value | IN("paper", "spigt", "bukkit"))]' | jq -r '.[0].version_number')
+    if [[ "${PROJECT_TYPE}" == "plugin" ]]; then
+        VERSIONS=$(echo "${APIRESPONSE}" | jq '[.[] | select(.loaders | to_entries[] | .value | IN("paper", "spigot", "bukkit"))]' | jq -r '.[].version_number')
+    elif [[ "${PROJECT_TYPE}" == "datapack" ]]; then
+        VERSIONS=$(echo "${APIRESPONSE}" | jq '[.[] | select(.loaders | to_entries[] | .value | IN("datapack"))]' | jq -r '.[].version_number')
+    elif [[ "${PROJECT_TYPE}" == "datapack" ]]; then
+        VERSIONS=$(echo "${APIRESPONSE}" | jq -r '.[].version_number')
+    fi
+
+    local LATEST_VERSION=$(sed 's/^v*//' <<< "${VERSIONS}" | sort -V | tail -n 1)
+    local LATEST_VERSION=$(grep "^[v]*${LATEST_VERSION}$" <<< "${VERSIONS}")
+
     [ -z "${LATEST_VERSION}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq -r '.[0].version_number')
 
     echo "${LATEST_VERSION}"
@@ -70,9 +87,11 @@ function download_plugin_modrinth() {
 
 function update_datapack_modrinth() {
     local DATAPACK_NAME="${1}"
+    local URL="${2}"
 
-    local MODRINTH_PROJECT_ID=$(get_modrinth_project_id "${DATAPACK_NAME}")
-    local LATEST_VERSION=$(get_latest_modrinth_version "${MODRINTH_PROJECT_ID}")
+    local MODRINTH_PROJECT_NAME=$(get_modrinth_project_name "${URL}")
+    local MODRINTH_PROJECT_ID=$(get_modrinth_project_id "${MODRINTH_PROJECT_NAME}")
+    local LATEST_VERSION=$(get_latest_modrinth_version "${MODRINTH_PROJECT_ID}" "datapack")
 
     [ -z "${LATEST_VERSION}" ] && return
 
@@ -81,10 +100,12 @@ function update_datapack_modrinth() {
 
 function update_plugin_modrinth() {
     local PLUGIN_NAME="${1}"
-    local ASSET_FILE_NAME_PATTERN="${2}"
+    local URL="${2}"
+    local ASSET_FILE_NAME_PATTERN="${3}"
 
-    local MODRINTH_PROJECT_ID=$(get_modrinth_project_id "${PLUGIN_NAME}")
-    local LATEST_VERSION=$(get_latest_modrinth_version "${MODRINTH_PROJECT_ID}")
+    local MODRINTH_PROJECT_NAME=$(get_modrinth_project_name "${URL}")
+    local MODRINTH_PROJECT_ID=$(get_modrinth_project_id "${MODRINTH_PROJECT_NAME}")
+    local LATEST_VERSION=$(get_latest_modrinth_version "${MODRINTH_PROJECT_ID}" "plugin")
 
     [ -z "${LATEST_VERSION}" ] && return
 

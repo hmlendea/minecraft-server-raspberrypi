@@ -21,6 +21,22 @@ function download_plugin() {
     download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
 }
 
+function transform_asset_file_name() {
+    local ASSET_FILE_NAME_PATTERN="${1}"
+    local PLUGIN_NAME="${2}"
+    local PLUGIN_VERSION="${3}"
+
+    echo "${ASSET_FILE_NAME_PATTERN}" | sed \
+            -e 's/%pluginName%/'"${PLUGIN_NAME}"'/g' \
+            -e 's/%pluginVersion%/'"${PLUGIN_VERSION}"'/g'
+}
+
+function get_latest_purpur_build_version() {
+    local MINECRAFT_VERSION="${1}"
+
+    curl -s "${PURPUR_API_URL}/${MINECRAFT_VERSION}" | jq -r ".builds.latest"
+}
+
 function update_server() {
     local LATEST_PURPUR_BUILD_VERSION=$(get_latest_purpur_build_version "${MINECRAFT_VERSION}")
 
