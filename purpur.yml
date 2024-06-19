@@ -34,7 +34,7 @@ settings:
     death-message:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
-    cannot-ride-mob: §r§c🐎 §r§7This mob cannot be mounted§r§7.
+    cannot-ride-mob: §r§c🐎 §r§7Acest mob nu poate fi călărit§r§7.
   tps-catchup: true
   server-mod-name: NuciCraft
   clamp-attributes: true
@@ -1069,6 +1069,9 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       villager:
+        search-radius:
+          acquire-poi: 48
+          nearest-bed-sensor: 48
         ridable: false
         ridable-in-water: false
         controllable: true

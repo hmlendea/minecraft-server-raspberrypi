@@ -71,7 +71,7 @@ messages:
     connection-throttle: Connection throttled! Please wait before reconnecting.
     flying-player: <lang:multiplayer.disconnect.flying>
     flying-vehicle: <lang:multiplayer.disconnect.flying>
-  no-permission: <red>✘ </red><gray>This command cannot be executed.
+  no-permission: <red>✘ </red><gray>Această comandă nu se poate executa.
   use-display-name-in-quit-message: false
 misc:
   chat-threads:
@@ -136,6 +136,7 @@ unsupported-settings:
   allow-headless-pistons: false
   allow-permanent-block-break-exploits: false
   allow-piston-duplication: false
+  allow-tripwire-disarming-exploits: false
   allow-unsafe-end-portal-teleportation: false
   compression-format: ZLIB
   perform-username-validation: true
