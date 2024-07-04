@@ -516,18 +516,18 @@ function set_player_region_settings() {
 
 function begin_transaction() {
     #trap 'rollback_transaction' SIGINT
-    reload_plugin "WorldGuard"
+    reload_plugin 'WorldGuard'
 
     sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}.bak"
     sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"
-    echo ""
+    echo ''
 }
 
 function commit_transaction() {
     sudo cp "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}"
     sudo chown papermc:papermc "${WORLDGUARD_WORLD_REGIONS_FILE}"
 
-    reload_plugin "WorldGuard"
+    reload_plugin 'WorldGuard'
     exit
 }
 
@@ -538,35 +538,35 @@ function rollback_transaction() {
 
 begin_transaction
 
-for CITY_NAME in "Flusseland" "Hokazuro" "Solara"; do
-    set_settlement_region_settings "settlement_city" "${CITY_NAME}" "Nucilandia"
+for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
+    set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
-for CITY_NAME in "Enada" "Naoi"; do
-    set_settlement_region_settings "settlement_city" "${CITY_NAME}" "FBU"
-done
-
-for TOWN_NAME in "Bloodorf" "Cornova" "Cratesia" "Horidava" "Izmir" "Newport"; do
-    set_settlement_region_settings "settlement_town" "${TOWN_NAME}" "Nucilandia"
-done
-for TOWN_NAME in "Iahim"; do
-    set_settlement_region_settings "settlement_town" "${TOWN_NAME}" "FBU"
+for CITY_NAME in 'Enada' 'Naoi'; do
+    set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for VILLAGE_NAME in "Arkala" "Brașovești" "Canopis" "Cerc" "Faun" "Frigonița" "Nordavia" "Pandora" "Veneței"; do
-    set_settlement_region_settings "settlement_village" "${VILLAGE_NAME}" "Nucilandia"
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Horidava' 'Izmir' 'Newport'; do
+    set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
-for VILLAGE_NAME in "Aecrim" "Bastonia" "Emeraldia"; do
-    set_settlement_region_settings "settlement_village" "${VILLAGE_NAME}" "FBU"
-done
-
-for MILITARYBASE_NAME in "Crișia"; do
-    set_location_region_settings_by_name "military_base" "${MILITARYBASE_NAME}" "Nucilandia"
+for TOWN_NAME in 'Iahim'; do
+    set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'FBU'
 done
 
-for NATION in "FBU" "Nucilandia"; do
+for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Brașovești' 'Canopis' 'Cerc' 'Faun' 'Frigonița' 'Nordavia' 'Pandora' 'Veneței'; do
+    set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
+done
+for VILLAGE_NAME in 'Aecrim' 'Bastonia' 'Emeraldia'; do
+    set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'FBU'
+done
+
+for MILITARYBASE_NAME in 'Binuca' 'Crișia'; do
+    set_location_region_settings_by_name 'military_base' "${MILITARYBASE_NAME}" 'Nucilandia'
+done
+
+for NATION in 'FBU' 'Nucilandia'; do
     NATION_ID=$(region_name_to_id "${NATION}")
 
-    for NATION2 in "FBU" "Nucilandia"; do
+    for NATION2 in 'FBU' 'Nucilandia'; do
         NATION2_ID=$(region_name_to_id "${NATION2}")
 
         for BORDER_CROSSING_REGION_ID in $(get_regions_by_pattern "${NATION_ID}_border_crossing_${NATION2_ID}_.*"); do
@@ -574,11 +574,11 @@ for NATION in "FBU" "Nucilandia"; do
         done
     done
 
-    set_structure_region_settings "${NATION}" "border_watchtower"
-    set_structure_region_settings "${NATION}" "border_wall"
-    set_structure_region_settings "${NATION}" "defence_bunker"
-    set_structure_region_settings "${NATION}" "defence_turret"
-    set_structure_region_settings "${NATION}" "road_rail"
+    set_structure_region_settings "${NATION}" 'border_watchtower'
+    set_structure_region_settings "${NATION}" 'border_wall'
+    set_structure_region_settings "${NATION}" 'defence_bunker'
+    set_structure_region_settings "${NATION}" 'defence_turret'
+    set_structure_region_settings "${NATION}" 'road_rail'
 done
 
 for PLAYER_USERNAME in $(get_players_usernames); do
@@ -591,14 +591,14 @@ for PLAYER_USERNAME in $(get_players_usernames); do
     done
 done
 
-set_region_messages "end_portal" "The End Portal"
+set_region_messages 'end_portal' 'The End Portal'
 
 set_player_region_settings "bloodcraft_citadel" "Hori873"
 set_player_region_settings "bloodcraft_pagoda" "Hori873"
-set_player_region_settings "kreezcraft1" "skonxsi"
-set_player_region_settings "kreezcraft1" "SoulSilver"
-set_player_region_settings "kreezcraft1" "Xenon"
-set_player_region_settings "survivalisland" "Hori873" "Kamikaze" "Azzuro"
-set_player_region_settings "survivalisland2" "Hori873"
+set_player_region_settings "kreezcraft1" 'skonxsi'
+set_player_region_settings "kreezcraft1" 'SoulSilver'
+set_player_region_settings "kreezcraft1" 'Xenon'
+set_player_region_settings 'survivalisland' 'Hori873' 'Kamikaze' 'Azzuro'
+set_player_region_settings 'survivalisland2' 'Hori873'
 
 commit_transaction
