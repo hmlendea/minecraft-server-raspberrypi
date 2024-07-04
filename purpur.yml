@@ -10,6 +10,7 @@
 
 verbose: false
 settings:
+  startup-commands: []
   register-minecraft-debug-commands: false
   bee-count-payload: false
   player-deaths-always-show-item: false
@@ -97,6 +98,10 @@ settings:
       second: '%02d second'
       seconds: '%02d seconds'
   blocks:
+    magma-block:
+      reverse-bubble-column-flow: false
+    soul-sand:
+      reverse-bubble-column-flow: false
     barrel:
       rows: 6
     ender_chest:
@@ -193,10 +198,23 @@ settings:
       distance: 0.5
     minecraft:light_blue_bed:
       distance: 0.5
-config-version: 34
+config-version: 35
 world-settings:
   default:
     mobs:
+      armadillo:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 12.0
+        breeding-delay-ticks: 6000
+      bogged:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 16.0
       sniffer:
         ridable: true
         ridable-in-water: true
@@ -873,6 +891,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       ravager:
+        avoid-rabbits: false
         ridable: false
         ridable-in-water: false
         controllable: true
@@ -1606,7 +1625,6 @@ world-settings:
       milk-cures-bad-omen: true
       milk-clears-beneficial-effects: true
       note-block-ignore-above: false
-      persistent-tileentity-display-names-and-lore: true
       persistent-droppable-entity-display-names: true
       projectiles-bypass-mob-griefing: false
       tick-fluids: true
@@ -1773,3 +1791,5 @@ world-settings:
             grass_block: 0.3
             stone: 0.5
       persistent-droppable-display-names: true
+      persistent-tileentity-lore: false
+      persistent-tileentity-display-name: true
