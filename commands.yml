@@ -88,10 +88,10 @@ aliases:
   - list
   movedropstome:
   - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
-    tp @s $sender
+    minecraft:tp @s $sender
   movedropstoplayer:
   - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
-    tp @s $$2
+    minecraft:tp @s $$2
   setupregion:
   - worldguard:region priority $$1 30
   - worldguard:region flag $$1 pvp DENY
@@ -99,7 +99,7 @@ aliases:
   renameitem:
   - essentials:itemname &r$$1-
   setbookauthor:
-  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,tag:{author:"$1-"}}}
+  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,components:{"minecraft:written_book_content":{author:"$1-"}}}}
   setpaintingname:
   - essentials:itemlore clear
   - essentials:itemname &e$$1-
