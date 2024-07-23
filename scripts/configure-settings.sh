@@ -57,6 +57,7 @@ set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters" 
 
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "messages.no-permission" "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "timings.server-name" "${SERVER_NAME}"
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked' true # Skip unnecessary tick to save a bit of performance # Note: This could cause rapid damage for the shields
 
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                          true
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.wandering-trader.spawn-chance-max"   125         
@@ -166,6 +167,12 @@ if is_plugin_installed "AuthMe"; then
     fi
 fi
 
+configure_plugin "BestTools" config \
+    "besttools-enabled-by-default" true \
+    "refill-enabled-by-default" true \
+    "hotbar-only" false \
+    "use-axe-as-sword" false
+
 # Check Updates because we cannot auto-update this one
 configure_plugin "CoreProtect" config \
     "check-updates" true
@@ -267,7 +274,7 @@ if is_plugin_installed "EssentialsX"; then
         "per-player-locale"                     false \
         "per-warp-permissions"                  true \
         "remove-god-on-disconnect"              true \
-        "teleport-cooldown"                     4 \
+        "teleport-cooldown"                     3 \
         "teleport-delay"                        3 \
         "teleport-invulnerability"              7 \
         "update-check"                          false \
@@ -320,10 +327,11 @@ if is_plugin_installed "EssentialsX"; then
             "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}a acceptat cererea de telportare)" \
             "requestDenied"                     "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
             "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE} ți-a respins cererea de teleportare)" \
-            "requestSent"                       "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către $(get_player_message ${PLACEHOLDER_ARG0}))" \
-            "requestSentAlready"                "$(get_formatted_message_minimessage error player Ai trimis deja o cerere de teleportare către $(get_player_message ${PLACEHOLDER_ARG0}))" \
+            "requestSent"                       "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            "requestSentAlready"                "$(get_formatted_message_minimessage error player Ai trimis deja o cerere de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "requestTimedOut"                   "$(get_formatted_message_minimessage error player Cererea de teleportare a expirat)" \
             "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player Cererea de teleportare de la $(get_player_message ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}a expirat)" \
+            "second"                            "secundă" \
             "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             "teleporting"                       "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
@@ -471,14 +479,15 @@ configure_plugin "InvSee++" config \
 if is_plugin_installed "InvUnload"; then
     INVUNLOAD_COOLDOWN=2
     configure_plugin "InvUnload" config \
-        "check-for-updates" false \
-        "default-chest-radius" 24 \
-        "cooldown" "${INVUNLOAD_COOLDOWN}" \
-        "ignore-blocked-chests" false \
-        "laser-animation" false \
-        "laser-default-duration" 5 \
-        "max-chest-radius" 80 \
-        "message-prefix" "${COLOUR_RESET}"
+        'check-for-updates'         false \
+        'default-chest-radius'      24 \
+        'cooldown'                  "${INVUNLOAD_COOLDOWN}" \
+        'ignore-blocked-chests'     false \
+        'laser-animation'           false \
+        'laser-default-duration'    5 \
+        'max-chest-radius'          80 \
+        'message-prefix'            "${COLOUR_RESET}" \
+        'particle-type'             'WITCH'
 
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "InvUnload" config \
@@ -657,8 +666,9 @@ if is_plugin_installed "SkinsRestorer"; then
             "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost schimbat)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost schimbat)" \
-            "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost actualizat)" \
-            "skinsrestorer..success_skin_updating_other" "$(success_message_minimessage skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost actualizat)"
+            "skinsrestorer..success_skin_clear" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost scos)" \
+            "skinsrestorer..success_updating_skin" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost actualizat)" \
+            "skinsrestorer..success_updating_skin_other" "$(get_formatted_message_minimessage success skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost actualizat)"
     else
         copy-file-if-needed "${SKINSRESTORER_DIR}/locales/repository/locale.json" "${SKINSRESTORER_DIR}/locales/custom/locale.json"
         configure_plugin "SkinsRestorer" "${SKINSRESTORER_DIR}/locales/custom/locale.json" \
@@ -670,8 +680,9 @@ if is_plugin_installed "SkinsRestorer"; then
             "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Your skin has been changed)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been changed)" \
-            "skinsrestorer..success_skin_updating" "$(get_formatted_message_minimessage success skin Your skin has been updated)" \
-            "skinsrestorer..success_skin_updating_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been updated)"
+            "skinsrestorer..success_skin_clear" "$(get_formatted_message_minimessage success skin Your skin has been cleared)" \
+            "skinsrestorer..success_updating_skin" "$(get_formatted_message_minimessage success skin Your skin has been updated)" \
+            "skinsrestorer..success_updating_skin_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been updated)"
     fi
 fi
 
@@ -794,7 +805,7 @@ configure_plugin "Vault" config \
     "update-check" false
 
 configure_plugin "ViaVersion" config \
-    "checkforupdates" false
+    "check-for-updates" false
     
 configure_plugin "ViewDistanceTweaks" config \
     "enabled" true \
