@@ -29,7 +29,7 @@ if [ "${LOCALE}" == "ro" ]; then
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executa)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
 
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu poate fi călărit)"
+    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu se poate călări)"
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command This command cannot be executed)"
@@ -43,7 +43,7 @@ set_config_value "${SERVER_PROPERTIES_FILE}"            "view-distance"         
 set_config_value "${SERVER_PROPERTIES_FILE}"            "simulation-distance"                                       "${SIMULATION_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            "enforce-secure-profile"                                    "${SIMULATION_DISTANCE}"
 
-set_config_value "${SPIGOT_CONFIG_FILE}"                "messages.unknown-command" "${INVALID_COMMAND_MESSAGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "messages.unknown-command"                                  "${INVALID_COMMAND_MESSAGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.item-despawn-rate"                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.mob-spawn-range"                    "${MOB_SPAWN_RANGE}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.default.simulation-distance"                "${SIMULATION_DISTANCE}"
@@ -53,10 +53,10 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
 set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
 
-set_config_value "${BUKKIT_CONFIG_FILE}"                "spawn-limits.monsters"                                     "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_value "${BUKKIT_CONFIG_FILE}"                'spawn-limits.monsters'                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "messages.no-permission" "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          "timings.server-name" "${SERVER_NAME}"
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'messages.no-permission' "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'timings.server-name' "${SERVER_NAME}"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked' true # Skip unnecessary tick to save a bit of performance # Note: This could cause rapid damage for the shields
 
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "chunks.flush-regions-on-save"                          true
@@ -122,17 +122,19 @@ fi
 if is_plugin_installed "AuthMe"; then
 #        "settings.customJoinMessage" "$(sed 's/PLAYER/DISPLAYNAMENOCOLOR/g' <<< ${JOIN_MESSAGE})" \
     configure_plugin "AuthMe" config \
-        "Hooks.useEssentialsMotd" $(is_plugin_installed_bool "EssentialsX") \
+        "Hooks.useEssentialsMotd" $(is_plugin_installed_bool 'EssentialsX') \
         "Security.console.logConsole" false \
-        "settings.forceVaultHook" $(is_plugin_installed_bool "Vault") \
-        "settings.restrictions.displayOtherAccounts" false \
+        "settings.forceVaultHook" $(is_plugin_installed_bool 'Vault') \
+        'settings.restrictions.DenyTabCompletionBeforeLogin' true \
+        'settings.restrictions.displayOtherAccounts' false \
+        'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
         "settings.serverName" "${SERVER_NAME}" \
         "settings.sessions.enabled" true \
         "settings.sessions.timeout" 960 \
         "settings.messagesLanguage" "${LOCALE}" \
         "settings.restrictions.teleportUnAuthedToSpawn" false \
         "settings.useAsyncTasks" true \
-        "settings.useWelcomeMessage" $(is_plugin_not_installed_bool "EssentialsX")
+        "settings.useWelcomeMessage" $(is_plugin_not_installed_bool 'EssentialsX')
 
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "AuthMe" "$(get_plugin_dir AuthMe)/messages/messages_ro.yml" \
@@ -167,11 +169,23 @@ if is_plugin_installed "AuthMe"; then
     fi
 fi
 
-configure_plugin "BestTools" config \
-    "besttools-enabled-by-default" true \
-    "refill-enabled-by-default" true \
-    "hotbar-only" false \
-    "use-axe-as-sword" false
+if is_plugin_installed 'BestTools'; then
+    configure_plugin 'BestTools' config \
+        'besttools-enabled-by-default' true \
+        'refill-enabled-by-default' true \
+        'hotbar-only' false \
+        'use-axe-as-sword' true
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'BestTools' config \
+            'message-besttools-enabled' "$(get_formatted_message success tool Selectarea automată a uneltelor a fost ${COLOUR_HIGHLIGHT}activată)" \
+            'message-besttools-disabled' "$(get_formatted_message success tool Selectarea automată a uneltelor a fost ${COLOUR_HIGHLIGHT}dezactivată)"
+    else
+        configure_plugin 'BestTools' config \
+            'message-besttools-enabled' "$(get_formatted_message success tool Automatic tool selection has been ${COLOUR_HIGHLIGHT}enabled)" \
+            'message-besttools-disabled' "$(get_formatted_message success tool Automatic tool selection has been ${COLOUR_HIGHLIGHT}disabled)"
+    fi
+fi
 
 # Check Updates because we cannot auto-update this one
 configure_plugin "CoreProtect" config \
@@ -218,6 +232,30 @@ if is_plugin_installed "DiscordSRV"; then
         "MinecraftPlayerDeathMessage.Enabled" $(is_plugin_not_installed_bool DeathMessages)
 fi
 
+if is_plugin_installed 'DynamicLights'; then
+    configure_plugin 'DynamicLights' config \
+        'default-lock-state' false \
+        'update-rate' 2
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'DynamicLights' messages \
+            'language.disable-lock'          "$(get_formatted_message_minimessage success light Plasarea luminilor din mâna stângă a fost ${COLOUR_HIGHLIGHT}activată)" \
+            'language.enable-lock'           "$(get_formatted_message_minimessage success light Plasarea luminilor din mâna stângă a fost ${COLOUR_HIGHLIGHT}dezactivată)" \
+            'language.prevent-block-place'   "$(get_formatted_message_minimessage error light Plasarea luminilor din mâna stângă este ${COLOUR_HIGHLIGHT}dezactivată${COLOUR_MESSAGE})" \
+            'language.reload'                "$(get_reload_message_minimessage DynamicLights)" \
+            'language.toggle-off'            "$(get_formatted_message_minimessage success light Randarea luminilor dinamice a fost ${COLOUR_HIGHLIGHT}dezactivată)" \
+            'language.toggle-on'             "$(get_formatted_message_minimessage success light Randarea luminilor dinamice a fost ${COLOUR_HIGHLIGHT}activată)"
+    else
+        configure_plugin 'DynamicLights' messages \
+            'language.disable-lock'          "$(get_formatted_message_minimessage success light Placing light sources from the off-hand has been ${COLOUR_HIGHLIGHT}enabled)" \
+            'language.enable-lock'           "$(get_formatted_message_minimessage success light Placing light sources from the off-hand has been ${COLOUR_HIGHLIGHT}disabled)" \
+            'language.prevent-block-place'   "$(get_formatted_message_minimessage error light Placing items from the off-hand is currently ${COLOUR_HIGHLIGHT}diabled${COLOUR_MESSAGE})" \
+            'language.reload'                "$(get_reload_message_minimessage DynamicLights)" \
+            'language.toggle-off'            "$(get_formatted_message_minimessage success light The rendering of dynamic lights has been ${COLOUR_HIGHLIGHT}disabled)" \
+            'language.toggle-on'             "$(get_formatted_message_minimessage success light The rendering of dynamic lights has been ${COLOUR_HIGHLIGHT}enabled)"
+    fi
+fi
+
 configure_plugin "Dynmap" config \
     "max-sessions"                 5 \
     "disable-webserver"            true \
@@ -245,12 +283,12 @@ configure_plugin "Dynmap" config \
     "updateplayerlimit"            4 \
     \
     "smooth-lighting"              true \
-    "image-format"                 "png" \
+    "image-format"                 'png' \
     "use-generated-textures"       false \
     "correct-water-lighting"       false \
     "transparent-leaves"           true \
     "ctm-support"                  false \
-    "skinsrestorer-integration"    $(is_plugin_installed_bool "SkinsRestorer") \
+    "skinsrestorer-integration"    $(is_plugin_installed_bool 'SkinsRestorer') \
     "defaultzoom"                  6
 
 
@@ -299,6 +337,9 @@ if is_plugin_installed "EssentialsX"; then
             "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             "deleteHome"                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
             "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp-ul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost șters)" \
+            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost aplicat)" \
+            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}nu a fost găsit)" \
+            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost înlăturat)" \
             "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
             "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             "false"                             "$(covert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
@@ -388,6 +429,9 @@ if is_plugin_installed "EssentialsX"; then
             "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             "deleteHome"                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
             "deleteWarp"                        "$(get_formatted_message_minimessage success warp Warp ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
+            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}enchantment has been applied)" \
+            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has not been found)" \
+            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}enchantment has been removed)" \
             "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
             "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             "false"                             "$(covert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
@@ -480,12 +524,12 @@ if is_plugin_installed "InvUnload"; then
     INVUNLOAD_COOLDOWN=2
     configure_plugin "InvUnload" config \
         'check-for-updates'         false \
-        'default-chest-radius'      24 \
+        'default-chest-radius'      16 \
         'cooldown'                  "${INVUNLOAD_COOLDOWN}" \
         'ignore-blocked-chests'     false \
         'laser-animation'           false \
         'laser-default-duration'    5 \
-        'max-chest-radius'          80 \
+        'max-chest-radius'          32 \
         'message-prefix'            "${COLOUR_RESET}" \
         'particle-type'             'WITCH'
 
@@ -933,7 +977,8 @@ fi
 
 if is_plugin_installed "WorldEditSUI"; then
     configure_plugin "WorldEditSUI" config \
-        "update-checks" false
+        'advanced-grid.enabled' true \
+        'update-checks' false
 
     configure_plugin "WorldEditSUI" messages \
         "noPermission" "${INVALID_COMMAND_MESSAGE}" \

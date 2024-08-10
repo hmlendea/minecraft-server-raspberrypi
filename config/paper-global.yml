@@ -77,6 +77,7 @@ misc:
   chat-threads:
     chat-executor-core-size: -1
     chat-executor-max-size: -1
+  client-interaction-leniency-distance: default
   compression-level: default
   fix-entity-position-desync: true
   lag-compensate-block-breaking: true

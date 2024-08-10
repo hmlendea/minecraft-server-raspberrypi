@@ -35,7 +35,7 @@ settings:
     death-message:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
-    cannot-ride-mob: §r§c🐎 §r§7Acest mob nu poate fi călărit§r§7.
+    cannot-ride-mob: §r§c🐎 §r§7Acest mob nu se poate călări§r§7.
   tps-catchup: true
   server-mod-name: NuciCraft
   clamp-attributes: true
@@ -816,7 +816,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       panda:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -974,7 +974,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       sheep:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         attributes:
@@ -1051,7 +1051,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       snow_golem:
-        ridable: false
+        ridable: true
         ridable-in-water: false
         controllable: true
         leave-trail-when-ridden: false
