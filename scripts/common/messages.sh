@@ -52,6 +52,7 @@ function get_symbol_by_category() {
     local HOME_SYMBOL="🛏"
     local INSPECT_SYMBOL="🔍"
     local INVENTORY_SYMBOL="🎒"
+    local LIGHT_SYMBOL="💡"
     local MESSAGE_SYMBOL="✉"
     local MILITARY_SYMBOL="⚔"
     local MINE_SYMBOL="⛏"
@@ -77,6 +78,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "home" "${HOME_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inspect" "${INSPECT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inventory" "${INVENTORY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'light' "${LIGHT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "message" "${MESSAGE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "military_base" "${MILITARY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "mount" "${MOUNT_SYMBOL}")
@@ -86,6 +88,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "settlement_.*" "${SETTLEMENT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "skin" "${SKIN_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "teleport" "${TELEPORT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "tool" "${MINE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "trade" "${ECONOMY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "vote" "${VOTE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "warehouse" "${INVENTORY_SYMBOL}")

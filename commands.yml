@@ -13,6 +13,55 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
+  # Basic
+  broadcast:
+  - essentials:broadcast $1-
+  - discordsrv:discordsrv broadcast $1-
+  announcement:
+  - essentials:broadcast $$1-!!!
+  - discordsrv:discordsrv broadcast @everyone $$1-!!!
+  announce:
+  - announcement: $$1-
+  ban:
+  - essentials:ban $$1 $$2-
+  - essentials:banip $$1 [$$1] $$2-
+  - broadcast $$1 was banned with reason: $$2
+  ls:
+  - essentials:list
+  
+  # Info
+  whoami:
+  - essentials:echo I am &2$sender
+  seed:
+  - 'essentials:echo Seed: [&a79973089]'
+  map:
+  - 'essentials:echo Map: &9&nhttps://mc.nucilandia.ro/nucicraft/webmap'
+  discord:
+  - 'essentials:echo Discord: &9&nhttps://discord.gg/zFM5xWGF7c'
+  help:
+  - essentials:motd
+  info:
+  - help
+  links:
+  - help
+  
+  # Teleportation
+  b:
+  - essentials:back
+  bed:
+  - essentials:home bed
+  tpregion:
+  - worldguard:region teleport $$1
+  - essentials:tp $sender
+  rgtp:
+  - tpregion $$1
+  rtp:
+  - essentials:tprandom
+  wild:
+  - rtp
+  shop:
+  - essentials:warp Shop
+  
   # Use vanilla Minecraft commands
   give:
   - minecraft:give $1-
@@ -24,10 +73,6 @@ aliases:
   # Use Essentials commands
   god:
   - essentials:god $1-
-  rtp:
-  - essentials:tprandom
-  wild:
-  - essentials:tprandom
   
   # Game modes
   creative:
@@ -46,6 +91,61 @@ aliases:
   surv:
   - survival
   
+  #
+  auth:
+  - authme:log $$1
+  itemnbt:
+  - minecraft:data get entity $sender SelectedItem
+  collectdropsinrangetoplayer:
+  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
+    minecraft:tp @s $$2
+  collectdropsinrange:
+  - collectdropsinrangetoplayer $$1 $sender
+  collectdropstoplayer:
+  - collectdropsinrangetoplayer 128 $$1
+  collectdrops:
+  - collectdropsinrange 128
+  renameitem:
+  - essentials:itemname &r$$1-
+  setitemlore:
+  - essentials:itemlore clear
+  - essentials:itemlore add &r$$1-
+  setbookauthor:
+  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,components:{"minecraft:written_book_content":{author:"$1-"}}}}
+  setpaintingname:
+  - essentials:itemlore clear
+  - essentials:itemname &e$$1-
+  - essentials:itemlore add &9Painting &f(for Item Frame)
+  slap:
+  - me slaps $$1
+  unloadall:
+  - unload 32
+  topvotes:
+  - superbvote:sv top
+  
+  # WorldGuard
+  rgsetup:
+  - worldguard:region priority $$1 30
+  - worldguard:region flag $$1 pvp DENY
+  - worldguard:region flag $$1 teleport here
+  setregiontp:
+  - worldguard:region flag $$1 teleport here
+  setrgtp:
+  - setregiontp: $$1
+  
+  # Dynmap
+  setsettlementmarker:
+  - dmarker delete id:settlement_$$2 set:settlements
+  - setregiontp $$2 teleport $$4,$$5,$$6
+  - dmarker add id:settlement_$$2 set:settlements label:$$3 world:world icon:settlement_$$1
+    markup:false x:$$4 y:$$5 z:$$6 minzoom:$$7
+  setvillagemarker:
+  - setsettlementmarker village $$1 $$2 $$3 $$4 $$5 2
+  settownmarker:
+  - setsettlementmarker town $$1 $$2 $$3 $$4 $$5 1
+  setcitymarker:
+  - setsettlementmarker city $$1 $$2 $$3 $$4 $$5 0
+  
   # WorldEdit
   wexpandh:
   - /expand $1 north
@@ -60,6 +160,17 @@ aliases:
   - wexpandh $1
   weshrink:
   - /contract $1
+  weshrinkh:
+  - /contract $1 north
+  - /contract $1 west
+  - /contract $1 south
+  - /contract $1 east
+  weshrinkv:
+  - /contract $1 up
+  - /contract $1 down
+  weshrinkall:
+  - weshrinkh $1
+  - weshrinkv $1
   wesel1:
   - /pos1
   wesel2:
@@ -67,56 +178,20 @@ aliases:
   wesel:
   - wesel1
   - wesel2
-  #
-  auth:
-  - authme:log $$1
-  b:
-  - back
-  bed:
-  - home bed
-  broadcast:
-  - essentials:broadcast $1-
-  - discordsrv:discordsrv broadcast $1-
-  announcement:
-  - essentials:broadcast $$1-!!!
-  - discordsrv:discordsrv broadcast @everyone $$1-!!!
-  announce:
-  - announcement: $$1-
-  itemnbt:
-  - minecraft:data get entity $sender SelectedItem
-  ls:
-  - list
-  movedropstome:
-  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
-    minecraft:tp @s $sender
-  movedropstoplayer:
-  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
-    minecraft:tp @s $$2
-  setupregion:
-  - worldguard:region priority $$1 30
-  - worldguard:region flag $$1 pvp DENY
-  - worldguard:region flag $$1 teleport here
-  renameitem:
-  - essentials:itemname &r$$1-
-  setbookauthor:
-  - minecraft:data merge entity @e[type=item,limit=1,distance=..5] {Item:{id:"minecraft:written_book",Count:1b,components:{"minecraft:written_book_content":{author:"$1-"}}}}
-  setpaintingname:
-  - essentials:itemlore clear
-  - essentials:itemname &e$$1-
-  - essentials:itemlore add &9Painting &f(for Item Frame)
-  shop:
-  - essentials:warp Shop
-  setregiontp:
-  - worldguard:region flag $$1 teleport here
-  setrgtp:
-  - setregiontp: $$1
-  tpregion:
-  - worldguard:region teleport $$1
-  rgtp:
-  - tpregion $$1
-  slap:
-  - me slaps $$1
-  whoami:
-  - echo I'm $sender
-  topvotes:
-  - superbvote:sv top
+  wereplacelogmaterial:
+  - /replace $1_log ^$2_log
+  - /replace $1_wood ^$2_wood
+  - /replace stripped_$1_log ^stripped_$2_log
+  - /replace stripped_$1_wood ^stripped_$2_wood
+  wereplacematerial:
+  - /replace $1_slab ^$2_slab
+  - /replace $1_stairs ^$2_stairs
+  - /replace $1 ^$2
+  - /replace $1s ^$2s
+  wereplacewoodmaterial:
+  - wereplacelogmaterial $1 $2
+  - wereplacematerial $1 $2
+  - /replace $1_planks ^$2_planks
+  setmicroblockname:
+  - renameitem &f$$1-
+  - setitemlore &9Microblock

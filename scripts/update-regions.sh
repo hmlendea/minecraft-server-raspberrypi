@@ -76,7 +76,7 @@ function get_region_colour() {
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
 
     if [[ "${REGION_TYPE_ID}" == player_* ]]; then
-        COLOUR_REGION="${COLOUR_HIGHLIGHT}@${COLOUR_PLAYER}"
+        COLOUR_REGION="${COLOUR_PLAYER}"
     fi
 
     if [[ "${REGION_TYPE_ID}" == settlement_* ]]; then
@@ -261,9 +261,12 @@ function set_region_messages() {
         [[ "${REGION_TYPE_ID}" == "player_home_lake" ]] && REGION_TYPE="casa de pe lac a lui"
         [[ "${REGION_TYPE_ID}" == "player_home_mountain" ]] && REGION_TYPE="casa de pe munte a lui"
         [[ "${REGION_TYPE_ID}" == "road_rail" ]] && REGION_TYPE="calea ferată"
+        [[ "${REGION_TYPE_ID}" == "resource_depot" ]] && REGION_TYPE='depozitul de resurse'
         [[ "${REGION_TYPE_ID}" == "settlement_city" ]] && REGION_TYPE="orașul"
         [[ "${REGION_TYPE_ID}" == "settlement_town" ]] && REGION_TYPE="orășelul"
         [[ "${REGION_TYPE_ID}" == "settlement_village" ]] && REGION_TYPE="satul"
+        [[ "${REGION_TYPE_ID}" == "station_weather" ]] && REGION_TYPE='stația meteorologică'
+        [[ "${REGION_TYPE_ID}" == 'yacht_diplomatic' ]] && REGION_TYPE='iahtul diplomatic'
     else
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
         [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="border wall"
@@ -275,10 +278,13 @@ function set_region_messages() {
         [[ "${REGION_TYPE_ID}" == "player_home" ]] && REGION_TYPE="home"
         [[ "${REGION_TYPE_ID}" == "player_home_lake" ]] && REGION_TYPE="home on the lake"
         [[ "${REGION_TYPE_ID}" == "player_home_mountain" ]] && REGION_TYPE="home on the mountain"
+        [[ "${REGION_TYPE_ID}" == "resource_depot" ]] && REGION_TYPE='resource depot'
         [[ "${REGION_TYPE_ID}" == "road_rail" ]] && REGION_TYPE="railroad"
         [[ "${REGION_TYPE_ID}" == "settlement_city" ]] && REGION_TYPE="city"
         [[ "${REGION_TYPE_ID}" == "settlement_town" ]] && REGION_TYPE="town"
-        [[ "${REGION_TYPE_ID}" == "settlement_village" ]] && REGION_TYPE="village"
+        [[ "${REGION_TYPE_ID}" == 'settlement_village' ]] && REGION_TYPE='village'
+        [[ "${REGION_TYPE_ID}" == 'station_weather' ]] && REGION_TYPE='weather station'
+        [[ "${REGION_TYPE_ID}" == 'yacht_diplomatic' ]] && REGION_TYPE='diplomatic yacht'
     fi
 
     set_deny_message "${REGION_ID}" "${REGION_TYPE}" "${REGION_NAME}" "${ZONE_NAME}"
@@ -312,7 +318,7 @@ function set_location_region_settings_by_id() {
     local LOCATION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
+    set_region_flag "${REGION_ID}" "deny-spawn" "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
 
     #set_region_flag "${REGION_ID}" "ride" true
     #set_region_flag "${REGION_ID}" "vehicle-destroy" true
@@ -365,10 +371,14 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" "farm_sugarcane"         "Sugar Cane Farm"       "Ferma de Trestie"
     set_building_settings "${SETTLEMENT_NAME}" "farm_wool"              "Wool Farm"             "Ferma de Lână"
     set_building_settings "${SETTLEMENT_NAME}" "farm_xp"                "XP Farm"               "Ferma de XP"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_1"              "XP Farm 1"             "Ferma 1 de XP"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_2"              "XP Farm 2"             "Ferma 2 de XP"
     set_building_settings "${SETTLEMENT_NAME}" "forge"                  "Forge"                 "Forja"
     set_building_settings "${SETTLEMENT_NAME}" "hippodrome"             "Hippodrome"            "Hipodromul"
+    set_building_settings "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"          "Hala de Comerț"
     set_building_settings "${SETTLEMENT_NAME}" "horary"                 "Horary"                "Horăria"
     set_building_settings "${SETTLEMENT_NAME}" "hospital"               "Hospital"              "Spitalul"
+    set_building_settings "${SETTLEMENT_NAME}" "inn"                    "Inn"                   "Barul"
     set_building_settings "${SETTLEMENT_NAME}" "library"                "Library"               "Librăria"
     set_building_settings "${SETTLEMENT_NAME}" "mall"                   "Mall"                  "Mall-ul"
     set_building_settings "${SETTLEMENT_NAME}" "maze"                   "Labyrinth"             "Labirintul"
@@ -378,12 +388,14 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" "museum_history"         "History Museum"        "Muzeul de Istorie"
     set_building_settings "${SETTLEMENT_NAME}" "museum_village"         "Village Museum"        "Muzeul Satului"
     set_building_settings "${SETTLEMENT_NAME}" "park"                   "Park"                  "Parcul"
-    set_building_settings "${SETTLEMENT_NAME}" "post"                   "Post"                  "Poșta"
+    set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'         'Portalul către Nether'
+    set_building_settings "${SETTLEMENT_NAME}" 'post_office'            'Post Office'           'Oficiul Poștal'
     set_building_settings "${SETTLEMENT_NAME}" "palace"                 "Palace"                "Palatul"
     set_building_settings "${SETTLEMENT_NAME}" "square"                 "Public Square"         "Piața Publică"
     set_building_settings "${SETTLEMENT_NAME}" "station_police"         "Police Station"        "Stația de Poliție"
     set_building_settings "${SETTLEMENT_NAME}" "station_train"          "Train Station"         "Gara"
     set_building_settings "${SETTLEMENT_NAME}" "subway"                 "Subway"                "Subway-ul"
+    set_building_settings "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'            'Judecătoria'
     set_building_settings "${SETTLEMENT_NAME}" "university"             "University"            "Universitatea"
     set_building_settings "${SETTLEMENT_NAME}" "warehouse"              "Warehouse"             "Magazia"
     set_building_settings "${SETTLEMENT_NAME}" "workshop"               "Workshop"              "Atelierul"
@@ -446,9 +458,9 @@ function set_building_settings() {
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"cave_spider","creeper",,"skeleton","spider","squid","witch","zombie"]'
-        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","cave_spider","skeleton","spider","squid","zombie"]'
-        [[ "${REGION_ID}" == *_xp ]] && set_region_flag "${REGION_ID}" "deny-spawn" '[${DENY_SPAWN_COMMON},"blaze","creeper","squid","witch"]'
+        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
+        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
+        [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
     fi
 
     if [[ "${REGION_ID}" == *_hospital ]]; then
@@ -545,17 +557,18 @@ for CITY_NAME in 'Enada' 'Naoi'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Horidava' 'Izmir' 'Newport'; do
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Izmir' 'Newport' 'Witty'; do
     set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
-for TOWN_NAME in 'Iahim'; do
+for TOWN_NAME in 'Emeraldia' 'Iahim'; do
     set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'FBU'
 done
 
-for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Brașovești' 'Canopis' 'Cerc' 'Faun' 'Frigonița' 'Nordavia' 'Pandora' 'Veneței'; do
+for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Cerc' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
+                    'Ğimbola' 'Grivina' 'Hodor' 'Loth' 'Lupinis' 'Minas' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'yvalond'; do
     set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
-for VILLAGE_NAME in 'Aecrim' 'Bastonia' 'Emeraldia'; do
+for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
     set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'FBU'
 done
 
@@ -574,11 +587,10 @@ for NATION in 'FBU' 'Nucilandia'; do
         done
     done
 
-    set_structure_region_settings "${NATION}" 'border_watchtower'
-    set_structure_region_settings "${NATION}" 'border_wall'
-    set_structure_region_settings "${NATION}" 'defence_bunker'
-    set_structure_region_settings "${NATION}" 'defence_turret'
-    set_structure_region_settings "${NATION}" 'road_rail'
+    for STRUCTURE in 'border_watchtower' 'border_wall' 'defence_bunker' 'defence_turret' \
+                     'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
+        set_structure_region_settings "${NATION}" "${STRUCTURE}"
+    done
 done
 
 for PLAYER_USERNAME in $(get_players_usernames); do

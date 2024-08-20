@@ -1863,6 +1863,6 @@ world-settings:
             grass_block: 0.3
             stone: 0.5
       persistent-droppable-display-names: true
-      persistent-tileentity-lore: false
+      persistent-tileentity-lore: true
       persistent-tileentity-display-name: true
       persistent-tileentity-display-names-and-lore: true

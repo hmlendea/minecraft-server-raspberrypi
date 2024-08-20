@@ -11,7 +11,7 @@ function download_file() {
     #sudo chmod +x "${FILE_PATH}"
 
     if [ -f "${FILE_PATH}" ]; then
-        local FILE_SIZE=$(du "${FILE_PATH}" | awk '{print $1}')
+        local FILE_SIZE=$(du "${FILE_PATH}" | awk '{print $1}' | head -n 1)
         if [ ${FILE_SIZE} -eq 0 ]; then
             sudo rm "${FILE_PATH}"
         else

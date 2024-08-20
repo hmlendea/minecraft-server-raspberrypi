@@ -91,7 +91,9 @@ set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechan
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty"                true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players"               true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-droppable-display-names"                 true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore"       true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'       true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                 true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                         true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum"                100000
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack"  true
 set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points"    10
@@ -119,12 +121,16 @@ if is_plugin_installed "PurpurExtras"; then
     fi
 fi
 
-if is_plugin_installed "AuthMe"; then
+if is_plugin_installed 'AuthMe'; then
 #        "settings.customJoinMessage" "$(sed 's/PLAYER/DISPLAYNAMENOCOLOR/g' <<< ${JOIN_MESSAGE})" \
-    configure_plugin "AuthMe" config \
+    configure_plugin 'AuthMe' config \
         "Hooks.useEssentialsMotd" $(is_plugin_installed_bool 'EssentialsX') \
-        "Security.console.logConsole" false \
-        "settings.forceVaultHook" $(is_plugin_installed_bool 'Vault') \
+        'Security.console.logConsole' false \
+        'Security.tempban.enableTempban' true \
+        'Security.tempban.maxLoginTries' 6 \
+        'Security.tempban.minutesBeforeCounterReset' 300 \
+        'Security.tempban.tempbanLength' 240 \
+        'settings.forceVaultHook' $(is_plugin_installed_bool 'Vault') \
         'settings.restrictions.DenyTabCompletionBeforeLogin' true \
         'settings.restrictions.displayOtherAccounts' false \
         'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
@@ -923,6 +929,7 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit Nu s-a făcut nici o selecție)" \
             "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit Selecția a fost extinsă cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
+            "worldedit..line..changed"                              "$(get_formatted_message success worldedit Au fost schimbate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..move..moved"                                "$(get_formatted_message success worldedit Au fost mutate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Poziția a fost deja setată)" \
             "worldedit..redo..none"                                 "$(get_formatted_message error worldedit Nu există modificări de refăcut)" \
@@ -953,6 +960,7 @@ if is_plugin_installed "FastAsyncWorldEdit"; then
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit No selection has been made)" \
             "worldedit..expand..expanded"                           "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..expand..expanded..vert"                     "$(get_formatted_message success worldedit The selection was expanded by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
+            "worldedit..line..changed"                              "$(get_formatted_message success worldedit Changed ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..move..moved"                                "$(get_formatted_message success worldedit Moved ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..pos..already-set"                           "$(get_formatted_message error worldedit Position already set)" \
             "worldedit..redo..none"                                 "$(get_formatted_message error worldedit Nothing to redo)" \
