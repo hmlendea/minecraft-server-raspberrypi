@@ -54,6 +54,33 @@ else
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob cannot be mounted)"
 fi
 
+INVALID_COMMAND_MINIMESSAGE="$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
+
+if is_plugin_installed 'GSit'; then
+    configure_plugin 'GSit' config \
+        'Lang.client-lang'          false \
+        'Options.check-for-update'  "${CHECK_PLUGINS_FOR_UPDATES}"
+
+    configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
+        'Messages.command-permission-error' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'Messages.command-sender-error' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'Plugin.plugin-reload' "$(get_reload_message_minimessage GSit)"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
+            'Messages.command-gsit-playertoggle-off' "$(get_formatted_message_minimessage info player Intracțiunile fizice cu ceilalți jucători au fost $(get_enablement_message dezactivate))" \
+            'Messages.command-gsit-playertoggle-on'  "$(get_formatted_message_minimessage info player Intracțiunile fizice cu ceilalți jucători au fost $(get_enablement_message activate))"
+    else
+        configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
+            'Messages.command-gsit-playertoggle-off' "$(get_formatted_message_minimessage info player The physical interactions with other players have been $(get_enablement_message disabled))" \
+            'Messages.command-gsit-playertoggle-on'  "$(get_formatted_message_minimessage info player The physical interactions with other players have been $(get_enablement_message enabled))"
+    fi
+fi
+    
+
+exit
+
+set_config_value "${SERVER_PROPERTIES_FILE}"            'accepts-transfers'                                         true
 set_config_value "${SERVER_PROPERTIES_FILE}"            'max-players'                                               "${PLAYERS_MAX}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            'view-distance'                                             "${VIEW_DISTANCE}"
 set_config_value "${SERVER_PROPERTIES_FILE}"            'simulation-distance'                                       "${SIMULATION_DISTANCE}"
@@ -71,7 +98,7 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 
 set_config_value "${BUKKIT_CONFIG_FILE}"                'spawn-limits.monsters'                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'messages.no-permission' "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
+set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'messages.no-permission' "${INVALID_COMMAND_MINIMESSAGE}"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'timings.server-name' "${SERVER_NAME}"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked' true # Skip unnecessary tick to save a bit of performance # Note: This could cause rapid damage for the shields
 
@@ -81,67 +108,67 @@ set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'entities.spawning.wande
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'spawn.keep-spawn-loaded'                               "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'spawn.keep-spawn-loaded-range'                         "${VIEW_DISTANCE}"
 
-set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "chunks.auto-save-interval"                     $((AUTOSAVE_MINS * 20 * 60))
-set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
-set_config_value "${PAPER_WORLD_CONFIG_FILE}"           "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE}"
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'chunks.auto-save-interval'                     $((AUTOSAVE_MINS * 20 * 60))
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'spawn.keep-spawn-loaded-range'                 "${VIEW_DISTANCE}"
 
-set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "chunks.auto-save-interval"                     $((AUTOSAVE_MINS_END * 20 * 60))
-set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
-set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_END}"
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       'chunks.auto-save-interval'                     $((AUTOSAVE_MINS_END * 20 * 60))
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_END_CONFIG_FILE}"       'spawn.keep-spawn-loaded-range'                 "${VIEW_DISTANCE_END}"
 
-set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "chunks.auto-save-interval"                     $((AUTOSAVE_MINS_NETHER * 20 * 60))
-set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded"                       "${KEEP_SPAWN_LOADED}"
-set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    "spawn.keep-spawn-loaded-range"                 "${VIEW_DISTANCE_NETHER}"
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'chunks.auto-save-interval'                     $((AUTOSAVE_MINS_NETHER * 20 * 60))
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
+set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'spawn.keep-spawn-loaded-range'                 "${VIEW_DISTANCE_NETHER}"
 
-set_config_value "${PURPUR_CONFIG_FILE}" "settings.server-mod-name"                                                                     "${SERVER_NAME}"
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.campfire.lit-when-placed"                                       false
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.chest.open-with-solid-block-on-top"                             true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.coral.die-outside-water"                                        false
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.farmland.get-moist-from-below"                                  true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.respawn-anchor.explode"                                         false
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.sponge.absorption.range"                                        8
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.blocks.stonecutter.damage"                                             1.0
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible"                 true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime"                       "${DAYTIME_LENGTH_TICKS}"
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime"                     "${NIGHTTIME_LENGTH_TICKS}"
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty"                true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players"               true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.persistent-droppable-display-names"                 true
+set_config_value "${PURPUR_CONFIG_FILE}" 'settings.server-mod-name'                                                                     "${SERVER_NAME}"
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.campfire.lit-when-placed'                                       false
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.chest.open-with-solid-block-on-top'                             true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.coral.die-outside-water'                                        false
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.farmland.get-moist-from-below'                                  true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.respawn-anchor.explode'                                         false
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.sponge.absorption.range'                                        8
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.stonecutter.damage'                                             1.0
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                 true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                       "${DAYTIME_LENGTH_TICKS}"
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                     "${NIGHTTIME_LENGTH_TICKS}"
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'               true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                 true
 set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'       true
 set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                 true
 set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                         true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum"                100000
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack"  true
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points"    10
-set_config_value "${PURPUR_CONFIG_FILE}" "world-settings.default.gameplay-mechanics.use-better-mending"                                 true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                100000
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'  true
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'    10
+set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.use-better-mending'                                 true
 
 if is_plugin_installed 'PurpurExtras'; then
     configure_plugin 'PurpurExtras' config \
-        "settings.anvil-splits-boats" true \
-        "settings.anvil-splits-minecarts" true \
-        "settings.blocks.shift-right-click-for-invisible-item-frames" true \
-        "settings.gameplay-settings.cancel-damage-from-pet-owner" true \
-        "settings.items.beehive-lore.enabled" true \
+        'settings.anvil-splits-boats' true \
+        'settings.anvil-splits-minecarts' true \
+        'settings.blocks.shift-right-click-for-invisible-item-frames' true \
+        'settings.gameplay-settings.cancel-damage-from-pet-owner' true \
+        'settings.items.beehive-lore.enabled' true \
         'settings.leash-snap.enabled' false \
-        "settings.lightning-transforms-entities.enabled" true \
-        "settings.mobs.snow_golem.drop-pumpkin-when-sheared" true \
-        "settings.mobs.sheep.jeb-shear-random-color" true \
-        "settings.protect-blocks-with-loot.enabled" true \
-        "settings.unlock-all-recipes-on-join" true
+        'settings.lightning-transforms-entities.enabled' true \
+        'settings.mobs.snow_golem.drop-pumpkin-when-sheared' true \
+        'settings.mobs.sheep.jeb-shear-random-color' true \
+        'settings.protect-blocks-with-loot.enabled' true \
+        'settings.unlock-all-recipes-on-join' true
 
-    if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "PurpurExtras" config \
-            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block Cuferele cu comori se pot distruge doar în timp ce ești ${COLOUR_HIGHLIGHT}aplecat)"
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'PurpurExtras' config \
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Cuferele cu comori se pot distruge doar în timp ce ești $(get_highlighted_message aplecat))"
     else
-        configure_plugin "PurpurExtras" config \
-            "settings.protect-blocks-with-loot.message" "$(get_formatted_message_minimessage error break_block Treasure chests can only be broken while ${COLOUR_HIGHLIGHT}sneaking)"
+        configure_plugin 'PurpurExtras' config \
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Treasure chests can only be broken while $(get_highlighted_message sneaking))"
     fi
 fi
 
 if is_plugin_installed 'AuthMe'; then
 #        "settings.customJoinMessage" "$(sed 's/PLAYER/DISPLAYNAMENOCOLOR/g' <<< ${JOIN_MESSAGE})" \
     configure_plugin 'AuthMe' config \
-        "Hooks.useEssentialsMotd" $(is_plugin_installed_bool 'EssentialsX') \
+        'Hooks.useEssentialsMotd' $(is_plugin_installed_bool 'EssentialsX') \
         'Security.console.logConsole' false \
         'Security.tempban.enableTempban' true \
         'Security.tempban.maxLoginTries' 6 \
@@ -151,51 +178,51 @@ if is_plugin_installed 'AuthMe'; then
         'settings.restrictions.DenyTabCompletionBeforeLogin' true \
         'settings.restrictions.displayOtherAccounts' false \
         'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
-        "settings.serverName" "${SERVER_NAME}" \
+        'settings.serverName' "${SERVER_NAME}" \
         'settings.sessions.enabled' true \
         'settings.sessions.timeout' 960 \
         'settings.messagesLanguage' "${LOCALE}" \
-        "settings.restrictions.teleportUnAuthedToSpawn" false \
+        'settings.restrictions.teleportUnAuthedToSpawn' false \
         'settings.restrictions.timeout' 60 \
         'settings.useAsyncTasks' true \
         'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'AuthMe' "$(get_plugin_dir AuthMe)/messages/messages_ro.yml" \
-            "error.denied_chat" "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea vorbi)" \
-            "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
-            "error.logged_in" "$(get_formatted_message error auth Ești autentificat deja)" \
-            "login.command_usage" "$(get_formatted_message info auth Utilizare: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            "login.login_request" "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE})" \
-            "login.success" "$(get_formatted_message success auth Te-ai autentificat)" \
-            "login.wrong_password" "$(get_formatted_message error auth Parola este greșită)" \
+            'error.denied_chat' "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea vorbi)" \
+            'error.denied_command' "${INVALID_COMMAND_MESSAGE}" \
+            'error.logged_in' "$(get_formatted_message error auth Ești autentificat deja)" \
+            'login.command_usage' "$(get_formatted_message info auth Utilizare: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
+            'login.login_request' "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE})" \
+            'login.success' "$(get_formatted_message success auth Te-ai autentificat)" \
+            'login.wrong_password' "$(get_formatted_message error auth Parola este greșită)" \
             'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) are $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) conturi)" \
             'misc.logout' "$(get_formatted_message success auth Te-ai deautentificat)" \
             'misc.password_changed' "$(get_formatted_message success auth Parola a fost schimbată)" \
             'misc.reload' "$(get_reload_message AuthMe)" \
-            "password.match_error" "$(get_formatted_message error auth Parola de confirmare nu se potrivește)" \
-            "registration.register_request" "$(get_formatted_message error auth Trebuie să te înregistrezi pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'${COLOUR_MESSAGE})" \
-            "registration.success" "$(get_formatted_message success auth Te-ai înregistrat)" \
+            'password.match_error' "$(get_formatted_message error auth Parola de confirmare nu se potrivește)" \
+            'registration.register_request' "$(get_formatted_message error auth Trebuie să te înregistrezi pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'${COLOUR_MESSAGE})" \
+            'registration.success' "$(get_formatted_message success auth Te-ai înregistrat)" \
             'session.invalid_session' "$(get_formatted_message error auth Sesiunea de autentificare a expirat datorită schimbării adresei IP)" \
             'session.valid_session' "$(get_formatted_message success auth Te-ai autentificat automat de data trecută)"
     else
-        configure_plugin "AuthMe" "$(get_plugin_dir AuthMe)/messages/messages_en.yml" \
-            "error.denied_chat" "$(get_formatted_message error auth You must authenticate in order to chat)" \
-            "error.denied_command" "${INVALID_COMMAND_MESSAGE}" \
-            "error.logged_in" "$(get_formatted_message error auth You are already authenticated)" \
-            "login.command_usage" "$(get_formatted_message info auth Usage: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            "login.login_request" "$(get_formatted_message error auth You must authenticate in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE})" \
-            "login.success" "$(get_formatted_message success auth You are now authenticated)" \
-            "login.wrong_password" "$(get_formatted_message error auth The password is incorrect)" \
+        configure_plugin 'AuthMe' "$(get_plugin_dir AuthMe)/messages/messages_en.yml" \
+            'error.denied_chat' "$(get_formatted_message error auth You must authenticate in order to chat)" \
+            'error.denied_command' "${INVALID_COMMAND_MESSAGE}" \
+            'error.logged_in' "$(get_formatted_message error auth You are already authenticated)" \
+            'login.command_usage' "$(get_formatted_message info auth Usage: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
+            'login.login_request' "$(get_formatted_message error auth You must authenticate in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE})" \
+            'login.success' "$(get_formatted_message success auth You are now authenticated)" \
+            'login.wrong_password' "$(get_formatted_message error auth The password is incorrect)" \
             'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) has $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) accounts)" \
-            "misc.logout" "$(get_formatted_message success auth You are now deauthenticated)" \
+            'misc.logout' "$(get_formatted_message success auth You are now deauthenticated)" \
             'misc.password_changed' "$(get_formatted_message success auth The password was changed)" \
-            "misc.reload" "$(get_reload_message AuthMe)" \
-            "password.match_error" "$(get_formatted_message error auth The confirmation password does not match)" \
-            "registration.register_request" "$(get_formatted_message error auth You must register in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Password>' '<ConfirmPassword>'${COLOUR_MESSAGE})" \
-            "registration.success" "$(get_formatted_message success auth You are now registered)" \
+            'misc.reload' "$(get_reload_message AuthMe)" \
+            'password.match_error' "$(get_formatted_message error auth The confirmation password does not match)" \
+            'registration.register_request' "$(get_formatted_message error auth You must register in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Password>' '<ConfirmPassword>'${COLOUR_MESSAGE})" \
+            'registration.success' "$(get_formatted_message success auth You are now registered)" \
             'session.invalid_session' "$(get_formatted_message error auth The authentication session has expired due to your IP address having changed)" \
-            "session.valid_session" "$(get_formatted_message success auth You authenticated automatically from the previous session)"
+            'session.valid_session' "$(get_formatted_message success auth You authenticated automatically from the previous session)"
     fi
 fi
 
@@ -220,7 +247,7 @@ fi
 if is_plugin_installed 'ChestSort'; then
     configure_plugin 'ChestSort' config \
         'allow-gui' false \
-        'check-for-updates' false \
+        'check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
         'sorting-enabled-by-default' true \
         'inv-sorting-enabled-by-default' true \
         'show-message-when-using-chest' true \
@@ -250,9 +277,8 @@ if is_plugin_installed 'ChestSort'; then
     fi
 fi
 
-# Check Updates because we cannot auto-update this one
 configure_plugin 'CoreProtect' config \
-    'check-updates' true
+    'check-updates' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 if is_plugin_installed 'DeathMessages'; then
     configure_plugin 'DeathMessages' config \
@@ -285,14 +311,14 @@ if is_plugin_installed 'DeathMessages'; then
     fi
 fi
 
-if is_plugin_installed "DiscordSRV"; then
-    configure_plugin "DiscordSRV" config \
-        "ServerWatchdogEnabled" false \
-        "UpdateCheckDisabled"   true
+if is_plugin_installed 'DiscordSRV'; then
+    configure_plugin 'DiscordSRV' config \
+        'ServerWatchdogEnabled' false \
+        'UpdateCheckDisabled'   "${SKIP_PLUGIN_UPDATE_CHECKS}"
 
-    configure_plugin "DiscordSRV" messages \
-        "DiscordToMinecraftChatMessageFormat" "$(get_player_mention ${PLACEHOLDER_NAME_PERCENT})${COLOUR_CHAT}:${COLOUR_MESSAGE}${PLACEHOLDER_REPLY_PERCENT} ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE_PERCENT}" \
-        "MinecraftPlayerDeathMessage.Enabled" $(is_plugin_not_installed_bool DeathMessages)
+    configure_plugin 'DiscordSRV' messages \
+        'DiscordToMinecraftChatMessageFormat' "$(get_player_mention ${PLACEHOLDER_NAME_PERCENT})${COLOUR_CHAT}:${COLOUR_MESSAGE}${PLACEHOLDER_REPLY_PERCENT} ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE_PERCENT}" \
+        'MinecraftPlayerDeathMessage.Enabled' $(is_plugin_not_installed_bool DeathMessages)
 fi
 
 if is_plugin_installed 'DynamicLights'; then
@@ -320,15 +346,15 @@ if is_plugin_installed 'DynamicLights'; then
 fi
 
 configure_plugin 'Dynmap' config \
-    "max-sessions"                 5 \
-    "disable-webserver"            true \
-    "webserver-port"               25550 \
-    "webpath"                      "${WEBMAP_DIR}" \
-    "tilespath"                    "${WEBMAP_TILES_DIR}" \
-    "webpage-title"                "${WEBMAP_PAGE_TITLE}" \
+    'max-sessions'                 5 \
+    'disable-webserver'            true \
+    'webserver-port'               25550 \
+    'webpath'                      "${WEBMAP_DIR}" \
+    'tilespath'                    "${WEBMAP_TILES_DIR}" \
+    'webpage-title'                "${WEBMAP_PAGE_TITLE}" \
     \
-    "allowchat"                    false \
-    "allowwebchat"                 false \
+    'allowchat'                    false \
+    'allowwebchat'                 false \
     \
     "enabletilehash"               true \
     "tiles-rendered-at-once"       1 \
@@ -336,14 +362,14 @@ configure_plugin 'Dynmap' config \
     "timesliceinterval"            0.5 \
     "maxchunkspertick"             90 \
     "renderacceleratethreshold"    30 \
-    "updaterate"                   3000 \
+    'updaterate'                   3000 \
     \
-    "fullrender-min-tps"           19.5 \
-    "update-min-tps"               19.0 \
-    "zoomout-min-tps"              18.0 \
+    'fullrender-min-tps'           19.5 \
+    'update-min-tps'               19.0 \
+    'zoomout-min-tps'              18.0 \
     \
-    "fullrenderplayerlimit"        3 \
-    "updateplayerlimit"            4 \
+    'fullrenderplayerlimit'        3 \
+    'updateplayerlimit'            4 \
     \
     "smooth-lighting"              true \
     "image-format"                 'png' \
@@ -377,7 +403,7 @@ if is_plugin_installed 'EssentialsX'; then
         "teleport-cooldown"                     3 \
         "teleport-delay"                        3 \
         "teleport-invulnerability"              7 \
-        "update-check"                          false \
+        'update-check'                          "${CHECK_PLUGINS_FOR_UPDATES}" \
         "unsafe-enchantments"                   true \
         "use-nbt-serialization-in-createkit"    true \
         "world-change-fly-reset"                false \
@@ -412,7 +438,7 @@ if is_plugin_installed 'EssentialsX'; then
             'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_message dezactivat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_message activat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'godMode'                           "$(get_formatted_message_minimessage success gamemode Modul invincibil a fost $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHLDER_ARG0}) a fost vindecat)" \
+            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) a fost vindecat)" \
             'homes'                             "$(get_formatted_message_minimessage info home Case: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'homeSet'                           "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
             'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory Inventarul și armurile lui $(get_player_mention ${PLACEHOLDER_ARG0}) au fost golite)" \
@@ -430,9 +456,9 @@ if is_plugin_installed 'EssentialsX'; then
             'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
             'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            'noAccessCommand'                   "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            'noAccessCommand'                   "${INVALID_COMMAND_MINIMESSAGE}" \
             'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
-            'noPerm'                            "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            'noPerm'                            "${INVALID_COMMAND_MINIMESSAGE}" \
             'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare a fost anulată)" \
             'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
             'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
@@ -527,7 +553,7 @@ if is_plugin_installed 'EssentialsX'; then
             'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_status disabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_status enabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'godMode'                           "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHLDER_ARG0}) ${COLOUR_MESSAGE}was healed)" \
+            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) was healed)" \
             'homes'                             "$(get_formatted_message_minimessage success home Homes: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             'homeSet'                           "$(get_formatted_message_minimessage success home Home set at the current location)" \
             'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory and armours have been cleared)" \
@@ -535,54 +561,54 @@ if is_plugin_installed 'EssentialsX'; then
             'itemloreClear'                     "$(get_formatted_message_minimessage success name The descriptions of the held item were removed)" \
             'itemloreSuccess'                   "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" description was added to the held item)" \
             'itemnameClear'                     "$(get_formatted_message_minimessage success name The name of the held item was reset)" \
-            'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'kitOnce'                           "$(get_formatted_message_minimessage error kit You cannot obtain that kit anymore)" \
             'kitReceive'                        "$(get_formatted_message_minimessage success kit You have received the $(get_highlighted_message ${PLACEHOLDER_ARG0}) kit)" \
             'kitReset'                          "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset)" \
             'kitResetOther'                     "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            "listAmount"                        "$(get_formatted_message_minimessage info inspect There are ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}players online)" \
+            "listAmount"                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
             "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            "noAccessCommand"                   "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "noAccessCommand"                   "${INVALID_COMMAND_MINIMESSAGE}" \
             "noPendingRequest"                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
-            "noPerm"                            "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+            "noPerm"                            "${INVALID_COMMAND_MINIMESSAGE}" \
             "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
-            "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}never played on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
             "playerNotFound"                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
-            "playtime"                          "$(get_formatted_message_minimessage info inspect You spent a total of ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}playing on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
-            "playtimeOther"                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent a total of ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}playing on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
+            'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
             "requestAccepted"                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
-            "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}accepted your teleportation request)" \
+            "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
             "requestDenied"                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
-            "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE} denied your teleportation request)" \
+            "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) denied your teleportation request)" \
             "requestSent"                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "requestSentAlready"                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "requestTimedOut"                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
             "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
-            "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
-            "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT}lowest ${COLOUR_MESSAGE}empty space at your current location)" \
+            "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
             'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_enablement_message disabled) their teleportation requests)" \
-            "teleportHereRequest"               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}asked you to teleport to them)" \
+            "teleportHereRequest"               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to teleport to them)" \
             "teleporting"                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
-            "teleportRequestSpecificCancelled"  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}cancelled)" \
-            "teleportRequestTimeoutInfo"        "$(get_formatted_message_minimessage info player This request will time out after ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} seconds)" \
+            "teleportRequestSpecificCancelled"  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) cancelled)" \
+            "teleportRequestTimeoutInfo"        "$(get_formatted_message_minimessage info player This request will time out after $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds))" \
             "teleportHome"                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "teleportRequest"                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}asked you to let them teleport to you)" \
-            "teleportTop"                       "$(get_formatted_message_minimessage success teleport Teleported to the ${COLOUR_HIGHLIGHT}highest ${COLOUR_MESSAGE}empty space at your current location)" \
+            "teleportRequest"                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to let them teleport to you)" \
+            "teleportTop"                       "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message highest) empty space at your current location)" \
             "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport You must wait ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}before teleporting again)" \
+            "timeBeforeTeleport"                "$(get_formatted_message_minimessage error teleport You need to wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before teleporting again)" \
             'timeWorldSet'                      "$(get_formatted_message_minimessage success time The time in $(get_highlighted_message ${PLACEHOLDER_ARG1}) is now $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
             "true"                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}yes${COLOUR_MESSAGE})" \
-            "typeTpacancel"                     "$(get_formatted_message_minimessage info player To cancel it, use ${COLOUR_COMMAND}/tpacancel)" \
-            "typeTpaccept"                      "$(get_formatted_message_minimessage info player To approve it, use ${COLOUR_COMMAND}/tpyes)" \
-            'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use ${COLOUR_COMMAND}/tpno)" \
+            "typeTpacancel"                     "$(get_formatted_message_minimessage info player To cancel it, use $(get_command_mention /tpacancel))" \
+            "typeTpaccept"                      "$(get_formatted_message_minimessage info player To approve it, use $(get_command_mention /tpyes))" \
+            'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
             'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
             'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'vanished'                          '' \
@@ -618,11 +644,11 @@ fi
 if is_plugin_installed 'GSit'; then
     configure_plugin 'GSit' config \
         'Lang.client-lang'          false \
-        'Options.check-for-update'  false
+        'Options.check-for-update'  "${CHECK_PLUGINS_FOR_UPDATES}"
 
     configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
-        'Messages.command-permission-error' "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
-        'Messages.command-sender-error' "$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})" \
+        'Messages.command-permission-error' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'Messages.command-sender-error' "${INVALID_COMMAND_MINIMESSAGE}" \
         'Plugin.plugin-reload' "$(get_reload_message_minimessage GSit)"
 
     if [ "${LOCALE}" = 'ro' ]; then
@@ -636,12 +662,10 @@ if is_plugin_installed 'GSit'; then
     fi
 fi
 
-if is_plugin_installed 'InteractionVisualizer'; then
-    configure_plugin 'InteractionVisualizer' config \
-        'Messages.NoPermission' "${INVALID_COMMAND_MESSAGE}" \
-        'Messages.Reload' "$(get_reload_message InteractionVisualizer)" \
-        'Modules.Hologram.Enabled' false
-fi
+configure_plugin 'InteractionVisualizer' config \
+    'Messages.NoPermission' "${INVALID_COMMAND_MESSAGE}" \
+    'Messages.Reload' "$(get_reload_message InteractionVisualizer)" \
+    'Modules.Hologram.Enabled' false
 
 configure_plugin 'InvSee++' config \
     'enable-unknown-player-support' false
@@ -649,7 +673,7 @@ configure_plugin 'InvSee++' config \
 if is_plugin_installed 'InvUnload'; then
     INVUNLOAD_COOLDOWN=2
     configure_plugin 'InvUnload' config \
-        'check-for-updates'         false \
+        'check-for-updates'         "${CHECK_PLUGINS_FOR_UPDATES}" \
         'default-chest-radius'      16 \
         'cooldown'                  "${INVUNLOAD_COOLDOWN}" \
         'ignore-blocked-chests'     false \
@@ -697,6 +721,10 @@ if is_plugin_installed 'KauriVPN'; then
     fi
 fi
 
+configure_plugin 'LightAntiCheat' config \
+    'alerts.broadcast-punishments' true \
+    'alerts.broadcast-violations' false
+
 if is_plugin_installed 'LuckPerms'; then
     configure_plugin 'LuckPerms' config \
         'resolve-command-selectors' true \
@@ -706,42 +734,42 @@ if is_plugin_installed 'LuckPerms'; then
     if [ "${LOCALE}" = 'ro' ]; then
         copy-file-if-needed "${LUCKPERMS_DIR}/translations/repository/ro_RO.properties" "${LUCKPERMS_DIR}/translations/custom/en.properties"
         configure_plugin 'LuckPerms' "${LUCKPERMS_DIR}/translations/custom/en.properties" \
-            'luckperms.command.generic.permission.info.title' "$(get_formatted_message_minimessage info permission Permissile lui $(get_player_mention ${PLACEHOLDER_ARG0}))"
+            'luckperms.command.generic.permission.info.title' "$(get_formatted_message info permission Permisiunile lui $(get_player_mention ${PLACEHOLDER_ARG0}))"
 
     fi
 fi
 
-if is_plugin_installed "OldCombatMechanics"; then
-    configure_plugin "OldCombatMechanics" config \
-        "disable-chorus-fruit.enabled" true \
-        "disable-crafting.enabled" false \
-        "disable-enderpearl-cooldown.enabled" false \
-        "disable-offhand.enabled" false \
-        "disable-sword-sweep.enabled" false \
-        "message-prefix" "§" \
-        "update-checker.auto-update" false \
-        "update-checker.enabled" false
+if is_plugin_installed 'OldCombatMechanics'; then
+    configure_plugin 'OldCombatMechanics' config \
+        'disable-chorus-fruit.enabled' true \
+        'disable-crafting.enabled' false \
+        'disable-enderpearl-cooldown.enabled' false \
+        'disable-offhand.enabled' false \
+        'disable-sword-sweep.enabled' false \
+        'message-prefix' "§" \
+        'update-checker.auto-update' false \
+        'update-checker.enabled' "${CHECK_PLUGINS_FOR_UPDATES}"
 
-    if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "OldCombatMechanics" config \
-            "disable-offhand.denied-message" "$(get_formatted_message error combat Modul de luptă actual nu permite obiecte în mâna stângă)" \
-            "mode-messages.invalid-modeset" "$(get_formatted_message error combat Modul de luptă specificat nu este valid)" \
-            "mode-messages.invalid-player" "$(get_formatted_message error combat Jucătorul specificat nu este valid)" \
-            "mode-messages.message-usage" "$(get_formatted_message info combat Îți poți schimba modul de luptă folosind ${COLOUR_COMMAND}/ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mod>' [Jucător])" \
-            "mode-messages.mode-set" "$(get_formatted_message error combat Modul de luptă a fost schimbat la ${COLOUR_HIGHLIGHT}%s)" \
-            "mode-messages.mode-status" "$(get_formatted_message info combat Modul de luptă actual: ${COLOUR_HIGHLIGHT}%s)" \
-            "old-golden-apples.message-enchanted" "$(get_formatted_message error combat Așteaptă $(get_highlighted_message ${PLACEHOLDER_SECONDS_PERCENT}) înainte să mănânci alt ${COLOUR_PINK}Măr Auriu Fermecat)" \
-            "old-golden-apples.message-normal" "$(get_formatted_message error combat Așteaptă $(get_highlighted_message ${PLACEHOLDER_SECONDS_PERCENT}) înainte să mănânci alt ${COLOUR_AQUA}Măr Auriu)"
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'OldCombatMechanics' config \
+            'disable-offhand.denied-message' "$(get_formatted_message error combat Modul de luptă actual nu permite obiecte în mâna stângă)" \
+            'mode-messages.invalid-modeset' "$(get_formatted_message error combat Modul de luptă specificat nu este valid)" \
+            'mode-messages.invalid-player' "$(get_formatted_message error combat Jucătorul specificat nu este valid)" \
+            'mode-messages.message-usage' "$(get_formatted_message info combat Îți poți schimba modul de luptă folosind ${COLOUR_COMMAND}/ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mod>' [Jucător])" \
+            'mode-messages.mode-set' "$(get_formatted_message error combat Modul de luptă a fost schimbat la ${COLOUR_HIGHLIGHT}%s)" \
+            'mode-messages.mode-status' "$(get_formatted_message info combat Modul de luptă actual: ${COLOUR_HIGHLIGHT}%s)" \
+            'old-golden-apples.message-enchanted' "$(get_formatted_message error combat Așteaptă $(get_highlighted_message ${PLACEHOLDER_SECONDS_PERCENT}) înainte să mănânci alt ${COLOUR_PINK}Măr Auriu Fermecat)" \
+            'old-golden-apples.message-normal' "$(get_formatted_message error combat Așteaptă $(get_highlighted_message ${PLACEHOLDER_SECONDS_PERCENT}) înainte să mănânci alt ${COLOUR_AQUA}Măr Auriu)"
     else
-        configure_plugin "OldCombatMechanics" config \
-            "disable-offhand.denied-message" "$(get_formatted_message error combat The current combat mode does not allow items in the off-hand slot)" \
-            "mode-messages.invalid-modeset" "$(get_formatted_message error combat The specified combat mode is invalid)" \
-            "mode-messages.invalid-player" "$(get_formatted_message error combat The specified player is invalid)" \
-            "mode-messages.message-usage" "$(get_formatted_message info combat You can change your combat mode using ${COLOUR_COMMAND}/ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mode>' [Player])" \
-            "mode-messages.mode-set" "$(get_formatted_message success combat Your combat mode has been set to ${COLOUR_HIGHLIGHT}%s)" \
-            "mode-messages.mode-status" "$(get_formatted_message info combat Your current combat mode is ${COLOUR_HIGHLIGHT}%s)" \
-            "old-golden-apples.message-enchanted" "$(get_formatted_message error combat You must wait ${COLOUR_HIGHLIGHT}%seconds% ${COLOUR_MESSAGE}before eating another ${COLOUR_PINK}Enchanted Golden Apple)" \
-            "old-golden-apples.message-normal" "$(get_formatted_message error combat You must wait ${COLOUR_HIGHLIGHT}%seconds% ${COLOUR_MESSAGE}before eating another ${COLOUR_AQUA}Golden Apple)"
+        configure_plugin 'OldCombatMechanics' config \
+            'disable-offhand.denied-message' "$(get_formatted_message error combat The current combat mode does not allow items in the off-hand slot)" \
+            'mode-messages.invalid-modeset' "$(get_formatted_message error combat The specified combat mode is invalid)" \
+            'mode-messages.invalid-player' "$(get_formatted_message error combat The specified player is invalid)" \
+            'mode-messages.message-usage' "$(get_formatted_message info combat You can change your combat mode using ${COLOUR_COMMAND}/ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mode>' [Player])" \
+            'mode-messages.mode-set' "$(get_formatted_message success combat Your combat mode has been set to ${COLOUR_HIGHLIGHT}%s)" \
+            'mode-messages.mode-status' "$(get_formatted_message info combat Your current combat mode is ${COLOUR_HIGHLIGHT}%s)" \
+            'old-golden-apples.message-enchanted' "$(get_formatted_message error combat You must wait ${COLOUR_HIGHLIGHT}%seconds% ${COLOUR_MESSAGE}before eating another ${COLOUR_PINK}Enchanted Golden Apple)" \
+            'old-golden-apples.message-normal' "$(get_formatted_message error combat You must wait ${COLOUR_HIGHLIGHT}%seconds% ${COLOUR_MESSAGE}before eating another ${COLOUR_AQUA}Golden Apple)"
     fi
 fi
 
@@ -750,12 +778,12 @@ if is_plugin_installed 'PaperTweaks'; then
         'enable-bstats' false
     
     set_config_values "${PAPERTWEAKS_MODULES_FILE}" \
-        "items.player-head-drops" true \
-        "mobs.more-mob-heads" true \
+        'items.player-head-drops' true \
+        'mobs.more-mob-heads' true \
         'survival.cauldron-concrete' true \
         'survival.custom-nether-portals' true \
-        "survival.durability-ping" true \
-        "survival.unlock-all-recipes" true
+        'survival.durability-ping' true \
+        'survival.unlock-all-recipes' true
     
     set_config_values "${PAPERTWEAKS_MODULES_DIR}/moremobheads/config.yml" \
         "require-player-kill" true
@@ -887,11 +915,25 @@ if is_plugin_installed 'SkinsRestorer'; then
     fi
 fi
 
+if is_plugin_installed 'Sonar'; then
+    configure_plugin 'Sonar' config \
+        'general.check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
+        'general.max-online-per-ip' 5 \
+        'database.maximum-age' 3 \
+        'verification.transfer.enabled' true \
+        'verification.destination-host' "${SERVER_HOSTNAME}"
+
+    configure_plugin 'Sonar' messages \
+        'commands.no-permission' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'commands.reload.finish' "$(get_reload_message_minimessage Sonar)" \
+        'commands.reload.start' "$(get_reloading_message_minimessage Sonar)"
+fi
+
 configure_plugin 'spark' config \
     'backgroundProfiler' false
 
 configure_plugin 'StackableItems' config \
-    'update-check.enabled' false
+    'update-check.enabled' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 if is_plugin_installed 'SuperbVote'; then
     configure_plugin 'SuperbVote' config \
@@ -955,14 +997,13 @@ if is_plugin_installed 'ToolStats'; then
 fi
 
 if is_plugin_installed 'TradeShop'; then
-    # TODO: check-updates to false once it can be updated via script
-    configure_plugin "TradeShop" config \
+    configure_plugin 'TradeShop' config \
         "language-options.message-prefix" "§" \
         "language-options.shop-bad-colour" "${COLOUR_ERROR}" \
         "language-options.shop-good-colour" "${COLOUR_SUCCESS}" \
         "language-options.shop-incomplete-colour" "${COLOUR_ERROR}" \
         "system-options.allow-metrics" false \
-        "system-options.check-updates" false \
+        'system-options.check-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
         "system-options.unlimited-admin" true \
         "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
         "global-options.allow-sign-break" true \
@@ -1051,16 +1092,17 @@ configure_plugin 'VanillaMessagesFormatter' config \
     'formats.success.primaryColor' "${COLOUR_MESSAGE_HEX}" \
     'formats.success.secondaryColor' "${COLOUR_HIGHLIGHT_HEX}" \
     'formats.success.suffix' '.' \
-    'formats.gamemode_success.prefix' "<${COLOUR_SUCCESS_HEX}>$(get_symbol_by_category success gamemode)</${COLOUR_SUCCESS_HEX}> " \
-    'formats.gamemode_success.primaryColor' "${COLOUR_MESSAGE_HEX}" \
-    'formats.gamemode_success.secondaryColor' "${COLOUR_PLAYER_HEX}" \
-    'formats.gamemode_success.suffix' '.'
+    'formats.success_player.prefix' "<${COLOUR_SUCCESS_HEX}>$(get_symbol_by_category success gamemode)</${COLOUR_SUCCESS_HEX}> " \
+    'formats.success_player.primaryColor' "${COLOUR_MESSAGE_HEX}" \
+    'formats.success_player.secondaryColor' "${COLOUR_PLAYER_HEX}" \
+    'formats.success_player.suffix' '.' \
+    'mappings.commands\.deop\.success' 'success_player'
 
 configure_plugin 'Vault' config \
-    'update-check' false
+    'update-check' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'ViaVersion' config \
-    'check-for-updates' false
+    'check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}"
     
 configure_plugin 'ViewDistanceTweaks' config \
     'enabled' true \
@@ -1102,26 +1144,26 @@ if is_plugin_installed "VotingPlugin"; then
     fi
 fi
 
-if is_plugin_installed "WanderingTrades"; then
-    configure_plugin "WanderingTrades" config \
-    	"updateChecker" false \
-    	"language" "${LOCALE_FULL}"
+if is_plugin_installed 'WanderingTrades'; then
+    configure_plugin 'WanderingTrades' config \
+    	'updateChecker' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    	'language' "${LOCALE_FULL}"
 
-    if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "WanderingTrades" "$(get_plugin_dir WanderingTrades)/lang/ro_RO.yml" \
-            "command.reload.message" "$(get_formatted_message_minimessage info plugin Se reîncarcă ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'WanderingTrades' "$(get_plugin_dir WanderingTrades)/lang/ro_RO.yml" \
+            'command.reload.message' "$(get_formatted_message_minimessage info plugin Se reîncarcă ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
     else
-        configure_plugin "WanderingTrades" "$(get_plugin_dir WanderingTrades)/lang/en_US.yml" \
-            "command.reload.message" "$(get_formatted_message_minimessage info plugin Reloading ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
+        configure_plugin 'WanderingTrades' "$(get_plugin_dir WanderingTrades)/lang/en_US.yml" \
+            'command.reload.message' "$(get_formatted_message_minimessage info plugin Reloading ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
     fi
 fi
 
 if is_plugin_installed 'FastAsyncWorldEdit'; then
     configure_plugin 'FastAsyncWorldEdit' config \
-        "enabled-components.update-notifications" false \
-        "max-memory-percent" 85 \
-        "queue.parallel-threads" "${CPU_THREADS_HALF}" \
-        "queue.target-size" $((CPU_THREADS_HALF * 5))
+        'enabled-components.update-notifications' false \
+        'max-memory-percent' 85 \
+        'queue.parallel-threads' "${CPU_THREADS_HALF}" \
+        'queue.target-size' $((CPU_THREADS_HALF * 5))
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin "FastAsyncWorldEdit" messages \
@@ -1193,7 +1235,7 @@ fi
 if is_plugin_installed 'WorldEditSUI'; then
     configure_plugin 'WorldEditSUI' config \
         'advanced-grid.enabled' true \
-        'update-checks' false
+        'update-checks' "${CHECK_PLUGINS_FOR_UPDATES}"
 
     configure_plugin 'WorldEditSUI' messages \
         'noPermission'  "${INVALID_COMMAND_MESSAGE}" \

@@ -401,6 +401,7 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
     set_building_settings "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
     set_building_settings "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
+    set_building_settings "${SETTLEMENT_NAME}" 'school'                 'School'                    'Școala'
     set_building_settings "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
     set_building_settings "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
     set_building_settings "${SETTLEMENT_NAME}" 'station_fire'           'Fire Station'              'Stația de Pompieri'

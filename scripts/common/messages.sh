@@ -137,18 +137,28 @@ function get_reload_message() {
     local PLUGIN_NAME="${1}"
     local PLUGIN_VERSION="${2}"
 
-    if [ "${LOCALE}" == "ro" ]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         if [ -z "${PLUGIN_VERSION}" ]; then
-            get_formatted_message success plugin "S-a reîncărcat ${COLOUR_PLUGIN}${PLUGIN_NAME}${COLOUR_MESSAGE}"
+            get_formatted_message success plugin "S-a reîncărcat $(get_plugin_mention ${PLUGIN_NAME})"
         else
-            get_formatted_message success plugin "S-a reîncărcat ${COLOUR_PLUGIN}${PLUGIN_NAME}${COLOUR_MESSAGE}, versiunea ${COLOUR_HIGHLIGHT}${PLUGIN_VERSION}"
+            get_formatted_message success plugin "S-a reîncărcat $(get_plugin_mention ${PLUGIN_NAME}), versiunea $(get_highlighted_message ${PLUGIN_VERSION})"
         fi
     else
         if [ -z "${PLUGIN_VERSION}" ]; then
-            get_formatted_message success plugin "Reloaded ${COLOUR_PLUGIN}${PLUGIN_NAME}${COLOUR_MESSAGE}"
+            get_formatted_message success plugin "Reloaded $(get_plugin_mention ${PLUGIN_NAME})"
         else
-            get_formatted_message success plugin "Reloaded ${COLOUR_PLUGIN}${PLUGIN_NAME}${COLOUR_MESSAGE}, version ${COLOUR_HIGHLIGHT}${PLUGIN_VERSION}"
+            get_formatted_message success plugin "Reloaded $(get_plugin_mention ${PLUGIN_NAME}), version $(get_highlighted_message ${PLUGIN_VERSION})"
         fi
+    fi
+}
+
+function get_reloading_message() {
+    local PLUGIN_NAME="${1}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        get_formatted_message info plugin "Se reîncarcă $(get_coloured_message ${COLOUR_PLUGIN} ${PLUGIN_NAME})"
+    else
+        get_formatted_message info plugin "Reloading $(get_coloured_message ${COLOUR_PLUGIN} ${PLUGIN_NAME})..."
     fi
 }
 
@@ -156,19 +166,13 @@ function get_reload_message_minimessage() {
     local PLUGIN_NAME="${1}"
     local PLUGIN_VERSION="${2}"
 
-    if [ "${LOCALE}" == "ro" ]; then
-        if [ -z "${PLUGIN_VERSION}" ]; then
-            get_formatted_message_minimessage success plugin "S-a reîncărcat ${COLOUR_PLUGIN_MINIMESSAGE}${PLUGIN_NAME}${COLOUR_MESSAGE_MINIMESSAGE}"
-        else
-            get_formatted_message_minimessage success plugin "S-a reîncărcat ${COLOUR_PLUGIN_MINIMESSAGE}${PLUGIN_NAME}${COLOUR_MESSAGE_MINIMESSAGE}, versiunea ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLUGIN_VERSION}"
-        fi
-    else
-        if [ -z "${PLUGIN_VERSION}" ]; then
-            get_formatted_message_minimessage success plugin "Reloaded ${COLOUR_PLUGIN_MINIMESSAGE}${PLUGIN_NAME}${COLOUR_MESSAGE_MINIMESSAGE}"
-        else
-            get_formatted_message_minimessage success plugin "Reloaded ${COLOUR_PLUGIN_MINIMESSAGE}${PLUGIN_NAME}${COLOUR_MESSAGE_MINIMESSAGE}, version ${COLOUR_HIGHLIGHT_MINIMESSAGE}${PLUGIN_VERSION}"
-        fi
-    fi
+    echo $(convert_message_to_minimessage $(get_reload_message "${PLUGIN_NAME}" "${PLUGIN_VERSION}"))
+}
+
+function get_reloading_message_minimessage() {
+    local PLUGIN_NAME="${1}"
+
+    echo $(convert_message_to_minimessage $(get_reloading_message "${PLUGIN_NAME}"))
 }
 
 function get_action_message() {
@@ -216,12 +220,15 @@ function get_highlighted_message() {
 }
 
 function get_enablement_message() {
-    local COLOUR="${COLOUR_SUCCESS}"
+    local COLOUR="${COLOUR_HIGHLIGHT}"
     local STATUS="${*}"
 
     if [[ "${STATUS}" == dezact* ]] \
     || [[ "${STATUS}" == disabl* ]]; then
         COLOUR="${COLOUR_ERROR}"
+    elif [[ "${STATUS}" == activ* ]] \
+      || [[ "${STATUS}" == enabl* ]]; then
+        COLOUR="${COLOUR_SUCCESS}"
     fi
 
     echo $(get_coloured_message "${COLOUR}" "${STATUS}")
@@ -238,6 +245,12 @@ function get_player_mention() {
     fi
 
     echo "${TEXT}"
+}
+
+function get_plugin_mention() {
+    local PLUGIN_NAME="${1}"
+
+    echo $(get_coloured_message "${COLOUR_PLUGIN}" "${PLUGIN_NAME}")
 }
 
 function get_location_mention() {
