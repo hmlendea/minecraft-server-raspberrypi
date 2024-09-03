@@ -46,9 +46,12 @@ function get_symbol_by_category() {
     local AUTHENTICATION_SYMBOL="🔑"
     local COMBAT_SYMBOL="🗡"
     local DEFENCE_SYMBOL="⛨"
+    local DOCK_SYMBOL='⚓'
     local ECONOMY_SYMBOL="💰" # "₦"
+    local EDIT_SYMBOL='✎'
     local FARM_SYMBOL="🚜"
     local GAMEMODE_SYMBOL="◎"
+    local HEALTH_SYMBOL="✚"
     local HOME_SYMBOL="🛏"
     local INSPECT_SYMBOL="🔍"
     local INVENTORY_SYMBOL="🎒"
@@ -57,12 +60,15 @@ function get_symbol_by_category() {
     local MILITARY_SYMBOL="⚔"
     local MINE_SYMBOL="⛏"
     local MOUNT_SYMBOL="🐎"
+    local MOVEMENT_SYMBOL="≈"
     local PLAYER_SYMBOL="☻"
     local SETTLEMENT_SYMBOL="🏙"
     local SKIN_SYMBOL="👕"
-    local TELEPORT_SYMBOL="➜"
-    local VOTE_SYMBOL="❤"
-    local WORLDEDIT_SYMBOL="🪓"
+    local TELEPORT_SYMBOL='➜'
+    local TIME_SYMBOL='⌚'
+    local VOTE_SYMBOL='❤'
+    local WEATHER_SYMBOL='☂'
+    local WORLDEDIT_SYMBOL='🪓'
 
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "auth.*" "${AUTHENTICATION_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "border_.*" "${DEFENCE_SYMBOL}")
@@ -71,29 +77,38 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "default" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "defence_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "denied" "${ERROR_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'edit' "${DIT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "error" "${ERROR_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "farm.*" "${FARM_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "fail.*" "${ERROR_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "gamemode" "${GAMEMODE_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "home" "${HOME_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'gamemode' "${GAMEMODE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'health' "${HEALTH_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'home' "${HOME_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'hospital' "${HEALTH_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inspect" "${INSPECT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inventory" "${INVENTORY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'light' "${LIGHT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "message" "${MESSAGE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "military_base" "${MILITARY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "mount" "${MOUNT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'movement' "${MOVEMENT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'name' "${DIT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'office_post' "${OFFICE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "other" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player" "${PLAYER_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player_.*" "${HOME_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" '^port' "${DOCK_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "settlement_.*" "${SETTLEMENT_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "skin" "${SKIN_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "teleport" "${TELEPORT_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "tool" "${MINE_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "trade" "${ECONOMY_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "vote" "${VOTE_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "warehouse" "${INVENTORY_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "warp" "${TELEPORT_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "worldedit" "${WORLDEDIT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'skin' "${SKIN_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'teleport' "${TELEPORT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'time' "${TIME_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'time' "${MINE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'trade' "${ECONOMY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'vote' "${VOTE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warehouse' "${INVENTORY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warp' "${TELEPORT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'weather' "${WEATHER_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'worldedit' "${WORLDEDIT_SYMBOL}")
 
     [ -z "${SYMBOL}" ] && SYMBOL="${DEFAULT_SYMBOL}"
     echo "${SYMBOL}"
@@ -182,17 +197,62 @@ function get_death_by_mob_message() {
     get_action_message "${PLAYER_NAME}" "was killed by ${COLOUR_HIGHLIGHT}${MOB_NAME}" 
 }
 
-function get_player_mention() {
-    local PLAYER_NAME="${1}"
-    local TEXT=""
+function get_itemlore_message() {
+    local MESSAGE="${*}"
+    echo "$(convert_message_to_ampersand $(get_coloured_message ${COLOUR_ITEMLORE} ${MESSAGE}))"
+}
 
-    if ${INCLUDE_HANDLE_SIGN_IN_PLAYER_NAMES}; then
-        TEXT="${COLOUR_HIGHLIGHT}@"
+function get_coloured_message() {
+    local COLOUR="${1}" && shift
+    local MESSAGE="${*}"
+
+    echo "${COLOUR}${MESSAGE}${COLOUR_MESSAGE}"
+}
+
+function get_highlighted_message() {
+    local MESSAGE="${*}"
+
+    echo $(get_coloured_message "${COLOUR_HIGHLIGHT}" "${MESSAGE}")
+}
+
+function get_enablement_message() {
+    local COLOUR="${COLOUR_SUCCESS}"
+    local STATUS="${*}"
+
+    if [[ "${STATUS}" == dezact* ]] \
+    || [[ "${STATUS}" == disabl* ]]; then
+        COLOUR="${COLOUR_ERROR}"
     fi
 
-    TEXT="${TEXT}${COLOUR_PLAYER}${PLAYER_NAME}${COLOUR_MESSAGE}"
+    echo $(get_coloured_message "${COLOUR}" "${STATUS}")
+}
+
+function get_player_mention() {
+    local PLAYER_NAME="${1}"
+    local TEXT=''
+
+    TEXT=$(get_coloured_message "${COLOUR_PLAYER}" "${PLAYER_NAME}")
+
+    if ${INCLUDE_HANDLE_SIGN_IN_PLAYER_NAMES}; then
+        TEXT="${COLOUR_HIGHLIGHT}@${TEXT}"
+    fi
 
     echo "${TEXT}"
+}
+
+function get_location_mention() {
+    local LOCATION_NAME="${*}"
+    local TEXT=''
+
+    TEXT=$(get_coloured_message "${COLOUR_SETTLEMENT}" "${LOCATION_NAME}")
+
+    echo "${TEXT}"
+}
+
+function get_command_mention() {
+    local MESSAGE="${*}"
+    
+    echo $(get_coloured_message "${COLOUR_COMMAND}" "${MESSAGE}")
 }
 
 function convert_message_to_minimessage() {
@@ -210,4 +270,9 @@ function convert_message_to_minimessage() {
         -e 's/'"${COLOUR_WHITE}"'/'"${COLOUR_WHITE_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_YELLOW}"'/'"${COLOUR_YELLOW_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_RESET}"'/'"${COLOUR_RESET_MINIMESSAGE}"'/g'
+}
+
+function convert_message_to_ampersand() {
+    local MESSAGE="${@}"
+    echo "${MESSAGE}" | sed 's/§/\&/g'
 }

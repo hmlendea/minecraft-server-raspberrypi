@@ -145,21 +145,21 @@ function set_teleport_message() {
     local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
-    if [[ "${LOCALE}" == "ro" ]]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Te-ai teleportat la ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success ${REGION_TYPE_ID} Teleported to the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -252,6 +252,7 @@ function set_region_messages() {
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="punctul vamal"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="turnul vamal de veghe"
         [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="zidul vamal"
+        [[ "${REGION_TYPE_ID}" == 'bridge' ]] && REGION_TYPE='podul'
         [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="buncărul de apărare"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="turela de apărare"
         [[ "${REGION_TYPE_ID}" == "defence_wall" ]] && REGION_TYPE="turela de apărare"
@@ -271,6 +272,7 @@ function set_region_messages() {
         [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
         [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="border wall"
         [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="border watchtower"
+        [[ "${REGION_TYPE_ID}" == 'bridge' ]] && REGION_TYPE='bridge'
         [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="defence bunker"
         [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="defence turret"
         [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_TYPE="military base"
@@ -345,60 +347,72 @@ function set_settlement_region_settings() {
     set_region_flag "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
-    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"             "DeathCube-ul"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"        "Ringul DeathCube-ului"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"             "Arena PvP"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"        "Ringul Arenei PvP"
-    set_building_settings "${SETTLEMENT_NAME}" "bank"                   "Bank"                  "Banca"
-    set_building_settings "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"              "Cimitirul"
-    set_building_settings "${SETTLEMENT_NAME}" "church"                 "Church"                "Biserica"
-    set_building_settings "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"         "Consulatul FBU"
-    set_building_settings "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate" "Consulatul Nucilandiei"
-    set_building_settings "${SETTLEMENT_NAME}" "farms"                  "Farms"                 "Fermele"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_animals"           "Animal Farm"           "Ferma de Animale"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_chicken"           "Chicken Farm"          "Ferma de Găini"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_crops"             "Crops Farm"            "Ferma Agricolă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_blaze"             "Blaze Farm"            "Ferma de Blaze"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"           "Ferma de Cactus"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"        "Ferma de Praf de Pușcă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"             "Ferma de Fier"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_lava"              "Lava Farm"             "Ferma de Lavă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_melon"             "Melon Farm"            "Ferma de Lubenițe"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_pumpkin"           "Pumpkin Farm"          "Ferma de Pumpkin"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_raid"              "Raid Farm"             "Ferma de Raiduri"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_sniffer"           "Sniffer Farm"          "Ferma de Snifferi"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_squid"             "Squid Farm"            "Ferma de Sepii"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_sugarcane"         "Sugar Cane Farm"       "Ferma de Trestie"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_wool"              "Wool Farm"             "Ferma de Lână"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp"                "XP Farm"               "Ferma de XP"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_1"              "XP Farm 1"             "Ferma 1 de XP"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_2"              "XP Farm 2"             "Ferma 2 de XP"
-    set_building_settings "${SETTLEMENT_NAME}" "forge"                  "Forge"                 "Forja"
-    set_building_settings "${SETTLEMENT_NAME}" "hippodrome"             "Hippodrome"            "Hipodromul"
-    set_building_settings "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"          "Hala de Comerț"
-    set_building_settings "${SETTLEMENT_NAME}" "horary"                 "Horary"                "Horăria"
-    set_building_settings "${SETTLEMENT_NAME}" "hospital"               "Hospital"              "Spitalul"
-    set_building_settings "${SETTLEMENT_NAME}" "inn"                    "Inn"                   "Barul"
-    set_building_settings "${SETTLEMENT_NAME}" "library"                "Library"               "Librăria"
-    set_building_settings "${SETTLEMENT_NAME}" "mall"                   "Mall"                  "Mall-ul"
-    set_building_settings "${SETTLEMENT_NAME}" "maze"                   "Labyrinth"             "Labirintul"
-    set_building_settings "${SETTLEMENT_NAME}" "metropolis"             "Metropolis"            "Mitropolia"
-    set_building_settings "${SETTLEMENT_NAME}" "museum"                 "Museum"                "Muzeul"
-    set_building_settings "${SETTLEMENT_NAME}" "museum_art"             "Art Museum"            "Muzeul de Artă"
-    set_building_settings "${SETTLEMENT_NAME}" "museum_history"         "History Museum"        "Muzeul de Istorie"
-    set_building_settings "${SETTLEMENT_NAME}" "museum_village"         "Village Museum"        "Muzeul Satului"
-    set_building_settings "${SETTLEMENT_NAME}" "park"                   "Park"                  "Parcul"
-    set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'         'Portalul către Nether'
-    set_building_settings "${SETTLEMENT_NAME}" 'post_office'            'Post Office'           'Oficiul Poștal'
-    set_building_settings "${SETTLEMENT_NAME}" "palace"                 "Palace"                "Palatul"
-    set_building_settings "${SETTLEMENT_NAME}" "square"                 "Public Square"         "Piața Publică"
-    set_building_settings "${SETTLEMENT_NAME}" "station_police"         "Police Station"        "Stația de Poliție"
-    set_building_settings "${SETTLEMENT_NAME}" "station_train"          "Train Station"         "Gara"
-    set_building_settings "${SETTLEMENT_NAME}" "subway"                 "Subway"                "Subway-ul"
-    set_building_settings "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'            'Judecătoria'
-    set_building_settings "${SETTLEMENT_NAME}" "university"             "University"            "Universitatea"
-    set_building_settings "${SETTLEMENT_NAME}" "warehouse"              "Warehouse"             "Magazia"
-    set_building_settings "${SETTLEMENT_NAME}" "workshop"               "Workshop"              "Atelierul"
+    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
+    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"            "Ringul DeathCube-ului"
+    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"                 "Arena PvP"
+    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"            "Ringul Arenei PvP"
+    set_building_settings "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
+    set_building_settings "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"                  "Cimitirul"
+    set_building_settings "${SETTLEMENT_NAME}" "church"                 "Church"                    "Biserica"
+    set_building_settings "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"             "Consulatul FBU"
+    set_building_settings "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate"     "Consulatul Nucilandiei"
+    set_building_settings "${SETTLEMENT_NAME}" "farms"                  "Farms"                     "Fermele"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_animals"           "Animal Farm"               "Ferma de Animale"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_chicken"           "Chicken Farm"              "Ferma de Găini"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_crops"             "Crops Farm"                "Ferma Agricolă"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_blaze"             "Blaze Farm"                "Ferma de Blaze"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"               "Ferma de Cactus"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"            "Ferma de Praf de Pușcă"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"                 "Ferma de Fier"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_lava"              "Lava Farm"                 "Ferma de Lavă"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_melon"             "Melon Farm"                "Ferma de Lubenițe"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_pumpkin"           "Pumpkin Farm"              "Ferma de Pumpkin"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_raid"              "Raid Farm"                 "Ferma de Raiduri"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_sniffer"           "Sniffer Farm"              "Ferma de Snifferi"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_squid"             "Squid Farm"                "Ferma de Sepii"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_sugarcane"         "Sugar Cane Farm"           "Ferma de Trestie"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_wool"              "Wool Farm"                 "Ferma de Lână"
+    set_building_settings "${SETTLEMENT_NAME}" "farm_xp"                'XP Farm'                   'Ferma de XP'
+    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_1"              'XP Farm'                   'Ferma de XP'
+    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_2"              'XP Farm'                   'Ferma de XP'
+    set_building_settings "${SETTLEMENT_NAME}" "forge"                  "Forge"                     "Forja"
+    set_building_settings "${SETTLEMENT_NAME}" 'granary'                'Granary'                   'Grânarul'
+    set_building_settings "${SETTLEMENT_NAME}" 'hall_events'            'Events Hall'               'Sala de Evenimente'
+    set_building_settings "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"              "Hala de Comerț"
+    set_building_settings "${SETTLEMENT_NAME}" 'hippodrome'             'Hippodrome'                'Hipodromul'
+    set_building_settings "${SETTLEMENT_NAME}" "horary"                 "Horary"                    "Horăria"
+    set_building_settings "${SETTLEMENT_NAME}" 'hospital'               'Hospital'                  'Spitalul'
+    set_building_settings "${SETTLEMENT_NAME}" 'hospital'               'Hotel'                     'Hotelul'
+    set_building_settings "${SETTLEMENT_NAME}" 'inn'                    'Inn'                       'Hanul'
+    set_building_settings "${SETTLEMENT_NAME}" 'library'                'Library'                   'Librăria'
+    set_building_settings "${SETTLEMENT_NAME}" 'lighthouse'             'Lighthouse'                'Farul'
+    set_building_settings "${SETTLEMENT_NAME}" "mall"                   "Mall"                      "Mall-ul"
+    set_building_settings "${SETTLEMENT_NAME}" "maze"                   "Labyrinth"                 "Labirintul"
+    set_building_settings "${SETTLEMENT_NAME}" "metropolis"             "Metropolis"                "Mitropolia"
+    set_building_settings "${SETTLEMENT_NAME}" 'mill'                   'Mill'                      'Moara'
+    set_building_settings "${SETTLEMENT_NAME}" "museum"                 "Museum"                    "Muzeul"
+    set_building_settings "${SETTLEMENT_NAME}" "museum_art"             "Art Museum"                "Muzeul de Artă"
+    set_building_settings "${SETTLEMENT_NAME}" "museum_history"         "History Museum"            "Muzeul de Istorie"
+    set_building_settings "${SETTLEMENT_NAME}" 'museum_village'         'Village Museum'            'Muzeul Satului'
+    set_building_settings "${SETTLEMENT_NAME}" 'naval_command'          'Naval Command'             'Comandamentul Naval'
+    set_building_settings "${SETTLEMENT_NAME}" 'office_post'            'Post Office'               'Oficiul Poștal'
+    set_building_settings "${SETTLEMENT_NAME}" 'park'                   'Park'                      'Parcul'
+    set_building_settings "${SETTLEMENT_NAME}" 'port'                   'Portul'                    'Portul'
+    set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
+    set_building_settings "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
+    set_building_settings "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
+    set_building_settings "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
+    set_building_settings "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
+    set_building_settings "${SETTLEMENT_NAME}" 'station_fire'           'Fire Station'              'Stația de Pompieri'
+    set_building_settings "${SETTLEMENT_NAME}" "station_police"         'National Guard Station'    'Stația Gărzii Naționale'
+    set_building_settings "${SETTLEMENT_NAME}" "station_police"         "Police Station"            'Stația de Poliție'
+    set_building_settings "${SETTLEMENT_NAME}" "station_train"          "Train Station"             'Gara'
+    set_building_settings "${SETTLEMENT_NAME}" "subway"                 "Subway"                    'Subway-ul'
+    set_building_settings "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
+    set_building_settings "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
+    set_building_settings "${SETTLEMENT_NAME}" "university"             "University"                'Universitatea'
+    set_building_settings "${SETTLEMENT_NAME}" "warehouse"              "Warehouse"                 'Magazia'
+    set_building_settings "${SETTLEMENT_NAME}" "workshop"               "Workshop"                  'Atelierul'
 
     if grep -q "^\s*${SETTLEMENT_ID}_player_" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"; then
         for PLAYER_USERNAME in $(get_players_usernames); do
@@ -460,6 +474,7 @@ function set_building_settings() {
         REGION_PRIORITY=30
         [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
         [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
+        [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
         [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
     fi
 
@@ -550,6 +565,11 @@ function rollback_transaction() {
 
 begin_transaction
 
+    set_settlement_region_settings 'settlement_town' "Çupișan" 'Nucilandia'
+
+commit_transaction
+exit
+
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
@@ -557,7 +577,7 @@ for CITY_NAME in 'Enada' 'Naoi'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Izmir' 'Newport' 'Witty'; do
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Newport' 'Witty'; do
     set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
 for TOWN_NAME in 'Emeraldia' 'Iahim'; do
@@ -565,7 +585,7 @@ for TOWN_NAME in 'Emeraldia' 'Iahim'; do
 done
 
 for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Cerc' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
-                    'Ğimbola' 'Grivina' 'Hodor' 'Loth' 'Lupinis' 'Minas' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'yvalond'; do
+                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
     set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
 for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
@@ -587,7 +607,7 @@ for NATION in 'FBU' 'Nucilandia'; do
         done
     done
 
-    for STRUCTURE in 'border_watchtower' 'border_wall' 'defence_bunker' 'defence_turret' \
+    for STRUCTURE in 'border_watchtower' 'border_wall' 'bridge' 'defence_bunker' 'defence_turret' \
                      'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
         set_structure_region_settings "${NATION}" "${STRUCTURE}"
     done

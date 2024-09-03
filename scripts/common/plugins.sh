@@ -88,7 +88,7 @@ function get_plugin_file() {
     elif [ -f "${PLUGIN_DIR}/${PLUGIN_FILE}" ]; then
         PLUGIN_FILE="${PLUGIN_DIR}/${PLUGIN_FILE}"
     elif [ "${PLUGIN_FILE}" == "config" ]; then
-        for FILE_NAME in "config.yml" "Config.yml" "config.json" "configuration.txt" "main.yml" "options.yml" "Settings.yml"; do
+        for FILE_NAME in 'config.yml' 'Config.yml' 'config.json' 'configuration.txt' 'main.yml' 'options.yml' 'Settings.yml' 'settings.yml'; do
             if [ -f "${PLUGIN_DIR}/${FILE_NAME}" ]; then
                 PLUGIN_FILE="${PLUGIN_DIR}/${FILE_NAME}"
                 break
@@ -171,12 +171,12 @@ function download_plugin() {
     local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
-    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ] && \
-       [ ! -f "${PLUGIN_FILE_PATH}" ]; then
+    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ]; then
         sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar"
     fi
 
     download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
+    chmod +x "${PLUGIN_FILE_PATH}"
 }
 
 function update_datapack() {
