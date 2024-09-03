@@ -283,6 +283,7 @@ entities:
         wooden_sword: 600
     count-all-mobs-for-spawning: false
     creative-arrow-despawn-rate: '60'
+    despawn-range-shape: ELLIPSOID
     despawn-ranges:
       ambient:
         hard: 48
@@ -355,7 +356,7 @@ entities:
       spawn-chance-failure-increment: 25
       spawn-chance-max: 125
       spawn-chance-min: 25
-      spawn-day-length: 27600
+      spawn-day-length: 30000
       spawn-minute-length: 300
     wateranimal-spawn-height:
       maximum: default
