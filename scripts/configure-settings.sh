@@ -80,33 +80,69 @@ fi
 
 exit
 
-set_config_value "${SERVER_PROPERTIES_FILE}"            'accepts-transfers'                                         true
-set_config_value "${SERVER_PROPERTIES_FILE}"            'max-players'                                               "${PLAYERS_MAX}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            'view-distance'                                             "${VIEW_DISTANCE}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            'simulation-distance'                                       "${SIMULATION_DISTANCE}"
-set_config_value "${SERVER_PROPERTIES_FILE}"            'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}"
+set_config_values "${SERVER_PROPERTIES_FILE}" \
+    'accepts-transfers'                                         true \
+    'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
+    'max-chained-neighbor-updates'                              10000 \
+    'max-players'                                               "${PLAYERS_MAX}" \
+    'network-compression-threshold'                             512 \
+    'simulation-distance'                                       "${SIMULATION_DISTANCE}" \
+    'sync-chunk-writes'                                         false \
+    'view-distance'                                             "${VIEW_DISTANCE}"
 
-set_config_value "${SPIGOT_CONFIG_FILE}"                'messages.unknown-command'                                  "${INVALID_COMMAND_MESSAGE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.item-despawn-rate'                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.mob-spawn-range'                    "${MOB_SPAWN_RANGE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.simulation-distance'                "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.view-distance'                      "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.simulation-distance"      "${SIMULATION_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"            "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"   "${SIMULATION_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"         "${VIEW_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                'messages.unknown-command'                                                  "${INVALID_COMMAND_MESSAGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.entity-activation-range.tick-inactive-villagers'    false
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.merge-radius.exp'                                   '5.0'
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.merge-radius.item'                                  '3.5'
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.nerf-spawner-mobs'                                  true
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.simulation-distance'                                "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.view-distance'                                      "${VIEW_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.simulation-distance"                      "${SIMULATION_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"                            "${VIEW_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"                   "${SIMULATION_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
 
 set_config_value "${BUKKIT_CONFIG_FILE}"                'spawn-limits.monsters'                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'messages.no-permission' "${INVALID_COMMAND_MINIMESSAGE}"
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'timings.server-name' "${SERVER_NAME}"
-set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"          'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked' true # Skip unnecessary tick to save a bit of performance # Note: This could cause rapid damage for the shields
+set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
+    'item-validation.book.book-size.page-max'                                       1024 \
+    'messages.no-permission'                                                        "${INVALID_COMMAND_MINIMESSAGE}" \
+    'misc.max-joins-per-tick'                                                       3 \
+    'packet-limiter.overrides.ServerboundCommandSuggestionPacket.action'            'DROP' \
+    'packet-limiter.overrides.ServerboundCommandSuggestionPacket.interval'          '1.0' \
+    'packet-limiter.overrides.ServerboundCommandSuggestionPacket.max-packet-rate'   '15.0' \
+    'timings.server-name'                                                           "${SERVER_NAME}" \
+    'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true
 
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'chunks.flush-regions-on-save'                          true
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'entities.spawning.wandering-trader.spawn-chance-max'   125         
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'entities.spawning.wandering-trader.spawn-day-length'   "${DAY_LENGTH_TICKS}"
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'spawn.keep-spawn-loaded'                               "${KEEP_SPAWN_LOADED}"
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   'spawn.keep-spawn-loaded-range'                         "${VIEW_DISTANCE}"
+set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
+    'chunks.delay-chunk-unloads-by'                                     '10s' \
+    'chunks.flush-regions-on-save'                                      true \
+    'chunks.max-auto-save-chunks-per-tick'                              6 \
+    'chunks.prevent-moving-into-unloaded-chunks'                        true \
+    'collisions.fix-climbing-bypassing-cramming-rule'                   true \
+    'collisions.max-entity-collisions'                                  2 \
+    'entities.armor-stands.do-collision-entity-lookups'                 false \
+    'entities.armor-stands.tick'                                        false \
+    'entities.spawning.per-player-mob-spawns'                           true \
+    'entities.spawning.wandering-trader.spawn-chance-max'               125 \
+    'entities.spawning.wandering-trader.spawn-day-length'               "${DAY_LENGTH_TICKS}" \
+    'entities.spawning.entities.creative-arrow-despawn-rate'            40 \
+    'entities.spawning.entities.non-player-arrow-despawn-rate'          40 \
+    'environment.optimize-explosions'                                   true \
+    'environment.treasure-maps.enabled'                                 true \
+    'environment.treasure-maps.find-already-discovered.loot-tables'     true \
+    'environment.treasure-maps.find-already-discovered.villager-trade'  true \
+    'hopper.disable-move-event'                                         false \
+    'hopper.ignore-occluding-blocks'                                    true \
+    'misc.redstone-implementation'                                      'ALTERNATE_CURRENT' \
+    'misc.update-pathfinding-on-block-update'                           false \
+    'spawn.keep-spawn-loaded'                                           "${KEEP_SPAWN_LOADED}" \
+    'spawn.keep-spawn-loaded-range'                                     "${VIEW_DISTANCE}" \
+    'tick-rates.container-update'                                       3 \
+    'tick-rates.grass-spread'                                           6 \
+    'tick-rates.mob-spawner'                                            2
 
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'chunks.auto-save-interval'                     $((AUTOSAVE_MINS * 20 * 60))
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
@@ -120,27 +156,45 @@ set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'chunks.auto-save-interv
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
 set_config_value "${PAPER_WORLD_NETHER_CONFIG_FILE}"    'spawn.keep-spawn-loaded-range'                 "${VIEW_DISTANCE_NETHER}"
 
-set_config_value "${PURPUR_CONFIG_FILE}" 'settings.server-mod-name'                                                                     "${SERVER_NAME}"
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.campfire.lit-when-placed'                                       false
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.chest.open-with-solid-block-on-top'                             true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.coral.die-outside-water'                                        false
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.farmland.get-moist-from-below'                                  true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.respawn-anchor.explode'                                         false
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.sponge.absorption.range'                                        8
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.blocks.stonecutter.damage'                                             1.0
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                 true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                       "${DAYTIME_LENGTH_TICKS}"
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                     "${NIGHTTIME_LENGTH_TICKS}"
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'               true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                 true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'       true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                 true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                         true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                100000
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'  true
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'    10
-set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.use-better-mending'                                 true
+set_config_values "${PUFFERFISH_CONFIG_FILE}" \
+    'dab.activation-dist-mod'          7 \
+    'dab.enabled'                      true \
+    'dab.max-tick-freq'                20 \
+    'enable-async-mob-spawning'        true \
+    'enable-suffocation-optimization'  true \
+    'inactive-goal-selector-throttle'  true \
+    'misc.disable-method-profiler'     true \
+    'projectile.max-loads-per-tick'    8
+
+set_config_values "${PURPUR_CONFIG_FILE}" \
+    'settings.network.max-joins-per-second'                                                        true \
+    'settings.server-mod-name'                                                                     "${SERVER_NAME}" \
+    'settings.use-alternate-keepalive'                                                             true \
+    'world-settings.default.blocks.campfire.lit-when-placed'                                       false \
+    'world-settings.default.blocks.chest.open-with-solid-block-on-top'                             true \
+    'world-settings.default.blocks.coral.die-outside-water'                                        false \
+    'world-settings.default.blocks.farmland.get-moist-from-below'                                  true \
+    'world-settings.default.blocks.respawn-anchor.explode'                                         false \
+    'world-settings.default.blocks.sponge.absorption.range'                                        8 \
+    'world-settings.default.blocks.stonecutter.damage'                                             1.0 \
+    'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                 true \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                       "${DAYTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                     "${NIGHTTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                true \
+    'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'               true \
+    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                 true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'       true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                 true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                         true \
+    'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                100000 \
+    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'  true \
+    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'    10 \
+    'world-settings.default.gameplay-mechanics.use-better-mending'                                 true \
+    'world-settings.default.mobs.dolphin.disable-treasure-searching'                               true \
+    'world-settings.default.mobs.villager.lobotomize.enabled'                                      true \
+    'world-settings.default.mobs.villager.search-radius.acquire-poi'                               16 \
+    'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                        16 \
+    'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                  false
 
 if is_plugin_installed 'PurpurExtras'; then
     configure_plugin 'PurpurExtras' config \
@@ -1254,6 +1308,16 @@ if is_plugin_installed 'WorldEditSUI'; then
     fi
 fi
 
+# Entity save limits
+for ENTITY_TYPE in 'arrow' 'ender_pearl' 'experience_orb' 'fireball' 'small_fireball' 'snowball'; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "chunks.entity-per-chunk-save-limit.${ENTITY_TYPE}" 8
+done
+
+# Entity timeouts
+for ENTITY_TYPE in 'ARROW' 'EGG' 'ENDER_PEARL' 'SNOWBALL'; do
+    set_config_value "${PUFFERFISH_CONFIG_FILE}" "entity_timeouts.${ENTITY_TYPE}" 200
+done
+
 # Mob despawn ranges
 for CREATURE_TYPE in 'axolotls' 'creature' 'misc' 'monster'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_HARD}"
@@ -1316,5 +1380,3 @@ for MATERIAL in "wooden" "stone"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
     done
 done
-
-set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "environment.treasure-maps.enabled"    true #false # They cause too much lag eventually

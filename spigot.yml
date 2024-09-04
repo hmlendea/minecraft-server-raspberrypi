@@ -51,8 +51,7 @@ advancements:
 commands:
   tab-complete: 0
   send-namespaced: true
-  spam-exclusions:
-  - /skill
+  spam-exclusions: []
   silent-commandblock-console: false
   replace-commands:
   - setblock

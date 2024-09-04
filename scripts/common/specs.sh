@@ -21,6 +21,10 @@ export WORLD_NAME=$(get_server_property "level-name" "world")
 export WORLD_END_NAME="${WORLD_NAME}_the_end"
 export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
 export SERVER_NAME=$(get_server_property "server-name" "MineCraft Server")
+export SERVER_HOSTNAME='mc.nucilandia.ro'
+
+export CHECK_PLUGINS_FOR_UPDATES=false
+export SKIP_PLUGIN_UPDATE_CHECKS=true
 
 export PLAYERS_REGISTERED=$(find ${SERVER_ROOT_DIR}/world/playerdata/ -name "*.dat" | wc -l)
 export PLAYERS_MAX=20

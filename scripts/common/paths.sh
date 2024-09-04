@@ -19,6 +19,7 @@ export PAPER_WORLD_DEFAULT_CONFIG_FILE="${SERVER_ROOT_DIR}/config/paper-world-de
 export PAPER_WORLD_CONFIG_FILE="${WORLD_DIR}/paper-world.yml"
 export PAPER_WORLD_END_CONFIG_FILE="${WORLD_END_DIR}/paper-world.yml"
 export PAPER_WORLD_NETHER_CONFIG_FILE="${WORLD_NETHER_DIR}/paper-world.yml"
+export PUFFERFISH_CONFIG_FILE="${SERVER_ROOT_DIR}/pufferfish.yml"
 export PURPUR_CONFIG_FILE="${SERVER_ROOT_DIR}/purpur.yml"
 export SPIGOT_CONFIG_FILE="${SERVER_ROOT_DIR}/spigot.yml"
 

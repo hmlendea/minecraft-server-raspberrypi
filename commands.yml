@@ -17,17 +17,15 @@ aliases:
   broadcast:
   - essentials:broadcast $1-
   - discordsrv:discordsrv broadcast $1-
-  announcement:
+  announce:
   - essentials:broadcast $$1-!!!
   - discordsrv:discordsrv broadcast @everyone $$1-!!!
-  announce:
-  - announcement: $$1-
   ban:
+  - 'broadcast $$1 was banned with reason: $$2'
   - essentials:ban $$1 $$2-
   - essentials:banip $$1 [$$1] $$2-
-  - broadcast $$1 was banned with reason: $$2
-  ls:
-  - essentials:list
+  datapacks:
+  - minecraft:datapack list
   
   # Info
   whoami:
@@ -38,27 +36,17 @@ aliases:
   - 'essentials:echo Map: &9&nhttps://mc.nucilandia.ro/nucicraft/webmap'
   discord:
   - 'essentials:echo Discord: &9&nhttps://discord.gg/zFM5xWGF7c'
-  help:
-  - essentials:motd
-  info:
-  - help
-  links:
-  - help
   
   # Teleportation
   b:
   - essentials:back
   bed:
   - essentials:home bed
-  tpregion:
+  tprg:
   - worldguard:region teleport $$1
   - essentials:tp $sender
-  rgtp:
-  - tpregion $$1
   rtp:
   - essentials:tprandom
-  wild:
-  - rtp
   shop:
   - essentials:warp Shop
   
@@ -73,23 +61,32 @@ aliases:
   # Use Essentials commands
   god:
   - essentials:god $1-
+  heal:
+  - essentials:heal $1-
+  item:
+  - essentails:give $sender $$1-
   
-  # Game modes
-  creative:
-  - gamemode creative
-  - vanish off
-  spectator:
+  # DND
+  dndon:
+  - essentials:tptoggle off
+  - gsit:gsit playertoggle off
+  - dynmap:dynmap hide
+  dndoff:
+  - essentials:tptoggle on
+  - gsit:gsit playertoggle on
+  - dynmap:dynmap show
+  
+  # Spectate
+  spectate:
+  - dndon
   - gamemode spectator
   - vanish on
-  spectate:
   - teleport $$1
-  - spectator
-  spec:
-  - spectate $1
-  survival:
+  unspectate:
+  - spawn
+  - dndoff
   - gamemode survival
-  surv:
-  - survival
+  - vanish off
   
   #
   auth:
@@ -123,15 +120,28 @@ aliases:
   topvotes:
   - superbvote:sv top
   
+  #
+  lookup:
+  - authme accounts $$1
+  - antivpn lookup $$1
+  - seen $$1
+  - whois $$1
+  fakelogin:
+  - essentials:me a intrat în joc!
+  - essentials:vanish off
+  - dynmap:dynmap show
+  fakelogout:
+  - essentials:me a ieșit din joc!
+  - essentials:vanish on
+  - dynmap:dynmap hide
+  
   # WorldGuard
+  setrgtp:
+  - worldguard:region flag $$1 teleport here
   rgsetup:
   - worldguard:region priority $$1 30
   - worldguard:region flag $$1 pvp DENY
-  - worldguard:region flag $$1 teleport here
-  setregiontp:
-  - worldguard:region flag $$1 teleport here
-  setrgtp:
-  - setregiontp: $$1
+  - setrgtp $$1
   
   # Dynmap
   setsettlementmarker:
@@ -148,29 +158,32 @@ aliases:
   
   # WorldEdit
   wexpandh:
-  - /expand $1 north
-  - /expand $1 west
-  - /expand $1 south
-  - /expand $1 east
+  - /expand $$1 north
+  - /expand $$1 west
+  - /expand $$1 south
+  - /expand $$1 east
   wexpandv:
-  - /expand $1 up
-  - /expand $1 down
+  - /expand $$1 up
+  - /expand $$1 down
   wexpandall:
-  - wexpandv $1
-  - wexpandh $1
+  - wexpandv $$1
+  - wexpandh $$1
+  wemove:
+  - /move $$1
+  - /shift $$1
   weshrink:
-  - /contract $1
+  - /contract $$1
   weshrinkh:
-  - /contract $1 north
-  - /contract $1 west
-  - /contract $1 south
-  - /contract $1 east
+  - /contract $$1 north
+  - /contract $$1 west
+  - /contract $$1 south
+  - /contract $$1 east
   weshrinkv:
-  - /contract $1 up
-  - /contract $1 down
+  - /contract $$1 up
+  - /contract $$1 down
   weshrinkall:
-  - weshrinkh $1
-  - weshrinkv $1
+  - weshrinkh $$1
+  - weshrinkv $$1
   wesel1:
   - /pos1
   wesel2:
@@ -192,6 +205,148 @@ aliases:
   - wereplacelogmaterial $1 $2
   - wereplacematerial $1 $2
   - /replace $1_planks ^$2_planks
+  westripwood:
+  - /replace $$1_log ^stripped_$$1_log
+  - /replace $$1_wood ^stripped_$$1_wood
+  westripallwood:
+  - westripwood acacia
+  - westripwood birch
+  - westripwood oak
+  - westripwood dark_oak
+  - westripwood jungle
+  - westripwood mangrove
+  - westripwood spruce
+  wewaterconcrete:
+  - /replace $$1_concrete_powder $$1_concrete
   setmicroblockname:
   - renameitem &f$$1-
   - setitemlore &9Microblock
+  
+  # ## Disabled commands (reduce number of commands by culling aliases or alternatives)
+  # Essentials chat
+  er:
+  - []
+  ereply:
+  - []
+  reply:
+  - []
+  # Essentials chat - actions
+  action:
+  - []
+  describe:
+  - []
+  eaction:
+  - []
+  edescribe:
+  - []
+  eme:
+  - []
+  # Essentials kit
+  ck:
+  - []
+  ekit:
+  - []
+  ekitr:
+  - []
+  ekitreset:
+  - []
+  ekits:
+  - []
+  eresetkit:
+  - []
+  kitr:
+  - []
+  kits:
+  - []
+  resetkit:
+  - []
+  # Essentials list
+  elist:
+  - []
+  eonline:
+  - []
+  eplayerlist:
+  - []
+  eplist:
+  - []
+  ewho:
+  - []
+  online:
+  - []
+  playerlist:
+  - []
+  plist:
+  - []
+  who:
+  - []
+  # Essentials tp
+  eback:
+  - []
+  ereturn:
+  - []
+  esettpr:
+  - []
+  esettprandom:
+  - []
+  etele:
+  - []
+  eteleport:
+  - []
+  etp2p:
+  - []
+  etpaall:
+  - []
+  etpacancel:
+  - []
+  etpaccept:
+  - []
+  etpahere:
+  - []
+  etpall:
+  - []
+  etpauto:
+  - []
+  etpdeny:
+  - []
+  etpno:
+  - []
+  etpohere:
+  - []
+  etppos:
+  - []
+  etprandom:
+  - []
+  etptoggle:
+  - []
+  etypyes:
+  - []
+  ewarp:
+  - []
+  ewarps:
+  - []
+  etp:
+  - []
+  offlinetp:
+  - []
+  otp:
+  - []
+  return:
+  - []
+  settprandom:
+  - []
+  tele:
+  - []
+  teleport:
+  - []
+  tp2p:
+  - []
+  tpaccept:
+  - []
+  tpask:
+  - []
+  tpdeny:
+  - []
+  tpoff:
+  - []
+  tprandom:
+  - []

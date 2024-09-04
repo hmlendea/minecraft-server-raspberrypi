@@ -100,13 +100,16 @@ function set_yml_value() {
     local KEY_ESC="${KEY}"
     local VALUE_ESC="${VALUE}"
 
-    KEY_ESC=$(echo "${KEY}" | sed -E 's/([^\.]+)/"\1"/g; s/\./\./g')
+    KEY_ESC=$(printf '.' && echo "${KEY}" | \
+                sed -E 's/([^\.]+)/"\1"/g; s/\./\./g' | \
+                sed 's/\"\.\.\"/./g' | \
+                sed 's/\(\"\([A-Za-z0-9][A-Za-z0-9]*\.\)*[A-Za-z0-9][A-Za-z0-9]*\"\)/[\1]/g')
     VALUE_ESC="${VALUE}"
 
     grep -Eqv "^(\[.*|true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
 
     echo "${FILE}: ${KEY}=${VALUE}"
-    apply_yml_config "${FILE}" ".${KEY_ESC} = ${VALUE_ESC}"
+    apply_yml_config "${FILE}" "${KEY_ESC} = ${VALUE_ESC}"
 }
 
 function delete_yml_setting() {
@@ -124,6 +127,8 @@ function delete_yml_setting() {
 function apply_yml_config() {
     local FILE="${1}"
     local YQ_COMMAND="${2}"
+
+    [[ "${YQ_COMMAND}" == *\\* ]] && YQ_COMMAND=$(echo "'${YQ_COMMAND}'")
 
     if [ ! -f "/usr/bin/yq" ]; then
         echo "ERROR: The 'yq' utility is not installed!. Cannot update '${KEY}' in '${FILE}'"
