@@ -344,23 +344,26 @@ function set_settlement_region_settings() {
     echo "${SETTLEMENT_NAME}"
 
     set_region_flag "${SETTLEMENT_ID}" "frost-walker" false
-    set_region_flag "${SETTLEMENT_ID}" "interact" true
+    #set_region_flag "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
+    set_building_settings "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
     set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
     set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"            "Ringul DeathCube-ului"
     set_building_settings "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"                 "Arena PvP"
     set_building_settings "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"            "Ringul Arenei PvP"
     set_building_settings "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
+    set_building_settings "${SETTLEMENT_NAME}" 'baths'                  'Public Baths'              'Băile Publice'
     set_building_settings "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"                  "Cimitirul"
     set_building_settings "${SETTLEMENT_NAME}" "church"                 "Church"                    "Biserica"
     set_building_settings "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"             "Consulatul FBU"
     set_building_settings "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate"     "Consulatul Nucilandiei"
-    set_building_settings "${SETTLEMENT_NAME}" "farms"                  "Farms"                     "Fermele"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_animals"           "Animal Farm"               "Ferma de Animale"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_chicken"           "Chicken Farm"              "Ferma de Găini"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_crops"             "Crops Farm"                "Ferma Agricolă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_blaze"             "Blaze Farm"                "Ferma de Blaze"
+    set_building_settings "${SETTLEMENT_NAME}" 'dock'                   'Docks'                     'Docul'
+    set_building_settings "${SETTLEMENT_NAME}" 'farms'                  "Farms"                     "Fermele"
+    set_building_settings "${SETTLEMENT_NAME}" 'farm_animals'           "Animal Farm"               "Ferma de Animale"
+    set_building_settings "${SETTLEMENT_NAME}" 'farm_chicken'           "Chicken Farm"              "Ferma de Găini"
+    set_building_settings "${SETTLEMENT_NAME}" 'farm_crops'             "Crops Farm"                "Ferma Agricolă"
+    set_building_settings "${SETTLEMENT_NAME}" 'farm_blaze'             "Blaze Farm"                "Ferma de Blaze"
     set_building_settings "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"               "Ferma de Cactus"
     set_building_settings "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"            "Ferma de Praf de Pușcă"
     set_building_settings "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"                 "Ferma de Fier"
@@ -382,13 +385,13 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'hippodrome'             'Hippodrome'                'Hipodromul'
     set_building_settings "${SETTLEMENT_NAME}" "horary"                 "Horary"                    "Horăria"
     set_building_settings "${SETTLEMENT_NAME}" 'hospital'               'Hospital'                  'Spitalul'
-    set_building_settings "${SETTLEMENT_NAME}" 'hospital'               'Hotel'                     'Hotelul'
+    set_building_settings "${SETTLEMENT_NAME}" 'hotel'                  'Hotel'                     'Hotelul'
     set_building_settings "${SETTLEMENT_NAME}" 'inn'                    'Inn'                       'Hanul'
     set_building_settings "${SETTLEMENT_NAME}" 'library'                'Library'                   'Librăria'
     set_building_settings "${SETTLEMENT_NAME}" 'lighthouse'             'Lighthouse'                'Farul'
-    set_building_settings "${SETTLEMENT_NAME}" "mall"                   "Mall"                      "Mall-ul"
-    set_building_settings "${SETTLEMENT_NAME}" "maze"                   "Labyrinth"                 "Labirintul"
-    set_building_settings "${SETTLEMENT_NAME}" "metropolis"             "Metropolis"                "Mitropolia"
+    set_building_settings "${SETTLEMENT_NAME}" 'mall'                   'Mall'                      'Mall-ul'
+    set_building_settings "${SETTLEMENT_NAME}" 'maze'                   'Labyrinth'                 'Labirintul'
+    set_building_settings "${SETTLEMENT_NAME}" 'metropolis'             'Metropolis'                'Mitropolia'
     set_building_settings "${SETTLEMENT_NAME}" 'mill'                   'Mill'                      'Moara'
     set_building_settings "${SETTLEMENT_NAME}" "museum"                 "Museum"                    "Muzeul"
     set_building_settings "${SETTLEMENT_NAME}" "museum_art"             "Art Museum"                "Muzeul de Artă"
@@ -397,7 +400,6 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'naval_command'          'Naval Command'             'Comandamentul Naval'
     set_building_settings "${SETTLEMENT_NAME}" 'office_post'            'Post Office'               'Oficiul Poștal'
     set_building_settings "${SETTLEMENT_NAME}" 'park'                   'Park'                      'Parcul'
-    set_building_settings "${SETTLEMENT_NAME}" 'port'                   'Portul'                    'Portul'
     set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
     set_building_settings "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
     set_building_settings "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
@@ -405,15 +407,15 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
     set_building_settings "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
     set_building_settings "${SETTLEMENT_NAME}" 'station_fire'           'Fire Station'              'Stația de Pompieri'
-    set_building_settings "${SETTLEMENT_NAME}" "station_police"         'National Guard Station'    'Stația Gărzii Naționale'
-    set_building_settings "${SETTLEMENT_NAME}" "station_police"         "Police Station"            'Stația de Poliție'
-    set_building_settings "${SETTLEMENT_NAME}" "station_train"          "Train Station"             'Gara'
-    set_building_settings "${SETTLEMENT_NAME}" "subway"                 "Subway"                    'Subway-ul'
+    set_building_settings "${SETTLEMENT_NAME}" 'station_national_guard' 'National Guard Station'    'Stația Gărzii Naționale'
+    set_building_settings "${SETTLEMENT_NAME}" 'station_police'         "Police Station"            'Stația de Poliție'
+    set_building_settings "${SETTLEMENT_NAME}" 'station_train'          "Train Station"             'Gara'
+    set_building_settings "${SETTLEMENT_NAME}" 'subway'                 "Subway"                    'Subway-ul'
     set_building_settings "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
     set_building_settings "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
-    set_building_settings "${SETTLEMENT_NAME}" "university"             "University"                'Universitatea'
-    set_building_settings "${SETTLEMENT_NAME}" "warehouse"              "Warehouse"                 'Magazia'
-    set_building_settings "${SETTLEMENT_NAME}" "workshop"               "Workshop"                  'Atelierul'
+    set_building_settings "${SETTLEMENT_NAME}" 'university'             'University'                'Universitatea'
+    set_building_settings "${SETTLEMENT_NAME}" 'warehouse'              'Warehouse'                 'Magazia'
+    set_building_settings "${SETTLEMENT_NAME}" 'workshop'               'Workshop'                  'Atelierul'
 
     if grep -q "^\s*${SETTLEMENT_ID}_player_" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"; then
         for PLAYER_USERNAME in $(get_players_usernames); do
@@ -466,8 +468,8 @@ function set_building_settings() {
             set_region_flag "${REGION_ID}" "chorus-fruit-teleport" false
             REGION_PRIORITY=35
 
-            [[ "${REGION_ID}" == *_deathcube_* ]] && set_region_flag "${REGION_ID}" "fall-damage" false
-            [[ "${REGION_ID}" == *_pvp_* ]] && set_region_flag "${REGION_ID}" "pvp" true
+            [[ "${REGION_ID}" == *_deathcube_* ]] && set_region_flag "${REGION_ID}" 'fall-damage' false
+            [[ "${REGION_ID}" == *_pvp_* ]] && set_region_flag "${REGION_ID}" 'pvp' true
         fi
     fi
     
@@ -565,11 +567,6 @@ function rollback_transaction() {
 }
 
 begin_transaction
-
-    set_settlement_region_settings 'settlement_town' "Çupișan" 'Nucilandia'
-
-commit_transaction
-exit
 
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'

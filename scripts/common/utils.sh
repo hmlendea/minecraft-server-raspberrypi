@@ -1,6 +1,12 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
 
+function convert_seconds_to_ticks() {
+    local SECONDS="${1}"
+
+    echo $((SECONDS*20))
+}
+
 function run_server_command() {
     echo " > Running command: /"$*
 

@@ -64,7 +64,7 @@ aliases:
   heal:
   - essentials:heal $1-
   item:
-  - essentails:give $sender $$1-
+  - essentials:give $sender $$1-
   
   # DND
   dndon:
@@ -146,7 +146,7 @@ aliases:
   # Dynmap
   setsettlementmarker:
   - dmarker delete id:settlement_$$2 set:settlements
-  - setregiontp $$2 teleport $$4,$$5,$$6
+  - setrgtp $$2 teleport $$4,$$5,$$6
   - dmarker add id:settlement_$$2 set:settlements label:$$3 world:world icon:settlement_$$1
     markup:false x:$$4 y:$$5 z:$$6 minzoom:$$7
   setvillagemarker:
@@ -220,9 +220,12 @@ aliases:
   - /replace $$1_concrete_powder $$1_concrete
   setmicroblockname:
   - renameitem &f$$1-
-  - setitemlore &9Microblock
+  - setitemlore &9Microbloc
   
   # ## Disabled commands (reduce number of commands by culling aliases or alternatives)
+  # Bukkit/Spigot/Paper/Pufferfish/Purpur
+  reload:
+  - []
   # Essentials chat
   er:
   - []
@@ -292,7 +295,13 @@ aliases:
   - []
   eteleport:
   - []
+  etop:
+  - []
+  etp:
+  - []
   etp2p:
+  - []
+  etpa:
   - []
   etpaall:
   - []
@@ -303,6 +312,8 @@ aliases:
   etpahere:
   - []
   etpall:
+  - []
+  etpask:
   - []
   etpauto:
   - []
@@ -323,8 +334,6 @@ aliases:
   ewarp:
   - []
   ewarps:
-  - []
-  etp:
   - []
   offlinetp:
   - []
@@ -349,4 +358,11 @@ aliases:
   tpoff:
   - []
   tprandom:
+  - []
+  # ChestSort
+  inventorysort:
+  - []
+  isort:
+  - []
+  sort:
   - []

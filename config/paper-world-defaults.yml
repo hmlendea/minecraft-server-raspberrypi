@@ -48,12 +48,12 @@ chunks:
   delay-chunk-unloads-by: 10s
   entity-per-chunk-save-limit:
     area_effect_cloud: 8
-    arrow: 16
+    arrow: 8
     dragon_fireball: 3
     egg: 8
     ender_pearl: 8
     experience_bottle: 3
-    experience_orb: 16
+    experience_orb: 8
     eye_of_ender: 8
     fireball: 8
     firework_rocket: 8
@@ -313,6 +313,9 @@ entities:
     duplicate-uuid:
       mode: SAFE_REGEN
       safe-regen-delete-range: 32
+    entities:
+      creative-arrow-despawn-rate: 40
+      non-player-arrow-despawn-rate: 40
     filter-bad-tile-entity-nbt-from-falling-blocks: true
     filtered-entity-tag-nbt-paths:
     - Pos
@@ -356,7 +359,7 @@ entities:
       spawn-chance-failure-increment: 25
       spawn-chance-max: 125
       spawn-chance-min: 25
-      spawn-day-length: 30000
+      spawn-day-length: 27600
       spawn-minute-length: 300
     wateranimal-spawn-height:
       maximum: default
@@ -390,10 +393,10 @@ environment:
   portal-search-radius: 16
   portal-search-vanilla-dimension-scaling: false
   treasure-maps:
-    enabled: true
+    enabled: false
     find-already-discovered:
-      loot-tables: 'false'
-      villager-trade: false
+      loot-tables: 'true'
+      villager-trade: true
   water-over-lava-flow-speed: 5
 feature-seeds:
   generate-random-seeds-for-all: false
@@ -421,6 +424,7 @@ lootables:
   reset-seed-on-fill: true
   restrict-player-reloot: true
   restrict-player-reloot-time: disabled
+  retain-unlooted-shulker-box-loot-table-on-non-player-break: true
 maps:
   item-frame-cursor-limit: 128
   item-frame-cursor-update-interval: 10
@@ -431,6 +435,7 @@ max-growth-height:
   cactus: 3
   reeds: 3
 misc:
+  alternate-current-update-order: HORIZONTAL_FIRST_OUTWARD
   disable-end-credits: true
   disable-relative-projectile-velocity: false
   disable-sprint-interruption-on-attack: false
@@ -454,8 +459,8 @@ tick-rates:
       validatenearbypoi: 60
   container-update: 3
   dry-farmland: 1
-  grass-spread: 5
-  mob-spawner: 2
+  grass-spread: 6
+  mob-spawner: 3
   sensor:
     villager:
       nearestbedsensor: 80

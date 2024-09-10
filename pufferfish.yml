@@ -9,15 +9,18 @@ info:
 # that number of ticks, then it will be removed. Setting a value to
 # -1 disables this feature.
 entity_timeouts:
-  SNOWBALL: -1
+  SNOWBALL: 200
   LLAMA_SPIT: -1
+  ARROW: 200
+  EGG: 200
+  ENDER_PEARL: 200
 sentry-dsn: ''
 enable-books: true
 enable-suffocation-optimization: true
 enable-async-mob-spawning: true
 # Optimizes projectile settings
 projectile:
-  max-loads-per-tick: 10
+  max-loads-per-tick: 8
   max-loads-per-projectile: 10
 # Optimizes entity brains when
 # they're far away from the player
@@ -25,7 +28,7 @@ dab:
   enabled: true
   start-distance: 12
   max-tick-freq: 20
-  activation-dist-mod: 8
+  activation-dist-mod: 7
   blacklisted-entities: []
 inactive-goal-selector-throttle: true
 # Settings for things that don't belong elsewhere

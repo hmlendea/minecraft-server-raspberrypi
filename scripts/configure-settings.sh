@@ -11,9 +11,11 @@ ensure-su-access
 
 WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
 
-PLACEHOLDER_ARG0="{0}"
-PLACEHOLDER_ARG1="{1}"
-PLACEHOLDER_ARG2="{2}"
+PLACEHOLDER_ARG0='{0}'
+PLACEHOLDER_ARG1='{1}'
+PLACEHOLDER_ARG1_PERCENT='%1%'
+PLACEHOLDER_ARG2='{2}'
+PLACEHOLDER_ACHIEVEMENT_PERCENT='%achievement%'
 PLACEHOLDER_ARROWS_BRACKETS="{arrows}"
 PLACEHOLDER_BLOCKS_BRACKETS="{blocks}"
 PLACEHOLDER_CITY_PERCENT="%city%"
@@ -26,9 +28,10 @@ PLACEHOLDER_FISH_BRACKETS="{fish}"
 PLACEHOLDER_KILLS_BRACKETS="{kills}"
 PLACEHOLDER_NAME_POINTY="<name>"
 PLACEHOLDER_PLAYER="{PLAYER}"
-PLACEHOLDER_PLAYER_BRACKETS="{player}"
-PLACEHOLDER_PLAYER_PERCENT="%player%"
-PLACEHOLDER_PLAYER_SINGLEPERCENT="%player%"
+PLACEHOLDER_PLAYER_BRACKETS='{player}'
+PLACEHOLDER_PLAYER_PERCENT='%player%'
+PLACEHOLDER_PLAYER_SINGLEPERCENT='%player'
+PLACEHOLDER_PLAYERCOUNT_PERCENT='%playercount%'
 PLACEHOLDER_REASON_PERCENT="%reason%"
 PLACEHOLDER_DISPLAYNAME="{DISPLAYNAME}"
 PLACEHOLDER_MESSAGE="{MESSAGE}"
@@ -37,15 +40,16 @@ PLACEHOLDER_MESSAGE_POINTY="<message>"
 PLACEHOLDER_NAME_PERCENT="%name%"
 PLACEHOLDER_REPLY_PERCENT="%reply%"
 PLACEHOLDER_SECONDS_PERCENT="%seconds%"
-PLACEHOLDER_SHEEP_BRACKETS="{sheep}"
-PLACEHOLDER_STATE_PERCENT="%state%"
+PLACEHOLDER_SHEEP_BRACKETS='{sheep}'
+PLACEHOLDER_STATE_PERCENT='%state%'
+PLACEHOLDER_USERNAME_PERCENT='%username%'
 
 if [ "${LOCALE}" = 'ro' ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executa)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
 
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu se poate călărit)"
+    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu se poate călări)"
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     INVALID_COMMAND_MESSAGE="$(get_formatted_message error command This command cannot be executed)"
@@ -53,32 +57,7 @@ else
 
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob cannot be mounted)"
 fi
-
 INVALID_COMMAND_MINIMESSAGE="$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
-
-if is_plugin_installed 'GSit'; then
-    configure_plugin 'GSit' config \
-        'Lang.client-lang'          false \
-        'Options.check-for-update'  "${CHECK_PLUGINS_FOR_UPDATES}"
-
-    configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
-        'Messages.command-permission-error' "${INVALID_COMMAND_MINIMESSAGE}" \
-        'Messages.command-sender-error' "${INVALID_COMMAND_MINIMESSAGE}" \
-        'Plugin.plugin-reload' "$(get_reload_message_minimessage GSit)"
-
-    if [ "${LOCALE}" = 'ro' ]; then
-        configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
-            'Messages.command-gsit-playertoggle-off' "$(get_formatted_message_minimessage info player Intracțiunile fizice cu ceilalți jucători au fost $(get_enablement_message dezactivate))" \
-            'Messages.command-gsit-playertoggle-on'  "$(get_formatted_message_minimessage info player Intracțiunile fizice cu ceilalți jucători au fost $(get_enablement_message activate))"
-    else
-        configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
-            'Messages.command-gsit-playertoggle-off' "$(get_formatted_message_minimessage info player The physical interactions with other players have been $(get_enablement_message disabled))" \
-            'Messages.command-gsit-playertoggle-on'  "$(get_formatted_message_minimessage info player The physical interactions with other players have been $(get_enablement_message enabled))"
-    fi
-fi
-    
-
-exit
 
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
@@ -107,7 +86,7 @@ set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_
 set_config_value "${BUKKIT_CONFIG_FILE}"                'spawn-limits.monsters'                                     "${MOB_SPAWN_LIMIT_MONSTER}"
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
-    'item-validation.book.book-size.page-max'                                       1024 \
+    'item-validation.book-size.page-max'                                            1024 \
     'messages.no-permission'                                                        "${INVALID_COMMAND_MINIMESSAGE}" \
     'misc.max-joins-per-tick'                                                       3 \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.action'            'DROP' \
@@ -116,6 +95,7 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'timings.server-name'                                                           "${SERVER_NAME}" \
     'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true
 
+# Note: Setting hopper.disable-move-event=false will break Hopper Minecarts
 set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'chunks.delay-chunk-unloads-by'                                     '10s' \
     'chunks.flush-regions-on-save'                                      true \
@@ -131,10 +111,10 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'entities.spawning.entities.creative-arrow-despawn-rate'            40 \
     'entities.spawning.entities.non-player-arrow-despawn-rate'          40 \
     'environment.optimize-explosions'                                   true \
-    'environment.treasure-maps.enabled'                                 true \
+    'environment.treasure-maps.enabled'                                 false \
     'environment.treasure-maps.find-already-discovered.loot-tables'     true \
     'environment.treasure-maps.find-already-discovered.villager-trade'  true \
-    'hopper.disable-move-event'                                         false \
+    'hopper.disable-move-event'                                         true \
     'hopper.ignore-occluding-blocks'                                    true \
     'misc.redstone-implementation'                                      'ALTERNATE_CURRENT' \
     'misc.update-pathfinding-on-block-update'                           false \
@@ -142,7 +122,7 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'spawn.keep-spawn-loaded-range'                                     "${VIEW_DISTANCE}" \
     'tick-rates.container-update'                                       3 \
     'tick-rates.grass-spread'                                           6 \
-    'tick-rates.mob-spawner'                                            2
+    'tick-rates.mob-spawner'                                            3
 
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'chunks.auto-save-interval'                     $((AUTOSAVE_MINS * 20 * 60))
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
@@ -298,6 +278,22 @@ if is_plugin_installed 'BestTools'; then
     fi
 fi
 
+if is_plugin_installed 'ChatBubbles'; then
+    configure_plugin 'ChatBubbles' messages \
+        'ChatBubble_Life' "$(convert_seconds_to_ticks 15)" \
+        'Reload_Success' "$(get_reload_message ChatBubbles)"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'ChatBubbles' messages \
+            'Toggle_Off'    "$(get_formatted_message success chat Afișarea mesajelor deasupra jucătorilor a fost $(get_enablement_message dezactivată))" \
+            'Toggle_On'     "$(get_formatted_message success chat Afișarea mesajelor deasupra jucătorilor a fost $(get_enablement_message activată))"
+    else
+        configure_plugin 'ChatBubbles' messages \
+            'Toggle_Off'    "$(get_formatted_message success chat Chat messages above player heads have been $(get_enablement_message disabled))" \
+            'Toggle_On'     "$(get_formatted_message success chat Chat messages above player heads have been $(get_enablement_message enabled))"
+    fi
+fi
+
 if is_plugin_installed 'ChestSort'; then
     configure_plugin 'ChestSort' config \
         'allow-gui' false \
@@ -354,25 +350,51 @@ if is_plugin_installed 'DeathMessages'; then
         "Discord.DeathMessage.Title" " " \
         "Prefix" "${COLOUR_RESET}"
 
-    if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "DeathMessages" messages \
-            "Mobs.Bat" "Liliac" \
-            "Mobs.Skeleton" "Schelet"
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'DeathMessages' messages \
+            'Mobs.Bat' 'Liliac' \
+            'Mobs.Skeleton' 'Schelet' \
     else
-        configure_plugin "DeathMessages" messages \
-            "Mobs.Bat" "Bat" \
-            "Mobs.Skeleton" "Skeleton"
+        configure_plugin 'DeathMessages' messages \
+            'Mobs.Bat' 'Bat' \
+            'Mobs.Skeleton' 'Skeleton'
     fi
 fi
+
+configure_plugin 'DecentHolograms' config \
+    'update-checker' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 if is_plugin_installed 'DiscordSRV'; then
     configure_plugin 'DiscordSRV' config \
         'ServerWatchdogEnabled' false \
         'UpdateCheckDisabled'   "${SKIP_PLUGIN_UPDATE_CHECKS}"
 
+    if is_plugin_installed 'Dynmap'; then
+        configure_plugin 'DiscordSRV' messages \
+            'DynmapNameFormat' "${PLACEHOLDER_USERNAME_PERCENT}"
+    fi
+
     configure_plugin 'DiscordSRV' messages \
         'DiscordToMinecraftChatMessageFormat' "$(get_player_mention ${PLACEHOLDER_NAME_PERCENT})${COLOUR_CHAT}:${COLOUR_MESSAGE}${PLACEHOLDER_REPLY_PERCENT} ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE_PERCENT}" \
         'MinecraftPlayerDeathMessage.Enabled' $(is_plugin_not_installed_bool DeathMessages)
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'DiscordSRV' messages \
+            'DiscordChatChannelListCommandFormatNoOnlinePlayers' "**Nu sunt jucători online.**" \
+            'DiscordChatChannelListCommandFormatOnlinePlayers' "**Sunt ${PLACEHOLDER_PLAYERCOUNT_PERCENT} jucători online:**" \
+            'MinecraftPlayerAchievementMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} a realizat ${PLACEHOLDER_ACHIEVEMENT_PERCENT}!" \
+            'MinecraftPlayerFirstJoinMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} a intrat în joc pentru prima dată!" \
+            'MinecraftPlayerJoinMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} a intrat în joc!" \
+            'MinecraftPlayerLeaveMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} a ieșit din joc!"
+    else
+        configure_plugin 'DiscordSRV' messages \
+            'DiscordChatChannelListCommandFormatNoOnlinePlayers' "**There are no online players.**" \
+            'DiscordChatChannelListCommandFormatOnlinePlayers' "**There are ${PLACEHOLDER_PLAYERCOUNT_PERCENT} online players:**" \
+            'MinecraftPlayerAchievementMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} achieved ${PLACEHOLDER_ACHIEVEMENT_PERCENT}!" \
+            'MinecraftPlayerFirstJoinMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} joined the game for the first time!" \
+            'MinecraftPlayerJoinMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} joined the game!" \
+            'MinecraftPlayerLeaveMessage.Embed.Author.Name' "${PLACEHOLDER_USERNAME_PERCENT} left the game!"
+    fi
 fi
 
 if is_plugin_installed 'DynamicLights'; then
@@ -443,6 +465,8 @@ if is_plugin_installed 'EssentialsX'; then
         "chat.format"                           "$(get_player_mention ${PLACEHOLDER_DISPLAYNAME}): ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE}" \
         "command-cooldowns.tpr"                 300 \
         "currency-symbol"                       "₦" \
+        "custom-join-message"                   "${JOIN_MESSAGE}" \
+        "custom-new-username-message"           "${JOIN_MESSAGE}" \
         "disable-item-pickup-while-afk"         true \
         "kit-auto-equip"                        true \
         "locale"                                "${LOCALE}" \
@@ -463,11 +487,20 @@ if is_plugin_installed 'EssentialsX'; then
         "world-change-fly-reset"                false \
         "world-change-speed-reset"              false
 
+    for LANGUAGE in 'en' 'ro'; do
+        configure_plugin 'EssentialsX' "${ESSENTIALS_DIR}/messages/messages_${LANGUAGE}.properties" \
+            'errorWithMessage'              "${PLACEHOLDER_ARG0}" \
+            "noAccessCommand"               "${INVALID_COMMAND_MINIMESSAGE}" \
+            "noPerm"                        "${INVALID_COMMAND_MINIMESSAGE}" \
+            'vanished'                      '' \
+            'whoisAFK'                      "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}AFK: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+            'whoisIPAddress'                "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}IP: $(get_highlighted_message ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}))" \
+            'youAreHealed'                  ''
+    done
+
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "EssentialsX" config \
-            "custom-join-message"           "${JOIN_MESSAGE}" \
             "custom-quit-message"           "$(get_action_message ${PLACEHOLDER_PLAYER} a ieșit din joc)" \
-            "custom-new-username-message"   "${JOIN_MESSAGE}" \
             "newbies.announce-format"       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
@@ -480,10 +513,9 @@ if is_plugin_installed 'EssentialsX'; then
             'createdKit'                        "$(get_formatted_message_minimessage success kit Created kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) with $(get_highlighted_message ${PLACEHOLDER_ARG1} items) and a delay of $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
             'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp-ul $(get_location_mention ${PLACEHOLDER_ARG0}) a fost șters)" \
-            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost aplicat)" \
-            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}nu a fost găsit)" \
-            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message {PLACEHOLDER_ARG0}) a fost înlăturat)" \
-            'errorWithMessage'                  "${PLACEHOLDER_ARG0}" \
+            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost aplicat)" \
+            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) nu este valid)" \
+            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost scos)" \
             'essentialsReload'                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
             'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message zbor))" \
@@ -498,7 +530,10 @@ if is_plugin_installed 'EssentialsX'; then
             'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory Inventarul și armurile lui $(get_player_mention ${PLACEHOLDER_ARG0}) au fost golite)" \
             'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory Inventarul lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost golit)" \
             'itemloreClear'                     "$(get_formatted_message_minimessage success name Descrierile obiectului din mână au fost șterse)" \
+            'itemloreNoLine'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are o descriere pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}))" \
+            'itemloreNoLore'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are nici o descriere)" \
             'itemloreSuccess'                   "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" a fost adăugată obiectului din mână)" \
+            'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" a fost setată pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}) a obiectului din mână)" \
             'itemnameClear'                     "$(get_formatted_message_minimessage success name Numele obiectului din mână a fost resetat)" \
             'itemnameSuccess'                   "$(get_formatted_message_minimessage success name Obiectul din mână a fost redenumit în \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\")" \
             'kitOnce'                           "$(get_formatted_message_minimessage error kit Nu mai poți obține acest kit din nou)" \
@@ -510,9 +545,7 @@ if is_plugin_installed 'EssentialsX'; then
             'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
             'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            'noAccessCommand'                   "${INVALID_COMMAND_MINIMESSAGE}" \
             'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
-            'noPerm'                            "${INVALID_COMMAND_MINIMESSAGE}" \
             'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare a fost anulată)" \
             'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
             'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
@@ -530,6 +563,7 @@ if is_plugin_installed 'EssentialsX'; then
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Asociat cu: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message dezactivate))" \
             'teleportBottom'                    "$(get_formatted_message_minimessage sucess teleport Te-ai teleportat la cel mai de $(get_highlighted_message jos) loc al locației tale)" \
@@ -551,7 +585,6 @@ if is_plugin_installed 'EssentialsX'; then
             'typeTpdeny'                        "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND}/tpno)" \
             'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Destinația aleasă pentru teleportare nu poate să fie setată deoarece nu este sigură)" \
             'vanish'                            "$(get_formatted_message_minimessage success gamemode Modul invizibil $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'vanished'                          '' \
             'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message mers))" \
             'warpingTo'                         "$(get_formatted_message_minimessage success warp Te-ai teleportat la $(get_location_mention ${PLACEHOLDER_ARG0}))" \
             'warpsCount'                        "$(get_formatted_message_minimessage info warp Există $(get_highlighted_message ${PLACEHOLDER_ARG0}) warp-uri. Pagina $(get_highlighted_message ${PLACEHOLDER_ARG1})/$(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
@@ -576,8 +609,7 @@ if is_plugin_installed 'EssentialsX'; then
             'whoisOp'                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             'whoisPlaytime'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Timp petrecut în joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             'whoisSpeed'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viteză: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identificator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'youAreHealed'                      ''
+            'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identificator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     else
         configure_plugin 'EssentialsX' "${ESSENTIALS_CONFIG_FILE}" \
             'custom-join-message'           "${JOIN_MESSAGE}" \
@@ -595,10 +627,9 @@ if is_plugin_installed 'EssentialsX'; then
             'createdKit'                        "$(get_formatted_message_minimessage success kit A fost creat kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}) cu $(get_highlighted_message ${PLACEHOLDER_ARG1} obiecte) și timp de așteptare de $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
             'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) has been deleted)" \
-            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}enchantment has been applied)" \
-            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has not been found)" \
-            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The ${COLOUR_HIGHLIGHT}{PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}enchantment has been removed)" \
-            "errorWithMessage"                  "${PLACEHOLDER_ARG0}" \
+            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been applied)" \
+            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment is not valid)" \
+            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been removed)" \
             "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             "false"                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
             'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message flight))" \
@@ -613,7 +644,10 @@ if is_plugin_installed 'EssentialsX'; then
             'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory and armours have been cleared)" \
             'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory has been cleared)" \
             'itemloreClear'                     "$(get_formatted_message_minimessage success name The descriptions of the held item were removed)" \
+            'itemloreNoLine'                    "$(get_formatted_message_minimessage success name The held item has no description on $(get_highlighted_message line ${PLACEHOLDER_ARG0}))" \
+            'itemloreNoLore'                    "$(get_formatted_message_minimessage success name The held item has no descriptions)" \
             'itemloreSuccess'                   "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" description was added to the held item)" \
+            'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" description was set on $(get_highlighted_message line ${PLACEHOLDER_ARG0}) of the held item)" \
             'itemnameClear'                     "$(get_formatted_message_minimessage success name The name of the held item was reset)" \
             'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'kitOnce'                           "$(get_formatted_message_minimessage error kit You cannot obtain that kit anymore)" \
@@ -625,9 +659,7 @@ if is_plugin_installed 'EssentialsX'; then
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            "noAccessCommand"                   "${INVALID_COMMAND_MINIMESSAGE}" \
             "noPendingRequest"                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
-            "noPerm"                            "${INVALID_COMMAND_MINIMESSAGE}" \
             "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
             "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
             "playerNotFound"                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
@@ -643,7 +675,8 @@ if is_plugin_installed 'EssentialsX'; then
             "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
-            "seenOnline"                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
             "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
@@ -665,7 +698,6 @@ if is_plugin_installed 'EssentialsX'; then
             'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
             'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
             'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'vanished'                          '' \
             'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message walk))" \
             'warpingTo'                         "$(get_formatted_message_minimessage success warp Teleported to $(get_location_mention ${PLACEHOLDER_ARG0}))" \
             'warpNotExist'                      "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
@@ -690,8 +722,7 @@ if is_plugin_installed 'EssentialsX'; then
             "whoisOp"                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "whoisPlaytime"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Time spent in-game: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "whoisSpeed"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Speed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "whoisUuid"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'youAreHealed'                      ''
+            "whoisUuid"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     fi
 fi
 
@@ -738,13 +769,13 @@ if is_plugin_installed 'InvUnload'; then
         'particle-type'             'WITCH'
 
     if [ "${LOCALE}" = 'ro' ]; then
-        configure_plugin "InvUnload" config \
-            "message-cooldown" "$(get_formatted_message error inventory Așteaptă $(get_highlighted_message ${INVUNLOAD_COOLDOWN} secunde) de la ultima golire)" \
-            "message-could-not-unload" "$(get_formatted_message error inventory Nu au fost găsite containere pentru restul obiectelor)" \
-            "message-error-not-a-number" "$(get_formatted_message error inventory Distanța specificată nu este un număr valid)" \
-            "message-inventory-empty" "$(get_formatted_message error inventory Inventarul tău este deja gol)" \
-            "message-no-chests-nearby" "$(get_formatted_message error inventory Nu există containere de depozitare în apropriere)" \
-            "message-radius-too-high" "$(get_formatted_message error inventory Distanța poate să fie maximum ${COLOUR_HIGHLIGHT}%d${COLOUR_MESSAGE} blocuri)"
+        configure_plugin 'InvUnload' config \
+            'message-cooldown' "$(get_formatted_message error inventory Așteaptă $(get_highlighted_message ${INVUNLOAD_COOLDOWN} secunde) de la ultima golire)" \
+            'message-could-not-unload' "$(get_formatted_message error inventory Nu au fost găsite containere pentru restul obiectelor)" \
+            'message-error-not-a-number' "$(get_formatted_message error inventory Distanța specificată nu este un număr valid)" \
+            'message-inventory-empty' "$(get_formatted_message error inventory Inventarul tău este deja gol)" \
+            'message-no-chests-nearby' "$(get_formatted_message error inventory Nu există containere de depozitare în apropriere)" \
+            'message-radius-too-high' "$(get_formatted_message error inventory Distanța poate să fie maximum ${COLOUR_HIGHLIGHT}%d${COLOUR_MESSAGE} blocuri)"
     else
         configure_plugin "InvUnload" config \
             "message-cooldown" "$(get_formatted_message error inventory You must wait ${COLOUR_HIGHLIGHT}${INVUNLOAD_COOLDOWN} seconds${COLOUR_MESSAGE} since the last unload)" \
@@ -827,6 +858,7 @@ if is_plugin_installed 'OldCombatMechanics'; then
     fi
 fi
 
+
 if is_plugin_installed 'PaperTweaks'; then
     set_config_values config \
         'enable-bstats' false
@@ -845,8 +877,18 @@ if is_plugin_installed 'PaperTweaks'; then
     set_config_values "${PAPERTWEAKS_MODULES_DIR}/playerheaddrops/config.yml" \
         "require-player-kill" true
 
-    configure_plugin "PaperTweaks" "${PAPERTWEAKS_DIR}/i18n/en.properties" \
-        "command.reload.all.reloaded.success" "$(get_reload_message PaperTweaks)"
+    configure_plugin 'PaperTweaks' messages \
+        'commands.reload.all.reloaded.success' "$(get_reload_message PaperTweaks)"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'PaperTweaks' messages \
+            'commands.disable.success' "$(get_formatted_message success plugin Modulul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost $(get_enablement_message dezactivat))" \
+            'commands.enable.success' "$(get_formatted_message success plugin Modulul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost $(get_enablement_message activat))"
+    else
+        configure_plugin 'PaperTweaks' messages \
+            'commands.disable.success' "$(get_formatted_message success plugin $(get_enablement_message Disabled) the $(get_highlighted_message ${PLACEHOLDER_ARG0}) module)" \
+            'commands.enable.success' "$(get_formatted_message success plugin $(get_enablement_message Enabled) the $(get_highlighted_message ${PLACEHOLDER_ARG0}) module)"
+    fi
 fi
 
 if is_plugin_installed 'Pl3xmap'; then
@@ -999,10 +1041,10 @@ if is_plugin_installed 'SuperbVote'; then
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'SuperbVote' config \
-            'vote-reminder.message' "$(get_formatted_message info vote ${COLOUR_GREEN_LIGHT}Memo: ${COLOUR_MESSAGE}Ia-ți recompensele zilnice votând serverul! Folosește ${COLOUR_COMMAND}/vote)"
+            'vote-reminder.message' "$(get_formatted_message info vote ${COLOUR_GREEN_LIGHT}Memo: ${COLOUR_MESSAGE}Ia-ți recompensele zilnice votând serverul cu $(get_command_mention /vote))"
     else
         configure_plugin 'SuperbVote' config \
-            'vote-reminder.message' "$(get_formatted_message info vote ${COLOUR_GREEN_LIGHT}Reminder: ${COLOUR_MESSAGE}Claim your daily rewards by voting the server! Use ${COLOUR_COMMAND}/vote)"
+            'vote-reminder.message' "$(get_formatted_message info vote ${COLOUR_GREEN_LIGHT}Reminder: ${COLOUR_MESSAGE}Claim your daily rewards by voting the server with $(get_command_mention /vote))"
     fi
 fi
 
@@ -1045,8 +1087,14 @@ if is_plugin_installed 'ToolStats'; then
             'messages.looted.found-by' "$(get_itemlore_message Găsit de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
             'messages.looted.found-on' "$(get_itemlore_message Găsit pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})" \
             'messages.sheep-sheared' "$(get_itemlore_message Oi tunse: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_SHEEP_BRACKETS})" \
+            'messages.shift-click-warning.crafting' "$(get_formatted_message warning craft Craftarea obiectelor cu shift-click poate să nu le aplice toate statisticile)" \
+            'messages.shift-click-warning.trading' "$(get_formatted_message warning trade Cumpărarea obiectelor cu shift-click poate să nu le aplice toate statisticile)" \
             'messages.created.created-by' "$(get_itemlore_message Cumpărat de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
             'messages.created.created-on' "$(get_itemlore_message Cumpărat pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})"
+    else
+        configure_plugin 'ToolStats' config \
+            'messages.shift-click-warning.crafting' "$(get_formatted_message warning craft Crafting items with shift-click might not fully apply statistics to them)" \
+            'messages.shift-click-warning.trading' "$(get_formatted_message warning trade Buying items with shift-click might not fully apply statistics to them)"
     fi
 fi
 
@@ -1121,20 +1169,34 @@ if is_plugin_installed 'TradeShop'; then
     fi
 fi
 
-if is_plugin_installed "TreeAssist"; then
+if is_plugin_installed 'TreeAssist'; then
     # Integrations
-    is_plugin_installed "CoreProtect" && set_config_value "$(get_plugin_file TreeAssist config)" "Placed Blocks.Plugin Name" "CoreProtect"
-    for PLUGIN_NAME in "AureliumSkills" "CustomEvents" "Jobs" "mcMMO" "WorldGuard"; do
+    is_plugin_installed 'CoreProtect' && set_config_value "$(get_plugin_file TreeAssist config)" 'Placed Blocks.Plugin Name' 'CoreProtect'
+    for PLUGIN_NAME in 'AureliumSkills' 'CustomEvents' 'Jobs' 'mcMMO' 'WorldGuard'; do
         set_config_value "$(get_plugin_file TreeAssist config)" "Plugins.${PLUGIN_NAME}" "$(is_plugin_installed_bool ${PLUGIN_NAME})"
     done
 
-    configure_plugin "TreeAssist" config \
-        "bStats.Active"                     false \
-        "bStats.Full"                       false \
-        "Destruction.Falling Blocks"        true \
-        "Destruction.Falling Blocks Fancy"  false \
-        "General.Toggle Remember"           false \
-        "General.Use Permissions"           true
+    configure_plugin 'TreeAssist' config \
+        'bStats.Active'                     false \
+        'bStats.Full'                       false \
+        'Commands.No Replant.Cooldown Time' 60 \
+        'Commands.Replant.Cooldown Time'    60 \
+        'Destruction.Falling Blocks'        true \
+        'Destruction.Falling Blocks Fancy'  true \
+        'General.Toggle Remember'           false \
+        'General.Use Permissions'           true
+
+    configure_plugin 'TreeAssist' messages 'info.plugin_prefix' "${COLOUR_RESET}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin "TreeAssist" messages \
+            'successful.noreplant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message oprită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
+            'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))"
+    else
+        configure_plugin "TreeAssist" messages \
+            'successful.noreplant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message disabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
+            'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))"
+    fi
 fi
 
 configure_plugin 'VanillaMessagesFormatter' config \
@@ -1329,7 +1391,7 @@ for CREATURE_TYPE in "ambient" "underground_water_creature" "water_ambient" "wat
 done
 
 # Item despawn rates
-for MATERIAL in "diamond" "netherite"; do
+for MATERIAL in 'diamond' 'netherite'; do
     for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done

@@ -94,8 +94,8 @@ function get_plugin_file() {
                 break
             fi
         done
-    elif [ "${PLUGIN_FILE}" == "messages" ]; then
-        for FILE_NAME in "lang/strings.json" "language.yml" "messages.yml" "Messages.yml"; do
+    elif [ "${PLUGIN_FILE}" = 'messages' ]; then
+        for FILE_NAME in 'i18n/en.properties' 'lang/strings.json' 'language.yml' 'lang_en.yml' 'messages.yml' 'Messages.yml'; do
             if [ -f "${PLUGIN_DIR}/${FILE_NAME}" ]; then
                 PLUGIN_FILE="${PLUGIN_DIR}/${FILE_NAME}"
                 break
@@ -115,11 +115,12 @@ function reload_plugin() {
     local PLUGIN_CMD="${PLUGIN_NAME,,}"
     local RELOAD_CMD="reload"
 
-    [[ "${PLUGIN_NAME}" == "GSit" ]] && PLUGIN_CMD="gsitreload" && RELOAD_CMD=""
+    [[ "${PLUGIN_NAME}" == "GSit" ]] && PLUGIN_CMD='gsitreload' && RELOAD_CMD=''
 
-    [[ "${PLUGIN_CMD}" == "essentialsx" ]] && PLUGIN_CMD="essentials"
-    [[ "${PLUGIN_CMD}" == "invsee++" ]] && PLUGIN_CMD="invsee"
-    [[ "${PLUGIN_CMD}" == "votingplugin" ]] && PLUGIN_CMD="av"
+    [[ "${PLUGIN_CMD}" = 'chatbubbles' ]] && PLUGIN_CMD='' && RELOAD_CMD='cbreload'
+    [[ "${PLUGIN_CMD}" = 'essentialsx' ]] && PLUGIN_CMD="essentials"
+    [[ "${PLUGIN_CMD}" = 'invsee++' ]] && PLUGIN_CMD="invsee"
+    [[ "${PLUGIN_CMD}" = 'votingplugin' ]] && PLUGIN_CMD="av"
 
     [[ "${PLUGIN_CMD}" == "luckperms" ]] && RELOAD_CMD="reloadconfig"
 

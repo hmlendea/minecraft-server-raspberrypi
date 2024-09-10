@@ -109,8 +109,8 @@ world-settings:
     mob-spawn-range: 4
     max-entity-collisions: 4
     merge-radius:
-      exp: 5
-      item: 3
+      exp: 5.0
+      item: 3.5
     growth:
       pitcherplant-modifier: 100
       torchflower-modifier: 100

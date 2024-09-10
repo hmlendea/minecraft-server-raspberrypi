@@ -35,7 +35,7 @@ settings:
     death-message:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
-    cannot-ride-mob: §r§c🐎 §r§7Acest mob nu se poate călărit§r§7.
+    cannot-ride-mob: §r§c🐎 §r§7Acest mob nu se poate călări§r§7.
   tps-catchup: true
   server-mod-name: NuciCraft
   clamp-attributes: true
@@ -157,7 +157,7 @@ settings:
     suppress-library-loader: false
   network:
     upnp-port-forwarding: false
-    max-joins-per-second: false
+    max-joins-per-second: true
     kick-for-out-of-order-chat: true
   username-valid-characters: ^[a-zA-Z0-9_]*$
   food-properties: {}
@@ -320,7 +320,7 @@ world-settings:
           only-babies: true
           chance: 0.05
           try-existing-chickens: true
-        aggressive-towards-villager-when-lagging: true
+        aggressive-towards-villager-when-lagging: false
         bypass-mob-griefing: false
         takes-damage-from-water: false
         always-drop-exp: false
@@ -530,7 +530,7 @@ world-settings:
         attributes:
           scale: 1.0
           max_health: 10.0
-        disable-treasure-searching: false
+        disable-treasure-searching: true
         takes-damage-from-water: false
         naturally-aggressive-to-players-chance: 0.0
         always-drop-exp: false
@@ -1158,8 +1158,8 @@ world-settings:
         always-drop-exp: false
       villager:
         search-radius:
-          acquire-poi: 48
-          nearest-bed-sensor: 48
+          acquire-poi: 16
+          nearest-bed-sensor: 16
         ridable: false
         ridable-in-water: false
         controllable: true
@@ -1179,7 +1179,7 @@ world-settings:
         minimum-demand: 0
         lobotomize:
           wait-until-trade-locked: false
-          enabled: false
+          enabled: true
           check-interval: 100
         display-trade-item: true
         spawn-iron-golem:
@@ -1711,7 +1711,7 @@ world-settings:
       thunder-stops-after-sleep: true
       mob-last-hurt-by-player-time: 100
       daylight-cycle-ticks:
-        daytime: 18000
+        daytime: 15600
         nighttime: 12000
       drowning:
         air-ticks: 450

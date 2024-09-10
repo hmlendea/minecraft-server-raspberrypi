@@ -44,6 +44,7 @@ function get_symbol_by_category() {
     [[ "${STATUS}" == "success" ]] && DEFAULT_SYMBOL="${SUCCESS_SYMBOL}" 
 
     local AUTHENTICATION_SYMBOL="🔑"
+    local AXE_SYMBOL='🪓'
     local COMBAT_SYMBOL="🗡"
     local DEFENCE_SYMBOL="⛨"
     local DOCK_SYMBOL='⚓'
@@ -63,12 +64,11 @@ function get_symbol_by_category() {
     local MOVEMENT_SYMBOL="≈"
     local PLAYER_SYMBOL="☻"
     local SETTLEMENT_SYMBOL="🏙"
-    local SKIN_SYMBOL="👕"
+    local SKIN_SYMBOL='👕'
     local TELEPORT_SYMBOL='➜'
     local TIME_SYMBOL='⌚'
     local VOTE_SYMBOL='❤'
     local WEATHER_SYMBOL='☂'
-    local WORLDEDIT_SYMBOL='🪓'
 
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "auth.*" "${AUTHENTICATION_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "border_.*" "${DEFENCE_SYMBOL}")
@@ -77,6 +77,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "default" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "defence_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "denied" "${ERROR_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'dock' "${DOCK_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'edit' "${DIT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "error" "${ERROR_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "farm.*" "${FARM_SYMBOL}")
@@ -97,7 +98,6 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "other" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player" "${PLAYER_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "player_.*" "${HOME_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" '^port' "${DOCK_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "settlement_.*" "${SETTLEMENT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'skin' "${SKIN_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'teleport' "${TELEPORT_SYMBOL}")
@@ -108,7 +108,8 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warehouse' "${INVENTORY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warp' "${TELEPORT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'weather' "${WEATHER_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'worldedit' "${WORLDEDIT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'woodcutting' "${AXE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'worldedit' "${AXE_SYMBOL}")
 
     [ -z "${SYMBOL}" ] && SYMBOL="${DEFAULT_SYMBOL}"
     echo "${SYMBOL}"
@@ -224,10 +225,14 @@ function get_enablement_message() {
     local STATUS="${*}"
 
     if [[ "${STATUS}" == dezact* ]] \
-    || [[ "${STATUS}" == disabl* ]]; then
+    || [[ "${STATUS}" == disabl* ]] \
+    || [[ "${STATUS}" == Disabl* ]] \
+    || [[ "${STATUS}" == opri* ]]; then
         COLOUR="${COLOUR_ERROR}"
     elif [[ "${STATUS}" == activ* ]] \
-      || [[ "${STATUS}" == enabl* ]]; then
+      || [[ "${STATUS}" == enabl* ]] \
+      || [[ "${STATUS}" == Enabl* ]] \
+      || [[ "${STATUS}" == porni* ]]; then
         COLOUR="${COLOUR_SUCCESS}"
     fi
 
