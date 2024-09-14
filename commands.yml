@@ -24,6 +24,9 @@ aliases:
   - 'broadcast $$1 was banned with reason: $$2'
   - essentials:ban $$1 $$2-
   - essentials:banip $$1 [$$1] $$2-
+  trust:
+  - whitelist add $$1
+  - lp user $$1 parent set trusted
   datapacks:
   - minecraft:datapack list
   
@@ -76,18 +79,6 @@ aliases:
   - gsit:gsit playertoggle on
   - dynmap:dynmap show
   
-  # Spectate
-  spectate:
-  - dndon
-  - gamemode spectator
-  - vanish on
-  - teleport $$1
-  unspectate:
-  - spawn
-  - dndoff
-  - gamemode survival
-  - vanish off
-  
   #
   auth:
   - authme:log $$1
@@ -125,7 +116,6 @@ aliases:
   - authme accounts $$1
   - antivpn lookup $$1
   - seen $$1
-  - whois $$1
   fakelogin:
   - essentials:me a intrat în joc!
   - essentials:vanish off
@@ -221,10 +211,29 @@ aliases:
   setmicroblockname:
   - renameitem &f$$1-
   - setitemlore &9Microbloc
+  setpackagename:
+  - renameitem &f$$1-
+  - setitemlore &9Pachet
   
   # ## Disabled commands (reduce number of commands by culling aliases or alternatives)
   # Bukkit/Spigot/Paper/Pufferfish/Purpur
   reload:
+  - []
+  # Economy
+  ebal:
+  - []
+  ebalance:
+  - []
+  ebaltop:
+  - []
+  # Enderchest
+  eec:
+  - []
+  eechest:
+  - []
+  eenderchest:
+  - []
+  eendersee:
   - []
   # Essentials chat
   er:
@@ -283,7 +292,11 @@ aliases:
   who:
   - []
   # Essentials tp
+  call:
+  - []
   eback:
+  - []
+  ecall:
   - []
   ereturn:
   - []
