@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2046,SC2086
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
@@ -18,27 +19,33 @@ PLACEHOLDER_ARG2='{2}'
 PLACEHOLDER_ACHIEVEMENT_PERCENT='%achievement%'
 PLACEHOLDER_ARROWS_BRACKETS="{arrows}"
 PLACEHOLDER_BLOCKS_BRACKETS="{blocks}"
+PLACEHOLDER_BUYER_SINGLEPERCENT="%buyer"
 PLACEHOLDER_CITY_PERCENT="%city%"
 PLACEHOLDER_COUNT_SINGLEPERCENT="%count"
 PLACEHOLDER_COUNTRY_PERCENT="%country%"
 PLACEHOLDER_CROPS_BRACKETS="{crops}"
 PLACEHOLDER_DAMAGE_BRACKETS="{damage}"
 PLACEHOLDER_DATE_BRACKETS="{date}"
+PLACEHOLDER_DISPLAYNAME_BRACKETS='{DISPLAYNAME}'
 PLACEHOLDER_FISH_BRACKETS="{fish}"
+PLACEHOLDER_ITEM_SINGLEPERCENT='%item'
 PLACEHOLDER_KILLS_BRACKETS="{kills}"
 PLACEHOLDER_NAME_POINTY="<name>"
+PLACEHOLDER_OWNER_SINGLEPERCENT='%owner'
 PLACEHOLDER_PLAYER="{PLAYER}"
 PLACEHOLDER_PLAYER_BRACKETS='{player}'
 PLACEHOLDER_PLAYER_PERCENT='%player%'
 PLACEHOLDER_PLAYER_SINGLEPERCENT='%player'
 PLACEHOLDER_PLAYERCOUNT_PERCENT='%playercount%'
+PLACEHOLDER_PRICE_SINGLEPERCENT='%price'
 PLACEHOLDER_REASON_PERCENT="%reason%"
-PLACEHOLDER_DISPLAYNAME="{DISPLAYNAME}"
+PLACEHOLDER_SELLER_SINGLEPERCENT="%seller"
 PLACEHOLDER_MESSAGE="{MESSAGE}"
 PLACEHOLDER_MESSAGE_PERCENT="%message%"
 PLACEHOLDER_MESSAGE_POINTY="<message>"
 PLACEHOLDER_NAME_PERCENT="%name%"
 PLACEHOLDER_REPLY_PERCENT="%reply%"
+PLACEHOLDER_SALES_BRACKETS='{sales}'
 PLACEHOLDER_SECONDS_PERCENT="%seconds%"
 PLACEHOLDER_SHEEP_BRACKETS='{sheep}'
 PLACEHOLDER_STATE_PERCENT='%state%'
@@ -46,17 +53,22 @@ PLACEHOLDER_USERNAME_PERCENT='%username%'
 
 if [ "${LOCALE}" = 'ro' ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
-    INVALID_COMMAND_MESSAGE="$(get_formatted_message error command Această comandă nu se poate executa)"
+    INVALID_ACTION_MESSAGE="$(get_formatted_message error command Nu se poate efectua)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
 
+    set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' 'Serverul s-a oprit'
+    set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'Te-ai reconectat prea repede. Te rugăm să aștepți puțin.'
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu se poate călări)"
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
-    INVALID_COMMAND_MESSAGE="$(get_formatted_message error command This command cannot be executed)"
+    INVALID_ACTION_MESSAGE="$(get_formatted_message error command This can\'t be done)"
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} joined the game)"
 
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob cannot be mounted)"
+    set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' 'The server shut down'
+    set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'You reconnected too quickly. Please wait a moment.'
+    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob can\'t be mounted)"
 fi
+INVALID_COMMAND_MESSAGE="${INVALID_ACTION_MESSAGE}"
 INVALID_COMMAND_MINIMESSAGE="$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
 
 set_config_values "${SERVER_PROPERTIES_FILE}" \
@@ -69,21 +81,25 @@ set_config_values "${SERVER_PROPERTIES_FILE}" \
     'sync-chunk-writes'                                         false \
     'view-distance'                                             "${VIEW_DISTANCE}"
 
-set_config_value "${SPIGOT_CONFIG_FILE}"                'messages.unknown-command'                                                  "${INVALID_COMMAND_MESSAGE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.entity-activation-range.tick-inactive-villagers'    false
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.merge-radius.exp'                                   '5.0'
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.merge-radius.item'                                  '3.5'
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.nerf-spawner-mobs'                                  true
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.simulation-distance'                                "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                'world-settings.default.view-distance'                                      "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.simulation-distance"                      "${SIMULATION_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_END_NAME}.view-distance"                            "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.simulation-distance"                   "${SIMULATION_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"                "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    'messages.unknown-command'                                                  "${INVALID_COMMAND_MESSAGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    'settings.save-user-cache-on-stop-only'                                                  false
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.entity-activation-range.tick-inactive-villagers'    false
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.merge-radius.exp'                                   '5.0'
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.merge-radius.item'                                  '3.5'
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.nerf-spawner-mobs'                                  true
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.simulation-distance'                                "${SIMULATION_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.view-distance'                                      "${VIEW_DISTANCE}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_END_NAME}.simulation-distance"                      "${SIMULATION_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_END_NAME}.view-distance"                            "${VIEW_DISTANCE_END}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}.simulation-distance"                   "${SIMULATION_DISTANCE_NETHER}"
+set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
 
-set_config_value "${BUKKIT_CONFIG_FILE}"                'spawn-limits.monsters'                                     "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_value "${BUKKIT_CONFIG_FILE}" 'chunk-gc.period-in-ticks' 300
+set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.connection-throttle' 4000
+set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.query-plugins'       false
+set_config_value "${BUKKIT_CONFIG_FILE}" 'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}"
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'item-validation.book-size.page-max'                                            1024 \
@@ -105,13 +121,14 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'collisions.max-entity-collisions'                                  2 \
     'entities.armor-stands.do-collision-entity-lookups'                 false \
     'entities.armor-stands.tick'                                        false \
+    'entities.behavior.disable-chest-cat-detection'                     true \
     'entities.spawning.per-player-mob-spawns'                           true \
     'entities.spawning.wandering-trader.spawn-chance-max'               125 \
     'entities.spawning.wandering-trader.spawn-day-length'               "${DAY_LENGTH_TICKS}" \
     'entities.spawning.entities.creative-arrow-despawn-rate'            40 \
     'entities.spawning.entities.non-player-arrow-despawn-rate'          40 \
     'environment.optimize-explosions'                                   true \
-    'environment.treasure-maps.enabled'                                 false \
+    'environment.treasure-maps.enabled'                                 true \
     'environment.treasure-maps.find-already-discovered.loot-tables'     true \
     'environment.treasure-maps.find-already-discovered.villager-trade'  true \
     'hopper.disable-move-event'                                         true \
@@ -122,7 +139,7 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'spawn.keep-spawn-loaded-range'                                     "${VIEW_DISTANCE}" \
     'tick-rates.container-update'                                       3 \
     'tick-rates.grass-spread'                                           6 \
-    'tick-rates.mob-spawner'                                            3
+    'tick-rates.mob-spawner'                                            2
 
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'chunks.auto-save-interval'                     $((AUTOSAVE_MINS * 20 * 60))
 set_config_value "${PAPER_WORLD_CONFIG_FILE}"           'spawn.keep-spawn-loaded'                       "${KEEP_SPAWN_LOADED}"
@@ -230,7 +247,7 @@ if is_plugin_installed 'AuthMe'; then
             'login.login_request' "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE})" \
             'login.success' "$(get_formatted_message success auth Te-ai autentificat)" \
             'login.wrong_password' "$(get_formatted_message error auth Parola este greșită)" \
-            'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) are $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) conturi)" \
+            'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) are $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) username-uri)" \
             'misc.logout' "$(get_formatted_message success auth Te-ai deautentificat)" \
             'misc.password_changed' "$(get_formatted_message success auth Parola a fost schimbată)" \
             'misc.reload' "$(get_reload_message AuthMe)" \
@@ -248,7 +265,7 @@ if is_plugin_installed 'AuthMe'; then
             'login.login_request' "$(get_formatted_message error auth You must authenticate in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE})" \
             'login.success' "$(get_formatted_message success auth You are now authenticated)" \
             'login.wrong_password' "$(get_formatted_message error auth The password is incorrect)" \
-            'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) has $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) accounts)" \
+            'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) has $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) usernames)" \
             'misc.logout' "$(get_formatted_message success auth You are now deauthenticated)" \
             'misc.password_changed' "$(get_formatted_message success auth The password was changed)" \
             'misc.reload' "$(get_reload_message AuthMe)" \
@@ -291,6 +308,101 @@ if is_plugin_installed 'ChatBubbles'; then
         configure_plugin 'ChatBubbles' messages \
             'Toggle_Off'    "$(get_formatted_message success chat Chat messages above player heads have been $(get_enablement_message disabled))" \
             'Toggle_On'     "$(get_formatted_message success chat Chat messages above player heads have been $(get_enablement_message enabled))"
+    fi
+fi
+
+if is_plugin_installed 'ChestShop'; then
+    configure_plugin 'ChestShop' config \
+        'INCLUDE_SETTINGS_IN_METRICS'   "${USE_TELEMETRY}" \
+        'SHIFT_SELLS_IN_STACKS'         true \
+        'TURN_OFF_UPDATES'              "${SKIP_PLUGIN_UPDATE_CHECKS}" \
+        'TURN_OFF_UPDATE_NOTIFIER'      "${SKIP_PLUGIN_UPDATE_CHECKS}" \
+        'TURN_OFF_DEV_UPDATE_NOTIFIER'  "${SKIP_PLUGIN_UPDATE_CHECKS}"
+        
+    configure_plugin 'ChestShop' config \
+        'AUTHME_HOOK'                   "$(is_plugin_installed_bool AuthMe)" \
+        'WORLDGUARD_INTEGRATION'        "$(is_plugin_installed_bool WorldGuard)" \
+        'WORLDGUARD_USE_FLAG'           "$(is_plugin_installed_bool WorldGuard)" \
+        'WORLDGUARD_USE_PROTECTION'     "$(is_plugin_installed_bool WorldGuard)"
+
+        configure_plugin 'ChestShop' messages \
+            'prefix' "${COLOUR_RESET}" \
+            'NO_PERMISSION' "${INVALID_ACTION_MESSAGE}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'ChestShop' messages \
+            'CANNOT_CREATE_SHOP_HERE'           "$(get_formatted_message error trade Nu poți crea oferte de vânzare în afara zonelor special amenajate)" \
+            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade Obiectul alocat ofertei nu este valid)" \
+            'NO_BUYING_HERE'                    "$(get_formatted_message error trade Această ofertă permite doar vânzarea $(get_obscured_message \(click stânga\)))" \
+            'NO_CHEST_DETECTED'                 "$(get_formatted_message error trade Nu a fost găsit nici un container)" \
+            'NO_SELLING_HERE'                   "$(get_formatted_message error trade Această ofertă permite doar cumpărarea $(get_obscured_message \(click dreapta\)))" \
+            'NO_SHOP_FOUND'                     "$(get_formatted_message error trade Nu s-a găsit nici o ofertă)" \
+            'NOT_ENOUGH_MONEY'                  "$(get_formatted_message error trade Nu ai destui bani)" \
+            'NOT_ENOUGH_MONEY_SHOP'             "$(get_formatted_message error trade Proprietarul nu are destui bani)" \
+            'NOT_ENOUGH_ITEMS_TO_SELL'          "$(get_formatted_message error trade Nu ai destule obiecte pentru a le vinde)" \
+            'NOT_ENOUGH_SPACE_IN_CHEST'         "$(get_formatted_message error inventory Oferta are inventarul plin)" \
+            'NOT_ENOUGH_SPACE_IN_INVENTORY'     "$(get_formatted_message error inventory Ai inventarul plin)" \
+            'NOT_ENOUGH_SPACE_IN_YOUR_SHOP'     "$(get_formatted_message error inventory Magazinul tău are inventarul de $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) plin)" \
+            'NOT_ENOUGH_STOCK'                  "$(get_formatted_message error trade Oferta nu are stoc suficient)" \
+            'NOT_ENOUGH_STOCK_IN_YOUR_SHOP'     "$(get_formatted_message error trade Magazinul tău a rămas fără stoc de $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}))" \
+            'PLAYER_NOT_FOUND'                  "$(get_formatted_message error trade Jucătorul nu există)" \
+            'SHOP_CREATED'                      "$(get_formatted_message success trade Oferta de vânzare a fost creată)" \
+            'SOMEBODY_BOUGHT_FROM_YOUR_SHOP'    "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_BUYER_SINGLEPERCENT}) a cumpărat $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) cu $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) de la magazinul tău)" \
+            'SOMEBODY_SOLD_TO_YOUR_SHOP'        "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_SELLER_SINGLEPERCENT}) ți-a vândut $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) pentru $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) la magazinul tău)" \
+            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message dezactivată))" \
+            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message activată))" \
+            'TOGGLE_MESSAGES_OFF'               "$(get_formatted_message info trade Notificările cu tranzacții de la magazin au fost $(get_enablement_message dezactivate))" \
+            'TOGGLE_MESSAGES_ON'                "$(get_formatted_message info trade Notificările cu tranzacții de la magazin au fost $(get_enablement_message activate))" \
+            'TRADE_DENIED_ACCESS_PERMS'         "$(get_formatted_message error trade Nu poți tranzacționa cu propriile oferte)" \
+            'YOU_BOUGHT_FROM_SHOP'              "$(get_formatted_message success trade Ai cumpărat $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) cu $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}))" \
+            'YOU_SOLD_TO_SHOP'                  "$(get_formatted_message success trade Ai vândut $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) cu $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}))"
+    else
+        configure_plugin 'ChestShop' messages \
+            'CANNOT_CREATE_SHOP_HERE'           "$(get_formatted_message error trade You can\'t create trade offers outside of the designated areas)" \
+            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade The item assigned to the offer is not valid)" \
+            'NO_BUYING_HERE'                    "$(get_formatted_message error trade This offer only allows selling $(get_obscured_message \(left click\)))" \
+            'NO_CHEST_DETECTED'                 "$(get_formatted_message error trade No container found)" \
+            'NO_SELLING_HERE'                   "$(get_formatted_message error trade This offer only allows buying $(get_obscured_message \(right-click\)))" \
+            'NO_SHOP_FOUND'                     "$(get_formatted_message error trade No trade offer found)" \
+            'NOT_ENOUGH_ITEMS_TO_SELL'          "$(get_formatted_message error trade You don\'t have enough items to sell)" \
+            'NOT_ENOUGH_MONEY'                  "$(get_formatted_message error trade You don\'t have enough money)" \
+            'NOT_ENOUGH_MONEY_SHOP'             "$(get_formatted_message error trade The offer doesn\'t have enough money)" \
+            'NOT_ENOUGH_SPACE_IN_CHEST'         "$(get_formatted_message error inventory The offer\'s inventory is full)" \
+            'NOT_ENOUGH_SPACE_IN_INVENTORY'     "$(get_formatted_message error inventory Your inventory is full)" \
+            'NOT_ENOUGH_SPACE_IN_YOUR_SHOP'     "$(get_formatted_message error inventory Your shop\'s $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) inventory is full)" \
+            'NOT_ENOUGH_STOCK'                  "$(get_formatted_message error trade The offer is out of stock)" \
+            'NOT_ENOUGH_STOCK_IN_YOUR_SHOP'     "$(get_formatted_message error trade Your shop ran out of $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) stock)" \
+            'PLAYER_NOT_FOUND'                  "$(get_formatted_message error trade That player doesn\'t exist)" \
+            'SHOP_CREATED'                      "$(get_formatted_message success trade The offer was set up)" \
+            'SOMEBODY_BOUGHT_FROM_YOUR_SHOP'    "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_BUYER_SINGLEPERCENT}) bought $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) from your shop)" \
+            'SOMEBODY_SOLD_TO_YOUR_SHOP'        "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_SELLER_SINGLEPERCENT}) sold $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) to your shop)" \
+            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message disabled))" \
+            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message enabled))" \
+            'TOGGLE_MESSAGES_OFF'               "$(get_formatted_message info trade The trade notifications have been $(get_enablement_message disabled))" \
+            'TOGGLE_MESSAGES_ON'                "$(get_formatted_message info trade The trade notifications have been $(get_enablement_message enabled))" \
+            'TRADE_DENIED_ACCESS_PERMS'         "$(get_formatted_message error trade You can\'t trade with shops that you have access to)" \
+            'YOU_BOUGHT_FROM_SHOP'              "$(get_formatted_message success trade You bought $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}))" \
+            'YOU_SOLD_TO_SHOP'                  "$(get_formatted_message success trade You sold $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}))"
+    fi
+
+    if is_plugin_installed 'ChestShopNotifier'; then
+        configure_plugin 'ChestShopNotifier' config \
+            'notifications.notify-on-user-join' true \
+            'history.max-rows' 50 \
+            'messages.history-others-not-allowed' "${INVALID_COMMAND_MESSAGE}" \
+            'messages.reload-success' "$(get_reload_message ChestShopNotifier)"
+
+        if [ "${LOCALE}" = 'ro' ]; then
+            configure_plugin 'ChestShopNotifier' config \
+                'messages.history-cmd' "$(get_formatted_message info trade Pentru a vedea istoricul tranzacțiilor, folosește $(get_command_mention /csn history))" \
+                'messages.history-footer-clear' "$(get_formatted_message info trade Pentru a șterge notificările vechi, folosește $(get_command_mention /csn clear))" \
+                'messages.sales' "$(get_formatted_message info trade Ai făcut $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS} tranzacții) de la ultima verificare)"
+        else
+            configure_plugin 'ChestShopNotifier' config \
+                'messages.history-cmd' "$(get_formatted_message info trade To see the trades log, use $(get_command_mention /csn history))" \
+                'messages.history-footer-clear' "$(get_formatted_message info trade To clear the old notifications, use $(get_command_mention /csn clear))" \
+                'messages.sales' "$(get_formatted_message info trade You made $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS} trades) since you last checked)"
+        fi
     fi
 fi
 
@@ -462,7 +574,7 @@ if is_plugin_installed 'EssentialsX'; then
         "auto-afk"                              300 \
         "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
         "change-tab-complete-name"              true \
-        "chat.format"                           "$(get_player_mention ${PLACEHOLDER_DISPLAYNAME}): ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE}" \
+        "chat.format"                           "$(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}): ${COLOUR_CHAT}${PLACEHOLDER_MESSAGE}" \
         "command-cooldowns.tpr"                 300 \
         "currency-symbol"                       "₦" \
         "custom-join-message"                   "${JOIN_MESSAGE}" \
@@ -477,7 +589,8 @@ if is_plugin_installed 'EssentialsX'; then
         "ops-name-color"                        "none" \
         'per-player-locale'                     false \
         'per-warp-permissions'                  true \
-        "remove-god-on-disconnect"              true \
+        'remove-god-on-disconnect'              true \
+        'show-zero-baltop'                      false \
         "teleport-cooldown"                     3 \
         "teleport-delay"                        3 \
         "teleport-invulnerability"              7 \
@@ -492,6 +605,7 @@ if is_plugin_installed 'EssentialsX'; then
             'errorWithMessage'              "${PLACEHOLDER_ARG0}" \
             "noAccessCommand"               "${INVALID_COMMAND_MINIMESSAGE}" \
             "noPerm"                        "${INVALID_COMMAND_MINIMESSAGE}" \
+            'orderBalances'                 '' \
             'vanished'                      '' \
             'whoisAFK'                      "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}AFK: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'whoisIPAddress'                "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}IP: $(get_highlighted_message ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}))" \
@@ -501,14 +615,18 @@ if is_plugin_installed 'EssentialsX'; then
     if [ "${LOCALE}" == "ro" ]; then
         configure_plugin "EssentialsX" config \
             "custom-quit-message"           "$(get_action_message ${PLACEHOLDER_PLAYER} a ieșit din joc)" \
-            "newbies.announce-format"       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
+            "newbies.announce-format"       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
             'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})" \
+            'addedToAccount'                    "$(get_formatted_message_minimessage info money Ți s-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în cont)" \
+            'addedToOthersAccount'              "$(get_formatted_message_minimessage info money S-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'backAfterDeath'                    "$(get_formatted_message_minimessage info teleport Folosește ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}pentru a te întoarce unde ai murit)" \
             'backOther'                         "$(get_formatted_message_minimessage success teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
             'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Te-ai întors la locația anterioară)" \
+            'balance'                           "$(get_formatted_message_minimessage info money Ai în cont $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+            'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) are în cont $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             'createdKit'                        "$(get_formatted_message_minimessage success kit Created kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) with $(get_highlighted_message ${PLACEHOLDER_ARG1} items) and a delay of $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
@@ -544,8 +662,11 @@ if is_plugin_installed 'EssentialsX'; then
             'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
+            'moneyReceivedFrom'                 "$(get_formatted_message_minimessage info money Ai primit $(get_highlighted_message ${PLACEHOLDER_ARG0}) de la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'moneySentTo'                       "$(get_formatted_message_minimessage success money Ai trimis $(get_highlighted_message ${PLACEHOLDER_ARG0}) la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
             'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
+            'payOffline'                        "$(get_formatted_message_minimessage error money Nu poți trimite bani jucătorilor offline)" \
             'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare a fost anulată)" \
             'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}nu a jucat niciodată pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
             'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
@@ -563,7 +684,11 @@ if is_plugin_installed 'EssentialsX'; then
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Asociat cu: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'setBal'                            "$(get_formatted_message_minimessage success money Contul tău bancar a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+            'setBalOthers'                      "$(get_formatted_message_minimessage success money Contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
+            'takenFromAccount'                  "$(get_formatted_message_minimessage info money Ți s-a retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din cont)" \
+            'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money S-a retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message dezactivate))" \
             'teleportBottom'                    "$(get_formatted_message_minimessage sucess teleport Te-ai teleportat la cel mai de $(get_highlighted_message jos) loc al locației tale)" \
@@ -615,14 +740,18 @@ if is_plugin_installed 'EssentialsX'; then
             'custom-join-message'           "${JOIN_MESSAGE}" \
             'custom-quit-message'           "$(get_action_message ${PLACEHOLDER_PLAYER} left the game)" \
             'custom-new-username-message'   "${JOIN_MESSAGE}" \
-            'newbies.announce-format'       "$(get_announcement_message Welcome $(get_player_mention ${PLACEHOLDER_DISPLAYNAME}) ${COLOUR_ANNOUNCEMENT}to ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
+            'newbies.announce-format'       "$(get_announcement_message Welcome $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}to ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
         create-file "${ESSENTIALS_DIR}/messages/messages_en.properties"
         configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_en.properties" \
-            "action"                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
-            "backAfterDeath"                    "$(get_formatted_message_minimessage info teleport Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
-            "backOther"                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
-            "backUsageMsg"                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
+            'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
+            'addedToAccount'                    "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to your bank account)" \
+            'addedToOthersAccount'              "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
+            'backAfterDeath'                    "$(get_formatted_message_minimessage info teleport Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
+            'backOther'                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
+            'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
+            'balance'                           "$(get_formatted_message_minimessage info money You have $(get_highlighted_message ${PLACEHOLDER_ARG0}) in your bank account)" \
+            'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
             "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             'createdKit'                        "$(get_formatted_message_minimessage success kit A fost creat kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}) cu $(get_highlighted_message ${PLACEHOLDER_ARG1} obiecte) și timp de așteptare de $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
@@ -650,19 +779,22 @@ if is_plugin_installed 'EssentialsX'; then
             'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" description was set on $(get_highlighted_message line ${PLACEHOLDER_ARG0}) of the held item)" \
             'itemnameClear'                     "$(get_formatted_message_minimessage success name The name of the held item was reset)" \
             'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'kitOnce'                           "$(get_formatted_message_minimessage error kit You cannot obtain that kit anymore)" \
+            'kitOnce'                           "$(get_formatted_message_minimessage error kit You can\'t obtain that kit anymore)" \
             'kitReceive'                        "$(get_formatted_message_minimessage success kit You have received the $(get_highlighted_message ${PLACEHOLDER_ARG0}) kit)" \
             'kitReset'                          "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset)" \
             'kitResetOther'                     "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             "listAmount"                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
             "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
-            'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'moneyReceivedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'moneySentTo'                       "$(get_formatted_message_minimessage success money You sent $(get_highlighted_message ${PLACEHOLDER_ARG0}) to $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})\'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
             "noPendingRequest"                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
             "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
-            "playerNeverOnServer"               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
-            "playerNotFound"                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
+            'payOffline'                        "$(get_formatted_message_minimessage error money You can\'t send money to offline players)" \
+            'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
+            'playerNotFound'                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
             'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
             'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
             "requestAccepted"                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
@@ -676,7 +808,11 @@ if is_plugin_installed 'EssentialsX'; then
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            'setBal'                            "$(get_formatted_message_minimessage success money Your bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'setBalOthers'                      "$(get_formatted_message_minimessage success money $(get_player_mention ${PLACEHOLDER_ARG0})\'s bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
+            'takenFromAccount'                  "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from your bank account)" \
+            'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
             "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
@@ -807,8 +943,8 @@ if is_plugin_installed 'KauriVPN'; then
 fi
 
 configure_plugin 'LightAntiCheat' config \
-    'alerts.broadcast-punishments' true \
-    'alerts.broadcast-violations' false
+    'alerts.broadcast-punishments.enabled' true \
+    'alerts.broadcast-violations.enabled' false
 
 if is_plugin_installed 'LuckPerms'; then
     configure_plugin 'LuckPerms' config \
@@ -934,7 +1070,7 @@ if is_plugin_installed 'Pl3xmap'; then
     PLEXMAP_PLAYERS_LABEL="<online> Players"
     PLEXMAP_LOCALE="${LOCALE_FALLBACK}"
 
-    if [ "${LOCALE}" == "ro" ]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         PLEXMAP_PLAYERS_LABEL="<online> Jucători"
     fi
     if [ -f "${PLEXMAP_DIR}/locale/lang-${LOCALE}.yml" ]; then
@@ -1023,6 +1159,7 @@ if is_plugin_installed 'Sonar'; then
         'commands.no-permission' "${INVALID_COMMAND_MINIMESSAGE}" \
         'commands.reload.finish' "$(get_reload_message_minimessage Sonar)" \
         'commands.reload.start' "$(get_reloading_message_minimessage Sonar)"
+
 fi
 
 configure_plugin 'spark' config \
@@ -1072,8 +1209,8 @@ if is_plugin_installed 'ToolStats'; then
         configure_plugin 'ToolStats' config \
             'messages.arrows-shot' "$(get_itemlore_message Trageri: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_ARROWS_BRACKETS})" \
             'messages.blocks-mined' "$(get_itemlore_message Blocuri sparte: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_BLOCKS_BRACKETS})" \
-            'messages.created.created-by' "$(get_itemlore_message Craftat de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
-            'messages.created.created-on' "$(get_itemlore_message Craftat pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})" \
+            'messages.created.created-by' "$(get_itemlore_message Făcut de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
+            'messages.created.created-on' "$(get_itemlore_message Făcut pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})" \
             'messages.crops-harvested' "$(get_itemlore_message Recolte culese: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_CROPS_BRACKETS})" \
             'messages.damage-taken' "$(get_itemlore_message Daune primite: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DAMAGE_BRACKETS})" \
             'messages.dropped-by' "$(get_itemlore_message Aruncat de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
@@ -1089,8 +1226,8 @@ if is_plugin_installed 'ToolStats'; then
             'messages.sheep-sheared' "$(get_itemlore_message Oi tunse: ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_SHEEP_BRACKETS})" \
             'messages.shift-click-warning.crafting' "$(get_formatted_message warning craft Craftarea obiectelor cu shift-click poate să nu le aplice toate statisticile)" \
             'messages.shift-click-warning.trading' "$(get_formatted_message warning trade Cumpărarea obiectelor cu shift-click poate să nu le aplice toate statisticile)" \
-            'messages.created.created-by' "$(get_itemlore_message Cumpărat de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
-            'messages.created.created-on' "$(get_itemlore_message Cumpărat pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})"
+            'messages.traded.created-by' "$(get_itemlore_message Cumpărat de $(get_player_mention ${PLACEHOLDER_PLAYER_BRACKETS}))" \
+            'messages.traded.created-on' "$(get_itemlore_message Cumpărat pe ${COLOUR_ITEMLORE_INFO}${PLACEHOLDER_DATE_BRACKETS})"
     else
         configure_plugin 'ToolStats' config \
             'messages.shift-click-warning.crafting' "$(get_formatted_message warning craft Crafting items with shift-click might not fully apply statistics to them)" \
@@ -1136,12 +1273,12 @@ if is_plugin_installed 'TradeShop'; then
             "no-ts-create-permission" "$(get_formatted_message error trade Nu poți crea acest tip de ofertă)" \
             "no-ts-open" "$(get_formatted_message error trade Nu poți deschide această ofertă)" \
             "on-trade" "$(get_formatted_message success trade Ai cumpărat {%RECEIVEDLINES%= ${COLOUR_HIGHLIGHT}%AMOUNT% %ITEM%} ${COLOUR_MESSAGE}cu {%GIVENLINES%= ${COLOUR_HIGHLIGHT}%AMOUNT% %ITEM%})" \
-            "player-full" "$(get_formatted_message error trade Ai inventarul plin)" \
+            "player-full" "$(get_formatted_message error inventory Ai inventarul plin)" \
             "shop-closed" "$(get_formatted_message error trade Această ofertă nu este activă)" \
-            "shop-empty" "$(get_formatted_message error trade Această ofertă nu are stoc suficient)" \
-            "shop-full" "$(get_formatted_message error trade Această ofertă nu are spațiu suficient în inventar)" \
-            "shop-insufficient-items" "$(get_formatted_message error trade Această ofertă nu are stoc suficient)" \
-            "successful-setup" "$(get_formatted_message success trade Ai creat cu succes o ofertă de vânzare)"
+            "shop-empty" "$(get_formatted_message error inventory Oferta nu are stoc suficient)" \
+            "shop-full" "$(get_formatted_message error inventory Oferta nu are spațiu suficient în inventar)" \
+            "shop-insufficient-items" "$(get_formatted_message error inventory Oferta nu are stoc suficient)" \
+            "successful-setup" "$(get_formatted_message success trade Oferta de vânzare a fost creată)"
     else
         configure_plugin "TradeShop" config \
             "language-options.shop-closed-status" "${COLOUR_ERROR}<Closed>" \
@@ -1157,15 +1294,15 @@ if is_plugin_installed 'TradeShop'; then
             "item-not-removed" "$(get_formatted_message error trade The item could not be removed from the offer)" \
             "item-removed" "$(get_formatted_message success trade The item was removed from the offer)" \
             "no-sighted-shop" "$(get_formatted_message error trade Could not find any offer in range)" \
-            "no-ts-create-permission" "$(get_formatted_message error You cannot create this type of offer)" \
-            "no-ts-open" "$(get_formatted_message error trade You cannot open this type of offer)" \
+            "no-ts-create-permission" "$(get_formatted_message error You can\'t create this type of offer)" \
+            "no-ts-open" "$(get_formatted_message error trade You can\'t open this type of offer)" \
             "on-trade" "$(get_formatted_message info trade You bought:\\n{%RECEIVEDLINES%= ${COLOUR_HIGHLIGHT}%AMOUNT% %ITEM%}\n${COLOUR_MESSAGE}for:\n{%GIVENLINES%= ${COLOUR_HIGHLIGHT}%AMOUNT% %ITEM%})" \
-            "player-full" "$(get_formatted_message error trade Your inventory is full)" \
+            "player-full" "$(get_formatted_message error inventory Your inventory is full)" \
             "shop-closed" "$(get_formatted_message error trade This offer is not active)" \
-            "shop-empty" "$(get_formatted_message error trade This offer is out of stock)" \
-            "shop-full" "$(get_formatted_message error trade This offer\'s inventory is full)" \
-            "shop-insufficient-items" "$(get_formatted_message error trade This offer is out of stock)" \
-            "successful-setup" "$(get_formatted_message success trade You have successfully set up a trade offer)"
+            "shop-empty" "$(get_formatted_message error inventory This offer is out of stock)" \
+            "shop-full" "$(get_formatted_message error inventory The offer\'s inventory is full)" \
+            "shop-insufficient-items" "$(get_formatted_message error inventory This offer is out of stock)" \
+            "successful-setup" "$(get_formatted_message success trade The trade offer was set up)"
     fi
 fi
 

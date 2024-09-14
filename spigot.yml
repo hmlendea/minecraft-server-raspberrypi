@@ -43,7 +43,7 @@ messages:
   outdated-client: Outdated client! Please use {0}
   outdated-server: Outdated server! I'm still on {0}
   restart: Server is restarting
-  unknown-command: §r§c✘ §r§7Această comandă nu se poate executa§r§7.
+  unknown-command: §r§c✘ §r§7Nu se poate efectua§r§7.
 advancements:
   disable-saving: false
   disabled:

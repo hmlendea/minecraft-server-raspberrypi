@@ -393,7 +393,7 @@ environment:
   portal-search-radius: 16
   portal-search-vanilla-dimension-scaling: false
   treasure-maps:
-    enabled: false
+    enabled: true
     find-already-discovered:
       loot-tables: 'true'
       villager-trade: true
@@ -460,7 +460,7 @@ tick-rates:
   container-update: 3
   dry-farmland: 1
   grass-spread: 6
-  mob-spawner: 3
+  mob-spawner: 2
   sensor:
     villager:
       nearestbedsensor: 80

@@ -6,9 +6,9 @@ settings:
   update-folder: update
   plugin-profiling: false
   connection-throttle: 4000
-  query-plugins: true
+  query-plugins: false
   deprecated-verbose: default
-  shutdown-message: Server closed
+  shutdown-message: Serverul s-a oprit
   minimum-api: none
 spawn-limits:
   monsters: 21

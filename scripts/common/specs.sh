@@ -1,6 +1,7 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_DIR}/common/config.sh"
+source "${SERVER_SCRIPTS_DIR}/common/plugins.sh"
 
 function get_server_property() {
     local KEY="${1}"
@@ -26,6 +27,8 @@ export SERVER_HOSTNAME='mc.nucilandia.ro'
 export CHECK_PLUGINS_FOR_UPDATES=false
 export SKIP_PLUGIN_UPDATE_CHECKS=true
 
+export USE_TELEMETRY=false
+
 export PLAYERS_REGISTERED=$(find ${SERVER_ROOT_DIR}/world/playerdata/ -name "*.dat" | wc -l)
 export PLAYERS_MAX=20
 export PLAYERS_TARGET=5 # The amount of players the server was tested against
@@ -49,6 +52,8 @@ export SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
 export SIMULATION_DISTANCE_MAX=10
 
 export KEEP_SPAWN_LOADED=false
+export CONNECTION_THROTTLE=4000
+is_plugin_installed 'Sonar' && CONNECTION_THROTTLE=3000
 
 export DESPAWN_RATE_ITEMS_RARE_HOURS=2
 export DESPAWN_RATE_ITEMS_RARE_TICKS=$((DESPAWN_RATE_ITEMS_RARE_HOURS * 60 * 60 * 20))

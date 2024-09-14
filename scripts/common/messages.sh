@@ -91,7 +91,8 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'light' "${LIGHT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "message" "${MESSAGE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "military_base" "${MILITARY_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "mount" "${MOUNT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'money' "${ECONOMY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'mount' "${MOUNT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'movement' "${MOVEMENT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'name' "${DIT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'office_post' "${OFFICE_SYMBOL}")
@@ -218,6 +219,12 @@ function get_highlighted_message() {
     local MESSAGE="${*}"
 
     echo $(get_coloured_message "${COLOUR_HIGHLIGHT}" "${MESSAGE}")
+}
+
+function get_obscured_message() {
+    local MESSAGE="${*}"
+
+    echo $(get_coloured_message "${COLOUR_OBSCURE}" "${MESSAGE}")
 }
 
 function get_enablement_message() {

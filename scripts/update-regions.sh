@@ -116,19 +116,19 @@ function set_deny_message() {
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți să faci asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You cannot f${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t f${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -393,6 +393,7 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'maze'                   'Labyrinth'                 'Labirintul'
     set_building_settings "${SETTLEMENT_NAME}" 'metropolis'             'Metropolis'                'Mitropolia'
     set_building_settings "${SETTLEMENT_NAME}" 'mill'                   'Mill'                      'Moara'
+    set_building_settings "${SETTLEMENT_NAME}" 'motel'                  'Motel'                     'Motelul'
     set_building_settings "${SETTLEMENT_NAME}" "museum"                 "Museum"                    "Muzeul"
     set_building_settings "${SETTLEMENT_NAME}" "museum_art"             "Art Museum"                "Muzeul de Artă"
     set_building_settings "${SETTLEMENT_NAME}" "museum_history"         "History Museum"            "Muzeul de Istorie"
@@ -403,6 +404,7 @@ function set_settlement_region_settings() {
     set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
     set_building_settings "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
     set_building_settings "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
+    set_building_settings "${SETTLEMENT_NAME}" 'restaurant'             'Restaurant'                'Restaurantul'
     set_building_settings "${SETTLEMENT_NAME}" 'school'                 'School'                    'Școala'
     set_building_settings "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
     set_building_settings "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
@@ -472,6 +474,11 @@ function set_building_settings() {
             [[ "${REGION_ID}" == *_pvp_* ]] && set_region_flag "${REGION_ID}" 'pvp' true
         fi
     fi
+
+    if [[ "${REGION_ID}" == *_bank* ]]; then
+        REGION_PRIORITY=30
+        set_region_flag "${REGION_ID}" 'allow-shop' true
+    fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
@@ -488,6 +495,7 @@ function set_building_settings() {
 
     if [[ "${REGION_ID}" == *_mall_shop* ]]; then
         REGION_PRIORITY=30
+        set_region_flag "${REGION_ID}" 'allow-shop' true
     fi
 
     if [[ "${REGION_ID}" == *_square ]]; then
@@ -568,6 +576,9 @@ function rollback_transaction() {
 
 begin_transaction
 
+set_settlement_region_settings 'settlement_town' 'Kreeztown' 'Nucilandia'
+commit_transaction
+
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
@@ -575,7 +586,7 @@ for CITY_NAME in 'Enada' 'Naoi'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Newport' 'Witty'; do
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
     set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
 for TOWN_NAME in 'Emeraldia' 'Iahim'; do

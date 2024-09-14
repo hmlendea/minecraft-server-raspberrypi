@@ -66,12 +66,13 @@ item-validation:
 logging:
   deobfuscate-stacktraces: true
 messages:
+  connection-throttled: Te-ai reconectat prea repede. Te rugăm să aștepți puțin.
   kick:
     authentication-servers-down: <lang:multiplayer.disconnect.authservers_down>
     connection-throttle: Connection throttled! Please wait before reconnecting.
     flying-player: <lang:multiplayer.disconnect.flying>
     flying-vehicle: <lang:multiplayer.disconnect.flying>
-  no-permission: <red>✘ </red><gray>Această comandă nu se poate executa.
+  no-permission: <red>✘ </red><gray>Nu se poate executa.
   use-display-name-in-quit-message: false
 misc:
   chat-threads:

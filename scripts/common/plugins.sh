@@ -95,7 +95,7 @@ function get_plugin_file() {
             fi
         done
     elif [ "${PLUGIN_FILE}" = 'messages' ]; then
-        for FILE_NAME in 'i18n/en.properties' 'lang/strings.json' 'language.yml' 'lang_en.yml' 'messages.yml' 'Messages.yml'; do
+        for FILE_NAME in 'i18n/en.properties' 'lang/strings.json' 'languages/lang.en.yml' 'language.yml' 'lang_en.yml' 'messages.yml' 'Messages.yml'; do
             if [ -f "${PLUGIN_DIR}/${FILE_NAME}" ]; then
                 PLUGIN_FILE="${PLUGIN_DIR}/${FILE_NAME}"
                 break
@@ -113,16 +113,16 @@ function reload_plugin() {
     ! is_plugin_installed "${PLUGIN_NAME}" && return
     
     local PLUGIN_CMD="${PLUGIN_NAME,,}"
-    local RELOAD_CMD="reload"
+    local RELOAD_CMD='reload'
 
-    [[ "${PLUGIN_NAME}" == "GSit" ]] && PLUGIN_CMD='gsitreload' && RELOAD_CMD=''
-
-    [[ "${PLUGIN_CMD}" = 'chatbubbles' ]] && PLUGIN_CMD='' && RELOAD_CMD='cbreload'
-    [[ "${PLUGIN_CMD}" = 'essentialsx' ]] && PLUGIN_CMD="essentials"
-    [[ "${PLUGIN_CMD}" = 'invsee++' ]] && PLUGIN_CMD="invsee"
-    [[ "${PLUGIN_CMD}" = 'votingplugin' ]] && PLUGIN_CMD="av"
-
-    [[ "${PLUGIN_CMD}" == "luckperms" ]] && RELOAD_CMD="reloadconfig"
+    [[ "${PLUGIN_NAME}" = 'GSit' ]] && PLUGIN_CMD='gsitreload' && RELOAD_CMD=''
+    [[ "${PLUGIN_NAME}" = 'Chatbubbles' ]] && PLUGIN_CMD='cbreload' && RELOAD_CMD=''
+    
+    [[ "${PLUGIN_CMD}" = 'chestshopnotifier' ]] && PLUGIN_CMD='csn'
+    [[ "${PLUGIN_CMD}" = 'essentialsx' ]] && PLUGIN_CMD='essentials'
+    [[ "${PLUGIN_CMD}" = 'invsee++' ]] && PLUGIN_CMD='invsee'
+    [[ "${PLUGIN_CMD}" = 'luckperms' ]] && RELOAD_CMD='reloadconfig'
+    [[ "${PLUGIN_CMD}" = 'votingplugin' ]] && PLUGIN_CMD='av'
 
     run_server_command "${PLUGIN_CMD}" "${RELOAD_CMD}"
 }
@@ -172,12 +172,13 @@ function download_plugin() {
     local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
-    if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ]; then
-        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar"
+    #if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ]; then
+    if ls "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar' 1> /dev/null 2>&1; then
+        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar'
     fi
 
     download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
-    chmod +x "${PLUGIN_FILE_PATH}"
+    sudo chmod +x "${PLUGIN_FILE_PATH}"
 }
 
 function update_datapack() {
