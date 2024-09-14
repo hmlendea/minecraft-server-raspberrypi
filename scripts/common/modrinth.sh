@@ -58,7 +58,7 @@ function get_latest_modrinth_version() {
     fi
 
     local LATEST_VERSION=$(sed 's/^v*//' <<< "${VERSIONS}" | sort -V | tail -n 1)
-    local LATEST_VERSION=$(grep "^[v]*${LATEST_VERSION}$" <<< "${VERSIONS}")
+    LATEST_VERSION=$(grep "^[v]*${LATEST_VERSION}$" <<< "${VERSIONS}" | tail -n 1)
 
     [ -z "${LATEST_VERSION}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq -r '.[0].version_number')
 

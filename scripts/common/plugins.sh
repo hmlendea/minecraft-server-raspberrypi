@@ -170,15 +170,23 @@ function download_plugin() {
     local PLUGIN_NAME="${2}"
     local PLUGIN_VERSION="${3}"
     local PLUGIN_FILE_NAME="${PLUGIN_NAME}-${PLUGIN_VERSION}.jar"
+    local PLUGIN_FILE_TEMP_PATH="${SERVER_PLUGINS_TEMP_DIR}/${PLUGIN_FILE_NAME}"
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
-    #if [ -f "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar" ]; then
-    if ls "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar' 1> /dev/null 2>&1; then
-        sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar'
-    fi
+    [ -f "${PLUGIN_FILE_PATH}" ] && return
+    [ ! -d "${SERVER_PLUGINS_TEMP_DIR}" ] && sudo mkdir -p "${SERVER_PLUGINS_TEMP_DIR}"
 
-    download_file "${ASSET_URL}" "${PLUGIN_FILE_PATH}"
-    sudo chmod +x "${PLUGIN_FILE_PATH}"
+    download_file "${ASSET_URL}" "${PLUGIN_FILE_TEMP_PATH}"
+
+    if [ -f "${PLUGIN_FILE_TEMP_PATH}" ]; then
+        if ls "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar' 1> /dev/null 2>&1; then
+            sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar'
+        fi
+
+        sudo mv "${PLUGIN_FILE_TEMP_PATH}" "${PLUGIN_FILE_PATH}"
+        sudo chown papermc:papermc "${PLUGIN_FILE_PATH}"
+        sudo chmod +x "${PLUGIN_FILE_PATH}"
+    fi
 }
 
 function update_datapack() {
@@ -206,9 +214,9 @@ function update_plugin() {
     [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
 
     echo "Checking for updates for plugin '${PLUGIN_NAME}'..."
-    if [[ ${URL} == *"github"* ]]; then
+    if [[ ${URL} == *'github'* ]]; then
         update_plugin_github "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
-    elif [[ ${URL} == *"modrinth"* ]]; then
+    elif [[ ${URL} == *'modrinth'* ]]; then
         update_plugin_modrinth "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
     else
         update_plugin_jenkins "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
