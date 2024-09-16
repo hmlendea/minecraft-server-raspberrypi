@@ -52,6 +52,7 @@ else
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
     update_plugin 'HeadDB'                      'https://github.com/thesilentpro/headdb'                    '%pluginName%.jar'
+    update_plugin 'HealthHider'                 'https://github.com/NoahvdAa/HealthHider'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'ImageMaps'                   'https://github.com/SydMontague/ImageMaps'                  '%pluginName%.jar'
     update_plugin 'InteractionVisualizer'       'https://ci.loohpjames.com'                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'InvSee++'                    'https://github.com/Jannyboy11/InvSee-plus-plus'            '%pluginName%.jar'
@@ -60,7 +61,8 @@ else
     update_plugin 'MiniMOTD'                    "https://github.com/jpenilla/MiniMOTD"                      "minimotd-bukkit-%pluginVersion%.jar"
     update_plugin 'NerdFlags'                   'https://github.com/NerdNu/NerdFlags'                       '%pluginName%-%pluginVersion%.jar'
     update_plugin 'NuVotifier'                  "https://github.com/NuVotifier/NuVotifier"                  "%pluginName%.jar"
-    update_plugin 'OldCombatMechanics'          "https://github.com/kernitus/BukkitOldCombatMechanics"      "%pluginName%.jar"
+    update_plugin 'OldCombatMechanics'          'https://github.com/kernitus/BukkitOldCombatMechanics'      "%pluginName%.jar"
+    update_plugin 'Orebfuscator'                'https://github.com/Imprex-Development/orebfuscator'        'orebfuscator-plugin-%pluginVersion%.jar'
     update_plugin 'PaperTweaks'                 "https://github.com/MC-Machinations/VanillaTweaks"          "%pluginName%.jar"
     update_plugin 'Pl3xMap'                     "https://modrinth.com/plugin/pl3xmap"                       "%pluginName%-%pluginVersion%.jar"
     update_plugin 'Pl3xMap-Claims'              "https://modrinth.com/plugin/pl3xmap-claims"                "%pluginName%-%pluginVersion%.jar"

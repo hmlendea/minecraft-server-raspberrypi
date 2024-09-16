@@ -1,13 +1,48 @@
 #!/bin/bash
-source "/srv/papermc/scripts/common/paths.sh"
+source '/srv/papermc/scripts/common/paths.sh'
+source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
+WORLDGUARD_DIR="$(get_plugin_dir WorldGuard)"
+
+REGIONS_BACKUP_FILE_NAME='regions.bak.yml'
+REGIONS_TEMPORARY_FILE_NAME='regions.tmp.yml'
+REGIONS_FILE_NAME='regions.yml'
+
+function get_region_ids() {
+    local WORLD_NAME="${1}"
+
+    [ -z "${WORLD_NAME}" ] && WORLD_NAME='world'
+    local REGIONS_FILE="${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}"
+
+    grep '^    [a-z][a-z0-9_-]*:$' "${REGIONS_FILE}" | \
+        sed 's/^\s*\(.*\):$/\1/g' | \
+        sort -h | uniq
+}
+
+function get_region_config() {
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+    local CONFIG_KEY="${3}"
+
+#    CONFIG_KEY=$(sed 's/^\.//g' <<< "${CONFIG_KEY}")
+
+    [ -z "${WORLD_NAME}" ] && WORLD_NAME='world'
+    local REGIONS_FILE="${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}"
+
+    get_config_value "${REGIONS_FILE}" "regions.${REGION_ID}.${CONFIG_KEY}"
+}
 
 function does_region_exist() {
-    local REGION_ID="${1}"
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+
+    [ -z "${WORLD_NAME}" ] && WORLD_NAME='world'
+    local REGIONS_FILE="${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/regions.yml"
     
-    grep -q "^\s*${REGION_ID}:" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && return 0
+    grep -q "^\s*${REGION_ID}:" "${REGIONS_FILE}" && return 0
     return 1
 }
 
@@ -31,34 +66,48 @@ function get_regions_by_pattern() {
         sed 's/\s*\(.*\):$/\1/g'
 }
 
-function set_region_flag() {
-    local REGION_ID="${1}"
-    local FLAG="${2}"
-    local VALUE="${3}"
+function set_region_bossbar() {
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+    local REGION_NAME="${3}"
+    local REGION_COLOUR="${COLOUR_SETTLEMENT_ALPHANUMERIC}"
 
-    if ! does_region_exist "${REGION_ID}"; then
+    ! is_plugin_installed 'RegionBossbar' && return
+
+    apply_yml_config "$(get_plugin_file RegionBossbar config)" 'del(.bossbars[] | select(.regionName == "'"${REGION_NAME}"'"))'
+    apply_yml_config "$(get_plugin_file RegionBossbar config)" '.bossbars += [{color: "'"${REGION_COLOUR}"'", name: "'"${REGION_NAME}"'", regionName: "'"${REGION_ID}"'", style: "SOLID"}]'
+}
+
+function set_region_flag() {
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+    local FLAG="${3}"
+    local VALUE="${4}"
+
+    if ! does_region_exist "${WORLD_NAME}" "${REGION_ID}"; then
         echo "ERROR: The '${REGION_ID}' region does not exist!"
         return
     fi
     
-    [[ "${VALUE}" == "false" ]] && VALUE="deny"
-    [[ "${VALUE}" == "true" ]] && VALUE="allow"
+    [ "${VALUE}" = 'false' ] && VALUE='deny'
+    [ "${VALUE}" = 'true' ] && VALUE='allow'
 #    [[ "${VALUE}" == *"&"* ]] && VALUE=$(echo "${VALUE}" | sed 's/&//g')
 
-    set_config_value "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "regions.${REGION_ID}.flags.${FLAG}" "${VALUE}"
+    set_config_value "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}" "regions.${REGION_ID}.flags.${FLAG}" "${VALUE}"
 #    run_server_command "region flag -w ${WORLD_NAME} ${REGION_ID} ${FLAG} ${VALUE}"
 }
 
 function set_region_priority() {
-    local REGION_ID="${1}"
-    local PRIORITY="${2}"
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+    local PRIORITY="${3}"
 
-    if ! does_region_exist "${REGION_ID}"; then
+    if ! does_region_exist "${WORLD_NAME}" "${REGION_ID}"; then
         echo "ERROR: The '${REGION_ID}' region does not exist!"
         return
     fi
 
-    set_config_value "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "regions.${REGION_ID}.priority" "${PRIORITY}"
+    set_config_value "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}" "regions.${REGION_ID}.priority" "${PRIORITY}"
 }
 
 function get_region_colour() {
@@ -100,6 +149,7 @@ function set_deny_message() {
     local REGION_TYPE="${2}"
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
+    local WORLD_NAME='world'
 
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
@@ -107,21 +157,21 @@ function set_deny_message() {
     local COLOUR_REGION="$(get_region_colour ${REGION_TYPE_ID})"
     local COLOUR_ZONE="$(get_zone_colour ${REGION_TYPE_ID})"
 
-    if [[ "${LOCALE}" == "ro" ]]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} Nu poți face asta \(${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE}\) în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t ${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "deny-message" "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t f${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-message' "$(get_formatted_message error ${REGION_TYPE_ID} You can\'t f${COLOUR_HIGHLIGHT}%what%${COLOUR_MESSAGE} in the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -131,6 +181,7 @@ function set_teleport_message() {
     local REGION_TYPE="${2}"
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
+    local WORLD_NAME='world'
 
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="teleport"
@@ -140,19 +191,19 @@ function set_teleport_message() {
 
     if [ "${LOCALE}" = 'ro' ]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Te-ai teleportat la ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "teleport-message" "$(get_formatted_message success teleport Teleported to the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -162,6 +213,7 @@ function set_farewell_message() {
     local REGION_TYPE="${2}"
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
+    local WORLD_NAME='world'
 
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
@@ -171,19 +223,19 @@ function set_farewell_message() {
 
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} Ai ieșit din ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "farewell" "$(get_formatted_message info ${REGION_TYPE_ID} You left the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -193,6 +245,7 @@ function set_greeting_message() {
     local REGION_TYPE="${2}"
     local REGION_NAME="${3}"
     local ZONE_NAME="${4}"
+    local WORLD_NAME='world'
 
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="${REGION_TYPE}"
     [ -z "${REGION_TYPE_ID}" ] && REGION_TYPE_ID="other"
@@ -202,19 +255,19 @@ function set_greeting_message() {
     
     if [[ "${LOCALE}" == "ro" ]]; then
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} Ai intrat în ${REGION_TYPE} ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} din ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     else
         if string_is_null_or_whitespace "${REGION_TYPE}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         elif string_is_null_or_whitespace "${REGION_NAME}"; then
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${COLOUR_REGION}${REGION_TYPE}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         else
-            set_region_flag "${REGION_ID}" "greeting" "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' "$(get_formatted_message info ${REGION_TYPE_ID} You entered the ${REGION_TYPE} of ${COLOUR_REGION}${REGION_NAME}${COLOUR_MESSAGE} in ${COLOUR_ZONE}${ZONE_NAME})"
         fi
     fi
 }
@@ -288,8 +341,8 @@ function set_region_messages() {
     if ${USE_GREETINGS}; then
         set_greeting_messages "${REGION_ID}" "${REGION_TYPE}" "${REGION_NAME}" "${ZONE_NAME}"
     else
-        set_region_flag "${REGION_ID}" "greeting" ""
-        set_region_flag "${REGION_ID}" "farewell" ""
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' ""
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'farewell' ""
     fi
 }
 
@@ -313,11 +366,13 @@ function set_location_region_settings_by_id() {
     local LOCATION_NAME="${3}"
     local ZONE_NAME="${4}"
 
-    set_region_flag "${REGION_ID}" "deny-spawn" "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+    local WORLD_NAME='world'
 
-    #set_region_flag "${REGION_ID}" "ride" true
-    #set_region_flag "${REGION_ID}" "vehicle-destroy" true
-    #set_region_flag "${REGION_ID}" "vehicle-place" true
+    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+
+    #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'ride' true
+    #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-destroy' true
+    #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-place' true
 
     if [ -n "${LOCATION_NAME}" ]; then
         set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
@@ -325,7 +380,7 @@ function set_location_region_settings_by_id() {
         set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}" --quiet
     fi
 
-    set_region_priority "${REGION_ID}" 10
+    set_region_priority "${WORLD_NAME}" "${REGION_ID}" 10
 }
 
 function set_settlement_region_settings() {
@@ -334,10 +389,11 @@ function set_settlement_region_settings() {
     local COUNTRY_NAME="${3}"
     local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")
 
-    echo "${SETTLEMENT_NAME}"
+    set_region_bossbar "${WORLDNAME}" "${SETTLEMENT_ID}" "${SETTLEMENT_NAME}"
 
-    set_region_flag "${SETTLEMENT_ID}" "frost-walker" false
-    #set_region_flag "${SETTLEMENT_ID}" "interact" true
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'frostwalker' false
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'sculk-growth' false
+    #set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
     set_building_settings "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
@@ -436,14 +492,16 @@ function set_building_settings() {
     local BUILDING_NAME_RO="${4}"
     local REGION_PRIORITY=20
 
+    local WORLD_NAME='world'
+
     local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")
     local REGION_ID="${SETTLEMENT_ID}_${BUILDING_ID}"
 
-    ! does_region_exist "${REGION_ID}" && return
+    ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
 
     if [[ "${BUILDING_ID}" == "mall" ]]; then
         for ((I=1; I<=50; I++)); do
-            ! does_region_exist "${SETTLEMENT_ID}_mall_shop${I}" && break
+            ! does_region_exist "${WORLD_NAME}" "${SETTLEMENT_ID}_mall_shop${I}" && break
             set_building_settings "${SETTLEMENT_NAME}" "${BUILDING_ID}_shop${I}" "Mall Shop #${I}" "Magazinul #${I} din Mall"
         done
     fi
@@ -458,37 +516,44 @@ function set_building_settings() {
         REGION_PRIORITY=30
 
         if [[ "${REGION_ID}" == *_ring ]]; then
-            set_region_flag "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
-            set_region_flag "${REGION_ID}" "enderpearl" false
-            set_region_flag "${REGION_ID}" "chorus-fruit-teleport" false
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'exit-via-teleport' true
+#            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "enderpearl" false
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "chorus-fruit-teleport" false
+
             REGION_PRIORITY=35
 
-            [[ "${REGION_ID}" == *_deathcube_* ]] && set_region_flag "${REGION_ID}" 'fall-damage' false
-            [[ "${REGION_ID}" == *_pvp_* ]] && set_region_flag "${REGION_ID}" 'pvp' true
+            [[ "${REGION_ID}" == *_deathcube_* ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'fall-damage' false
+
+            if [[ "${REGION_ID}" == *_pvp_* ]]; then
+                set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'keep-exp' true
+                set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'keep-inventory' true
+                set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'pvp' true
+            fi
         fi
     fi
 
     if [[ "${REGION_ID}" == *_bank* ]]; then
         REGION_PRIORITY=30
-        set_region_flag "${REGION_ID}" 'allow-shop' true
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
     fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
-        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
-        [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
-        [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
+        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
+        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
+        [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
+        [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
     fi
 
     if [[ "${REGION_ID}" == *_hospital ]]; then
-        set_region_flag "${REGION_ID}" "heal-amount" 1
-        set_region_flag "${REGION_ID}" "heal-delay" 1
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'heal-amount' 1
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'heal-delay' 1
     fi
 
     if [[ "${REGION_ID}" == *_mall_shop* ]]; then
         REGION_PRIORITY=30
-        set_region_flag "${REGION_ID}" 'allow-shop' true
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
     fi
 
     if [[ "${REGION_ID}" == *_square ]]; then
@@ -496,28 +561,30 @@ function set_building_settings() {
     fi
 
     if [[ "${REGION_ID}" == *_subway ]]; then
-        set_region_flag "${REGION_ID}" "feed-amount" 1
-        set_region_flag "${REGION_ID}" "feed-delay" 1
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'feed-amount' 1
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'feed-delay' 1
     fi
     
     if [[ "${REGION_ID}" == *_warehouse ]]; then
-        #set_region_flag "${REGION_ID}" "item-drop" false
-        set_region_flag "${REGION_ID}" "item-frame-rotation" false
+        #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'item-drop' false
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'item-frame-rotation' false
     fi
 
-    set_region_priority "${REGION_ID}" ${REGION_PRIORITY}
+    set_region_priority "${WORLD_NAME}" "${REGION_ID}" ${REGION_PRIORITY}
 }
 
 function set_player_region_settings() {
     local ZONE_NAME="${1}" && shift
     local MAIN_PLAYER_NAME="${1}" && shift
 
+    local WORLD_NAME='world'
+
     local ZONE_ID=$(region_name_to_id "${ZONE_NAME}") 
 
     local PLAYER_REGION_ID=$(region_name_to_id "${MAIN_PLAYER_NAME}")
     local REGION_ID="${ZONE_ID}_player_${PLAYER_REGION_ID}"
 
-    ! does_region_exist "${REGION_ID}" && return
+    ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
 
     local PLAYER_NAMES="${MAIN_PLAYER_NAME}"
 
@@ -531,16 +598,16 @@ function set_player_region_settings() {
     else
         set_region_messages "${REGION_ID}" "player_home" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
 
-        if does_region_exist "${REGION_ID}_lake"; then
+        if does_region_exist "${WORLD_NAME}" "${REGION_ID}_lake"; then
             set_region_messages "${REGION_ID}_lake" "player_home_lake" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
-            set_region_priority "${REGION_ID_lake}" 50
+            set_region_priority "${WORLD_NAME}" "${REGION_ID_lake}" 50
         fi
 
-        if does_region_exist "${REGION_ID}_mountain"; then
+        if does_region_exist "${WORLD_NAME}" "${REGION_ID}_mountain"; then
             set_region_messages "${REGION_ID}_mountain" "player_home_mountain" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
-            set_region_priority "${REGION_ID_mountain}" 50
+            set_region_priority "${WORLD_NAME}" "${REGION_ID}_mountain" 50
         fi
     fi
 
-    set_region_priority "${REGION_ID}" 50
+    set_region_priority "${WORLD_NAME}" "${REGION_ID}" 50
 }

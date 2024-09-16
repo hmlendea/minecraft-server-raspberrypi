@@ -9,6 +9,9 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/worldguard.sh"
 
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
+REGIONS_BACKUP_FILE_NAME='regions.bak.yml'
+REGIONS_TEMPORARY_FILE_NAME='regions.tmp.yml'
+REGIONS_FILE_NAME='regions.yml'
 
 ensure_plugin_is_installed "WorldGuard"
 
@@ -16,28 +19,27 @@ function begin_transaction() {
     #trap 'rollback_transaction' SIGINT
     reload_plugin 'WorldGuard'
 
-    sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}.bak"
-    sudo cp "${WORLDGUARD_WORLD_REGIONS_FILE}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"
+    sudo cp "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}" "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_BACKUP_FILE_NAME}"
+    sudo cp "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}" "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}"
     echo ''
 }
 
 function commit_transaction() {
+    sudo cp "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}" "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}"
     sudo cp "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}"
     sudo chown papermc:papermc "${WORLDGUARD_WORLD_REGIONS_FILE}"
 
     reload_plugin 'WorldGuard'
+    reload_plugin 'RegionBossbar'
     exit
 }
 
 function rollback_transaction() {
-    sudo rm "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"
+    sudo rm "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}"
     exit
 }
 
 begin_transaction
-
-set_settlement_region_settings 'settlement_town' 'Kreeztown' 'Nucilandia'
-commit_transaction
 
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'
