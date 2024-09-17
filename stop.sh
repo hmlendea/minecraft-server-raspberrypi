@@ -1,7 +1,7 @@
 #!/bin/bash
 SERVER_ROOT_DIR=$(pwd)
 source "${SERVER_ROOT_DIR}/scripts/common/paths.sh"
-source "${SERVER_ROOT_DIR}/scripts/common/specsq.sh"
+source "${SERVER_ROOT_DIR}/scripts/common/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/status.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
