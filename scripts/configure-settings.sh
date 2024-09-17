@@ -127,6 +127,7 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'entities.spawning.wandering-trader.spawn-day-length'               "${DAY_LENGTH_TICKS}" \
     'entities.spawning.entities.creative-arrow-despawn-rate'            40 \
     'entities.spawning.entities.non-player-arrow-despawn-rate'          40 \
+    'environment.generate-flat-bedrock'                                 true \
     'environment.optimize-explosions'                                   true \
     'environment.treasure-maps.enabled'                                 true \
     'environment.treasure-maps.find-already-discovered.loot-tables'     true \
@@ -225,6 +226,7 @@ if is_plugin_installed 'AuthMe'; then
         'Security.tempban.maxLoginTries' 6 \
         'Security.tempban.minutesBeforeCounterReset' 300 \
         'Security.tempban.tempbanLength' 240 \
+        'settings.delayJoinMessage' false \
         'settings.forceVaultHook' $(is_plugin_installed_bool 'Vault') \
         'settings.restrictions.DenyTabCompletionBeforeLogin' true \
         'settings.restrictions.displayOtherAccounts' false \
@@ -233,8 +235,10 @@ if is_plugin_installed 'AuthMe'; then
         'settings.sessions.enabled' true \
         'settings.sessions.timeout' 960 \
         'settings.messagesLanguage' "${LOCALE}" \
-        'settings.restrictions.teleportUnAuthedToSpawn' false \
+        'settings.registration.forceLoginAfterRegister' true \
         'settings.restrictions.timeout' 60 \
+        'settings.restrictions.timeout' 60 \
+        'settings.security.minPasswordLength' 10 \
         'settings.useAsyncTasks' true \
         'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
 
@@ -244,7 +248,7 @@ if is_plugin_installed 'AuthMe'; then
             'error.denied_command' "${INVALID_COMMAND_MESSAGE}" \
             'error.logged_in' "$(get_formatted_message error auth Ești autentificat deja)" \
             'login.command_usage' "$(get_formatted_message info auth Utilizare: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            'login.login_request' "$(get_formatted_message error auth Trebuie să te autentifici pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'${COLOUR_MESSAGE})" \
+            'login.login_request' "$(get_formatted_message error auth Pentru a putea juca, autentifică-te cu $(get_command_mention /auth ${COLOUR_COMMAND_ARGUMENT}'<Parolă>'))" \
             'login.success' "$(get_formatted_message success auth Te-ai autentificat)" \
             'login.wrong_password' "$(get_formatted_message error auth Parola este greșită)" \
             'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) are $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) username-uri)" \
@@ -252,7 +256,7 @@ if is_plugin_installed 'AuthMe'; then
             'misc.password_changed' "$(get_formatted_message success auth Parola a fost schimbată)" \
             'misc.reload' "$(get_reload_message AuthMe)" \
             'password.match_error' "$(get_formatted_message error auth Parola de confirmare nu se potrivește)" \
-            'registration.register_request' "$(get_formatted_message error auth Trebuie să te înregistrezi pentru a putea juca.\\n${BULLETPOINT_LIST_MARKER}Folosește ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'${COLOUR_MESSAGE})" \
+            'registration.register_request' "$(get_formatted_message error auth Pentru a putea juca, înregistrează-te cu $(get_command_mention /register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'))" \
             'registration.success' "$(get_formatted_message success auth Te-ai înregistrat)" \
             'session.invalid_session' "$(get_formatted_message error auth Sesiunea de autentificare a expirat datorită schimbării adresei IP)" \
             'session.valid_session' "$(get_formatted_message success auth Te-ai autentificat automat de data trecută)"
@@ -262,7 +266,7 @@ if is_plugin_installed 'AuthMe'; then
             'error.denied_command' "${INVALID_COMMAND_MESSAGE}" \
             'error.logged_in' "$(get_formatted_message error auth You are already authenticated)" \
             'login.command_usage' "$(get_formatted_message info auth Usage: ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND}'<Parolă>')" \
-            'login.login_request' "$(get_formatted_message error auth You must authenticate in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'${COLOUR_MESSAGE})" \
+            'login.login_request' "$(get_formatted_message error auth In order to able to play, login using $(get_command_mention /auth ${COLOUR_COMMAND_ARGUMENT}'<Password>'))" \
             'login.success' "$(get_formatted_message success auth You are now authenticated)" \
             'login.wrong_password' "$(get_formatted_message error auth The password is incorrect)" \
             'misc.accounts_owned_other' "$(get_formatted_message info auth $(get_player_mention ${PLACEHOLDER_PLAYER_SINGLEPERCENT}) has $(get_highlighted_message ${PLACEHOLDER_COUNT_SINGLEPERCENT}) usernames)" \
@@ -313,11 +317,12 @@ fi
 
 if is_plugin_installed 'ChestShop'; then
     configure_plugin 'ChestShop' config \
-        'INCLUDE_SETTINGS_IN_METRICS'   "${USE_TELEMETRY}" \
-        'SHIFT_SELLS_IN_STACKS'         true \
-        'TURN_OFF_UPDATES'              "${SKIP_PLUGIN_UPDATE_CHECKS}" \
-        'TURN_OFF_UPDATE_NOTIFIER'      "${SKIP_PLUGIN_UPDATE_CHECKS}" \
-        'TURN_OFF_DEV_UPDATE_NOTIFIER'  "${SKIP_PLUGIN_UPDATE_CHECKS}"
+        'INCLUDE_SETTINGS_IN_METRICS'                           "${USE_TELEMETRY}" \
+        'SHIFT_SELLS_IN_STACKS'                                 true \
+        'TURN_OFF_DEFAULT_PROTECTION_WHEN_PROTECTED_EXTERNALLY' true \
+        'TURN_OFF_UPDATES'                                      "${SKIP_PLUGIN_UPDATE_CHECKS}" \
+        'TURN_OFF_UPDATE_NOTIFIER'                              "${SKIP_PLUGIN_UPDATE_CHECKS}" \
+        'TURN_OFF_DEV_UPDATE_NOTIFIER'                          "${SKIP_PLUGIN_UPDATE_CHECKS}"
         
     configure_plugin 'ChestShop' config \
         'AUTHME_HOOK'                   "$(is_plugin_installed_bool AuthMe)" \
@@ -388,20 +393,22 @@ if is_plugin_installed 'ChestShop'; then
     if is_plugin_installed 'ChestShopNotifier'; then
         configure_plugin 'ChestShopNotifier' config \
             'notifications.notify-on-user-join' true \
-            'history.max-rows' 50 \
+            'history.max-rows' 10 \
             'messages.history-others-not-allowed' "${INVALID_COMMAND_MESSAGE}" \
             'messages.reload-success' "$(get_reload_message ChestShopNotifier)"
 
         if [ "${LOCALE}" = 'ro' ]; then
             configure_plugin 'ChestShopNotifier' config \
-                'messages.history-cmd' "$(get_formatted_message info trade Pentru a vedea istoricul tranzacțiilor, folosește $(get_command_mention /csn history))" \
-                'messages.history-footer-clear' "$(get_formatted_message info trade Pentru a șterge notificările vechi, folosește $(get_command_mention /csn clear))" \
-                'messages.sales' "$(get_formatted_message info trade Ai făcut $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS} tranzacții) de la ultima verificare)"
+                'messages.history-clear' "$(get_formatted_message success trade Istoricul tranzacțiilor a fost golit)" \
+                'messages.history-cmd' "$(get_formatted_message info trade Verifică istoricul tranzacțiilor cu $(get_command_mention /csn history))" \
+                'messages.history-footer-clear' "$(get_formatted_message info trade Poți să îl golești cu $(get_command_mention /csn clear))" \
+                'messages.sales' "$(get_formatted_message info trade În magazinul tău s-au efectuat $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS} tranzacții) de când ai ieșit)"
         else
             configure_plugin 'ChestShopNotifier' config \
-                'messages.history-cmd' "$(get_formatted_message info trade To see the trades log, use $(get_command_mention /csn history))" \
-                'messages.history-footer-clear' "$(get_formatted_message info trade To clear the old notifications, use $(get_command_mention /csn clear))" \
-                'messages.sales' "$(get_formatted_message info trade You made $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS} trades) since you last checked)"
+                'messages.history-clear' "$(get_formatted_message success trade Your transaction log has been cleared)" \
+                'messages.history-cmd' "$(get_formatted_message info trade See the trades log using $(get_command_mention /csn history))" \
+                'messages.history-footer-clear' "$(get_formatted_message info trade You can clear it by using $(get_command_mention /csn clear))" \
+                'messages.sales' "$(get_formatted_message info trade Your shop made $(get_highlighted_message ${PLACEHOLDER_SALES_BRACKETS}) trades since you last checked)"
         fi
     fi
 fi
@@ -602,17 +609,18 @@ if is_plugin_installed 'EssentialsX'; then
 
     for LANGUAGE in 'en' 'ro'; do
         configure_plugin 'EssentialsX' "${ESSENTIALS_DIR}/messages/messages_${LANGUAGE}.properties" \
-            'errorWithMessage'              "${PLACEHOLDER_ARG0}" \
-            "noAccessCommand"               "${INVALID_COMMAND_MINIMESSAGE}" \
-            "noPerm"                        "${INVALID_COMMAND_MINIMESSAGE}" \
-            'orderBalances'                 '' \
-            'vanished'                      '' \
-            'whoisAFK'                      "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}AFK: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'whoisIPAddress'                "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}IP: $(get_highlighted_message ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}))" \
-            'youAreHealed'                  ''
+            'balanceTopLine'    "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER} $(get_obscured_message ${PLACEHOLDER_ARG0}) $(get_player_mention ${PLACEHOLDER_ARG1}) ${PLACEHOLDER_ARG2})" \
+            'errorWithMessage'  "${PLACEHOLDER_ARG0}" \
+            "noAccessCommand"   "${INVALID_COMMAND_MINIMESSAGE}" \
+            "noPerm"            "${INVALID_COMMAND_MINIMESSAGE}" \
+            'orderBalances'     '' \
+            'vanished'          '' \
+            'whoisAFK'          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}AFK: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+            'whoisIPAddress'    "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}IP: $(get_highlighted_message ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0}))" \
+            'youAreHealed'      ''
     done
 
-    if [ "${LOCALE}" == "ro" ]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin "EssentialsX" config \
             "custom-quit-message"           "$(get_action_message ${PLACEHOLDER_PLAYER} a ieșit din joc)" \
             "newbies.announce-format"       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
@@ -622,11 +630,12 @@ if is_plugin_installed 'EssentialsX'; then
             'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})" \
             'addedToAccount'                    "$(get_formatted_message_minimessage info money Ți s-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în cont)" \
             'addedToOthersAccount'              "$(get_formatted_message_minimessage info money S-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'backAfterDeath'                    "$(get_formatted_message_minimessage info teleport Folosește ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}pentru a te întoarce unde ai murit)" \
+            'backAfterDeath'                    "$(get_formatted_message_minimessage info teleport Te poți întoarce unde ai murit cu $(get_command_mention /back))" \
             'backOther'                         "$(get_formatted_message_minimessage success teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
             'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Te-ai întors la locația anterioară)" \
             'balance'                           "$(get_formatted_message_minimessage info money Ai în cont $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) are în cont $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'balanceTop'                        "$(get_formatted_message_minimessage info money Top cei mai bogați jucători: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
             'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             'createdKit'                        "$(get_formatted_message_minimessage success kit Created kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) with $(get_highlighted_message ${PLACEHOLDER_ARG1} items) and a delay of $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
@@ -662,7 +671,7 @@ if is_plugin_installed 'EssentialsX'; then
             'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
-            'moneyReceivedFrom'                 "$(get_formatted_message_minimessage info money Ai primit $(get_highlighted_message ${PLACEHOLDER_ARG0}) de la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money Ai primit $(get_highlighted_message ${PLACEHOLDER_ARG0}) de la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'moneySentTo'                       "$(get_formatted_message_minimessage success money Ai trimis $(get_highlighted_message ${PLACEHOLDER_ARG0}) la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
             'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
@@ -672,6 +681,7 @@ if is_plugin_installed 'EssentialsX'; then
             'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
             'playtime'                          "$(get_formatted_message_minimessage info inspect Ai petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
             'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) a petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
+            'readNextPage'                      "$(get_formatted_message_minimessage info info Poți citi următoarea pagină cu $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
             'requestAccepted'                   "$(get_formatted_message_minimessage success player Cererea de teleportare a fost acceptată)" \
             'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) a acceptat cererea de telportare)" \
             'requestDenied'                     "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
@@ -684,9 +694,10 @@ if is_plugin_installed 'EssentialsX'; then
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Asociat cu: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+            'serverTotal'                       "$(get_formatted_message_minimessage info money În economia server-ului $(get_highlighted_message ${SERVER_NAME}) circulă un total $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'setBal'                            "$(get_formatted_message_minimessage success money Contul tău bancar a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'setBalOthers'                      "$(get_formatted_message_minimessage success money Contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_mention ${PLACEHOLDER_ARG1}))" \
             'takenFromAccount'                  "$(get_formatted_message_minimessage info money Ți s-a retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din cont)" \
             'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money S-a retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
@@ -705,10 +716,11 @@ if is_plugin_installed 'EssentialsX'; then
             'timeWorldSet'                      "$(get_formatted_message_minimessage success time Timpul în $(get_highlighted_message ${PLACEHOLDER_ARG1}) este acum $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Te-ai teleportat la o locație aleatorie)" \
             'true'                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}da${COLOUR_MESSAGE})" \
-            'typeTpacancel'                     "$(get_formatted_message_minimessage info player Pentru a o anula, folosește ${COLOUR_COMMAND}/tpacancel)" \
-            'typeTpaccept'                      "$(get_formatted_message_minimessage info player Pentru a o aproba, folosește ${COLOUR_COMMAND}/tpyes)" \
-            'typeTpdeny'                        "$(get_formatted_message_minimessage info player Pentru a o respinge, folosește ${COLOUR_COMMAND}/tpno)" \
+            'typeTpacancel'                     "$(get_formatted_message_minimessage info player O poți anula cu $(get_command_mention /tpacancel))" \
+            'typeTpaccept'                      "$(get_formatted_message_minimessage info player O poți aproba cu $(get_command_mention /tpyes))" \
+            'typeTpdeny'                        "$(get_formatted_message_minimessage info player O poți respinge cu $(get_command_mention /tpno))" \
             'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Destinația aleasă pentru teleportare nu poate să fie setată deoarece nu este sigură)" \
+            'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player Modul AFK a fost $(get_enablement_message activat))" \
             'vanish'                            "$(get_formatted_message_minimessage success gamemode Modul invizibil $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message mers))" \
             'warpingTo'                         "$(get_formatted_message_minimessage success warp Te-ai teleportat la $(get_location_mention ${PLACEHOLDER_ARG0}))" \
@@ -752,17 +764,18 @@ if is_plugin_installed 'EssentialsX'; then
             'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
             'balance'                           "$(get_formatted_message_minimessage info money You have $(get_highlighted_message ${PLACEHOLDER_ARG0}) in your bank account)" \
             'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
-            "broadcast"                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
+            'balanceTop'                        "$(get_formatted_message_minimessage info money Top richest players: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
+            'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
             'createdKit'                        "$(get_formatted_message_minimessage success kit A fost creat kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}) cu $(get_highlighted_message ${PLACEHOLDER_ARG1} obiecte) și timp de așteptare de $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
             'deleteHome'                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
             'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) has been deleted)" \
             'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been applied)" \
             'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment is not valid)" \
             'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been removed)" \
-            "essentialsReload"                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
-            "false"                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
+            'essentialsReload'                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
             'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message flight))" \
-            "flyMode"                           "$(get_formatted_message_minimessage success movement Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'flyMode'                           "$(get_formatted_message_minimessage success movement Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'gameMode'                          "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_status disabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_status enabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
@@ -786,7 +799,7 @@ if is_plugin_installed 'EssentialsX'; then
             "listAmount"                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
             "meRecipient"                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             "meSender"                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
-            'moneyReceivedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+            'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'moneySentTo'                       "$(get_formatted_message_minimessage success money You sent $(get_highlighted_message ${PLACEHOLDER_ARG0}) to $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})\'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
@@ -797,6 +810,7 @@ if is_plugin_installed 'EssentialsX'; then
             'playerNotFound'                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
             'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
             'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on ${COLOUR_HIGHLIGHT}${SERVER_NAME})" \
+            'readNextPage'                      "$(get_formatted_message_minimessage info info You can read the next page using $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
             "requestAccepted"                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
             "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
             "requestDenied"                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
@@ -808,9 +822,10 @@ if is_plugin_installed 'EssentialsX'; then
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             "seenOffline"                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+            'serverTotal'                       "$(get_formatted_message_minimessage info money There is a total of $(get_highlighted_message ${PLACEHOLDER_ARG0}) circulating in the $(get_highlighted_message ${SERVER_NAME}) server's economy)" \
             'setBal'                            "$(get_formatted_message_minimessage success money Your bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'setBalOthers'                      "$(get_formatted_message_minimessage success money $(get_player_mention ${PLACEHOLDER_ARG0})\'s bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_menton ${PLACEHOLDER_ARG1}))" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_mention ${PLACEHOLDER_ARG1}))" \
             'takenFromAccount'                  "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from your bank account)" \
             'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
@@ -833,6 +848,7 @@ if is_plugin_installed 'EssentialsX'; then
             "typeTpaccept"                      "$(get_formatted_message_minimessage info player To approve it, use $(get_command_mention /tpyes))" \
             'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
             'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport The chosen teleportation target could not be set because it is not safe)" \
+            'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player The AFK mode was $(get_enablement_message enabled))" \
             'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message walk))" \
             'warpingTo'                         "$(get_formatted_message_minimessage success warp Teleported to $(get_location_mention ${PLACEHOLDER_ARG0}))" \
@@ -858,9 +874,12 @@ if is_plugin_installed 'EssentialsX'; then
             "whoisOp"                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "whoisPlaytime"                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Time spent in-game: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
             "whoisSpeed"                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Speed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "whoisUuid"                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
+            'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     fi
 fi
+
+configure_plugin 'GrimAC' config \
+    'exploit.allow-sprint-jumping-when-using-elytra' false
 
 if is_plugin_installed 'GSit'; then
     configure_plugin 'GSit' config \
@@ -882,6 +901,9 @@ if is_plugin_installed 'GSit'; then
             'Messages.command-gsit-playertoggle-on'  "$(get_formatted_message_minimessage info player The physical interactions with other players have been $(get_enablement_message enabled))"
     fi
 fi
+
+configure_plugin 'HealthHider' config \
+    'enable-bypass-permission' true
 
 configure_plugin 'InteractionVisualizer' config \
     'Messages.NoPermission' "${INVALID_COMMAND_MESSAGE}" \
@@ -976,7 +998,7 @@ if is_plugin_installed 'OldCombatMechanics'; then
             'disable-offhand.denied-message' "$(get_formatted_message error combat Modul de luptă actual nu permite obiecte în mâna stângă)" \
             'mode-messages.invalid-modeset' "$(get_formatted_message error combat Modul de luptă specificat nu este valid)" \
             'mode-messages.invalid-player' "$(get_formatted_message error combat Jucătorul specificat nu este valid)" \
-            'mode-messages.message-usage' "$(get_formatted_message info combat Îți poți schimba modul de luptă folosind ${COLOUR_COMMAND}/ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mod>' [Jucător])" \
+            'mode-messages.message-usage' "$(get_formatted_message info combat Poți schimba modul de luptă cu $(get_command_mention /ocm mode ${COLOUR_COMMAND_ARGUMENT}'<Mod>' [Jucător]))" \
             'mode-messages.mode-set' "$(get_formatted_message error combat Modul de luptă a fost schimbat la ${COLOUR_HIGHLIGHT}%s)" \
             'mode-messages.mode-status' "$(get_formatted_message info combat Modul de luptă actual: ${COLOUR_HIGHLIGHT}%s)" \
             'old-golden-apples.message-enchanted' "$(get_formatted_message error combat Așteaptă $(get_highlighted_message ${PLACEHOLDER_SECONDS_PERCENT}) înainte să mănânci alt ${COLOUR_PINK}Măr Auriu Fermecat)" \
@@ -994,9 +1016,22 @@ if is_plugin_installed 'OldCombatMechanics'; then
     fi
 fi
 
+configure_plugin 'OreAnnouncer' config \
+    'oreannouncer.updates.check'    "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'oreannouncer.updates.warn'     "${CHECK_PLUGINS_FOR_UPDATES}"
+
+configure_plugin 'Orebfuscator' config \
+    'general.checkForUpdates' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'general.updateOnBlockDamage' false \
+    'general.bypassNotification' false \
+    'general.ignoreSpectator' true \
+    'obfuscation.obfuscation-end.enabled' false \
+    'obfuscation.obfuscation-overworld.maxY' '64' \
+    'obfuscation.obfuscation-overworld.minY' '-64' \
+    'obfuscation.obfuscation-overworld.enabled' true
 
 if is_plugin_installed 'PaperTweaks'; then
-    set_config_values config \
+    configure_plugin 'PaperTweaks' config \
         'enable-bstats' false
     
     set_config_values "${PAPERTWEAKS_MODULES_FILE}" \
@@ -1111,6 +1146,10 @@ if is_plugin_installed 'Pl3xmap'; then
         "world-settings.default.map.zoom.max-out" 1
 fi
 
+configure_plugin 'RegionBossbar' config \
+    'noPermission' "${INVALID_COMMAND_MESSAGE}" \
+    'reloadMessage' "$(get_reload_message RegionBossbar)"
+
 if is_plugin_installed 'SkinsRestorer'; then
     configure_plugin 'SkinsRestorer' config \
         'commands.perSkinPermissionConsent' 'I will follow the rules' \
@@ -1193,6 +1232,7 @@ if is_plugin_installed 'ToolStats'; then
     configure_plugin 'ToolStats' config \
         'date-format' 'dd/MM/yyyy' \
         'enabled.dropped-by' false \
+        'enabled.flight-time' false \
         'enabled.spawned-in.armor' false \
         'enabled.spawned-in.axe' false \
         'enabled.spawned-in.bow' false \
@@ -1336,6 +1376,9 @@ if is_plugin_installed 'TreeAssist'; then
     fi
 fi
 
+configure_plugin 'Updater' config \
+    'disable'   "${SKIP_PLUGINS_FOR_UPDATES}"
+
 configure_plugin 'VanillaMessagesFormatter' config \
     'formats.error.prefix' "<${COLOUR_ERROR_HEX}>$(get_symbol_by_category error error)</${COLOUR_ERROR_HEX}> " \
     'formats.error.primaryColor' "${COLOUR_MESSAGE_HEX}" \
@@ -1413,8 +1456,10 @@ fi
 
 if is_plugin_installed 'FastAsyncWorldEdit'; then
     configure_plugin 'FastAsyncWorldEdit' config \
-        'enabled-components.update-notifications' false \
+        'enabled-components.update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
+        'history.use-database' false \
         'max-memory-percent' 85 \
+        'region-restrictions' true \
         'queue.parallel-threads' "${CPU_THREADS_HALF}" \
         'queue.target-size' $((CPU_THREADS_HALF * 5))
 
@@ -1498,12 +1543,12 @@ if is_plugin_installed 'WorldEditSUI'; then
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'WorldEditSUI' messages \
-            'particlesHidden' "$(get_formatted_message info worldedit Cadrul de selecție $(get_enablement_message dezactivate))" \
-            'particlesShown' "$(get_formatted_message info worldedit Cadrul de selecție $(get_enablement_message activate))"
+            'particlesHidden' "$(get_formatted_message info worldedit Cadrul de selecție a fost $(get_enablement_message dezactivate))" \
+            'particlesShown' "$(get_formatted_message info worldedit Cadrul de selecție a fost $(get_enablement_message activate))"
     else
         configure_plugin 'WorldEditSUI' messages \
-            'particlesHidden' "$(get_formatted_message info worldedit Selection box $(get_enablement_message disabled))" \
-            'particlesShown' "$(get_formatted_message info worldedit Selection box $(get_enablement_message enabled))"
+            'particlesHidden' "$(get_formatted_message info worldedit The selection box was $(get_enablement_message disabled))" \
+            'particlesShown' "$(get_formatted_message info worldedit The selection box was $(get_enablement_message enabled))"
     fi
 fi
 

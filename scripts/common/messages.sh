@@ -287,6 +287,7 @@ function convert_message_to_minimessage() {
         -e 's/'"${COLOUR_GREEN_DARK}"'/'"${COLOUR_GREEN_DARK_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_GREEN_LIGHT}"'/'"${COLOUR_GREEN_LIGHT_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_GREY}"'/'"${COLOUR_GREY_MINIMESSAGE}"'/g' \
+        -e 's/'"${COLOUR_GREY_DARK}"'/'"${COLOUR_GREY_DARK_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_ORANGE}"'/'"${COLOUR_ORANGE_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_PINK}"'/'"${COLOUR_PINK_MINIMESSAGE}"'/g' \
         -e 's/'"${COLOUR_PURPLE_DARK}"'/'"${COLOUR_PURPLE_DARK_MINIMESSAGE}"'/g' \
