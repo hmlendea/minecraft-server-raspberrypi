@@ -179,6 +179,50 @@ function get_reloading_message_minimessage() {
     echo $(convert_message_to_minimessage $(get_reloading_message "${PLUGIN_NAME}"))
 }
 
+function get_plugin_enablement_message() {
+    local PLUGIN_NAME="${1}"
+    local STATUS="${2}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        if [[ "${STATUS}" == disab* ]]; then
+            get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN_NAME}) a fost $(get_enablement_message dezactivat)"
+        elif [[ "${STATUS}" == enab* ]]; then
+            get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN_NAME}) a fost $(get_enablement_message activat)"
+        fi
+    else
+        if [[ "${STATUS}" == disab* ]]; then
+            get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN_NAME}) was $(get_enablement_message disabled)"
+        elif [[ "${STATUS}" == enab* ]]; then
+            get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN_NAME}) was $(get_enablement_message enabled)"
+        fi
+    fi
+}
+
+function get_plugin_enablement_minimessage() {
+    local PLUGIN_NAME="${1}"
+    local STATUS="${2}"
+
+    echo $(convert_message_to_minimessage $(get_plugin_enablement_message "${PLUGIN_NAME}" "${STATUS}"))
+}
+
+function get_plugin_linked_message() {
+    local PLUGIN1_NAME="${1}"
+    local PLUGIN2_NAME="${2}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN1_NAME}) s-a conectat cu $(get_plugin_mention ${PLUGIN2_NAME})"
+    else
+        get_formatted_message success plugin "$(get_plugin_mention ${PLUGIN1_NAME}) connected with $(get_plugin_mention ${PLUGIN2_NAME})"
+    fi
+}
+
+function get_plugin_linked_minimessage() {
+    local PLUGIN1_NAME="${1}"
+    local PLUGIN2_NAME="${2}"
+
+    echo $(convert_message_to_minimessage $(get_plugin_linked_message "${PLUGIN1_NAME}" "${PLUGIN2_NAME}"))
+}
+
 function get_action_message() {
     local PLAYER_NAME="${1}" && shift
     local MESSAGE="$(normalise_message ${COLOUR_ACTION} ! ${*})"

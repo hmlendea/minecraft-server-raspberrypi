@@ -33,11 +33,13 @@ else
     update_datapack 'qraftyUndergroundVillages' 'https://modrinth.com/datapack/qraftys-bunkers'
     update_datapack 'VanillaStructureUpdate'    'https://modrinth.com/datapack/vanilla-structure-update'
 
+    update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
     update_plugin 'AnnouncerPlus'               'https://github.com/jpenilla/AnnouncerPlus'                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'AuthMe'                      'https://github.com/AuthMe/AuthMeReloaded'
     update_plugin 'ChestShop-3'                 'https://ci.minebench.de'                                   'ChestShop.jar'
     update_plugin 'ChestShopNotifier'           'https://ci.minebench.de'                                   '%pluginName%.jar'
     update_plugin 'CoreProtect'                 'https://ci.froobworld.com'                                 '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'CustomCommands'              'https://modrinth.com/plugin/custom-commands'               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCrafting'              'https://modrinth.com/plugin/customcrafting'                'customcrafting-spigot-%pluginVersion%.jar'
 #    update_plugin 'DeathMessages'               'https://github.com/Winds-Studio/DeathMessages'             '%pluginName%-%pluginVersion%.jar'
     update_plugin 'DecentHolograms'             'https://github.com/DecentSoftware-eu/DecentHolograms'      '%pluginName%-%pluginVersion%.jar'
@@ -63,6 +65,7 @@ else
     update_plugin 'NuVotifier'                  "https://github.com/NuVotifier/NuVotifier"                  "%pluginName%.jar"
     update_plugin 'OldCombatMechanics'          'https://github.com/kernitus/BukkitOldCombatMechanics'      "%pluginName%.jar"
     update_plugin 'Orebfuscator'                'https://github.com/Imprex-Development/orebfuscator'        'orebfuscator-plugin-%pluginVersion%.jar'
+#    update_plugin 'PacketEvents'                'https://github.com/retrooper/packetevents'                 'packetevents-spigot-%pluginVersion%.jar'
     update_plugin 'PaperTweaks'                 "https://github.com/MC-Machinations/VanillaTweaks"          "%pluginName%.jar"
     update_plugin 'Pl3xMap'                     "https://modrinth.com/plugin/pl3xmap"                       "%pluginName%-%pluginVersion%.jar"
     update_plugin 'Pl3xMap-Claims'              "https://modrinth.com/plugin/pl3xmap-claims"                "%pluginName%-%pluginVersion%.jar"

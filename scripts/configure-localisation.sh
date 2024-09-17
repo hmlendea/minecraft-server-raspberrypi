@@ -55,7 +55,9 @@ PLACEHOLDER_USERNAME_PERCENT='%username%'
 if [ "${LOCALE}" = 'ro' ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
     INVALID_ACTION_MESSAGE="$(get_formatted_message error command Nu se poate efectua)"
+    DISCONNECTED_MESSAGE='Conexiunea a fost întreruptă'
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a intrat în joc)"
+    QUIT_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} a ieșit din joc)"
 
     set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' 'Serverul s-a oprit'
     set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'Te-ai reconectat prea repede. Te rugăm să aștepți puțin.'
@@ -63,38 +65,23 @@ if [ "${LOCALE}" = 'ro' ]; then
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
     INVALID_ACTION_MESSAGE="$(get_formatted_message error command This can\'t be done)"
+    DISCONNECTED_MESSAGE='The connection got interrupted'
     JOIN_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} joined the game)"
+    QUIT_MESSAGE="$(get_action_message ${PLACEHOLDER_PLAYER} left the game)"
 
     set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' 'The server shut down'
     set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'You reconnected too quickly. Please wait a moment.'
     set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob can\'t be mounted)"
 fi
+KICK_MESSAGE="${DISCONNECTED_MESSAGE}"
+KICK_MESSAGE_MINIMESSAGE="$(convert_message_to_minimessage ${KICK_MESSAGE})"
 INVALID_COMMAND_MESSAGE="${INVALID_ACTION_MESSAGE}"
 INVALID_COMMAND_MINIMESSAGE="$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
+JOIN_MINIMESSAGE="$(convert_message_to_minimessage ${JOIN_MESSAGE})"
+QUIT_MINIMESSAGE="$(convert_message_to_minimessage ${QUIT_MESSAGE})"
 
 set_config_value "${SPIGOT_CONFIG_FILE}"        'messages.unknown-command'  "${INVALID_COMMAND_MESSAGE}"
 set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"  'messages.no-permission'    "${INVALID_COMMAND_MINIMESSAGE}"
-
-
-if is_plugin_installed 'GrimAC'; then
-    configure_plugin 'GrimAC' messages \
-        'prefix' '§r§e⌀§r§7'
-
-    if [ "${LOCALE}" = 'ro' ]; then
-        configure_plugin 'GrimAC' messages \
-            'alerts-disabled' "$(get_formatted_message info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message dezativate))" \
-            'alerts-enabled' "$(get_formatted_message info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message activate))" \
-            'client-brand-format' "$(get_formatted_message info anticheat Brand-ul clientului Minecraft al lui $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT}) este $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" \
-            'player-not-found' "$(get_formatted_message error anticheat Jucătorul specificat este scutit sau offline)"
-    else
-        configure_plugin 'GrimAC' messages \
-            'alerts-disabled' "$(get_formatted_message info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message disabled))" \
-            'alerts-enabled' "$(get_formatted_message info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message enabled))" \
-            'client-brand-format' "$(get_formatted_message info anticheat $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT})\'s Minecraft client brand is $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" \
-            'player-not-found' "$(get_formatted_message error anticheat The specified player is exempt or offline)"
-    fi
-fi
-exit
 
 if is_plugin_installed 'PurpurExtras'; then
     if [ "${LOCALE}" = 'ro' ]; then
@@ -105,6 +92,23 @@ if is_plugin_installed 'PurpurExtras'; then
             'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Treasure chests can only be broken while $(get_highlighted_message sneaking))"
     fi
 fi
+
+if is_plugin_installed 'AnarchyExploitFixes'; then
+    configure_plugin 'AnarchyExploitFixes' config \
+        'language.auto-language' false \
+        'language.default-language' 'en_us'
+
+    configure_plugin 'AnarchyExploitFixes' 'lang/en_us.yml' \
+        'commands.command-whitelist.bad-command' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'commands.failed-argument-parse' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'commands.invalid-syntax' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'commands.no-permission' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'join-leave-messages.join' "${JOIN_MINIMESSAGE}" \
+        'join-leave-messages.leave' "${QUIT_MINIMESSAGE}" \
+        'kicks.masked-kick-message' "${KICK_MINIMESSAGE}"
+fi
+
+exit
 
 if is_plugin_installed 'AuthMe'; then
 #        "settings.customJoinMessage" "$(sed 's/PLAYER/DISPLAYNAMENOCOLOR/g' <<< ${JOIN_MESSAGE})" \
@@ -511,7 +515,7 @@ if is_plugin_installed 'EssentialsX'; then
     else
         configure_plugin 'EssentialsX' "${ESSENTIALS_CONFIG_FILE}" \
             'custom-join-message'           "${JOIN_MESSAGE}" \
-            'custom-quit-message'           "$(get_action_message ${PLACEHOLDER_PLAYER} left the game)" \
+            'custom-quit-message'           "${QUIT_MESSAGE)" \
             'custom-new-username-message'   "${JOIN_MESSAGE}" \
             'newbies.announce-format'       "$(get_announcement_message Welcome $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}to ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
 
@@ -641,18 +645,20 @@ fi
 
 if is_plugin_installed 'GrimAC'; then
     configure_plugin 'GrimAC' messages \
-        'prefix' "${COLOUR_RESET}"
+        'prefix' '§r§e⌀§r§7'
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'GrimAC' messages \
-            'alerts-disabled' "$(get_formatted_message_minimessage info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message dezativate))" \
-            'alerts-enabled' "$(get_formatted_message_minimessage info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message activate))" \
-            'client-brand-format' "$(get_formatted_message_minimessage info anticheat Brand-ul clientului Minecraft al lui $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT}) este $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" 
+            'alerts-disabled' "$(get_formatted_message info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message dezativate))" \
+            'alerts-enabled' "$(get_formatted_message info anticheat Notificările $(get_plugin_mention GrimAC) au fost $(get_enablement_message activate))" \
+            'client-brand-format' "$(get_formatted_message info anticheat Brand-ul clientului Minecraft al lui $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT}) este $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" \
+            'player-not-found' "$(get_formatted_message error anticheat Jucătorul specificat este scutit sau offline)"
     else
         configure_plugin 'GrimAC' messages \
-            'alerts-disabled' "$(get_formatted_message_minimessage info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message disabled))" \
-            'alerts-enabled' "$(get_formatted_message_minimessage info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message enabled))" \
-            'client-brand-format' "$(get_formatted_message_minimessage info anticheat $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT})\'s Minecraft client brand is $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" 
+            'alerts-disabled' "$(get_formatted_message info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message disabled))" \
+            'alerts-enabled' "$(get_formatted_message info anticheat The $(get_plugin_mention GrimAC) notifications have been $(get_enablement_message enabled))" \
+            'client-brand-format' "$(get_formatted_message info anticheat $(get_player_mention ${PLACEHOLDER_PLAYER_PERCENT})\'s Minecraft client brand is $(get_highlighted_message ${PLACEHOLDER_BRAND_PERCENT}))" \
+            'player-not-found' "$(get_formatted_message error anticheat The specified player is exempt or offline)"
     fi
 fi
 
@@ -662,6 +668,9 @@ if is_plugin_installed 'GSit'; then
     configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
         'Messages.command-permission-error' "${INVALID_COMMAND_MINIMESSAGE}" \
         'Messages.command-sender-error' "${INVALID_COMMAND_MINIMESSAGE}" \
+        'Plugin.plugin-disabled' "$(get_plugin_enablement_minimessage GSit disabled)" \
+        'Plugin.plugin-enabled' "$(get_plugin_enablement_minimessage GSit enabled)" \
+        'Plugin.plugin-linked' "$(get_plugin_linked_minimessage GSit WorldGuard)" \
         'Plugin.plugin-reload' "$(get_reload_message_minimessage GSit)"
 
     if [ "${LOCALE}" = 'ro' ]; then

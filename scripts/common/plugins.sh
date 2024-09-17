@@ -118,6 +118,7 @@ function reload_plugin() {
     [[ "${PLUGIN_NAME}" = 'GSit' ]] && PLUGIN_CMD='gsitreload' && RELOAD_CMD=''
     [[ "${PLUGIN_NAME}" = 'Chatbubbles' ]] && PLUGIN_CMD='cbreload' && RELOAD_CMD=''
     
+    [[ "${PLUGIN_CMD}" = 'anarchyexploitfixes' ]] && PLUGIN_CMD='aef'
     [[ "${PLUGIN_CMD}" = 'chestshopnotifier' ]] && PLUGIN_CMD='csn'
     [[ "${PLUGIN_CMD}" = 'essentialsx' ]] && PLUGIN_CMD='essentials'
     [[ "${PLUGIN_CMD}" = 'invsee++' ]] && PLUGIN_CMD='invsee'

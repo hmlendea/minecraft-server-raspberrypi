@@ -185,6 +185,47 @@ configure_plugin 'PurpurExtras' config \
     'settings.protect-blocks-with-loot.enabled' true \
     'settings.unlock-all-recipes-on-join' true
 
+configure_plugin 'AnarchyExploitFixes' config \
+    'bedrock.fill-in-bedrock.nether-floor.fill-on-chunkload.enable' true \
+    'bedrock.fill-in-bedrock.overworld-floor.fill-on-chunkload.enable' true \
+    'chat.prevent-scanning-server-plugins.enable' true \
+    'combat.portal-god-mode-patch.enable' true \
+    'combat.prevent-burrow.enable' true \
+    'dupe-preventions.close-entity-inventories-on-chunk-unload' true \
+    'dupe-preventions.close-entity-inventories-on-player-disconnect' true \
+    'dupe-preventions.prevent-chested-living-entities-in-portals' true \
+    'dupe-preventions.prevent-chests-on-living-entities' true \
+    'general.commands.say.enable' false \
+    'general.commands.help.enable' false \
+    'general.commands.toggleconnectionmsgs.enable' false \
+    'lag-preventions.prevent-flooding-machines.enable' true \
+    'lag-preventions.prevent-lever-spam.enable' true \
+    'lag-preventions.prevent-lever-spam.kick-player' true \
+    'patches.anti-book-ban.enable' true \
+    'patches.beehive-crash-patch.enable' true \
+    'patches.beehive-crash-patch.kick-player' true \
+    'patches.inventory-lag.enable' true \
+    'patches.inventory-lag.close-open-inventory' true \
+    'patches.map-cursor-lag-patch.enable' true \
+    'patches.pearl-phase.enable' true \
+    'patches.prevent-command-sign.enable' true \
+    'patches.prevent-fast-world-teleport-crash.enable' true \
+    'patches.prevent-teleport-coordinate-exploit.enable' true \
+    'patches.sequence-crash-patch.enable' true \
+    'patches.sequence-crash-patch.kick-player' true \
+    'patches.sign-lag.enable' true \
+    'patches.sign-lag.kick-player' true \
+    'patches.tab-complete-crash-patch.enable' true \
+    'patches.window-click-crash-patch.enable' true \
+    'preventions.portals.prevent-destroying-end-portals.enable' true \
+    'preventions.portals.prevent-nether-roof.enable' false \
+    'preventions.portals.prevent-portal-traps.enable' true \
+    'preventions.portals.prevent-projectiles-in-portals' true \
+    'preventions.withers.remove-flying-wither-skulls.on-chunk-load' true \
+    'preventions.withers.remove-flying-wither-skulls.on-chunk-unload' true \
+
+exit
+
 configure_plugin 'AuthMe' config \
     'Hooks.useEssentialsMotd' $(is_plugin_installed_bool 'EssentialsX') \
     'Security.console.logConsole' false \
@@ -537,10 +578,10 @@ if is_plugin_installed 'TreeAssist'; then
     done
 
     configure_plugin 'TreeAssist' config \
-        'bStats.Active'                     false \
-        'bStats.Full'                       false \
-        'Commands.No Replant.Cooldown Time' 60 \
-        'Commands.Replant.Cooldown Time'    60 \
+        'bStats.Active'                     "${DISABLE_TELEMETRY}" \
+        'bStats.Full'                       "${USE_TELEMETRY}" \
+        'Commands.No Replant.Cooldown Time' 90 \
+        'Commands.Replant.Cooldown Time'    90 \
         'Destruction.Falling Blocks'        true \
         'Destruction.Falling Blocks Fancy'  true \
         'General.Toggle Remember'           false \

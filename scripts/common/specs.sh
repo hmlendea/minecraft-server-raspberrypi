@@ -26,8 +26,10 @@ export SERVER_HOSTNAME='mc.nucilandia.ro'
 
 export CHECK_PLUGINS_FOR_UPDATES=false
 export SKIP_PLUGIN_UPDATE_CHECKS=true
+export AUTO_UPDATE_PLUGINS=false
 
 export USE_TELEMETRY=false
+export DISABLE_TELEMETRY=true
 
 export PLAYERS_REGISTERED=$(find ${SERVER_ROOT_DIR}/world/playerdata/ -name "*.dat" | wc -l)
 export PLAYERS_MAX=20
