@@ -43,6 +43,7 @@ function get_symbol_by_category() {
     [[ "${STATUS}" == "error" ]] && DEFAULT_SYMBOL="${ERROR_SYMBOL}" 
     [[ "${STATUS}" == "success" ]] && DEFAULT_SYMBOL="${SUCCESS_SYMBOL}" 
 
+    local ANTICHEAT_SYMBOL='⌀'
     local AUTHENTICATION_SYMBOL="🔑"
     local AXE_SYMBOL='🪓'
     local COMBAT_SYMBOL="🗡"
@@ -70,6 +71,7 @@ function get_symbol_by_category() {
     local VOTE_SYMBOL='❤'
     local WEATHER_SYMBOL='☂'
 
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'anticheat' "${ANTICHEAT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "auth.*" "${AUTHENTICATION_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "border_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "break_block" "${MINE_SYMBOL}")
