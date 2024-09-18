@@ -1,15 +1,18 @@
 #!/bin/bash
 source '/srv/papermc/scripts/common/paths.sh'
+source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
-DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
+DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 WORLDGUARD_DIR="$(get_plugin_dir WorldGuard)"
 
 REGIONS_BACKUP_FILE_NAME='regions.bak.yml'
 REGIONS_TEMPORARY_FILE_NAME='regions.tmp.yml'
 REGIONS_FILE_NAME='regions.yml'
+
+REGIONBOSSBAR_CONFIG_FILE="$(get_plugin_file RegionBossbar config)"
 
 function get_region_ids() {
     local WORLD_NAME="${1}"
@@ -74,8 +77,8 @@ function set_region_bossbar() {
 
     ! is_plugin_installed 'RegionBossbar' && return
 
-    apply_yml_config "$(get_plugin_file RegionBossbar config)" 'del(.bossbars[] | select(.regionName == "'"${REGION_NAME}"'"))'
-    apply_yml_config "$(get_plugin_file RegionBossbar config)" '.bossbars += [{color: "'"${REGION_COLOUR}"'", name: "'"${REGION_NAME}"'", regionName: "'"${REGION_ID}"'", style: "SOLID"}]'
+    apply_yml_config "${REGIONBOSSBAR_CONFIG_FILE}" 'del(.bossbars[] | select(.regionName == "'"${REGION_ID}"'"))'
+    apply_yml_config "${REGIONBOSSBAR_CONFIG_FILE}" '.bossbars += [{color: "'"${REGION_COLOUR}"'", name: "'"${REGION_NAME}"'", regionName: "'"${REGION_ID}"'", style: "SOLID"}]'
 }
 
 function set_region_flag() {
@@ -384,89 +387,92 @@ function set_location_region_settings_by_id() {
 }
 
 function set_settlement_region_settings() {
-    local SETTLEMENT_TYPE="${1}"
-    local SETTLEMENT_NAME="${2}"
-    local COUNTRY_NAME="${3}"
+    local WORLD_NAME="${1}"
+    local SETTLEMENT_TYPE="${2}"
+    local SETTLEMENT_NAME="${3}"
+    local COUNTRY_NAME="${4}"
     local SETTLEMENT_ID=$(region_name_to_id "${SETTLEMENT_NAME}")
 
-    set_region_bossbar "${WORLDNAME}" "${SETTLEMENT_ID}" "${SETTLEMENT_NAME}"
+    set_region_bossbar "${WORLD_NAME}" "${SETTLEMENT_ID}" "${SETTLEMENT_NAME}"
 
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'frostwalker' false
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'sculk-growth' false
     #set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" "interact" true
     set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
-    set_building_settings "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
-    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"            "Ringul DeathCube-ului"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"                 "Arena PvP"
-    set_building_settings "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"            "Ringul Arenei PvP"
-    set_building_settings "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
-    set_building_settings "${SETTLEMENT_NAME}" 'baths'                  'Public Baths'              'Băile Publice'
-    set_building_settings "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"                  "Cimitirul"
-    set_building_settings "${SETTLEMENT_NAME}" "church"                 "Church"                    "Biserica"
-    set_building_settings "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"             "Consulatul FBU"
-    set_building_settings "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate"     "Consulatul Nucilandiei"
-    set_building_settings "${SETTLEMENT_NAME}" 'dock'                   'Docks'                     'Docul'
-    set_building_settings "${SETTLEMENT_NAME}" 'farms'                  "Farms"                     "Fermele"
-    set_building_settings "${SETTLEMENT_NAME}" 'farm_animals'           "Animal Farm"               "Ferma de Animale"
-    set_building_settings "${SETTLEMENT_NAME}" 'farm_chicken'           "Chicken Farm"              "Ferma de Găini"
-    set_building_settings "${SETTLEMENT_NAME}" 'farm_crops'             "Crops Farm"                "Ferma Agricolă"
-    set_building_settings "${SETTLEMENT_NAME}" 'farm_blaze'             "Blaze Farm"                "Ferma de Blaze"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"               "Ferma de Cactus"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"            "Ferma de Praf de Pușcă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"                 "Ferma de Fier"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_lava"              "Lava Farm"                 "Ferma de Lavă"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_melon"             "Melon Farm"                "Ferma de Lubenițe"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_pumpkin"           "Pumpkin Farm"              "Ferma de Pumpkin"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_raid"              "Raid Farm"                 "Ferma de Raiduri"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_sniffer"           "Sniffer Farm"              "Ferma de Snifferi"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_squid"             "Squid Farm"                "Ferma de Sepii"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_sugarcane"         "Sugar Cane Farm"           "Ferma de Trestie"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_wool"              "Wool Farm"                 "Ferma de Lână"
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp"                'XP Farm'                   'Ferma de XP'
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_1"              'XP Farm'                   'Ferma de XP'
-    set_building_settings "${SETTLEMENT_NAME}" "farm_xp_2"              'XP Farm'                   'Ferma de XP'
-    set_building_settings "${SETTLEMENT_NAME}" "forge"                  "Forge"                     "Forja"
-    set_building_settings "${SETTLEMENT_NAME}" 'granary'                'Granary'                   'Grânarul'
-    set_building_settings "${SETTLEMENT_NAME}" 'hall_events'            'Events Hall'               'Sala de Evenimente'
-    set_building_settings "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"              "Hala de Comerț"
-    set_building_settings "${SETTLEMENT_NAME}" 'hippodrome'             'Hippodrome'                'Hipodromul'
-    set_building_settings "${SETTLEMENT_NAME}" "horary"                 "Horary"                    "Horăria"
-    set_building_settings "${SETTLEMENT_NAME}" 'hospital'               'Hospital'                  'Spitalul'
-    set_building_settings "${SETTLEMENT_NAME}" 'hotel'                  'Hotel'                     'Hotelul'
-    set_building_settings "${SETTLEMENT_NAME}" 'inn'                    'Inn'                       'Hanul'
-    set_building_settings "${SETTLEMENT_NAME}" 'library'                'Library'                   'Librăria'
-    set_building_settings "${SETTLEMENT_NAME}" 'lighthouse'             'Lighthouse'                'Farul'
-    set_building_settings "${SETTLEMENT_NAME}" 'mall'                   'Mall'                      'Mall-ul'
-    set_building_settings "${SETTLEMENT_NAME}" 'maze'                   'Labyrinth'                 'Labirintul'
-    set_building_settings "${SETTLEMENT_NAME}" 'metropolis'             'Metropolis'                'Mitropolia'
-    set_building_settings "${SETTLEMENT_NAME}" 'mill'                   'Mill'                      'Moara'
-    set_building_settings "${SETTLEMENT_NAME}" 'motel'                  'Motel'                     'Motelul'
-    set_building_settings "${SETTLEMENT_NAME}" "museum"                 "Museum"                    "Muzeul"
-    set_building_settings "${SETTLEMENT_NAME}" "museum_art"             "Art Museum"                "Muzeul de Artă"
-    set_building_settings "${SETTLEMENT_NAME}" "museum_history"         "History Museum"            "Muzeul de Istorie"
-    set_building_settings "${SETTLEMENT_NAME}" 'museum_village'         'Village Museum'            'Muzeul Satului'
-    set_building_settings "${SETTLEMENT_NAME}" 'naval_command'          'Naval Command'             'Comandamentul Naval'
-    set_building_settings "${SETTLEMENT_NAME}" 'office_post'            'Post Office'               'Oficiul Poștal'
-    set_building_settings "${SETTLEMENT_NAME}" 'park'                   'Park'                      'Parcul'
-    set_building_settings "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
-    set_building_settings "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
-    set_building_settings "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
-    set_building_settings "${SETTLEMENT_NAME}" 'restaurant'             'Restaurant'                'Restaurantul'
-    set_building_settings "${SETTLEMENT_NAME}" 'school'                 'School'                    'Școala'
-    set_building_settings "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
-    set_building_settings "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
-    set_building_settings "${SETTLEMENT_NAME}" 'station_fire'           'Fire Station'              'Stația de Pompieri'
-    set_building_settings "${SETTLEMENT_NAME}" 'station_national_guard' 'National Guard Station'    'Stația Gărzii Naționale'
-    set_building_settings "${SETTLEMENT_NAME}" 'station_police'         "Police Station"            'Stația de Poliție'
-    set_building_settings "${SETTLEMENT_NAME}" 'station_train'          "Train Station"             'Gara'
-    set_building_settings "${SETTLEMENT_NAME}" 'subway'                 "Subway"                    'Subway-ul'
-    set_building_settings "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
-    set_building_settings "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
-    set_building_settings "${SETTLEMENT_NAME}" 'university'             'University'                'Universitatea'
-    set_building_settings "${SETTLEMENT_NAME}" 'warehouse'              'Warehouse'                 'Magazia'
-    set_building_settings "${SETTLEMENT_NAME}" 'workshop'               'Workshop'                  'Atelierul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"            "Ringul DeathCube-ului"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"                 "Arena PvP"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"            "Ringul Arenei PvP"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'baths'                  'Public Baths'              'Băile Publice'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"                  "Cimitirul"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "church"                 "Church"                    "Biserica"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"             "Consulatul FBU"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate"     "Consulatul Nucilandiei"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'dock'                   'Docks'                     'Docul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_animals'           "Animal Farm"               "Ferma de Animale"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_chicken'           "Chicken Farm"              "Ferma de Găini"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_crops'             "Crops Farm"                "Ferma Agricolă"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_bambus'            'Bambus Farm'               'Ferma de Bambus'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_blaze'             'Blaze Farm'                'Ferma de Blaze'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"               "Ferma de Cactus"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"            "Ferma de Praf de Pușcă"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"                 "Ferma de Fier"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_lava"              "Lava Farm"                 "Ferma de Lavă"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_melon"             "Melon Farm"                "Ferma de Lubenițe"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_pumpkin"           "Pumpkin Farm"              "Ferma de Pumpkin"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_raid"              "Raid Farm"                 "Ferma de Raiduri"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_sniffer"           "Sniffer Farm"              "Ferma de Snifferi"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_squid"             "Squid Farm"                "Ferma de Sepii"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sugarcane'         'Sugar Cane Farm'           'Ferma de Trestie'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_wool'              'Wool Farm'                 'Ferma de Lână'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_wool'              'Villager Breeder'          'Creșa de Săteni'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp'                'XP Farm'                   'Ferma de XP'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp_1'              'XP Farm'                   'Ferma de XP'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp_2'              'XP Farm'                   'Ferma de XP'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farms'                  'Farms'                     'Fermele'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'forge'                  'Forge'                     'Forja'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'granary'                'Granary'                   'Grânarul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'hall_events'            'Events Hall'               'Sala de Evenimente'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"              "Hala de Comerț"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'hippodrome'             'Hippodrome'                'Hipodromul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "horary"                 "Horary"                    "Horăria"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'hospital'               'Hospital'                  'Spitalul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'hotel'                  'Hotel'                     'Hotelul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'inn'                    'Inn'                       'Hanul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'library'                'Library'                   'Biblioteca'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'lighthouse'             'Lighthouse'                'Farul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'mall'                   'Mall'                      'Mall-ul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'maze'                   'Labyrinth'                 'Labirintul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'metropolis'             'Metropolis'                'Mitropolia'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'mill'                   'Mill'                      'Moara'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'motel'                  'Motel'                     'Motelul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'museum'                 'Museum'                    'Muzeul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'museum_art'             'Art Museum'                'Muzeul de Artă'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'museum_history'         'History Museum'            'Muzeul de Istorie'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'museum_village'         'Village Museum'            'Muzeul Satului'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'naval_command'          'Naval Command'             'Comandamentul Naval'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'office_post'            'Post Office'               'Oficiul Poștal'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'park'                   'Park'                      'Parcul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'portal_nether'          'Nether Portal'             'Portalul către Nether'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'palace'                 'Palace'                    'Palatul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'prison'                 'Prison'                    'Închisoarea'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'restaurant'             'Restaurant'                'Restaurantul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'school'                 'School'                    'Școala'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'square'                 'Public Square'             'Piața Publică'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'stables'                'Stables'                   'Hedgheria'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_fire'           'Fire Station'              'Stația de Pompieri'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_national_guard' 'National Guard Station'    'Stația Gărzii Naționale'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_police'         'Police Station'            'Stația de Poliție'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_train'          'Train Station'             'Gara'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'subway'                 'Subway'                    'Subway-ul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'university'             'University'                'Universitatea'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'warehouse'              'Warehouse'                 'Magazia'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'workshop'               'Workshop'                  'Atelierul'
 
     if grep -q "^\s*${SETTLEMENT_ID}_player_" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"; then
         for PLAYER_USERNAME in $(get_players_usernames); do
@@ -486,10 +492,11 @@ function set_structure_region_settings() {
 }
 
 function set_building_settings() {
-    local SETTLEMENT_NAME="${1}"
-    local BUILDING_ID="${2}"
-    local BUILDING_NAME="${3}"
-    local BUILDING_NAME_RO="${4}"
+    local WORLD_NAME="${1}"
+    local SETTLEMENT_NAME="${2}"
+    local BUILDING_ID="${3}"
+    local BUILDING_NAME="${4}"
+    local BUILDING_NAME_RO="${5}"
     local REGION_PRIORITY=20
 
     local WORLD_NAME='world'
@@ -499,17 +506,19 @@ function set_building_settings() {
 
     ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
 
-    if [[ "${BUILDING_ID}" == "mall" ]]; then
+    if [ "${BUILDING_ID}" = 'mall' ]; then
         for ((I=1; I<=50; I++)); do
             ! does_region_exist "${WORLD_NAME}" "${SETTLEMENT_ID}_mall_shop${I}" && break
-            set_building_settings "${SETTLEMENT_NAME}" "${BUILDING_ID}_shop${I}" "Mall Shop #${I}" "Magazinul #${I} din Mall"
+            set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "${BUILDING_ID}_shop${I}" "Mall Shop #${I}" "Magazinul #${I} din Mall-ul"
         done
     fi
 
-    if [[ "${LOCALE}" == "ro" ]]; then
+    if [ "${LOCALE}" = 'ro' ]; then
         set_region_messages "${REGION_ID}" "" "${BUILDING_NAME_RO}" "${SETTLEMENT_NAME}" --quiet
+        set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "${BUILDING_NAME_RO} din ${SETTLEMENT_NAME}"
     else
         set_region_messages "${REGION_ID}" "" "${BUILDING_NAME}" "${SETTLEMENT_NAME}" --quiet
+        set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "The ${BUILDING_NAME} of ${SETTLEMENT_NAME}"
     fi
     
     if [[ "${REGION_ID}" == *_arena_* ]]; then
@@ -592,6 +601,8 @@ function set_player_region_settings() {
         PLAYER_NAMES="${PLAYER_NAMES}, ${1}"
         shift
     done
+
+    set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES}"
 
     if [[ "${ZONE_NAME}" == "Wilderness" ]]; then
         set_region_messages "${REGION_ID}" "player_base" "${PLAYER_NAMES}" "${ZONE_NAME}"

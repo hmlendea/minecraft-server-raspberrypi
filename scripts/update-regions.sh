@@ -42,25 +42,25 @@ function rollback_transaction() {
 begin_transaction
 
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
-    set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'Nucilandia'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
 for CITY_NAME in 'Enada' 'Naoi'; do
-    set_settlement_region_settings 'settlement_city' "${CITY_NAME}" 'FBU'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
 for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
-    set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
 for TOWN_NAME in 'Emeraldia' 'Iahim'; do
-    set_settlement_region_settings 'settlement_town' "${TOWN_NAME}" 'FBU'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'FBU'
 done
 
 for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Cerc' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
                     'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
-    set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
 for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
-    set_settlement_region_settings 'settlement_village' "${VILLAGE_NAME}" 'FBU'
+    set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'FBU'
 done
 
 for MILITARYBASE_NAME in 'Binuca' 'Crișia'; do
