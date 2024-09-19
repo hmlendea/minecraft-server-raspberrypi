@@ -54,6 +54,7 @@ function get_symbol_by_category() {
     local FARM_SYMBOL="🚜"
     local GAMEMODE_SYMBOL="◎"
     local HEALTH_SYMBOL="✚"
+    local HELP_SYMBOL='ⓘ'
     local HOME_SYMBOL="🛏"
     local INSPECT_SYMBOL="🔍"
     local INVENTORY_SYMBOL="🎒"
@@ -86,6 +87,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "fail.*" "${ERROR_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'gamemode' "${GAMEMODE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'health' "${HEALTH_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'help' "${HELP_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'home' "${HOME_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'hospital' "${HEALTH_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inspect" "${INSPECT_SYMBOL}")

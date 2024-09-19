@@ -229,9 +229,14 @@ function get_config_value() {
 function get_yml_value() {
     local FILE="${1}"
     local KEY="${2}"
-    local KEY_ESC=$(echo "${KEY}" | sed -E 's/([^.]+-[^\.\ ]+)(\.|$)/"\1"\2/g')
 
-    yq -r ".${KEY_ESC}" "${FILE}"
+    if [[ "${KEY}" == *.* ]]; then
+        local KEY_ESC=$(echo "${KEY}" | sed -E 's/([^.]+-[^\.\ ]+)(\.|$)/"\1"\2/g')
+
+        yq -r ".${KEY_ESC}" "${FILE}"
+    else
+        cat "${FILE}" | grep "^${KEY}:" | sed 's/^'"${KEY}"':\s*//g' | sed 's/\s*$//' | sed "s/^'//; s/'$//"
+    fi
 }
 
 function check_if_utility_exists() {

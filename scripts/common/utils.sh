@@ -153,3 +153,12 @@ function download-file() {
 function ensure-su-access() {
     sudo echo "SU access achieved!"
 }
+
+function ensure_bin_is_installed() {
+    local BIN_NAME="${1}"
+
+    if [ ! -f "/usr/bin/${BIN_NAME}" ]; then
+        echo "ERROR: ${BIN_NAME} is not installed on this system"
+        exit 2
+    fi
+}
