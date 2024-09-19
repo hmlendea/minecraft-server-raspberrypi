@@ -602,7 +602,7 @@ function set_player_region_settings() {
         shift
     done
 
-    set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES}"
+    set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES} din ${ZONE_NAME}"
 
     if [[ "${ZONE_NAME}" == "Wilderness" ]]; then
         set_region_messages "${REGION_ID}" "player_base" "${PLAYER_NAMES}" "${ZONE_NAME}"

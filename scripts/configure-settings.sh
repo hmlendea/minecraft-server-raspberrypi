@@ -185,22 +185,31 @@ configure_plugin 'PurpurExtras' config \
     'settings.protect-blocks-with-loot.enabled' true \
     'settings.unlock-all-recipes-on-join' true
 
+# 'prevent-burrow'=true && 'prevent-burrow.teleport-above-block'=true => broken slime-launchers
 configure_plugin 'AnarchyExploitFixes' config \
     'bedrock.fill-in-bedrock.nether-floor.fill-on-chunkload.enable' true \
     'bedrock.fill-in-bedrock.overworld-floor.fill-on-chunkload.enable' true \
     'chat.prevent-scanning-server-plugins.enable' true \
+    'chunk-limits.exp-bottle-limit.enable' true \
+    'chunk-limits.falling-block-limit.enable' true \
     'combat.portal-god-mode-patch.enable' true \
-    'combat.prevent-burrow.enable' true \
+    'combat.prevent-burrow.enable' false \
+    'combat.prevent-burrow.teleport-above-block' false \
     'dupe-preventions.close-entity-inventories-on-chunk-unload' true \
     'dupe-preventions.close-entity-inventories-on-player-disconnect' true \
     'dupe-preventions.prevent-chested-living-entities-in-portals' true \
     'dupe-preventions.prevent-chests-on-living-entities' true \
+    'elytra.packet-elytra-fly.patch-packet-elytra-fly' true \
+    'elytra.packet-elytra-fly.kick-instead-of-remove-elytra' true \
+    'elytra.packet-elytra-fly.notify-player-to-disable-packetfly' true \
     'general.commands.say.enable' false \
     'general.commands.help.enable' false \
     'general.commands.toggleconnectionmsgs.enable' false \
     'lag-preventions.prevent-flooding-machines.enable' true \
     'lag-preventions.prevent-lever-spam.enable' true \
     'lag-preventions.prevent-lever-spam.kick-player' true \
+    'misc.auto-bed' false \
+    'misc.prevent-scanning-server-plugins' true \
     'patches.anti-book-ban.enable' true \
     'patches.beehive-crash-patch.enable' true \
     'patches.beehive-crash-patch.kick-player' true \
@@ -218,9 +227,9 @@ configure_plugin 'AnarchyExploitFixes' config \
     'patches.tab-complete-crash-patch.enable' true \
     'patches.window-click-crash-patch.enable' true \
     'preventions.portals.prevent-destroying-end-portals.enable' true \
-    'preventions.portals.prevent-nether-roof.enable' false \
     'preventions.portals.prevent-portal-traps.enable' true \
     'preventions.portals.prevent-projectiles-in-portals' true \
+    'preventions.prevent-nether-roof.enable' false \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-load' true \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-unload' true \
 
@@ -260,13 +269,14 @@ configure_plugin 'ChatBubbles' messages \
 
 if is_plugin_installed 'ChestShop'; then
     configure_plugin 'ChestShop' config \
+        'AUTHME_HOOK'                                           "$(is_plugin_installed_bool AuthMe)" \
         'INCLUDE_SETTINGS_IN_METRICS'                           "${USE_TELEMETRY}" \
+        'LOG_TO_FILE'                                           true \
         'SHIFT_SELLS_IN_STACKS'                                 true \
         'TURN_OFF_DEFAULT_PROTECTION_WHEN_PROTECTED_EXTERNALLY' true \
         'TURN_OFF_UPDATES'                                      "${SKIP_PLUGIN_UPDATE_CHECKS}" \
         'TURN_OFF_UPDATE_NOTIFIER'                              "${SKIP_PLUGIN_UPDATE_CHECKS}" \
         'TURN_OFF_DEV_UPDATE_NOTIFIER'                          "${SKIP_PLUGIN_UPDATE_CHECKS}"
-        'AUTHME_HOOK'                                           "$(is_plugin_installed_bool AuthMe)" \
         'WORLDGUARD_INTEGRATION'                                "$(is_plugin_installed_bool WorldGuard)" \
         'WORLDGUARD_USE_FLAG'                                   "$(is_plugin_installed_bool WorldGuard)" \
         'WORLDGUARD_USE_PROTECTION'                             "$(is_plugin_installed_bool WorldGuard)"
@@ -284,6 +294,9 @@ configure_plugin 'ChestSort' config \
     'show-message-when-using-chest' true \
     'show-message-when-using-chest-and-sorting-is-enabled' true \
     'sort-time' 'both'
+
+configure_plugin 'ClickThrough' config \
+    'check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'CoreProtect' config \
     'check-updates' "${CHECK_PLUGINS_FOR_UPDATES}"
@@ -619,11 +632,11 @@ configure_plugin 'ViewDistanceTweaks' config \
     "world-settings.${WORLD_NETHER_NAME}.view-distance.minimum-view-distance" "${VIEW_DISTANCE_NETHER_MIN}" \
     "world-settings.${WORLD_NETHER_NAME}.chunk-weight" "0.75"
 
-configure_plugin "VotingPlugin" config \
-    "OnlineMode"                    "${ONLINE_MODE}" \
-    "TreatVanishAsOffline"          true \
-    "VoteReminding.RemindOnlyOnce"  false \
-    "VoteReminding.RemindDelay"     "${VOTE_REMINDER_INTERVAL_MINUTES}"
+configure_plugin 'VotingPlugin' config \
+    'OnlineMode'                    "${ONLINE_MODE}" \
+    'TreatVanishAsOffline'          true \
+    'VoteReminding.RemindOnlyOnce'  false \
+    'VoteReminding.RemindDelay'     "${VOTE_REMINDER_INTERVAL_MINUTES}"
 
 configure_plugin 'WanderingTrades' config \
 	'updateChecker' "${CHECK_PLUGINS_FOR_UPDATES}"
@@ -639,6 +652,9 @@ configure_plugin 'FastAsyncWorldEdit' config \
 configure_plugin 'WorldEditSUI' config \
     'advanced-grid.enabled' true \
     'update-checks' "${CHECK_PLUGINS_FOR_UPDATES}"
+
+configure_plugin 'WorldGuard' config \
+    'protections.max-claim-size' 125000
 
 # Entity save limits
 for ENTITY_TYPE in 'arrow' 'ender_pearl' 'experience_orb' 'fireball' 'small_fireball' 'snowball'; do
