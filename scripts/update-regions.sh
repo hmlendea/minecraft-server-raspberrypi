@@ -41,6 +41,10 @@ function rollback_transaction() {
 
 begin_transaction
 
+for VOIVODESHIP_NAME in 'Flusseland' 'Kreezland' 'Pontica' 'Solara'; do
+    set_administrative_region_settings "${WORLD_NAME}" 'voivodeship' "${VOIVODESHIP_NAME}" 'Nucilandia'
+done
+
 for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
@@ -55,8 +59,8 @@ for TOWN_NAME in 'Emeraldia' 'Iahim'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'FBU'
 done
 
-for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Cerc' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
-                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
+for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
+                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nirvada' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
 for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
@@ -64,7 +68,7 @@ for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
 done
 
 for MILITARYBASE_NAME in 'Binuca' 'Crișia'; do
-    set_location_region_settings_by_name 'military_base' "${MILITARYBASE_NAME}" 'Nucilandia'
+    set_location_region_settings_by_name "${WORLD_NAME}" 'military_base' "${MILITARYBASE_NAME}" 'Nucilandia'
 done
 
 for NATION in 'FBU' 'Nucilandia'; do
@@ -74,34 +78,24 @@ for NATION in 'FBU' 'Nucilandia'; do
         NATION2_ID=$(region_name_to_id "${NATION2}")
 
         for BORDER_CROSSING_REGION_ID in $(get_regions_by_pattern "${NATION_ID}_border_crossing_${NATION2_ID}_.*"); do
-            set_location_region_settings_by_id "${BORDER_CROSSING_REGION_ID}" "border_crossing" "" "${NATION} ↔ ${NATION2}"
+            set_location_region_settings_by_id "${WORLD_NAME}" "${BORDER_CROSSING_REGION_ID}" 'border_crossing' '' "${NATION} ↔ ${NATION2}"
         done
     done
 
     for STRUCTURE in 'border_watchtower' 'border_wall' 'bridge' 'defence_bunker' 'defence_turret' \
-                     'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
-        set_structure_region_settings "${NATION}" "${STRUCTURE}"
+                     'end_portal' 'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
+        set_structure_region_settings "${WORLD_NAME}" "${NATION}" "${STRUCTURE}"
     done
-done
 
-for PLAYER_USERNAME in $(get_players_usernames); do
-    PLAYER_REGION_ID=$(region_name_to_id "${PLAYER_USERNAME}")
-
-    ! grep -q "player_${PLAYER_REGION_ID}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && continue
+    for PLAYER_USERNAME in $(get_players_usernames); do
+        PLAYER_REGION_ID=$(region_name_to_id "${PLAYER_USERNAME}")
+        
+        for ZONE_NAME in 'FBU' 'Nucilandia'; do
+            ! grep -q "${NATION_ID}_player_${PLAYER_REGION_ID}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && continue
     
-    for OTHER_REGION in 'BloodCraft' 'KreezCraft 1' 'Wilderness'; do
-        set_player_region_settings "${OTHER_REGION}" "${PLAYER_USERNAME}"
+            set_player_region_settings "${WORLD_NAME}" "${ZONE_NAME}" "${PLAYER_USERNAME}"
+        done
     done
 done
-
-set_region_messages 'end_portal' 'The End Portal'
-
-set_player_region_settings "bloodcraft_citadel" "Hori873"
-set_player_region_settings "bloodcraft_pagoda" "Hori873"
-set_player_region_settings "kreezcraft1" 'skonxsi'
-set_player_region_settings "kreezcraft1" 'SoulSilver'
-set_player_region_settings "kreezcraft1" 'Xenon'
-set_player_region_settings 'survivalisland' 'Hori873' 'Kamikaze' 'Azzuro'
-set_player_region_settings 'survivalisland2' 'Hori873'
 
 commit_transaction

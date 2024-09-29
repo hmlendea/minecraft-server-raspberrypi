@@ -2,6 +2,7 @@
 source "/srv/papermc/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
+[ -z "${WORLDGUARD_DIR}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/worldguard.sh"
 
 if [ -f "${PLAYERS_CACHE_FILE}" ]; then
 	LOADED_PLAYERS_CACHE_JSON=$(cat "${PLAYERS_CACHE_FILE}")
@@ -287,5 +288,16 @@ function get_players_uuids() {
 function get_players_usernames() {
     for PLAYER_UUID in $(get_players_uuids); do
         get_player_username "${PLAYER_UUID}"
+    done
+}
+
+function get_players_usernames_that_own_regions() {
+    [ -n "${1}" ] && local WORLD_NAME="${1}" 
+    local WORLDGUARD_WORLD_REGIONS_FILE="${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/regions.yml"
+    local PLAYER_WORLDGUARD_ID=''
+
+    for PLAYER_USERNAME in $(get_players_usernames); do
+        PLAYER_WORLDGUARD_ID="$(region_name_to_id ${PLAYER_USERNAME})"
+        grep -q ".*_player_${PLAYER_WORLDGUARD_ID}[:_]" "${WORLDGUARD_WORLD_REGIONS_FILE}" && echo "${PLAYER_USERNAME}"
     done
 }

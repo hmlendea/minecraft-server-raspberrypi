@@ -2,6 +2,7 @@
 source '/srv/papermc/scripts/common/paths.sh'
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
@@ -13,6 +14,18 @@ REGIONS_TEMPORARY_FILE_NAME='regions.tmp.yml'
 REGIONS_FILE_NAME='regions.yml'
 
 REGIONBOSSBAR_CONFIG_FILE="$(get_plugin_file RegionBossbar config)"
+
+function region_name_to_id() {
+    local REGION_NAME="${1}"
+    local REGION_ID="${REGION_NAME}"
+
+    REGION_ID=$(echo "${REGION_NAME}" | \
+        iconv -f utf-8 -t ascii//TRANSLIT | \
+        tr '[:upper:]' '[:lower:]' | \
+        sed 's/[_\ ]//g')
+
+    echo "${REGION_ID}"
+}
 
 function get_region_ids() {
     local WORLD_NAME="${1}"
@@ -47,18 +60,6 @@ function does_region_exist() {
     
     grep -q "^\s*${REGION_ID}:" "${REGIONS_FILE}" && return 0
     return 1
-}
-
-function region_name_to_id() {
-    local REGION_NAME="${1}"
-    local REGION_ID="${REGION_NAME}"
-
-    REGION_ID=$(echo "${REGION_NAME}" | \
-        iconv -f utf-8 -t ascii//TRANSLIT | \
-        tr '[:upper:]' '[:lower:]' | \
-        sed 's/[_\ ]//g')
-
-    echo "${REGION_ID}"
 }
 
 function get_regions_by_pattern() {
@@ -297,45 +298,43 @@ function set_region_messages() {
 
     [[ "${*}" == *"--quiet"* ]] && USE_GREETINGS=false
 
-    if [[ "${LOCALE}" == "ro" ]]; then
-        [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="punctul vamal"
-        [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="turnul vamal de veghe"
-        [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="zidul vamal"
-        [[ "${REGION_TYPE_ID}" == 'bridge' ]] && REGION_TYPE='podul'
-        [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="buncărul de apărare"
-        [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="turela de apărare"
-        [[ "${REGION_TYPE_ID}" == "defence_wall" ]] && REGION_TYPE="turela de apărare"
-        [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_TYPE="baza militară"
-        [[ "${REGION_TYPE_ID}" == "player_base" ]] && REGION_TYPE="baza lui"
-        [[ "${REGION_TYPE_ID}" == "player_home" ]] && REGION_TYPE="casa lui"
-        [[ "${REGION_TYPE_ID}" == "player_home_lake" ]] && REGION_TYPE="casa de pe lac a lui"
-        [[ "${REGION_TYPE_ID}" == "player_home_mountain" ]] && REGION_TYPE="casa de pe munte a lui"
-        [[ "${REGION_TYPE_ID}" == "road_rail" ]] && REGION_TYPE="calea ferată"
-        [[ "${REGION_TYPE_ID}" == "resource_depot" ]] && REGION_TYPE='depozitul de resurse'
-        [[ "${REGION_TYPE_ID}" == "settlement_city" ]] && REGION_TYPE="orașul"
-        [[ "${REGION_TYPE_ID}" == "settlement_town" ]] && REGION_TYPE="orășelul"
-        [[ "${REGION_TYPE_ID}" == "settlement_village" ]] && REGION_TYPE="satul"
-        [[ "${REGION_TYPE_ID}" == "station_weather" ]] && REGION_TYPE='stația meteorologică'
-        [[ "${REGION_TYPE_ID}" == 'yacht_diplomatic' ]] && REGION_TYPE='iahtul diplomatic'
+    if [ "${LOCALE}" = 'ro' ]; then
+        [ "${REGION_TYPE_ID}" = 'border_crossing' ] && REGION_TYPE='punctul vamal'
+        [ "${REGION_TYPE_ID}" = 'border_watchtower' ] && REGION_TYPE='turnul vamal de veghe'
+        [ "${REGION_TYPE_ID}" = 'border_wall' ] && REGION_TYPE='zidul vamal'
+        [ "${REGION_TYPE_ID}" = 'bridge' ] && REGION_TYPE='podul'
+        [ "${REGION_TYPE_ID}" = 'defence_bunker' ] && REGION_TYPE="buncărul de apărare"
+        [ "${REGION_TYPE_ID}" = 'defence_turret' ] && REGION_TYPE="turela de apărare"
+        [ "${REGION_TYPE_ID}" = 'defence_wall' ] && REGION_TYPE="turela de apărare"
+        [ "${REGION_TYPE_ID}" = 'end_portal' ] && REGION_TYPE="portalul către End"
+        [ "${REGION_TYPE_ID}" = 'military_base' ] && REGION_TYPE='baza militară'
+        [ "${REGION_TYPE_ID}" = 'player_base' ] && REGION_TYPE='baza lui'
+        [ "${REGION_TYPE_ID}" = 'player_home' ] && REGION_TYPE='casa lui'
+        [ "${REGION_TYPE_ID}" = 'road_rail' ] && REGION_TYPE='calea ferată'
+        [ "${REGION_TYPE_ID}" = 'resource_depot' ] && REGION_TYPE='depozitul de resurse'
+        [ "${REGION_TYPE_ID}" = 'settlement_city' ] && REGION_TYPE="orașul"
+        [ "${REGION_TYPE_ID}" = 'settlement_town' ] && REGION_TYPE="orășelul"
+        [ "${REGION_TYPE_ID}" = 'settlement_village' ] && REGION_TYPE="satul"
+        [ "${REGION_TYPE_ID}" = 'station_weather' ] && REGION_TYPE='stația meteorologică'
+        [ "${REGION_TYPE_ID}" = 'yacht_diplomatic' ] && REGION_TYPE='iahtul diplomatic'
     else
-        [[ "${REGION_TYPE_ID}" == "border_crossing" ]] && REGION_TYPE="border crossing"
-        [[ "${REGION_TYPE_ID}" == "border_wall" ]] && REGION_TYPE="border wall"
-        [[ "${REGION_TYPE_ID}" == "border_watchtower" ]] && REGION_TYPE="border watchtower"
-        [[ "${REGION_TYPE_ID}" == 'bridge' ]] && REGION_TYPE='bridge'
-        [[ "${REGION_TYPE_ID}" == "defence_bunker" ]] && REGION_TYPE="defence bunker"
-        [[ "${REGION_TYPE_ID}" == "defence_turret" ]] && REGION_TYPE="defence turret"
-        [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_TYPE="military base"
-        [[ "${REGION_TYPE_ID}" == "player_base" ]] && REGION_TYPE="base"
-        [[ "${REGION_TYPE_ID}" == "player_home" ]] && REGION_TYPE="home"
-        [[ "${REGION_TYPE_ID}" == "player_home_lake" ]] && REGION_TYPE="home on the lake"
-        [[ "${REGION_TYPE_ID}" == "player_home_mountain" ]] && REGION_TYPE="home on the mountain"
-        [[ "${REGION_TYPE_ID}" == "resource_depot" ]] && REGION_TYPE='resource depot'
-        [[ "${REGION_TYPE_ID}" == "road_rail" ]] && REGION_TYPE="railroad"
-        [[ "${REGION_TYPE_ID}" == "settlement_city" ]] && REGION_TYPE="city"
-        [[ "${REGION_TYPE_ID}" == "settlement_town" ]] && REGION_TYPE="town"
-        [[ "${REGION_TYPE_ID}" == 'settlement_village' ]] && REGION_TYPE='village'
-        [[ "${REGION_TYPE_ID}" == 'station_weather' ]] && REGION_TYPE='weather station'
-        [[ "${REGION_TYPE_ID}" == 'yacht_diplomatic' ]] && REGION_TYPE='diplomatic yacht'
+        [ "${REGION_TYPE_ID}" = 'border_crossing' ] && REGION_TYPE="border crossing"
+        [ "${REGION_TYPE_ID}" = 'border_wall' ] && REGION_TYPE="border wall"
+        [ "${REGION_TYPE_ID}" = 'border_watchtower' ] && REGION_TYPE="border watchtower"
+        [ "${REGION_TYPE_ID}" = 'bridge' ] && REGION_TYPE='bridge'
+        [ "${REGION_TYPE_ID}" = 'defence_bunker' ] && REGION_TYPE="defence bunker"
+        [ "${REGION_TYPE_ID}" = 'defence_turret' ] && REGION_TYPE="defence turret"
+        [ "${REGION_TYPE_ID}" = 'end_portal' ] && REGION_TYPE="End Portal"
+        [ "${REGION_TYPE_ID}" = 'military_base' ] && REGION_TYPE="military base"
+        [ "${REGION_TYPE_ID}" = 'player_base' ] && REGION_TYPE="base"
+        [ "${REGION_TYPE_ID}" = 'player_home' ] && REGION_TYPE="home"
+        [ "${REGION_TYPE_ID}" = 'resource_depot' ] && REGION_TYPE='resource depot'
+        [ "${REGION_TYPE_ID}" = 'road_rail' ] && REGION_TYPE="railroad"
+        [ "${REGION_TYPE_ID}" = 'settlement_city' ] && REGION_TYPE="city"
+        [ "${REGION_TYPE_ID}" = 'settlement_town' ] && REGION_TYPE="town"
+        [ "${REGION_TYPE_ID}" = 'settlement_village' ] && REGION_TYPE='village'
+        [ "${REGION_TYPE_ID}" = 'station_weather' ] && REGION_TYPE='weather station'
+        [ "${REGION_TYPE_ID}" = 'yacht_diplomatic' ] && REGION_TYPE='diplomatic yacht'
     fi
 
     set_deny_message "${REGION_ID}" "${REGION_TYPE}" "${REGION_NAME}" "${ZONE_NAME}"
@@ -344,15 +343,16 @@ function set_region_messages() {
     if ${USE_GREETINGS}; then
         set_greeting_messages "${REGION_ID}" "${REGION_TYPE}" "${REGION_NAME}" "${ZONE_NAME}"
     else
-        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' ""
-        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'farewell' ""
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'greeting' ''
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'farewell' ''
     fi
 }
 
 function set_location_region_settings_by_name() {
-    local REGION_TYPE_ID="${1}"
-    local LOCATION_NAME="${2}"
-    local ZONE_NAME="${3}"
+    local WORLD_NAME="${1}"
+    local REGION_TYPE_ID="${2}"
+    local LOCATION_NAME="${3}"
+    local ZONE_NAME="${4}"
 
     local LOCATION_ID=$(region_name_to_id "${LOCATION_NAME}")
     local ZONE_ID=$(region_name_to_id "${ZONE_NAME}")
@@ -360,14 +360,15 @@ function set_location_region_settings_by_name() {
 
     [[ "${REGION_TYPE_ID}" == "military_base" ]] && REGION_ID="${ZONE_ID}_${REGION_TYPE_ID}_${LOCATION_ID}"
 
-    set_location_region_settings_by_id "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
+    set_location_region_settings_by_id "${WORLD_NAME}" "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
 }
 
 function set_location_region_settings_by_id() {
-    local REGION_ID="${1}"
-    local REGION_TYPE_ID="${2}"
-    local LOCATION_NAME="${3}"
-    local ZONE_NAME="${4}"
+    local WORLD_NAME="${1}"
+    local REGION_ID="${2}"
+    local REGION_TYPE_ID="${3}"
+    local LOCATION_NAME="${4}"
+    local ZONE_NAME="${5}"
 
     local WORLD_NAME='world'
 
@@ -377,13 +378,71 @@ function set_location_region_settings_by_id() {
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-destroy' true
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-place' true
 
-    if [ -n "${LOCATION_NAME}" ]; then
-        set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
+    if [[ ! "${REGION_TYPE_ID}" == player* ]]; then
+        if [ -n "${LOCATION_NAME}" ]; then
+            set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
+        else
+            set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}" --quiet
+        fi
+
+        set_region_priority "${WORLD_NAME}" "${REGION_ID}" 10
+    fi
+}
+
+function set_nation_region_settings() {
+    local WORLD_NAME="${1}" && shift
+
+    for NATION in ${@}; do
+        NATION_ID=$(region_name_to_id "${NATION}")
+    
+        for NATION2 in ${@}; do
+            NATION2_ID=$(region_name_to_id "${NATION2}")
+    
+            for BORDER_CROSSING_REGION_ID in $(get_regions_by_pattern "${NATION_ID}_border_crossing_${NATION2_ID}_.*"); do
+                set_location_region_settings_by_id "${WORLD_NAME}" "${BORDER_CROSSING_REGION_ID}" "border_crossing" "" "${NATION} ↔ ${NATION2}"
+            done
+        done
+    
+        for STRUCTURE in 'border_watchtower' 'border_wall' 'bridge' 'defence_bunker' 'defence_turret' \
+                         'end_portal' 'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
+            set_structure_region_settings "${WORLD_NAME}" "${NATION}" "${STRUCTURE}"
+        done
+    
+        for PLAYER_USERNAME in $(get_players_usernames_that_own_regions "${WORLD_NAME}"); do
+            PLAYER_REGION_ID=$(region_name_to_id "${PLAYER_USERNAME}")
+            
+            set_player_region_settings "${WORLD_NAME}" "${NATION_NAME}" "${PLAYER_USERNAME}"
+        done
+    done
+}
+
+function set_administrative_region_settings() {
+    local WORLD_NAME="${1}"
+    local REGION_TYPE="${2}"
+    local ADMINISTRATIVE_REGION_NAME="${3}"
+    local COUNTRY_NAME="${4}"
+
+    local ADMINISTRATIVE_REGION_ID=$(region_name_to_id "${ADMINISTRATIVE_REGION_NAME}")
+    local COUNTRY_ID=$(region_name_to_id "${COUNTRY_NAME}")
+
+    local REGION_ID="${COUNTRY_ID}_${REGION_TYPE}_${ADMINISTRATIVE_REGION_ID}"
+    local REGION_NAME="${ADMINISTRATIVE_REGION_NAME}"
+
+    if [ "${LOCALE}" = 'ro' ]; then
+        [ "${REGION_TYPE}" = 'voivodeship' ] && REGION_NAME="Voievodatul ${ADMINISTRATIVE_REGION_NAME}, ${COUNTRY_NAME}"
     else
-        set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}" --quiet
+        [ "${REGION_TYPE}" = 'voivodeship' ] && REGION_NAME="${ADMINISTRATIVE_REGION_NAME} Voivodeship, ${COUNTRY_NAME}"
     fi
 
-    set_region_priority "${WORLD_NAME}" "${REGION_ID}" 10
+    REGION_PRIORITY=5
+
+    [ "${REGION_TYPE}" = 'country' ] && REGION_PRIORITY=1
+    [ "${REGION_TYPE}" = 'county' ] && REGION_PRIORITY=3
+    [ "${REGION_TYPE}" = 'voivodeship' ] && REGION_PRIORITY=2
+
+    set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "${REGION_NAME}" "${COLOUR_YELLOW_ALPHANUMERIC}"
+    set_region_priority "${WORLD_NAME}" "${REGION_ID}" "${REGION_PRIORITY}"
+    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'passthrough' true
 }
 
 function set_settlement_region_settings() {
@@ -398,7 +457,7 @@ function set_settlement_region_settings() {
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'frostwalker' false
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'sculk-growth' false
     #set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" "interact" true
-    set_location_region_settings_by_name "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
+    set_location_region_settings_by_name "${WORLD_NAME}" "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
@@ -408,27 +467,28 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'baths'                  'Public Baths'              'Băile Publice'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "cemetery"               "Cemetery"                  "Cimitirul"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "church"                 "Church"                    "Biserica"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "consulate_fbu"          "FBU Consulate"             "Consulatul FBU"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "consulate_nucilandia"   "Nucilandian Consulate"     "Consulatul Nucilandiei"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'church'                 'Church'                    'Biserica'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'consulate_fbu'          'FBU Consulate'             'Consulatul FBU'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'consulate_nucilandia'   'Nucilandian Consulate'     'Consulatul Nucilandiei'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'dock'                   'Docks'                     'Docul'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_animals'           "Animal Farm"               "Ferma de Animale"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_chicken'           "Chicken Farm"              "Ferma de Găini"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_crops'             "Crops Farm"                "Ferma Agricolă"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_animals'           'Animal Farm'               'Ferma de Animale'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_chicken'           'Chicken Farm'              'Ferma de Găini'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_crops'             'Crops Farm'                'Ferma Agricolă'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_bambus'            'Bambus Farm'               'Ferma de Bambus'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_blaze'             'Blaze Farm'                'Ferma de Blaze'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_cactus"            "Cactus Farm"               "Ferma de Cactus"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_gunpowder"         "Gunpowder Farm"            "Ferma de Praf de Pușcă"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_iron"              "Iron Farm"                 "Ferma de Fier"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_lava"              "Lava Farm"                 "Ferma de Lavă"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_melon"             "Melon Farm"                "Ferma de Lubenițe"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_pumpkin"           "Pumpkin Farm"              "Ferma de Pumpkin"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_raid"              "Raid Farm"                 "Ferma de Raiduri"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_sniffer"           "Sniffer Farm"              "Ferma de Snifferi"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_squid"             "Squid Farm"                "Ferma de Sepii"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_cactus"            'Cactus Farm'               'Ferma de Cactuși'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_gunpowder"         'Gunpowder Farm'            'Ferma de Praf de Pușcă'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_iron'              'Iron Farm'                 'Ferma de Fier'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_lava'              'Lava Farm'                 'Ferma de Lavă'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_melon"             'Melon Farm'                'Ferma de Lubenițe'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_pumpkin"           'Pumpkin Farm'              'Ferma de Pumpkin'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_raid"              'Raid Farm'                 'Ferma de Raiduri'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sniffer'           'Slime Farm'                'Ferma de Slime'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sniffer'           'Sniffer Farm'              'Ferma de Snifferi'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_squid'             'Squid Farm'                'Ferma de Sepii'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sugarcane'         'Sugar Cane Farm'           'Ferma de Trestie'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_wool'              'Wool Farm'                 'Ferma de Lână'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_wool'              'Villager Breeder'          'Creșa de Săteni'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_villager'          'Villager Breeder'          'Creșa de Săteni'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp'                'XP Farm'                   'Ferma de XP'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp_1'              'XP Farm'                   'Ferma de XP'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp_2'              'XP Farm'                   'Ferma de XP'
@@ -468,6 +528,7 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_police'         'Police Station'            'Stația de Poliție'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_train'          'Train Station'             'Gara'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'subway'                 'Subway'                    'Subway-ul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'temple'                 'Temple'                    'Templul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'university'             'University'                'Universitatea'
@@ -475,19 +536,20 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'workshop'               'Workshop'                  'Atelierul'
 
     if grep -q "^\s*${SETTLEMENT_ID}_player_" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}"; then
-        for PLAYER_USERNAME in $(get_players_usernames); do
-            set_player_region_settings "${SETTLEMENT_NAME}" "${PLAYER_USERNAME}"
+        for PLAYER_USERNAME in $(get_players_usernames_that_own_regions "${WORLD_NAME}"); do
+            set_player_region_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "${PLAYER_USERNAME}"
         done
     fi
 }
 
 function set_structure_region_settings() {
-    local ZONE_NAME="${1}"
-    local REGION_TYPE_ID="${2}"
+    local WORLD_NAME="${1}"
+    local ZONE_NAME="${2}"
+    local REGION_TYPE_ID="${3}"
     local ZONE_ID=$(region_name_to_id "${ZONE_NAME}")
 
     for STRUCTURE_REGION_ID in $(get_regions_by_pattern "${ZONE_ID}_${REGION_TYPE_ID}_.*"); do
-        set_location_region_settings_by_id "${STRUCTURE_REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}"
+        set_location_region_settings_by_id "${WORLD_NAME}" "${STRUCTURE_REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}"
     done
 }
 
@@ -524,8 +586,10 @@ function set_building_settings() {
     if [[ "${REGION_ID}" == *_arena_* ]]; then
         REGION_PRIORITY=30
 
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'use' true
+
         if [[ "${REGION_ID}" == *_ring ]]; then
-            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'exit-via-teleport' true
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'exit-via-teleport' false
 #            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
             set_region_flag "${WORLD_NAME}" "${REGION_ID}" "enderpearl" false
             set_region_flag "${WORLD_NAME}" "${REGION_ID}" "chorus-fruit-teleport" false
@@ -546,13 +610,19 @@ function set_building_settings() {
         REGION_PRIORITY=30
         set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
     fi
+
+    if [[ "${REGION_ID}" == *_cemetery* ]]; then
+        REGION_PRIORITY=30
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","creeper","spider","squid"]'
+    fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
-        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
-        [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
-        [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" "deny-spawn" '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
+        [[ "${REGION_ID}" == *_blaze ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
+        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
+        [[ "${REGION_ID}" == *_squid ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","creeper","skeleton","spider","witch","zombie"]'
+        [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
+        [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
     fi
 
     if [[ "${REGION_ID}" == *_hospital ]]; then
@@ -579,46 +649,41 @@ function set_building_settings() {
         set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'item-frame-rotation' false
     fi
 
-    set_region_priority "${WORLD_NAME}" "${REGION_ID}" ${REGION_PRIORITY}
+    set_region_priority "${WORLD_NAME}" "${REGION_ID}" "${REGION_PRIORITY}"
 }
 
 function set_player_region_settings() {
-    local ZONE_NAME="${1}" && shift
-    local MAIN_PLAYER_NAME="${1}" && shift
+    local WORLD_NAME="${1}"
+    local ZONE_NAME="${2}"
+    local MAIN_PLAYER_NAME="${3}"
+    local ZONE_ID=$(region_name_to_id "${ZONE_NAME}")
 
-    local WORLD_NAME='world'
-
-    local ZONE_ID=$(region_name_to_id "${ZONE_NAME}") 
-
+    local PLAYER_NAMES=''
     local PLAYER_REGION_ID=$(region_name_to_id "${MAIN_PLAYER_NAME}")
-    local REGION_ID="${ZONE_ID}_player_${PLAYER_REGION_ID}"
+    local REGION_TYPE_ID='player'
 
-    ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
+    for REGION_ID in $(get_regions_by_pattern "${ZONE_ID}_${REGION_TYPE_ID}_${PLAYER_REGION_ID}_.*") "${ZONE_ID}_${REGION_TYPE_ID}_${PLAYER_REGION_ID}"; do
+        ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && continue
 
-    local PLAYER_NAMES="${MAIN_PLAYER_NAME}"
+        set_location_region_settings_by_id "${WORLD_NAME}" "${REGION_ID}" 'player_home' "${MAIN_PLAYER_NAME}" "${ZONE_NAME}"
 
-    while ! string_is_null_or_whitespace "${1}"; do
-        PLAYER_NAMES="${PLAYER_NAMES}, ${1}"
-        shift
+        PLAYER_NAMES="${MAIN_PLAYER_NAME}"
+
+#        while ! string_is_null_or_whitespace "${1}"; do
+#            PLAYER_NAMES="${PLAYER_NAMES}, ${1}"
+#            shift
+#        done
+
+        set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES} din ${ZONE_NAME}"
+
+        if [ "${ZONE_NAME}" = 'FBU' ] \
+        || [ "${ZONE_NAME}" = 'Nucilandia' ] \
+        || [ "${ZONE_NAME}" = 'Wilderness' ]; then
+            set_region_messages "${REGION_ID}" 'player_base' "${PLAYER_NAMES}" "${ZONE_NAME}"
+        else
+            set_region_messages "${REGION_ID}" 'player_home' "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
+        fi
+
+        set_region_priority "${WORLD_NAME}" "${REGION_ID}" 50
     done
-
-    set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES} din ${ZONE_NAME}"
-
-    if [[ "${ZONE_NAME}" == "Wilderness" ]]; then
-        set_region_messages "${REGION_ID}" "player_base" "${PLAYER_NAMES}" "${ZONE_NAME}"
-    else
-        set_region_messages "${REGION_ID}" "player_home" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
-
-        if does_region_exist "${WORLD_NAME}" "${REGION_ID}_lake"; then
-            set_region_messages "${REGION_ID}_lake" "player_home_lake" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
-            set_region_priority "${WORLD_NAME}" "${REGION_ID_lake}" 50
-        fi
-
-        if does_region_exist "${WORLD_NAME}" "${REGION_ID}_mountain"; then
-            set_region_messages "${REGION_ID}_mountain" "player_home_mountain" "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
-            set_region_priority "${WORLD_NAME}" "${REGION_ID}_mountain" 50
-        fi
-    fi
-
-    set_region_priority "${WORLD_NAME}" "${REGION_ID}" 50
 }
