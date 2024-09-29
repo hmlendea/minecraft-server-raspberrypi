@@ -3,7 +3,7 @@
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
-export BULLETPOINT_LIST_MARKER="${COLOUR_RESET} ${COLOUR_RESET} ${COLOUR_RESET} ${COLOUR_MESSAGE}• "
+export BULLETPOINT_LIST_MARKER="${COLOUR_RESET} ${COLOUR_RESET} ${COLOUR_MESSAGE}• "
 INCLUDE_HANDLE_SIGN_IN_PLAYER_NAMES=false
 
 function normalise_message() {
@@ -292,6 +292,10 @@ function get_enablement_message() {
     fi
 
     echo $(get_coloured_message "${COLOUR}" "${STATUS}")
+}
+
+function get_enablement_minimessage() {
+    convert_message_to_minimessage $(get_enablement_message ${@})
 }
 
 function get_player_mention() {

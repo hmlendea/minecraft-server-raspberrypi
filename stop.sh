@@ -1,7 +1,7 @@
 #!/bin/bash
 SERVER_ROOT_DIR=$(pwd)
 source "${SERVER_ROOT_DIR}/scripts/common/paths.sh"
-source "${SERVER_ROOT_DIR}/scripts/common/specs.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/status.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
@@ -9,15 +9,15 @@ REASON="${*}"
 SECONDS_BEFORE_KICK=30
 
 BROADCAST_HEADER_MESSAGE='Attention everyone'
-BROADCAST_SHUTDOWN_MESSAGE='The server will shut down in a moment'
+BROADCAST_SHUTDOWN_MESSAGE="${SERVER_NAME} will shut down in a moment"
 BROADCAST_KICK_MESSAGE="All online players will be kicked in ${SECONDS_BEFORE_KICK} seconds"
-KICK_REASON='Server shutdown'
+KICK_REASON="${SERVER_NAME} is shutting down"
 
 if [ "${LOCALE}" = 'ro' ]; then
     BROADCAST_HEADER_MESSAGE='Atenție toată lumea'
-    BROADCAST_SHUTDOWN_MESSAGE='Server-ul se va opri într-un moment'
+    BROADCAST_SHUTDOWN_MESSAGE="${SERVER_NAME} se va opri într-un moment"
     BROADCAST_KICK_MESSAGE="Toți jucătorii online vor fi deconectați în ${SECONDS_BEFORE_KICK} secunde"
-    KICK_REASON='Server-ul se oprește'
+    KICK_REASON='${SERVER_NAME} se oprește'
 fi
 
 if ${IS_SERVER_RUNNING}; then
