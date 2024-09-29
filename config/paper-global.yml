@@ -31,10 +31,10 @@ chunk-loading:
   target-player-chunk-send-rate: 100.0
 chunk-loading-advanced:
   auto-config-send-distance: true
-  player-max-concurrent-chunk-generates: 0
+  player-max-concurrent-chunk-generates: 1
   player-max-concurrent-chunk-loads: 0
 chunk-loading-basic:
-  player-max-chunk-generate-rate: -1.0
+  player-max-chunk-generate-rate: 5.0
   player-max-chunk-load-rate: 100.0
   player-max-chunk-send-rate: 75.0
 chunk-system:
@@ -72,7 +72,7 @@ messages:
     connection-throttle: Connection throttled! Please wait before reconnecting.
     flying-player: <lang:multiplayer.disconnect.flying>
     flying-vehicle: <lang:multiplayer.disconnect.flying>
-  no-permission: <red>✘ </red><gray>Nu se poate executa.
+  no-permission: <red>✘ </red><gray>Nu se poate efectua.
   use-display-name-in-quit-message: false
 misc:
   chat-threads:

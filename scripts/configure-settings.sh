@@ -10,47 +10,6 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
 ensure-su-access
 
-WEBMAP_PAGE_TITLE="${SERVER_NAME} World Map"
-
-PLACEHOLDER_ARG0='{0}'
-PLACEHOLDER_ARG1='{1}'
-PLACEHOLDER_ARG1_PERCENT='%1%'
-PLACEHOLDER_ARG2='{2}'
-PLACEHOLDER_ACHIEVEMENT_PERCENT='%achievement%'
-PLACEHOLDER_ARROWS_BRACKETS="{arrows}"
-PLACEHOLDER_BLOCKS_BRACKETS="{blocks}"
-PLACEHOLDER_BUYER_SINGLEPERCENT="%buyer"
-PLACEHOLDER_CITY_PERCENT="%city%"
-PLACEHOLDER_COUNT_SINGLEPERCENT="%count"
-PLACEHOLDER_COUNTRY_PERCENT="%country%"
-PLACEHOLDER_CROPS_BRACKETS="{crops}"
-PLACEHOLDER_DAMAGE_BRACKETS="{damage}"
-PLACEHOLDER_DATE_BRACKETS="{date}"
-PLACEHOLDER_DISPLAYNAME_BRACKETS='{DISPLAYNAME}'
-PLACEHOLDER_FISH_BRACKETS="{fish}"
-PLACEHOLDER_ITEM_SINGLEPERCENT='%item'
-PLACEHOLDER_KILLS_BRACKETS="{kills}"
-PLACEHOLDER_NAME_POINTY="<name>"
-PLACEHOLDER_OWNER_SINGLEPERCENT='%owner'
-PLACEHOLDER_PLAYER="{PLAYER}"
-PLACEHOLDER_PLAYER_BRACKETS='{player}'
-PLACEHOLDER_PLAYER_PERCENT='%player%'
-PLACEHOLDER_PLAYER_SINGLEPERCENT='%player'
-PLACEHOLDER_PLAYERCOUNT_PERCENT='%playercount%'
-PLACEHOLDER_PRICE_SINGLEPERCENT='%price'
-PLACEHOLDER_REASON_PERCENT="%reason%"
-PLACEHOLDER_SELLER_SINGLEPERCENT="%seller"
-PLACEHOLDER_MESSAGE="{MESSAGE}"
-PLACEHOLDER_MESSAGE_PERCENT="%message%"
-PLACEHOLDER_MESSAGE_POINTY="<message>"
-PLACEHOLDER_NAME_PERCENT="%name%"
-PLACEHOLDER_REPLY_PERCENT="%reply%"
-PLACEHOLDER_SALES_BRACKETS='{sales}'
-PLACEHOLDER_SECONDS_PERCENT="%seconds%"
-PLACEHOLDER_SHEEP_BRACKETS='{sheep}'
-PLACEHOLDER_STATE_PERCENT='%state%'
-PLACEHOLDER_USERNAME_PERCENT='%username%'
-
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
     'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
@@ -76,11 +35,13 @@ set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}
 set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
 
 set_config_value "${BUKKIT_CONFIG_FILE}" 'chunk-gc.period-in-ticks'     300
-set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.connection-throttle' 4000
+set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.connection-throttle' "${CONNECTION_THROTTLE}"
 set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.query-plugins'       false
 set_config_value "${BUKKIT_CONFIG_FILE}" 'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}"
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
+    'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  1 \
+    'chunk-loading-basic.player-max-chunk-generate-rate'                            5 \
     'item-validation.book-size.page-max'                                            1024 \
     'misc.max-joins-per-tick'                                                       3 \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.action'            'DROP' \
@@ -233,8 +194,6 @@ configure_plugin 'AnarchyExploitFixes' config \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-load' true \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-unload' true \
 
-exit
-
 configure_plugin 'AuthMe' config \
     'Hooks.useEssentialsMotd' $(is_plugin_installed_bool 'EssentialsX') \
     'Security.console.logConsole' false \
@@ -256,6 +215,16 @@ configure_plugin 'AuthMe' config \
     'settings.security.minPasswordLength' 10 \
     'settings.useAsyncTasks' true \
     'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
+
+if ${USE_TELEMETRY}; then
+    configure_plugin 'bStats' config \
+        'enabled'       true \
+        'serverUuid'    ''
+else
+    configure_plugin 'bStats' config \
+        'enabled'       false \
+        'serverUuid'    '00000000-0000-0000-0000-000000000000'
+fi
 
 configure_plugin 'BestTools' config \
     'besttools-enabled-by-default' true \
@@ -308,6 +277,9 @@ configure_plugin 'DeathMessages' config \
 
 configure_plugin 'DecentHolograms' config \
     'update-checker' "${CHECK_PLUGINS_FOR_UPDATES}"
+
+configure_plugin 'DeluxeMenus' config \
+    'check_updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
 
 if is_plugin_installed 'DiscordSRV'; then
     configure_plugin 'DiscordSRV' config \
@@ -436,6 +408,7 @@ configure_plugin 'OreAnnouncer' config \
     'oreannouncer.updates.warn'     "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'Orebfuscator' config \
+    'cache.baseDirectory' 'cache/orebfuscator' \
     'general.checkForUpdates' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'general.updateOnBlockDamage' false \
     'general.bypassNotification' false \
@@ -443,7 +416,10 @@ configure_plugin 'Orebfuscator' config \
     'obfuscation.obfuscation-end.enabled' false \
     'obfuscation.obfuscation-overworld.maxY' '64' \
     'obfuscation.obfuscation-overworld.minY' '-64' \
-    'obfuscation.obfuscation-overworld.enabled' true
+    'obfuscation.obfuscation-overworld.enabled' true \
+    'proximity.proximity-overworld' false \
+    'proximity.proximity-nether' false \
+    'proximity.proximity-end' false
 
 if is_plugin_installed 'PaperTweaks'; then
     configure_plugin 'PaperTweaks' config \

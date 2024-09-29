@@ -92,24 +92,35 @@ function set_yml_value() {
     local KEY="${2}"
     local VALUE="${3}"
     
+    local KEY_ESC="${KEY}"
+    local VALUE_ESC="${VALUE}"
+
     if [ -z "${VALUE}" ]; then
         delete_yml_setting "${FILE}" "${KEY}"
         return
     fi
 
-    local KEY_ESC="${KEY}"
-    local VALUE_ESC="${VALUE}"
+#    if [[ "${VALUE}" == *"%"* ]] \
+#    || [[ "${VALUE}" == *" "* ]]; then
+#        VALUE_ESC="\"${VALUE}\""
+    #el
+    if grep -Eqv "^(\[.*|true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}"; then
+        VALUE_ESC="\"${VALUE}\""
+    fi
 
-    KEY_ESC=$(printf '.' && echo "${KEY}" | \
-                sed -E 's/([^\.]+)/"\1"/g; s/\./\./g' | \
-                sed 's/\"\.\.\"/./g' | \
-                sed 's/\(\"\([A-Za-z0-9][A-Za-z0-9]*\.\)*[A-Za-z0-9][A-Za-z0-9]*\"\)/[\1]/g')
-    VALUE_ESC="${VALUE}"
+    if [[ "${KEY}" == *.* ]] \
+    || [[ "${VALUE}" != "${VALUE_ESC}" ]]; then
+        KEY_ESC=$(printf '.' && echo "${KEY}" | \
+                    sed -E 's/([^\.]+)/"\1"/g; s/\./\./g' | \
+                    sed 's/\"\.\.\"/./g' | \
+                    sed 's/\(\"\([A-Za-z0-9][A-Za-z0-9]*\.\)*[A-Za-z0-9][A-Za-z0-9]*\"\)/[\1]/g')
 
-    grep -Eqv "^(\[.*|true|false|[0-9][0-9]*[\.]*[0-9]*)$" <<< "${VALUE}" && VALUE_ESC="\"${VALUE}\""
-
-    echo "${FILE}: ${KEY}=${VALUE}"
-    apply_yml_config "${FILE}" "${KEY_ESC} = ${VALUE_ESC}"
+        echo "${FILE}: ${KEY}=${VALUE_ESC}"
+        apply_yml_config "${FILE}" "${KEY_ESC} = ${VALUE_ESC}"
+    else
+        echo "${FILE}: ${KEY}=${VALUE_ESC}"
+        sudo sed 's/^'"${KEY}"':.*/'"${KEY}"': '"${VALUE_ESC}"'/g' -i "${FILE}"
+    fi
 }
 
 function delete_yml_setting() {

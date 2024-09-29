@@ -122,6 +122,7 @@ function reload_plugin() {
     [[ "${PLUGIN_CMD}" = 'chestshopnotifier' ]] && PLUGIN_CMD='csn'
     [[ "${PLUGIN_CMD}" = 'essentialsx' ]] && PLUGIN_CMD='essentials'
     [[ "${PLUGIN_CMD}" = 'invsee++' ]] && PLUGIN_CMD='invsee'
+    [[ "${PLUGIN_CMD}" = 'keepinventorycost' ]] && PLUGIN_CMD='keepinventoryadmin'
     [[ "${PLUGIN_CMD}" = 'luckperms' ]] && RELOAD_CMD='reloadconfig'
     [[ "${PLUGIN_CMD}" = 'votingplugin' ]] && PLUGIN_CMD='av'
 

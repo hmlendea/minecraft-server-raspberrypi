@@ -69,7 +69,9 @@ else
     update_plugin 'PaperTweaks'                 "https://github.com/MC-Machinations/VanillaTweaks"          "%pluginName%.jar"
     update_plugin 'Pl3xMap'                     "https://modrinth.com/plugin/pl3xmap"                       "%pluginName%-%pluginVersion%.jar"
     update_plugin 'Pl3xMap-Claims'              "https://modrinth.com/plugin/pl3xmap-claims"                "%pluginName%-%pluginVersion%.jar"
+#    update_plugin 'PlaceholderAPI'              'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'PlugManX'                    "https://github.com/TheBlackEntity/PlugManX"                "%pluginName%.jar"
+    update_plugin 'ProAntiTab'                  'https://github.com/RayzsYT/ProAntiTab'                     '%pluginName%-%pluginVersion%.jar'
     update_plugin 'ProtocolLib'                 'https://ci.dmulloy2.net'                                   '%pluginName%.jar'
 #    update_plugin 'ProtocolLib'                 "https://github.com/dmulloy2/ProtocolLib"                   "%pluginName%.jar"
     update_plugin 'PurpurExtras'                'https://modrinth.com/plugin/purpurextras'                  '%pluginName%-%pluginVersion%.jar'

@@ -383,7 +383,7 @@ environment:
       max: 40
       min: 20
     enabled: true
-  generate-flat-bedrock: false
+  generate-flat-bedrock: true
   locate-structures-outside-world-border: false
   max-block-ticks: 65536
   max-fluid-ticks: 65536

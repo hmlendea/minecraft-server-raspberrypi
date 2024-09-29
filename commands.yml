@@ -21,37 +21,71 @@ aliases:
   - essentials:broadcast $$1-!!!
   - discordsrv:discordsrv broadcast @everyone $$1-!!!
   ban:
-  - 'broadcast $$1 was banned with reason: $$2'
+  - 'broadcast @$$1 was permanently banned with reason: $$2-'
   - essentials:ban $$1 $$2-
   - essentials:banip $$1 [$$1] $$2-
+  - whitelist remove $$1
+  tempban:
+  - broadcast $$1 was temporarily banned ($$2) with reason $$3-
+  - essentials:tempban $$1 $$2 $$3-
+  - essentials:tempbanip $$1 $$2 [$$1] $$3-
+  spectateon:
+  - gamemode spectator
+  - vanish on
+  spectateoff:
+  - spawn
+  - gamemode survival
+  - vanish off
   trust:
   - whitelist add $$1
   - lp user $$1 parent set trusted
-  datapacks:
+  plugins:
+  - bukkit:plugins
   - minecraft:datapack list
   
   # Info
   whoami:
   - essentials:echo I am &2$sender
-  seed:
-  - 'essentials:echo Seed: [&a79973089]'
-  map:
-  - 'essentials:echo Map: &9&nhttps://mc.nucilandia.ro/nucicraft/webmap'
-  discord:
-  - 'essentials:echo Discord: &9&nhttps://discord.gg/zFM5xWGF7c'
   
-  # Teleportation
+  # Aliases
   b:
-  - essentials:back
+  - back
+  backpack:
+  - enderchest
   bed:
-  - essentials:home bed
-  tprg:
-  - worldguard:region teleport $$1
-  - essentials:tp $sender
+  - home bed
+  call:
+  - tpahere $1-
+  info:
+  - help $1-
   rtp:
   - essentials:tprandom
   shop:
-  - essentials:warp Shop
+  - warp Shop
+  topmoney:
+  - balancetop $1-
+  
+  # Romanian versions
+  ajutor:
+  - help $1-
+  bani:
+  - money $1-
+  casa:
+  - home $1-
+  cheama:
+  - call $1-
+  pat:
+  - bed
+  plata:
+  - pay $1-
+  setcasa:
+  - sethome $1-
+  topbani:
+  - balancetop $1-
+  tpda:
+  - tpyes $1-
+  tpnu:
+  - tpno $1-
   
   # Use vanilla Minecraft commands
   give:
@@ -116,6 +150,7 @@ aliases:
   - authme accounts $$1
   - antivpn lookup $$1
   - seen $$1
+  - viaver player $$1
   fakelogin:
   - essentials:me a intrat în joc!
   - essentials:vanish off
@@ -208,174 +243,6 @@ aliases:
   - westripwood spruce
   wewaterconcrete:
   - /replace $$1_concrete_powder $$1_concrete
-  setmicroblockname:
-  - renameitem &f$$1-
-  - setitemlore &9Microbloc
-  setpackagename:
-  - renameitem &f$$1-
-  - setitemlore &9Pachet
-  
-  # ## Disabled commands (reduce number of commands by culling aliases or alternatives)
-  # Bukkit/Spigot/Paper/Pufferfish/Purpur
-  reload:
-  - []
-  # Economy
-  ebal:
-  - []
-  ebalance:
-  - []
-  ebaltop:
-  - []
-  # Enderchest
-  eec:
-  - []
-  eechest:
-  - []
-  eenderchest:
-  - []
-  eendersee:
-  - []
-  # Essentials chat
-  er:
-  - []
-  ereply:
-  - []
-  reply:
-  - []
-  # Essentials chat - actions
-  action:
-  - []
-  describe:
-  - []
-  eaction:
-  - []
-  edescribe:
-  - []
-  eme:
-  - []
-  # Essentials kit
-  ck:
-  - []
-  ekit:
-  - []
-  ekitr:
-  - []
-  ekitreset:
-  - []
-  ekits:
-  - []
-  eresetkit:
-  - []
-  kitr:
-  - []
-  kits:
-  - []
-  resetkit:
-  - []
-  # Essentials list
-  elist:
-  - []
-  eonline:
-  - []
-  eplayerlist:
-  - []
-  eplist:
-  - []
-  ewho:
-  - []
-  online:
-  - []
-  playerlist:
-  - []
-  plist:
-  - []
-  who:
-  - []
-  # Essentials tp
-  call:
-  - []
-  eback:
-  - []
-  ecall:
-  - []
-  ereturn:
-  - []
-  esettpr:
-  - []
-  esettprandom:
-  - []
-  etele:
-  - []
-  eteleport:
-  - []
-  etop:
-  - []
-  etp:
-  - []
-  etp2p:
-  - []
-  etpa:
-  - []
-  etpaall:
-  - []
-  etpacancel:
-  - []
-  etpaccept:
-  - []
-  etpahere:
-  - []
-  etpall:
-  - []
-  etpask:
-  - []
-  etpauto:
-  - []
-  etpdeny:
-  - []
-  etpno:
-  - []
-  etpohere:
-  - []
-  etppos:
-  - []
-  etprandom:
-  - []
-  etptoggle:
-  - []
-  etypyes:
-  - []
-  ewarp:
-  - []
-  ewarps:
-  - []
-  offlinetp:
-  - []
-  otp:
-  - []
-  return:
-  - []
-  settprandom:
-  - []
-  tele:
-  - []
-  teleport:
-  - []
-  tp2p:
-  - []
-  tpaccept:
-  - []
-  tpask:
-  - []
-  tpdeny:
-  - []
-  tpoff:
-  - []
-  tprandom:
-  - []
-  # ChestSort
-  inventorysort:
-  - []
-  isort:
-  - []
-  sort:
-  - []
+  setitemtypeandname:
+  - setitemlore &9$$1
+  - renameitem &f$$2-
