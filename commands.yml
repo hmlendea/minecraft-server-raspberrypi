@@ -58,6 +58,8 @@ aliases:
   - tpahere $1-
   info:
   - help $1-
+  moneytop:
+  - balancetop $1-
   rtp:
   - essentials:tprandom
   shop:
@@ -70,6 +72,8 @@ aliases:
   - help $1-
   bani:
   - money $1-
+  banitop:
+  - balancetop $1-
   casa:
   - home $1-
   cheama:
@@ -118,15 +122,6 @@ aliases:
   - authme:log $$1
   itemnbt:
   - minecraft:data get entity $sender SelectedItem
-  collectdropsinrangetoplayer:
-  - minecraft:execute as @e[type=item] at $sender if entity @s[distance=..$$1] run
-    minecraft:tp @s $$2
-  collectdropsinrange:
-  - collectdropsinrangetoplayer $$1 $sender
-  collectdropstoplayer:
-  - collectdropsinrangetoplayer 128 $$1
-  collectdrops:
-  - collectdropsinrange 128
   renameitem:
   - essentials:itemname &r$$1-
   setitemlore:
@@ -140,8 +135,6 @@ aliases:
   - essentials:itemlore add &9Painting &f(for Item Frame)
   slap:
   - me slaps $$1
-  unloadall:
-  - unload 32
   topvotes:
   - superbvote:sv top
   
@@ -150,7 +143,7 @@ aliases:
   - authme accounts $$1
   - antivpn lookup $$1
   - seen $$1
-  - viaver player $$1
+  - grim profile $$1
   fakelogin:
   - essentials:me a intrat în joc!
   - essentials:vanish off
@@ -159,14 +152,6 @@ aliases:
   - essentials:me a ieșit din joc!
   - essentials:vanish on
   - dynmap:dynmap hide
-  
-  # WorldGuard
-  setrgtp:
-  - worldguard:region flag $$1 teleport here
-  rgsetup:
-  - worldguard:region priority $$1 30
-  - worldguard:region flag $$1 pvp DENY
-  - setrgtp $$1
   
   # Dynmap
   setsettlementmarker:
@@ -209,13 +194,6 @@ aliases:
   weshrinkall:
   - weshrinkh $$1
   - weshrinkv $$1
-  wesel1:
-  - /pos1
-  wesel2:
-  - /pos2
-  wesel:
-  - wesel1
-  - wesel2
   wereplacelogmaterial:
   - /replace $1_log ^$2_log
   - /replace $1_wood ^$2_wood
