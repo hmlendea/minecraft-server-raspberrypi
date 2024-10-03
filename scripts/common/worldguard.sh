@@ -5,7 +5,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
-DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
+DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","magma_cube","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 WORLDGUARD_DIR="$(get_plugin_dir WorldGuard)"
 
@@ -310,6 +310,7 @@ function set_region_messages() {
         [ "${REGION_TYPE_ID}" = 'military_base' ] && REGION_TYPE='baza militară'
         [ "${REGION_TYPE_ID}" = 'player_base' ] && REGION_TYPE='baza lui'
         [ "${REGION_TYPE_ID}" = 'player_home' ] && REGION_TYPE='casa lui'
+        [ "${REGION_TYPE_ID}" = 'portal_end' ] && REGION_TYPE='portalul către End'
         [ "${REGION_TYPE_ID}" = 'road_rail' ] && REGION_TYPE='calea ferată'
         [ "${REGION_TYPE_ID}" = 'resource_depot' ] && REGION_TYPE='depozitul de resurse'
         [ "${REGION_TYPE_ID}" = 'settlement_city' ] && REGION_TYPE="orașul"
@@ -328,6 +329,7 @@ function set_region_messages() {
         [ "${REGION_TYPE_ID}" = 'military_base' ] && REGION_TYPE="military base"
         [ "${REGION_TYPE_ID}" = 'player_base' ] && REGION_TYPE="base"
         [ "${REGION_TYPE_ID}" = 'player_home' ] && REGION_TYPE="home"
+        [ "${REGION_TYPE_ID}" = 'portal_end' ] && REGION_TYPE='End Portal'
         [ "${REGION_TYPE_ID}" = 'resource_depot' ] && REGION_TYPE='resource depot'
         [ "${REGION_TYPE_ID}" = 'road_rail' ] && REGION_TYPE="railroad"
         [ "${REGION_TYPE_ID}" = 'settlement_city' ] && REGION_TYPE="city"
@@ -527,6 +529,7 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_national_guard' 'National Guard Station'    'Stația Gărzii Naționale'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_police'         'Police Station'            'Stația de Poliție'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'station_train'          'Train Station'             'Gara'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'statue'                 'Statue'                    'Statuia'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'subway'                 'Subway'                    'Subway-ul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'temple'                 'Temple'                    'Templul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
@@ -623,6 +626,12 @@ function set_building_settings() {
         [[ "${REGION_ID}" == *_squid ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","creeper","skeleton","spider","witch","zombie"]'
         [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
         [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
+
+        if [[ "${REGION_ID}" == *_municipal_reserve ]]; then
+            REGION_PRIORITY=40
+        elif does_region_exist "${WORLD_NAME}" "${REGION_ID}_municipal_reserve"; then
+            set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "${REGION_ID}_municipal_reservs" "${BUILDING_NAME} Municipal Reserve" "Rezerva Municipală de la ${BUILDING_NAME_RO}"
+        fi
     fi
 
     if [[ "${REGION_ID}" == *_hospital ]]; then

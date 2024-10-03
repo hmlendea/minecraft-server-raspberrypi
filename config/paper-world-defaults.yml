@@ -309,7 +309,7 @@ entities:
       water_creature:
         hard: 48
         soft: 24
-    disable-mob-spawner-spawn-egg-transformation: false
+    disable-mob-spawner-spawn-egg-transformation: true
     duplicate-uuid:
       mode: SAFE_REGEN
       safe-regen-delete-range: 32

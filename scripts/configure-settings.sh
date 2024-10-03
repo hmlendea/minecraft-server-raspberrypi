@@ -61,6 +61,7 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'entities.armor-stands.do-collision-entity-lookups'                 false \
     'entities.armor-stands.tick'                                        false \
     'entities.behavior.disable-chest-cat-detection'                     true \
+    'entities.spawning.disable-mob-spawner-spawn-egg-transformation'    true \
     'entities.spawning.per-player-mob-spawns'                           true \
     'entities.spawning.wandering-trader.spawn-chance-max'               125 \
     'entities.spawning.wandering-trader.spawn-day-length'               "${DAY_LENGTH_TICKS}" \
@@ -129,6 +130,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.use-better-mending'                                 true \
     'world-settings.default.mobs.dolphin.disable-treasure-searching'                               true \
     'world-settings.default.mobs.villager.lobotomize.enabled'                                      true \
+    'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                      true \
     'world-settings.default.mobs.villager.search-radius.acquire-poi'                               16 \
     'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                        16 \
     'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                  false
@@ -203,15 +205,15 @@ configure_plugin 'AuthMe' config \
     'Security.tempban.tempbanLength' 240 \
     'settings.delayJoinMessage' false \
     'settings.forceVaultHook' $(is_plugin_installed_bool 'Vault') \
-    'settings.restrictions.DenyTabCompletionBeforeLogin' true \
+    'settings.restrictions.DenyTabCompleteBeforeLogin' true \
     'settings.restrictions.displayOtherAccounts' false \
+    'settings.registration.forceLoginAfterRegister' true \
+    'settings.restrictions.kickOnWrongPassword' false \
     'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
+    'settings.restrictions.timeout' 60 \
     'settings.serverName' "${SERVER_NAME}" \
     'settings.sessions.enabled' true \
     'settings.sessions.timeout' 960 \
-    'settings.registration.forceLoginAfterRegister' true \
-    'settings.restrictions.timeout' 60 \
-    'settings.restrictions.timeout' 60 \
     'settings.security.minPasswordLength' 10 \
     'settings.useAsyncTasks' true \
     'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
@@ -329,7 +331,8 @@ configure_plugin 'Dynmap' config \
     "defaultzoom"                  6
 
 configure_plugin 'EssentialsX' config \
-    "auto-afk"                              300 \
+    'allow-silient-join-quit'               true \
+    'auto-afk'                              300 \
     "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
     "change-tab-complete-name"              true \
     "command-cooldowns.tpr"                 300 \
@@ -505,6 +508,10 @@ if is_plugin_installed 'Pl3xmap'; then
         "world-settings.default.map.zoom.max-out" 1
 fi
 
+configure_plugin 'ProAntiTab' config \
+    'updater.enabled' "${SKIP_PLUGIN_UPDATE_CHECKS}"
+
+
 configure_plugin 'SkinsRestorer' config \
     'commands.perSkinPermissionConsent' 'I will follow the rules' \
     'SkinExpiresAfter' 180
@@ -566,8 +573,14 @@ if is_plugin_installed 'TreeAssist'; then
         set_config_value "$(get_plugin_file TreeAssist config)" "Plugins.${PLUGIN_NAME}" "$(is_plugin_installed_bool ${PLUGIN_NAME})"
     done
 
+    if ${CHECK_PLUGINS_FOR_UPDATES}; then
+        configure_plugin 'TreeAssist' config 'Update.Mode' 'announce'
+    else
+        configure_plugin 'TreeAssist' config 'Update.Mode' 'none'
+    fi
+
     configure_plugin 'TreeAssist' config \
-        'bStats.Active'                     "${DISABLE_TELEMETRY}" \
+        'bStats.Active'                     "${USE_TELEMETRY}" \
         'bStats.Full'                       "${USE_TELEMETRY}" \
         'Commands.No Replant.Cooldown Time' 90 \
         'Commands.Replant.Cooldown Time'    90 \
@@ -630,7 +643,8 @@ configure_plugin 'WorldEditSUI' config \
     'update-checks' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'WorldGuard' config \
-    'protections.max-claim-size' 125000
+    'protections.max-claim-size' 125000 \
+    'use-player-teleports' false
 
 # Entity save limits
 for ENTITY_TYPE in 'arrow' 'ender_pearl' 'experience_orb' 'fireball' 'small_fireball' 'snowball'; do
@@ -659,14 +673,14 @@ for MATERIAL in 'diamond' 'netherite'; do
     done
 done
 
-for OVERWORLD_MATERIAL in "coal" "copper" "iron" "gold" "redstone" "lapis" "diamond" "emerald"; do
-    for BLOCK in "${OVERWORLD_MATERIAL}_block" "${OVERWORLD_MATERIAL}_ore" "deepslate_${OVERWORLD_MATERIAL}_ore"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
+for OVERWORLD_MATERIAL in 'coal' 'copper' 'iron' 'gold' 'redstone' 'lapis' 'diamond' 'emerald'; do
+    for ITEM in "${OVERWORLD_MATERIAL}" "${OVERWORLD_MATERIAL}_block" "${OVERWORLD_MATERIAL}_ore" "deepslate_${OVERWORLD_MATERIAL}_ore"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
-for NETHER_MATERIAL in "quartz" "gold"; do
-    for BLOCK in "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
+for NETHER_MATERIAL in 'quartz' 'gold'; do
+    for ITEM in "${NETHER_MATERIAL}" "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
 for OVERWORLD_MATERIAL_WITH_INGOT in "copper" "iron" "gold"; do
