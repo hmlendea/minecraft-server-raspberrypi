@@ -11,7 +11,7 @@ TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/
  
 if [ "${TOTAL_RAM}" == "8G" ] || \
    [ "${TOTAL_RAM}" == "7G" ]; then
-    ALLOCATED_RAM="6G"
+    ALLOCATED_RAM="5500M"
 elif [ "${TOTAL_RAM}" == "4G" ]; then
     ALLOCATED_RAM="3G"
 else
