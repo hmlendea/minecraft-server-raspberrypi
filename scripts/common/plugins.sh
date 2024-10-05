@@ -59,16 +59,18 @@ function get_plugin_dir() {
     local PLUGIN_NAME="${1}"
     local PLUGIN_DIR_NAME="${PLUGIN_NAME}"
 
-    if [ "${PLUGIN_NAME}" == "Dynmap" ]; then
-        PLUGIN_DIR_NAME="dynmap"
-    elif [ "${PLUGIN_NAME}" == "EssentialsX" ]; then
-        PLUGIN_DIR_NAME="Essentials"
-    elif [ "${PLUGIN_NAME}" == "InvSee++" ]; then
-        PLUGIN_DIR_NAME="InvSeePlusPlus"
-    elif [ "${PLUGIN_NAME}" == "NuVotifier" ]; then
-        PLUGIN_DIR_NAME="Votifier"
-    elif [ "${PLUGIN_NAME}" == "WolfyUtils" ]; then
-        PLUGIN_DIR_NAME="WolfyUtilities"
+    if [ "${PLUGIN_NAME}" = 'Dynmap' ]; then
+        PLUGIN_DIR_NAME='dynmap'
+    elif [ "${PLUGIN_NAME}" = 'EssentialsX' ]; then
+        PLUGIN_DIR_NAME='Essentials'
+    elif [ "${PLUGIN_NAME}" = 'Geyser' ]; then
+        PLUGIN_DIR_NAME='Geyser-Spigot'
+    elif [ "${PLUGIN_NAME}" = 'InvSee++' ]; then
+        PLUGIN_DIR_NAME='InvSeePlusPlus'
+    elif [ "${PLUGIN_NAME}" = 'NuVotifier' ]; then
+        PLUGIN_DIR_NAME='Votifier'
+    elif [ "${PLUGIN_NAME}" = 'WolfyUtils' ]; then
+        PLUGIN_DIR_NAME='WolfyUtilities'
     fi
 
     echo "${SERVER_PLUGINS_DIR}/${PLUGIN_DIR_NAME}"

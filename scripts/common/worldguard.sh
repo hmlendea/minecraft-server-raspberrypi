@@ -5,7 +5,9 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
+DENY_SPAWN_ANIMALS='"chicken","cow","donkey","horse","pig","sheep"'
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","magma_cube","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
+
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 WORLDGUARD_DIR="$(get_plugin_dir WorldGuard)"
 
@@ -374,7 +376,7 @@ function set_location_region_settings_by_id() {
 
     local WORLD_NAME='world'
 
-    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},${DENY_SPAWN_ANIMALS},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
 
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'ride' true
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-destroy' true
@@ -462,9 +464,9 @@ function set_settlement_region_settings() {
     set_location_region_settings_by_name "${WORLD_NAME}" "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_deathcube"        "DeathCube"                 "DeathCube-ul"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_deathcube_ring"   "DeathCube Ring"            "Ringul DeathCube-ului"
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_pvp"              "PvP Arena"                 "Arena PvP"
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'arena_deathcube'        'DeathCube'                 'DeathCube-ul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'arena_deathcube_ring'   'DeathCube Ring'            'Ringul DeathCube-ului'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'arena_pvp'              'PvP Arena'                 'Arena PvP'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "arena_pvp_ring"         "PvP Arena Ring"            "Ringul Arenei PvP"
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "bank"                   "Bank"                      "Banca"
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'baths'                  'Public Baths'              'Băile Publice'
@@ -571,6 +573,13 @@ function set_building_settings() {
 
     ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
 
+    if [ "${BUILDING_ID}" = 'bank' ]; then
+        for ((I=1; I<=50; I++)); do
+            ! does_region_exist "${WORLD_NAME}" "${SETTLEMENT_ID}_bank_vault${I}" && break
+            set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "${BUILDING_ID}_vault${I}" 'Bank Vault' 'Seifurile din Banca'
+        done
+    fi
+
     if [ "${BUILDING_ID}" = 'mall' ]; then
         for ((I=1; I<=50; I++)); do
             ! does_region_exist "${WORLD_NAME}" "${SETTLEMENT_ID}_mall_shop${I}" && break
@@ -613,6 +622,10 @@ function set_building_settings() {
         REGION_PRIORITY=30
         set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
     fi
+    if [[ "${REGION_ID}" == *_bank_vault* ]]; then
+        REGION_PRIORITY=40
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
+    fi
 
     if [[ "${REGION_ID}" == *_cemetery* ]]; then
         REGION_PRIORITY=30
@@ -627,6 +640,8 @@ function set_building_settings() {
         [[ "${REGION_ID}" =~ _xp$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
         [[ "${REGION_ID}" =~ _xp_[0-9]$ ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
 
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+
         if [[ "${REGION_ID}" == *_municipal_reserve ]]; then
             REGION_PRIORITY=40
         elif does_region_exist "${WORLD_NAME}" "${REGION_ID}_municipal_reserve"; then
@@ -640,7 +655,7 @@ function set_building_settings() {
     fi
 
     if [[ "${REGION_ID}" == *_mall_shop* ]]; then
-        REGION_PRIORITY=30
+        REGION_PRIORITY=35
         set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'allow-shop' true
     fi
 
@@ -693,6 +708,7 @@ function set_player_region_settings() {
             set_region_messages "${REGION_ID}" 'player_home' "${PLAYER_NAMES}" "${ZONE_NAME}" --quiet
         fi
 
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
         set_region_priority "${WORLD_NAME}" "${REGION_ID}" 50
     done
 }

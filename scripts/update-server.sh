@@ -51,8 +51,10 @@ else
 #    update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
 #    update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
     update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'GeyserMC'                    'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
+    update_plugin 'HardPlus'                    'https://modrinth.com/plugin/hardplus'                      '%pluginName%-%pluginVersion%.jar'
     update_plugin 'HeadDB'                      'https://github.com/thesilentpro/headdb'                    '%pluginName%.jar'
     update_plugin 'HealthHider'                 'https://github.com/NoahvdAa/HealthHider'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'ImageMaps'                   'https://github.com/SydMontague/ImageMaps'                  '%pluginName%.jar'
@@ -97,4 +99,5 @@ else
     update_plugin 'WolfyUtils'                  "https://modrinth.com/plugin/wolfyutils"                    "wolfyutils-spigot-%pluginVersion%.jar"
     update_plugin 'WorldEditSUI'                "https://github.com/kennytv/WorldEditSUI"                   "%pluginName%-%pluginVersion%.jar"
     update_plugin 'WorldGuardExtraFlags'        'https://github.com/aromaa/WorldGuardExtraFlags'            '%pluginName%.jar'
+    update_plugin 'XRayHunter'                  'https://github.com/rlf/XRayHunter'                         '%pluginName%.jar'
 fi

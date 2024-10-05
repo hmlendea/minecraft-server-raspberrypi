@@ -480,7 +480,7 @@ if is_plugin_installed 'EssentialsX'; then
             'serverTotal'                       "$(get_formatted_message_minimessage info money În economia $(get_highlighted_message ${SERVER_NAME}) circulă $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'setBal'                            "$(get_formatted_message_minimessage success money Contul tău bancar a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'setBalOthers'                      "$(get_formatted_message_minimessage success money Contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_mention ${PLACEHOLDER_ARG1}))" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command $(get_player_mention ${PLACEHOLDER_ARG0}) a fost forțat să execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
             'takenFromAccount'                  "$(get_formatted_message_minimessage info money Ți s-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din cont)" \
             'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money S-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
@@ -577,51 +577,51 @@ if is_plugin_installed 'EssentialsX'; then
             'kitReceive'                        "$(get_formatted_message_minimessage success kit You have received the $(get_highlighted_message ${PLACEHOLDER_ARG0}) kit)" \
             'kitReset'                          "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset)" \
             'kitResetOther'                     "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            "listAmount"                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
+            'listAmount'                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
             'maxHomes'                          "$(get_formatted_message_minimessage error home You can\'t set more than $(get_highlighted_message ${PLACEHOLDER_ARG0} homes))" \
             'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
             'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'moneySentTo'                       "$(get_formatted_message_minimessage success money You sent $(get_highlighted_message ${PLACEHOLDER_ARG0}) to $(get_player_mention ${PLACEHOLDER_ARG1}))" \
             'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})\'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            "msgFormat"                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            "noPendingRequest"                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
-            "pendingTeleportCancelled"          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
+            'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
+            'noPendingRequest'                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
+            'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
             'payOffline'                        "$(get_formatted_message_minimessage error money You can\'t send money to offline players)" \
             'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
             'playerNotFound'                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
             'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
             'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
             'readNextPage'                      "$(get_formatted_message_minimessage info info You can read the next page using $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
-            "requestAccepted"                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
-            "requestAcceptedFrom"               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
-            "requestDenied"                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
-            "requestDeniedFrom"                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) denied your teleportation request)" \
-            "requestSent"                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            "requestSentAlready"                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            "requestTimedOut"                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
-            "requestTimedOutFrom"               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
+            'requestAccepted'                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
+            'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
+            'requestDenied'                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
+            'requestDeniedFrom'                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) denied your teleportation request)" \
+            'requestSent'                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            'requestSentAlready'                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            'requestTimedOut'                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
+            'requestTimedOutFrom'               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
             'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
             'serverTotal'                       "$(get_formatted_message_minimessage info money There are $(get_highlighted_message ${PLACEHOLDER_ARG0}) circulating in $(get_highlighted_message ${SERVER_NAME})\'s economy)" \
             'setBal'                            "$(get_formatted_message_minimessage success money Your bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
             'setBalOthers'                      "$(get_formatted_message_minimessage success money $(get_player_mention ${PLACEHOLDER_ARG0})\'s bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) has beento run $(get_command_mention ${PLACEHOLDER_ARG1}))" \
+            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) to execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
             'takenFromAccount'                  "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from your bank account)" \
             'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
             'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
             'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
-            "teleportBottom"                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
+            'teleportBottom'                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
             'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_enablement_message disabled) their teleportation requests)" \
-            "teleportHereRequest"               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to teleport to them)" \
-            "teleporting"                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
-            "teleportRequestSpecificCancelled"  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) cancelled)" \
-            "teleportRequestTimeoutInfo"        "$(get_formatted_message_minimessage info player This request will time out after $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds))" \
-            "teleportHome"                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            "teleportRequest"                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to let them teleport to you)" \
-            "teleportTop"                       "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message highest) empty space at your current location)" \
-            "teleportToPlayer"                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+            'teleportHereRequest'               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to teleport to them)" \
+            'teleporting'                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
+            'teleportRequestSpecificCancelled'  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) cancelled)" \
+            'teleportRequestTimeoutInfo'        "$(get_formatted_message_minimessage info player This request will time out after $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds))" \
+            'teleportHome'                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+            'teleportRequest'                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to let them teleport to you)" \
+            'teleportTop'                       "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message highest) empty space at your current location)" \
+            'teleportToPlayer'                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
             'timeBeforeTeleport'                "$(get_formatted_message_minimessage error teleport You need to wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before teleporting again)" \
             'timeWorldSet'                      "$(get_formatted_message_minimessage success time The time in $(get_highlighted_message ${PLACEHOLDER_ARG1}) is now $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
             'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
@@ -948,11 +948,10 @@ fi
 
 if is_plugin_installed 'TradeShop'; then
     configure_plugin 'TradeShop' config \
-        "language-options.message-prefix" "§" \
+        "language-options.message-prefix" '§' \
         "language-options.shop-bad-colour" "${COLOUR_ERROR}" \
         "language-options.shop-good-colour" "${COLOUR_SUCCESS}" \
         "language-options.shop-incomplete-colour" "${COLOUR_ERROR}" \
-        'system-options.check-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
         "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]'
 #        "shop-sign-options.sign-default-colours.birch-sign" "${COLOUR_WHITE}" \
 #        "shop-sign-options.sign-default-colours.cherry-sign" "${COLOUR_WHITE}" \
@@ -962,14 +961,14 @@ if is_plugin_installed 'TradeShop'; then
 #        "shop-sign-options.sign-default-colours.spruce-sign" "${COLOUR_WHITE}" \
 #        "shop-sign-options.sign-default-colours.warped-sign" "${COLOUR_WHITE}"
 
-    if [ "${LOCALE}" == "ro" ]; then
-        configure_plugin "TradeShop" config \
+    if [ "${LOCALE}" = 'ro' ]; then
+        configure_plugin 'TradeShop' config \
             "language-options.shop-closed-status" "${COLOUR_ERROR}<Închis>" \
             "language-options.shop-incomplete-status" "${COLOUR_ERROR}<Invalid>" \
             "language-options.shop-open-status" "${COLOUR_SUCCESS}<Deschis>" \
             "language-options.shop-outofstock-status" "${COLOUR_ERROR}<Stoc Insuficient>"
             
-        configure_plugin "TradeShop" messages \
+        configure_plugin 'TradeShop' messages \
             "change-closed" "$(get_formatted_message success trade Oferta a fost $(get_enablement_message dezactivată))" \
             "change-open" "$(get_formatted_message success trade Oferta a fost $(get_enablement_message activată))" \
             "insufficient-items" "$(get_formatted_message error trade Îți lipsesc următoarele obiecte:\\n{%MISSINGITEMS%=  ${COLOUR_HIGHLIGHT}%AMOUNT% %ITEM%})" \
@@ -1017,11 +1016,11 @@ if is_plugin_installed 'TreeAssist'; then
     configure_plugin 'TreeAssist' messages 'info.plugin_prefix' "${COLOUR_RESET}"
 
     if [ "${LOCALE}" = 'ro' ]; then
-        configure_plugin "TreeAssist" messages \
+        configure_plugin 'TreeAssist' messages \
             'successful.noreplant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message oprită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
             'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))"
     else
-        configure_plugin "TreeAssist" messages \
+        configure_plugin 'TreeAssist' messages \
             'successful.noreplant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message disabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
             'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))"
     fi

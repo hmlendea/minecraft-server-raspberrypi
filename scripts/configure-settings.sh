@@ -10,6 +10,26 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
 ensure-su-access
 
+echo $DAMAGE_GIVE_MULTIPLIER_DEFAULT
+configure_plugin 'HardPlus' config \
+    'module.cold-damage.enable' false \
+    'module.damage-give.modifier' 0.9 \
+    'module.damage-take.modifier.default' 1.1 \
+    'module.damage-take.modifier.environment' 1.1 \
+    'module.damage-take.modifier.fall' 1.0 \
+    'module.damage-take.modifier.magic' 1.1 \
+    'module.damage-take.modifier.mob.hostile.default' 1.1 \
+    'module.damage-take.modifier.mob.hostile.enderman' 1.25 \
+    'module.damage-take.modifier.mob.hostile.skeleton' 1.1 \
+    'module.damage-take.modifier.mob.hostile.zombie' 1.1 \
+    'module.damage-take.modifier.mob.passive' 1.1 \
+    'module.damage-take.modifier.melee' 1.1 \
+    'module.damage-take.modifier.player' 1.0 \
+    'module.mob-target.range' 10.0 \
+    'module.withersskeleton-bow.spawn-chance' 25.0
+
+exit
+
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
     'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
@@ -214,7 +234,7 @@ configure_plugin 'AuthMe' config \
     'settings.serverName' "${SERVER_NAME}" \
     'settings.sessions.enabled' true \
     'settings.sessions.timeout' 960 \
-    'settings.security.minPasswordLength' 10 \
+    'settings.security.minPasswordLength' 12 \
     'settings.useAsyncTasks' true \
     'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
 
@@ -354,6 +374,17 @@ configure_plugin 'EssentialsX' config \
     "use-nbt-serialization-in-createkit"    true \
     "world-change-fly-reset"                false \
     "world-change-speed-reset"              false
+
+configure_plugin 'Geyser' config \
+    'above-bedrock-nether-building' true \
+    'allow-custom-skulls' true \
+    'bedrock.server-name' "${SERVER_NAME}" \
+    'disable-bedrock-scaffolding' true \
+    'max-players' "${PLAYERS_MAX}" \
+    'metrics.enabled' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'passthrough-motd' true \
+    'passthrough-player-counts' true \
+    'remote.auth-type' 'offline'
 
 configure_plugin 'GrimAC' config \
     'exploit.allow-sprint-jumping-when-using-elytra' false
@@ -520,6 +551,7 @@ configure_plugin 'Sonar' config \
     'general.check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'general.max-online-per-ip' 5 \
     'database.maximum-age' 3 \
+    'verification.check-geyser-players' false \
     'verification.transfer.enabled' true \
     'verification.destination-host' "${SERVER_HOSTNAME}"
 

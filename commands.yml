@@ -29,13 +29,8 @@ aliases:
   - broadcast $$1 was temporarily banned ($$2) with reason $$3-
   - essentials:tempban $$1 $$2 $$3-
   - essentials:tempbanip $$1 $$2 [$$1] $$3-
-  spectateon:
-  - gamemode spectator
-  - vanish on
-  spectateoff:
-  - spawn
-  - gamemode survival
-  - vanish off
+  tps:
+  - spark tps
   trust:
   - whitelist add $$1
   - lp user $$1 parent set trusted
@@ -78,6 +73,8 @@ aliases:
   - home $1-
   cheama:
   - call $1-
+  delcasa:
+  - delhome $1-
   pat:
   - bed
   plata:
@@ -143,7 +140,6 @@ aliases:
   - authme accounts $$1
   - antivpn lookup $$1
   - seen $$1
-  - grim profile $$1
   fakelogin:
   - essentials:me a intrat în joc!
   - essentials:vanish off
