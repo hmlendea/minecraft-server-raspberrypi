@@ -52,6 +52,7 @@ function get_symbol_by_category() {
     local ECONOMY_SYMBOL="💰" # "₦"
     local EDIT_SYMBOL='✎'
     local FARM_SYMBOL="🚜"
+    local FLAG_SYMBOL='⚐'
     local GAMEMODE_SYMBOL="◎"
     local HEALTH_SYMBOL="✚"
     local HELP_SYMBOL='ⓘ'
@@ -77,6 +78,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "border_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "break_block" "${MINE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "combat" "${COMBAT_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'consulate' "${FLAG_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "default" "${DEFAULT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "defence_.*" "${DEFENCE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "denied" "${ERROR_SYMBOL}")
@@ -95,6 +97,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'light' "${LIGHT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "message" "${MESSAGE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "military_base" "${MILITARY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'mine' "${MINE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'money' "${ECONOMY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'mount' "${MOUNT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'movement' "${MOVEMENT_SYMBOL}")
@@ -107,14 +110,15 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'skin' "${SKIN_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'teleport' "${TELEPORT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'time' "${TIME_SYMBOL}")
-    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'time' "${MINE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'trade' "${ECONOMY_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'voivodeship' "${FLAG_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'vote' "${VOTE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warehouse' "${INVENTORY_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'warp' "${TELEPORT_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'weather' "${WEATHER_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'woodcutting' "${AXE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'worldedit' "${AXE_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'zone' "${FLAG_SYMBOL}")
 
     [ -z "${SYMBOL}" ] && SYMBOL="${DEFAULT_SYMBOL}"
     echo "${SYMBOL}"

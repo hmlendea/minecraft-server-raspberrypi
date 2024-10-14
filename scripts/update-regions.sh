@@ -7,6 +7,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/worldguard.sh"
 
+DENY_SPAWN_ANIMALS='"chicken","cow","donkey","horse","pig","sheep"'
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 REGIONS_BACKUP_FILE_NAME='regions.bak.yml'
@@ -45,30 +46,30 @@ for VOIVODESHIP_NAME in 'Flusseland' 'Kreezland' 'Pontica' 'Solara'; do
     set_administrative_region_settings "${WORLD_NAME}" 'voivodeship' "${VOIVODESHIP_NAME}" 'Nucilandia'
 done
 
-for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
+for CITY_NAME in 'Çupișan' 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
 for CITY_NAME in 'Enada' 'Naoi'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
 for TOWN_NAME in 'Emeraldia' 'Iahim'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'FBU'
 done
 
-for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Canopis' 'Carotis' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
-                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nirvada' 'Nordavia' 'Pandora' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
+for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Cabola' 'Canopis' 'Carotis' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
+                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nirvada' 'Nordavia' 'Omagad' 'Pandora' 'Râșcota' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
 for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'FBU'
 done
 
-for MILITARYBASE_NAME in 'Binuca' 'Crișia'; do
-    set_location_region_settings_by_name "${WORLD_NAME}" 'military_base' "${MILITARYBASE_NAME}" 'Nucilandia'
+for MILITARYBASE_NAME in 'Binuca' 'Crișia' 'Flusseland'; do
+    set_location_region_settings_by_name "${WORLD_NAME}" 'base_military' "${MILITARYBASE_NAME}" 'Nucilandia'
 done
 
 for NATION in 'FBU' 'Nucilandia'; do
@@ -91,7 +92,7 @@ for NATION in 'FBU' 'Nucilandia'; do
         PLAYER_REGION_ID=$(region_name_to_id "${PLAYER_USERNAME}")
         
         for ZONE_NAME in 'FBU' 'Nucilandia'; do
-            ! grep -q "${NATION_ID}_player_${PLAYER_REGION_ID}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && continue
+            ! grep -q "${NATION_ID}_base_player_${PLAYER_REGION_ID}" "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" && continue
     
             set_player_region_settings "${WORLD_NAME}" "${ZONE_NAME}" "${PLAYER_USERNAME}"
         done
