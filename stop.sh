@@ -17,7 +17,7 @@ if [ "${LOCALE}" = 'ro' ]; then
     BROADCAST_HEADER_MESSAGE='Atenție toată lumea'
     BROADCAST_SHUTDOWN_MESSAGE="${SERVER_NAME} se va opri într-un moment"
     BROADCAST_KICK_MESSAGE="Toți jucătorii online vor fi deconectați în ${SECONDS_BEFORE_KICK} secunde"
-    KICK_REASON='${SERVER_NAME} se oprește'
+    KICK_REASON="${SERVER_NAME} se oprește"
 fi
 
 if ${IS_SERVER_RUNNING}; then
