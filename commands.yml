@@ -29,6 +29,10 @@ aliases:
   - broadcast $$1 was temporarily banned ($$2) with reason $$3-
   - essentials:tempban $$1 $$2 $$3-
   - essentials:tempbanip $$1 $$2 [$$1] $$3-
+  unban:
+  - essentials:unban $$1
+  - essentials:unbanip $$1
+  - whitelist add $$1
   tps:
   - spark tps
   trust:
@@ -149,19 +153,6 @@ aliases:
   - essentials:vanish on
   - dynmap:dynmap hide
   
-  # Dynmap
-  setsettlementmarker:
-  - dmarker delete id:settlement_$$2 set:settlements
-  - setrgtp $$2 teleport $$4,$$5,$$6
-  - dmarker add id:settlement_$$2 set:settlements label:$$3 world:world icon:settlement_$$1
-    markup:false x:$$4 y:$$5 z:$$6 minzoom:$$7
-  setvillagemarker:
-  - setsettlementmarker village $$1 $$2 $$3 $$4 $$5 2
-  settownmarker:
-  - setsettlementmarker town $$1 $$2 $$3 $$4 $$5 1
-  setcitymarker:
-  - setsettlementmarker city $$1 $$2 $$3 $$4 $$5 0
-  
   # WorldEdit
   wexpandh:
   - /expand $$1 north
@@ -171,8 +162,6 @@ aliases:
   wexpandv:
   - /expand $$1 up
   - /expand $$1 down
-  wexpandall:
-  - wexpandv $$1
   - wexpandh $$1
   wemove:
   - /move $$1
@@ -187,9 +176,6 @@ aliases:
   weshrinkv:
   - /contract $$1 up
   - /contract $$1 down
-  weshrinkall:
-  - weshrinkh $$1
-  - weshrinkv $$1
   wereplacelogmaterial:
   - /replace $1_log ^$2_log
   - /replace $1_wood ^$2_wood
