@@ -7,9 +7,6 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/worldguard.sh"
 
-DENY_SPAWN_ANIMALS='"chicken","cow","donkey","horse","pig","sheep"'
-DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","phantom","salmon","slime","stray","wither","zombie_villager"'
-TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 REGIONS_BACKUP_FILE_NAME='regions.bak.yml'
 REGIONS_TEMPORARY_FILE_NAME='regions.tmp.yml'
 REGIONS_FILE_NAME='regions.yml'
@@ -84,7 +81,7 @@ for NATION in 'FBU' 'Nucilandia'; do
     done
 
     for STRUCTURE in 'border_watchtower' 'border_wall' 'bridge' 'defence_bunker' 'defence_turret' \
-                     'end_portal' 'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
+                     'portal_end' 'resource_depot' 'road_rail' 'station_weather' 'yacht_diplomatic'; do
         set_structure_region_settings "${WORLD_NAME}" "${NATION}" "${STRUCTURE}"
     done
 

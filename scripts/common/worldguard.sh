@@ -6,6 +6,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 DENY_SPAWN_ANIMALS='"chicken","cow","donkey","horse","pig","sheep"'
+DENY_SPAWN_SPAWNERS='"blaze","cave_spider","creeper","husk","skeleton","spider","stray","zombie"'
 DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","magma_cube","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
 
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
@@ -330,7 +331,7 @@ function set_region_messages() {
         [ "${REGION_TYPE_ID}" = 'defence_bunker' ] && REGION_TYPE="defence bunker"
         [ "${REGION_TYPE_ID}" = 'defence_turret' ] && REGION_TYPE="defence turret"
         [ "${REGION_TYPE_ID}" = 'end_portal' ] && REGION_TYPE="End Portal"
-        [ "${REGION_TYPE_ID}" = 'home' ] && REGION_TYPE="home"
+        [ "${REGION_TYPE_ID}" = 'home' ] && REGION_TYPE='home'
         [ "${REGION_TYPE_ID}" = 'portal_end' ] && REGION_TYPE='End Portal'
         [ "${REGION_TYPE_ID}" = 'resource_depot' ] && REGION_TYPE='resource depot'
         [ "${REGION_TYPE_ID}" = 'road_rail' ] && REGION_TYPE="railroad"
@@ -376,7 +377,7 @@ function set_location_region_settings_by_id() {
 
     local WORLD_NAME='world'
 
-    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},${DENY_SPAWN_ANIMALS},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},${DENY_SPAWN_SPAWNERS},\"squid\",\"witch\"]"
 
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'ride' true
     #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'vehicle-destroy' true
@@ -497,6 +498,7 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_xp'                'XP Farm'                   'Ferma de XP'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farms'                  'Farms'                     'Fermele'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'forge'                  'Forge'                     'Forja'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'gazebo'                 'Gazebo'                    'Foișorul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'granary'                'Granary'                   'Grânarul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'hall_events'            'Events Hall'               'Sala de Evenimente'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "hall_trading"           "Trading Hall"              "Hala de Comerț"
@@ -572,6 +574,8 @@ function set_building_settings() {
 
     ! does_region_exist "${WORLD_NAME}" "${REGION_ID}" && return
 
+    DENY_SPAWN="[${DENY_SPAWN_COMMON},${DENY_SPAWN_ANIMALS},${DENY_SPAWN_SPAWNERS},\"squid\",\"witch\"]"
+
     if [ "${BUILDING_ID}" = 'bank' ]; then
         for ((I=1; I<=50; I++)); do
             ! does_region_exist "${WORLD_NAME}" "${SETTLEMENT_ID}_bank_vault${I}" && break
@@ -628,18 +632,16 @@ function set_building_settings() {
 
     if [[ "${REGION_ID}" == *_cemetery* ]]; then
         REGION_PRIORITY=30
-        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","creeper","spider","squid"]'
+        set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"','"${DENY_SPAWN_SPAWNERS}"',"creeper","spider","squid"]'
     fi
     
     if [[ "${REGION_ID}" == *_farm_* ]]; then
         REGION_PRIORITY=30
-
-        [[ "${REGION_ID}" == *_blaze ]]; set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"cave_spider","creeper","skeleton","spider","squid","witch","zombie"]'
-        [[ "${REGION_ID}" == *_gunpowder ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","skeleton","spider","squid","zombie"]'
-        [[ "${REGION_ID}" == *_squid ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","cave_spider","creeper","skeleton","spider","witch","zombie"]'
-        [[ "${REGION_ID}" == *_xp ]] && set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' '['"${DENY_SPAWN_COMMON}"',"blaze","creeper","squid","witch"]'
-
-        #set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+        DENY_SPAWN="[${DENY_SPAWN_COMMON},${DENY_SPAWN_SPAWNERS},\"squid\",\"witch\"]"
+        [[ "${REGION_ID}" == *_blaze ]] && DENY_SPAWN='['"${DENY_SPAWN_COMMON}"','"${DENY_SPAWN_ANIMALS}"',"cave_spider","creeper","husk","skeleton","spider","squid","stray","witch","zombie"]'
+        [[ "${REGION_ID}" == *_gunpowder ]] && DENY_SPAWN='['"${DENY_SPAWN_COMMON}"','"${DENY_SPAWN_ANIMALS}"',"blaze","cave_spider","husk","skeleton","spider","squid","stray","zombie"]'
+        [[ "${REGION_ID}" == *_squid ]] && DENY_SPAWN='['"${DENY_SPAWN_COMMON}"','"${DENY_SPAWN_ANIMALS}"',"blaze","cave_spider","creeper","husk","skeleton","spider","stray","witch","zombie"]'
+        [[ "${REGION_ID}" == *_xp ]] && DENY_SPAWN='['"${DENY_SPAWN_COMMON}"','"${DENY_SPAWN_ANIMALS}"',"blaze","creeper","squid","witch"]'
 
         if [[ "${REGION_ID}" == *_mechanism ]]; then
             REGION_PRIORITY=40
@@ -679,6 +681,7 @@ function set_building_settings() {
     fi
 
     set_region_priority "${WORLD_NAME}" "${REGION_ID}" "${REGION_PRIORITY}"
+    set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "${DENY_SPAWN}"
 }
 
 function set_player_region_settings() {
@@ -707,7 +710,7 @@ function set_player_region_settings() {
             set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "Casa lui ${PLAYER_NAMES} din ${ZONE_NAME}"
             set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "${PLAYER_NAMES}" "${ZONE_NAME}"
 
-            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},\"blaze\",\"cave_spider\",\"creeper\",\"skeleton\",\"spider\",\"squid\",\"witch\",\"zombie\"]"
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'deny-spawn' "[${DENY_SPAWN_COMMON},${DENY_SPAWN_SPAWNERS},\"squid\",\"witch\"]"
             set_region_priority "${WORLD_NAME}" "${REGION_ID}" 50
         done
     done
