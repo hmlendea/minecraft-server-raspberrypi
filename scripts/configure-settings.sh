@@ -10,26 +10,6 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
 ensure-su-access
 
-echo $DAMAGE_GIVE_MULTIPLIER_DEFAULT
-configure_plugin 'HardPlus' config \
-    'module.cold-damage.enable' false \
-    'module.damage-give.modifier' 0.9 \
-    'module.damage-take.modifier.default' 1.1 \
-    'module.damage-take.modifier.environment' 1.1 \
-    'module.damage-take.modifier.fall' 1.0 \
-    'module.damage-take.modifier.magic' 1.1 \
-    'module.damage-take.modifier.mob.hostile.default' 1.1 \
-    'module.damage-take.modifier.mob.hostile.enderman' 1.25 \
-    'module.damage-take.modifier.mob.hostile.skeleton' 1.1 \
-    'module.damage-take.modifier.mob.hostile.zombie' 1.1 \
-    'module.damage-take.modifier.mob.passive' 1.1 \
-    'module.damage-take.modifier.melee' 1.1 \
-    'module.damage-take.modifier.player' 1.0 \
-    'module.mob-target.range' 10.0 \
-    'module.withersskeleton-bow.spawn-chance' 25.0
-
-exit
-
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
     'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
@@ -216,6 +196,7 @@ configure_plugin 'AnarchyExploitFixes' config \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-load' true \
     'preventions.withers.remove-flying-wither-skulls.on-chunk-unload' true \
 
+#    'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
 configure_plugin 'AuthMe' config \
     'Hooks.useEssentialsMotd' $(is_plugin_installed_bool 'EssentialsX') \
     'Security.console.logConsole' false \
@@ -229,7 +210,7 @@ configure_plugin 'AuthMe' config \
     'settings.restrictions.displayOtherAccounts' false \
     'settings.registration.forceLoginAfterRegister' true \
     'settings.restrictions.kickOnWrongPassword' false \
-    'settings.restrictions.ProtectInventoryBeforeLogIn' $(is_plugin_installed_bool 'ProtocolLib') \
+    'settings.restrictions.ProtectInventoryBeforeLogIn' false \
     'settings.restrictions.timeout' 60 \
     'settings.serverName' "${SERVER_NAME}" \
     'settings.sessions.enabled' true \
@@ -393,6 +374,23 @@ configure_plugin 'GSit' config \
     'Lang.client-lang'          false \
     'Options.check-for-update'  "${CHECK_PLUGINS_FOR_UPDATES}"
 
+configure_plugin 'HardPlus' config \
+    'module.cold-damage.enable' false \
+    'module.damage-give.modifier' 0.9 \
+    'module.damage-take.modifier.default' 1.1 \
+    'module.damage-take.modifier.environment' 1.1 \
+    'module.damage-take.modifier.fall' 1.0 \
+    'module.damage-take.modifier.magic' 1.1 \
+    'module.damage-take.modifier.mob.hostile.default' 1.1 \
+    'module.damage-take.modifier.mob.hostile.enderman' 1.25 \
+    'module.damage-take.modifier.mob.hostile.skeleton' 1.1 \
+    'module.damage-take.modifier.mob.hostile.zombie' 1.1 \
+    'module.damage-take.modifier.mob.passive' 1.1 \
+    'module.damage-take.modifier.melee' 1.1 \
+    'module.damage-take.modifier.player' 1.0 \
+    'module.mob-target.range' 10.0 \
+    'module.wither-skeleton-bow.spawn-chance' 25.0
+
 configure_plugin 'HealthHider' config \
     'enable-bypass-permission' true
 
@@ -411,7 +409,7 @@ if is_plugin_installed 'InvUnload'; then
         'ignore-blocked-chests'     false \
         'laser-animation'           false \
         'laser-default-duration'    5 \
-        'max-chest-radius'          32 \
+        'max-chest-radius'          64 \
         'particle-type'             'WITCH'
 fi
 

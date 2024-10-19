@@ -397,6 +397,8 @@ environment:
     find-already-discovered:
       loot-tables: 'true'
       villager-trade: true
+  void-damage-amount: 3.0
+  void-damage-min-build-height-offset: -150.0
   water-over-lava-flow-speed: 5
 feature-seeds:
   generate-random-seeds-for-all: false

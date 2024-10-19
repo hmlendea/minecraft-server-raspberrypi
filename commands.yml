@@ -121,6 +121,8 @@ aliases:
   #
   auth:
   - authme:log $$1
+  csort:
+  - chestsort:sort $$1-
   itemnbt:
   - minecraft:data get entity $sender SelectedItem
   renameitem:

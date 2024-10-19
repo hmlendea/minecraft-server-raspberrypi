@@ -139,10 +139,9 @@ settings:
     allow-transparent-blocks-in-enchantment-box: true
     anvil:
       replace-incompatible-enchants: false
-      allow-unsafe-enchants: false
-      allow-inapplicable-enchants: true
-      allow-incompatible-enchants: true
-      allow-higher-enchants-levels: true
+      allow-inapplicable-enchants: false
+      allow-incompatible-enchants: false
+      allow-higher-enchants-levels: false
     allow-unsafe-enchant-command: true
     clamp-levels: true
   entity:
@@ -198,7 +197,7 @@ settings:
       distance: 0.5
     minecraft:light_blue_bed:
       distance: 0.5
-config-version: 35
+config-version: 37
 world-settings:
   default:
     mobs:
@@ -1702,8 +1701,6 @@ world-settings:
       tick-fluids: true
       entity-blindness-multiplier: 1.0
       trident-loyalty-void-return-height: 0.0
-      void-damage-height: -150.0
-      void-damage-dealt: 3.0
       raid-cooldown-seconds: 300
       animal-breeding-cooldown-seconds: 0
       mobs-ignore-rails: false
