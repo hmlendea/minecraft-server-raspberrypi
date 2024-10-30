@@ -27,6 +27,7 @@ else
     update_datapack 'DungeonsAndTaverns'        'https://modrinth.com/datapack/dungeons-and-taverns'
 #    update_datapack 'Explorify'                 'https://modrinth.com/datapack/explorify'
     update_datapack 'Hearths'                   'https://modrinth.com/datapack/hearths'
+    update_datapack 'Nullscape'                 'https://modrinth.com/datapack/nullscape'
     update_datapack 'PandaTemple'               'https://modrinth.com/datapack/panda-temple'
     update_datapack 'qraftyEndVillages'         'https://modrinth.com/datapack/qraftys-end-villages'
     update_datapack 'qraftyMushroomVillages'    'https://modrinth.com/datapack/qraftys-mushroom-villages'
@@ -51,7 +52,7 @@ else
 #    update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
 #    update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
     update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'GeyserMC'                    'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
+#    update_plugin 'GeyserMC'                    'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
     update_plugin 'HardPlus'                    'https://modrinth.com/plugin/hardplus'                      '%pluginName%-%pluginVersion%.jar'
@@ -98,6 +99,7 @@ else
     #update_plugin 'WanderingTrades'             'https://github.com/jpenilla/WanderingTrades'               "%pluginName%-%pluginVersion%.jar"
     update_plugin 'WolfyUtils'                  "https://modrinth.com/plugin/wolfyutils"                    "wolfyutils-spigot-%pluginVersion%.jar"
     update_plugin 'WorldEditSUI'                "https://github.com/kennytv/WorldEditSUI"                   "%pluginName%-%pluginVersion%.jar"
+    update_plugin 'WorldGuard'                  'https://modrinth.com/plugin/worldguard'                    'worldguard-bukkit-%pluginVersion%-dist.jar'
     update_plugin 'WorldGuardExtraFlags'        'https://github.com/aromaa/WorldGuardExtraFlags'            '%pluginName%.jar'
     update_plugin 'XRayHunter'                  'https://github.com/rlf/XRayHunter'                         '%pluginName%.jar'
 fi

@@ -229,6 +229,14 @@ function get_plugin_linked_minimessage() {
     echo $(convert_message_to_minimessage $(get_plugin_linked_message "${PLUGIN1_NAME}" "${PLUGIN2_NAME}"))
 }
 
+function get_info_message() {
+    echo $(get_formatted_message 'info' 'info' "${*}")
+}
+
+function get_info_minimessage() {
+    echo $(get_formatted_message_minimessage 'info' 'info' "${*}")
+}
+
 function get_action_message() {
     local PLAYER_NAME="${1}" && shift
     local MESSAGE="$(normalise_message ${COLOUR_ACTION} ! ${*})"

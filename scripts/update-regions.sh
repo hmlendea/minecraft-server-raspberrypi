@@ -43,14 +43,14 @@ for VOIVODESHIP_NAME in 'Flusseland' 'Kreezland' 'Pontica' 'Solara'; do
     set_administrative_region_settings "${WORLD_NAME}" 'voivodeship' "${VOIVODESHIP_NAME}" 'Nucilandia'
 done
 
-for CITY_NAME in 'Çupișan' 'Flusseland' 'Hokazuro' 'Solara'; do
+for CITY_NAME in 'Flusseland' 'Hokazuro' 'Solara'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'Nucilandia'
 done
 for CITY_NAME in 'Enada' 'Naoi'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_city' "${CITY_NAME}" 'FBU'
 done
 
-for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
+for TOWN_NAME in 'Bloodorf' 'Cornova' 'Cratesia' 'Çupișan' 'Horidava' 'Kreeztown' 'Newport' 'Witty'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_town' "${TOWN_NAME}" 'Nucilandia'
 done
 for TOWN_NAME in 'Emeraldia' 'Iahim'; do

@@ -8,7 +8,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
-ensure-su-access
+ensure_su_access
 
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
@@ -337,19 +337,19 @@ configure_plugin 'EssentialsX' config \
     "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
     "change-tab-complete-name"              true \
     "command-cooldowns.tpr"                 300 \
-    "currency-symbol"                       "₦" \
+    "currency-symbol"                       "#{CURRENCY_SYMBOL}" \
     "disable-item-pickup-while-afk"         true \
     "kit-auto-equip"                        true \
-    "newbies.spawnpoint"                    "none" \
-    "newbies.kit"                           "spawn" \
-    "ops-name-color"                        "none" \
+    "newbies.spawnpoint"                    'none' \
+    "newbies.kit"                           'spawn' \
+    "ops-name-color"                        'none' \
     'per-player-locale'                     false \
     'per-warp-permissions'                  true \
     'remove-god-on-disconnect'              true \
     'show-zero-baltop'                      false \
-    "teleport-cooldown"                     3 \
-    "teleport-delay"                        3 \
-    "teleport-invulnerability"              7 \
+    "teleport-cooldown"                     0 \
+    "teleport-delay"                        0 \
+    "teleport-invulnerability"              10 \
     'update-check'                          "${CHECK_PLUGINS_FOR_UPDATES}" \
     "unsafe-enchantments"                   true \
     "use-nbt-serialization-in-createkit"    true \

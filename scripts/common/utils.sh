@@ -61,7 +61,7 @@ function find_in_logs() {
     grep -a --color --text "$@" "${SERVER_LOGS_DIR}"/*.log
 }
 
-function move-file() {
+function move_file() {
     local OLD_FILE="${1}"
     local NEW_FILE="${2}"
 
@@ -79,7 +79,7 @@ function move-file() {
     sudo mv "${OLD_FILE}" "${NEW_FILE}"
 }
 
-function copy-file() {
+function copy_file() {
     local SOURCE_FILE="${1}"
     local TARGET_FILE="${2}"
 
@@ -97,7 +97,7 @@ function copy-file() {
     sudo cp "${SOURCE_FILE}" "${TARGET_FILE}"
 }
 
-function copy-file-if-needed() {
+function copy_file_if_needed() {
     local SOURCE_FILE="${1}"
     local TARGET_FILE="${2}"
 
@@ -110,11 +110,11 @@ function copy-file-if-needed() {
         return
     fi
 
-    copy-file "${SOURCE_FILE}" "${TARGET_FILE}"
+    copy_file "${SOURCE_FILE}" "${TARGET_FILE}"
     sudo chown papermc:papermc "${TARGET_FILE}"
 }
 
-function create-file() {
+function create_file() {
     local FILE_PATH="${*}"
 
     [ -z "${FILE_PATH}" ] && return
@@ -130,27 +130,7 @@ function create-file() {
     fi
 }
 
-function download-file() {
-    local FILE_URL="${1}"
-    local FILE_PATH="${2}"
-
-    [ -z "${FILE_URL}" ] && return
-    [ -z "${FILE_PATH}" ] && return
-    [ -f "${FILE_PATH}" ] && return
-
-    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
-
-    mkdir -p "${DIRECTORY_PATH}"
-    if [ -w "${DIRECTORY_PATH}" ]; then
-        wget "${FILE_URL}" -O "${FILE_PATH}"
-        chown papermc:papermc "${FILE_PATH}"
-    else
-        sudo wget "${FILE_URL}" -O "${FILE_PATH}"
-        sudo chown papermc:papermc "${FILE_PATH}"
-    fi
-}
-
-function ensure-su-access() {
+function ensure_su_access() {
     sudo echo "SU access achieved!"
 }
 

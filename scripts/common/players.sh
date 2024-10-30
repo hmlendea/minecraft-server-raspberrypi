@@ -238,7 +238,7 @@ function get_player_password() {
         [ -n "${PLAYER_PASSWORD}" ] && FOUND_IN_CACHE=true
     fi
 
-    [ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(find_in_logs "${PLAYER_USERNAME}" | grep "/\(auth\|l\|log\|login\) " | tail -n 1 | awk '{print $9}')
+    [ -z "${PLAYER_PASSWORD}" ] && PLAYER_PASSWORD=$(find_in_logs "${PLAYER_USERNAME}" | grep "/\(auth\|l\|log\|login\) " | tail -n 1 | sed 's/^.*\/\(auth\|l\|log\|login\) \(.*\w\).*/\2/g')
     
     if ! ${FOUND_IN_CACHE} && [ -n "${PLAYER_PASSWORD}" ]; then
         set_playerscache_value "${PLAYER_UUID}" "password" "${PLAYER_PASSWORD}"

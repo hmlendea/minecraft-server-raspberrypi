@@ -48,26 +48,26 @@ echo "Changing ${OLD_USERNAME} (${OLD_UUID}) to ${NEW_USERNAME} (${NEW_UUID})...
 sudo sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${DISCORDSRV_ACCOUNTS_FILE}"
 reload_plugin "discordsrv"
 
-move-file "${ESSENTIALS_USERDATA_DIR}/${OLD_UUID}.yml" "${ESSENTIALS_USERDATA_DIR}/${NEW_UUID}.yml"
+move_file "${ESSENTIALS_USERDATA_DIR}/${OLD_UUID}.yml" "${ESSENTIALS_USERDATA_DIR}/${NEW_UUID}.yml"
 reload_plugin "essentials"
 
-move-file "${SKINSRESTORER_CACHE_DIR}/${OLD_USERNAME}.mojangcache" "${SKINSRESTORER_CACHE_DIR}/${NEW_USERNAME}.mojangcache"
-move-file "${SKINSRESTORER_DIR}/legacy/players/${OLD_USERNAME_LOWERCASE}.legacyplayer" "${SKINSRESTORER_DIR}/legacy/players/${NEW_USERNAME_LOWERCASE}.legacyplayer"
-move-file "${SKINSRESTORER_DIR}/legacy/skins/${OLD_USERNAME_LOWERCASE}.legacyskin" "${SKINSRESTORER_DIR}/legacy/skins/${NEW_USERNAME_LOWERCASE}.legacyskin"
-move-file "${SKINSRESTORER_DIR}/players/${OLD_UUID}.player" "${SKINSRESTORER_DIR}/players/${NEW_UUID}.player"
-move-file "${SKINSRESTORER_DIR}/skins/ ${OLD_USERNAME_LOWERCASE}.customskin" "${SKINSRESTORER_DIR}/skins/ ${NEW_USERNAME_LOWERCASE}.customskin"
+move_file "${SKINSRESTORER_CACHE_DIR}/${OLD_USERNAME}.mojangcache" "${SKINSRESTORER_CACHE_DIR}/${NEW_USERNAME}.mojangcache"
+move_file "${SKINSRESTORER_DIR}/legacy/players/${OLD_USERNAME_LOWERCASE}.legacyplayer" "${SKINSRESTORER_DIR}/legacy/players/${NEW_USERNAME_LOWERCASE}.legacyplayer"
+move_file "${SKINSRESTORER_DIR}/legacy/skins/${OLD_USERNAME_LOWERCASE}.legacyskin" "${SKINSRESTORER_DIR}/legacy/skins/${NEW_USERNAME_LOWERCASE}.legacyskin"
+move_file "${SKINSRESTORER_DIR}/players/${OLD_UUID}.player" "${SKINSRESTORER_DIR}/players/${NEW_UUID}.player"
+move_file "${SKINSRESTORER_DIR}/skins/ ${OLD_USERNAME_LOWERCASE}.customskin" "${SKINSRESTORER_DIR}/skins/ ${NEW_USERNAME_LOWERCASE}.customskin"
 reload_plugin "skinsrestorer"
 
-move-file "${TRADESHOP_PLAYER_DATA_DIR}/${OLD_UUID}.json" "${TRADESHOP_PLAYER_DATA_DIR}/${NEW_UUID}.json"
+move_file "${TRADESHOP_PLAYER_DATA_DIR}/${OLD_UUID}.json" "${TRADESHOP_PLAYER_DATA_DIR}/${NEW_UUID}.json"
 reload_plugin "tradeshop"
 
 sudo sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${WORLDGUARD_WORLD_REGIONS_FILE}"
 reload_plugin "worldguard"
 
-move-file "${WORLD_ADVANCEMENTS_DIR}/${OLD_UUID}.json" "${WORLD_ADVANCEMENTS_DIR}/${NEW_UUID}.json"
-move-file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat"
-move-file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat_old" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat_old"
-move-file "${WORLD_STATS_DIR}/${OLD_UUID}.json" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.json"
+move_file "${WORLD_ADVANCEMENTS_DIR}/${OLD_UUID}.json" "${WORLD_ADVANCEMENTS_DIR}/${NEW_UUID}.json"
+move_file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat"
+move_file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat_old" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat_old"
+move_file "${WORLD_STATS_DIR}/${OLD_UUID}.json" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.json"
 
 sudo sed -i 's/\"'"${OLD_UUID}"'\"/\"'"${NEW_UUID}"'\"/g' "${SERVER_WHITELIST_FILE}"
 sudo sed -i 's/\"'"${OLD_USERNAME}"'\"/\"'"${NEW_USERNAME}"'\"/g' "${SERVER_WHITELIST_FILE}"

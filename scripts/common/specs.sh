@@ -24,6 +24,8 @@ export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
 export SERVER_NAME=$(get_server_property "server-name" "MineCraft Server")
 export SERVER_HOSTNAME='mc.nucilandia.ro'
 
+export CURRENCY_SYMBOL='₦'
+
 export CHECK_PLUGINS_FOR_UPDATES=false
 export SKIP_PLUGIN_UPDATE_CHECKS=true
 export AUTO_UPDATE_PLUGINS=false

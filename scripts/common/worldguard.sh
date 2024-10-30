@@ -7,7 +7,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 DENY_SPAWN_ANIMALS='"chicken","cow","donkey","horse","pig","sheep"'
 DENY_SPAWN_SPAWNERS='"blaze","cave_spider","creeper","husk","skeleton","spider","stray","zombie"'
-DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","husk","magma_cube","phantom","salmon","slime","stray","wither","wolf","zombie_villager"'
+DENY_SPAWN_COMMON='"bat","cod","dolphin","drowned","enderman","magma_cube","phantom","salmon","slime","wither","wolf","zombie_villager"'
 
 TELEPORTATION_COMMANDS='"/b","/back","/bed","/home","/homes","/rgtp","rtp","/sethome","/setspawn","/shop","/spawn","/spawnpoint","/tp","/tpa","/tpaccept","/tpahere","/tpask","/tphere","/tpo","/tppos","/tpr","/tprandom","/tpregion","/tprg","/tpyes","/warp","/warps","/wild"'
 WORLDGUARD_DIR="$(get_plugin_dir WorldGuard)"
@@ -462,6 +462,10 @@ function set_settlement_region_settings() {
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'frostwalker' false
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'sculk-growth' false
     #set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" "interact" true
+
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'blocked-cmds' '"/none"'
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'console-command-on-exit' '"/flightoffifneeded %username%"'
+
     set_location_region_settings_by_name "${WORLD_NAME}" "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'airport'                'Airport'                   'Aeroportul'
@@ -536,6 +540,7 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'subway'                 'Subway'                    'Subway-ul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'temple'                 'Temple'                    'Templul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'theatre'                'Theatre'                   'Teatrul'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'townhall'               'Town Hall'                 'Primăria'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'courthouse'             'Courthouse'                'Judecătoria'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'university'             'University'                'Universitatea'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'warehouse'              'Warehouse'                 'Magazia'
