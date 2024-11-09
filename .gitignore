@@ -17,8 +17,9 @@ map-color-cache.dat
 usercache.json
 version_history.json
 
-# Logs
+# Logs & History
 crash-reports/
+history/
 logs
 *.log
 .bash_history
