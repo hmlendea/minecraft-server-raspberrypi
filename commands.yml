@@ -24,7 +24,6 @@ aliases:
   - 'broadcast @$$1 was permanently banned with reason: $$2-'
   - essentials:ban $$1 $$2-
   - essentials:banip $$1 [$$1] $$2-
-  - whitelist remove $$1
   tempban:
   - broadcast $$1 was temporarily banned ($$2) with reason $$3-
   - essentials:tempban $$1 $$2 $$3-
@@ -32,7 +31,6 @@ aliases:
   unban:
   - essentials:unban $$1
   - essentials:unbanip $$1
-  - whitelist add $$1
   tps:
   - spark tps
   trust:
@@ -61,8 +59,8 @@ aliases:
   - balancetop $1-
   rtp:
   - essentials:tprandom
-  shop:
-  - warp Shop
+  shoplog:
+  - csn history $1-
   topmoney:
   - balancetop $1-
   
@@ -139,13 +137,11 @@ aliases:
   slap:
   - me slaps $$1
   topvotes:
-  - superbvote:sv top
+  - superbvote:sv top $1-
+  topvoturi:
+  - superbvote:sv top $1-
   
   #
-  lookup:
-  - authme accounts $$1
-  - antivpn lookup $$1
-  - seen $$1
   fakelogin:
   - essentials:me a intrat în joc!
   - essentials:vanish off
