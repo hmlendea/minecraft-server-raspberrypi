@@ -463,8 +463,8 @@ function set_settlement_region_settings() {
     set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'sculk-growth' false
     #set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" "interact" true
 
-    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'blocked-cmds' '"/none"'
-    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'console-command-on-exit' '"/flightoffifneeded %username%"'
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'blocked-cmds' '["/none"]'
+    set_region_flag "${WORLD_NAME}" "${SETTLEMENT_ID}" 'console-command-on-exit' '["/flightoffifneeded %username%"]'
 
     set_location_region_settings_by_name "${WORLD_NAME}" "${SETTLEMENT_TYPE}" "${SETTLEMENT_NAME}" "${COUNTRY_NAME}"
 

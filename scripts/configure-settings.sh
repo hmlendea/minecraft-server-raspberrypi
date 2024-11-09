@@ -337,7 +337,7 @@ configure_plugin 'EssentialsX' config \
     "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
     "change-tab-complete-name"              true \
     "command-cooldowns.tpr"                 300 \
-    "currency-symbol"                       "#{CURRENCY_SYMBOL}" \
+    "currency-symbol"                       "${CURRENCY_SYMBOL}" \
     "disable-item-pickup-while-afk"         true \
     "kit-auto-equip"                        true \
     "newbies.spawnpoint"                    'none' \

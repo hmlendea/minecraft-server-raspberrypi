@@ -51,7 +51,7 @@ else
 #    update_plugin 'EssentialsX'                 'https://github.com/EssentialsX/Essentials'
 #    update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
 #    update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
-    update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
 #    update_plugin 'GeyserMC'                    'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
