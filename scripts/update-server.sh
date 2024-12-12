@@ -37,8 +37,11 @@ else
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
     update_plugin 'AnnouncerPlus'               'https://github.com/jpenilla/AnnouncerPlus'                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'AuthMe'                      'https://github.com/AuthMe/AuthMeReloaded'
+    # TODO: BestTools
     update_plugin 'ChestShop-3'                 'https://ci.minebench.de'                                   'ChestShop.jar'
     update_plugin 'ChestShopNotifier'           'https://ci.minebench.de'                                   '%pluginName%.jar'
+    # TODO: ChestSort
+    # TODO: CommandHelper
     update_plugin 'CoreProtect'                 'https://ci.froobworld.com'                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCommands'              'https://modrinth.com/plugin/custom-commands'               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCrafting'              'https://modrinth.com/plugin/customcrafting'                'customcrafting-spigot-%pluginVersion%.jar'
@@ -84,14 +87,17 @@ else
     update_plugin 'Sonar'                       'https://github.com/jonesdevelopment/sonar'                 '%pluginName%-Bukkit.jar'
     update_plugin 'spark'                       "https://ci.lucko.me"                                       "%pluginName%-Bukkit-%pluginVersion%.jar"
     update_plugin 'StackableItems'              "https://github.com/haveric/StackableItems"                 "%pluginName%.jar"
+    # TODO: SuperbVote
     update_plugin 'TAB'                         "https://github.com/NEZNAMY/TAB"                            "%pluginName%.v%pluginVersion%.jar"
     update_plugin 'TChat'                       "https://github.com/TectHost/TChat"                         "%pluginName%.jar"
     update_plugin 'ToolStats'                   'https://github.com/hyperdefined/ToolStats'                 'toolstats-%pluginVersion%.jar'
+    # TODO: TreeAssist
     update_plugin 'UltimateInventory'           "https://github.com/percyqaz/UltimateInventory"             "%pluginName%-%pluginVersion%.jar"
+    # TODO: VanillaMessagesFormatter
     update_plugin 'VanillaMinimaps'             'https://github.com/JNNGL/VanillaMinimaps'                  'vanillaminimaps-%pluginVersion%.jar'
     update_plugin 'Vault'                       "https://github.com/MilkBowl/Vault"                         "%pluginName%.jar"
-    update_plugin 'ViaVersion'                  "https://github.com/ViaVersion/ViaVersion"
     update_plugin 'ViaBackwards'                "https://github.com/ViaVersion/ViaBackwards"
+    update_plugin 'ViaVersion'                  "https://github.com/ViaVersion/ViaVersion"
     update_plugin 'ViewDistanceTweaks'          "https://ci.froobworld.com"                                 "%pluginName%-%pluginVersion%.jar"
     update_plugin 'VivecraftSpigotExtensions'   'https://github.com/jrbudda/Vivecraft_Spigot_Extensions'    'Vivecraft_Spigot_Extensions.%pluginVersion%.jar'
     update_plugin 'VotingPlugin'                "https://bencodez.com"                                      "%pluginName%.jar"

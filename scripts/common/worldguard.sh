@@ -387,7 +387,7 @@ function set_location_region_settings_by_id() {
         if [ -n "${LOCATION_NAME}" ]; then
             set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "${LOCATION_NAME}" "${ZONE_NAME}"
         else
-            set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}" --quiet
+            set_region_messages "${REGION_ID}" "${REGION_TYPE_ID}" '' "${ZONE_NAME}" --quiet
         fi
 
         set_region_priority "${WORLD_NAME}" "${REGION_ID}" 10
@@ -404,7 +404,7 @@ function set_nation_region_settings() {
             NATION2_ID=$(region_name_to_id "${NATION2}")
     
             for BORDER_CROSSING_REGION_ID in $(get_regions_by_pattern "${NATION_ID}_border_crossing_${NATION2_ID}_.*"); do
-                set_location_region_settings_by_id "${WORLD_NAME}" "${BORDER_CROSSING_REGION_ID}" "border_crossing" "" "${NATION} ↔ ${NATION2}"
+                set_location_region_settings_by_id "${WORLD_NAME}" "${BORDER_CROSSING_REGION_ID}" "border_crossing" '' "${NATION} ↔ ${NATION2}"
             done
         done
     
@@ -482,18 +482,25 @@ function set_settlement_region_settings() {
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'dock'                   'Docks'                     'Docul'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'enchanter'              'Enchanting Altar'          'Altarul de Enchantat'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_animals'           'Animal Farm'               'Ferma de Animale'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_berries'           'Berry Farm'                'Ferma de Mure'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_bonemeal'          'Bonemeal Farm'             'Ferma de Îngrășământ'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_chicken'           'Chicken Farm'              'Ferma de Găini'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_cactus'            'Cactus Farm'               'Ferma de Cactuși'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_cow'               'Cow Farm'                  'Ferma de Bovine'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_clay'              'Clay Farm'                 'Ferma de Lut'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_crops'             'Crops Farm'                'Ferma Agricolă'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_bambus'            'Bambus Farm'               'Ferma de Bambus'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_blaze'             'Blaze Farm'                'Ferma de Blaze'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_cactus"            'Cactus Farm'               'Ferma de Cactuși'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_gunpowder"         'Gunpowder Farm'            'Ferma de Praf de Pușcă'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_gunpowder'         'Gunpowder Farm'            'Ferma de Praf de Pușcă'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_iron'              'Iron Farm'                 'Ferma de Fier'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_lava'              'Lava Farm'                 'Ferma de Lavă'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_melon"             'Melon Farm'                'Ferma de Lubenițe'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_pumpkin"           'Pumpkin Farm'              'Ferma de Pumpkin'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" "farm_raid"              'Raid Farm'                 'Ferma de Raiduri'
-    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sniffer'           'Slime Farm'                'Ferma de Slime'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_melon'             'Melon Farm'                'Ferma de Lubenițe'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_mud'               'Mud Farm'                  'Ferma de Mud'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_pig'               'Pig Farm'                  'Ferma de Porci'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_pumpkin'           'Pumpkin Farm'              'Ferma de Pumpkin'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_raid'              'Raid Farm'                 'Ferma de Raiduri'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sheep'             'Sheep Farm'                'Ferma de Oi'
+    set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_slime'             'Slime Farm'                'Ferma de Slime'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sniffer'           'Sniffer Farm'              'Ferma de Snifferi'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_squid'             'Squid Farm'                'Ferma de Sepii'
     set_building_settings "${WORLD_NAME}" "${SETTLEMENT_NAME}" 'farm_sugarcane'         'Sugar Cane Farm'           'Ferma de Trestie'
@@ -560,7 +567,7 @@ function set_structure_region_settings() {
     local ZONE_ID=$(region_name_to_id "${ZONE_NAME}")
 
     for STRUCTURE_REGION_ID in $(get_regions_by_pattern "${ZONE_ID}_${REGION_TYPE_ID}_.*"); do
-        set_location_region_settings_by_id "${WORLD_NAME}" "${STRUCTURE_REGION_ID}" "${REGION_TYPE_ID}" "" "${ZONE_NAME}"
+        set_location_region_settings_by_id "${WORLD_NAME}" "${STRUCTURE_REGION_ID}" "${REGION_TYPE_ID}" '' "${ZONE_NAME}"
     done
 }
 
@@ -596,10 +603,10 @@ function set_building_settings() {
     fi
 
     if [ "${LOCALE}" = 'ro' ]; then
-        set_region_messages "${REGION_ID}" "" "${BUILDING_NAME_RO}" "${SETTLEMENT_NAME}" --quiet
+        set_region_messages "${REGION_ID}" '' "${BUILDING_NAME_RO}" "${SETTLEMENT_NAME}" --quiet
         set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "${BUILDING_NAME_RO} din ${SETTLEMENT_NAME}"
     else
-        set_region_messages "${REGION_ID}" "" "${BUILDING_NAME}" "${SETTLEMENT_NAME}" --quiet
+        set_region_messages "${REGION_ID}" '' "${BUILDING_NAME}" "${SETTLEMENT_NAME}" --quiet
         set_region_bossbar "${WORLD_NAME}" "${REGION_ID}" "The ${BUILDING_NAME} of ${SETTLEMENT_NAME}"
     fi
     
@@ -610,9 +617,9 @@ function set_building_settings() {
 
         if [[ "${REGION_ID}" == *_ring ]]; then
             set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'exit-via-teleport' false
-#            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "blocked-cmds" '[${TELEPORTATION_COMMANDS}]'
-            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "enderpearl" false
-            set_region_flag "${WORLD_NAME}" "${REGION_ID}" "chorus-fruit-teleport" false
+#            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'blocked-cmds' '[${TELEPORTATION_COMMANDS}]'
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'enderpearl' false
+            set_region_flag "${WORLD_NAME}" "${REGION_ID}" 'chorus-fruit-teleport' false
 
             REGION_PRIORITY=35
 

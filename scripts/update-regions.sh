@@ -58,7 +58,7 @@ for TOWN_NAME in 'Emeraldia' 'Iahim'; do
 done
 
 for VILLAGE_NAME in 'Aerolis' 'Arkala' 'Beçina' 'Bercaia' 'Bitong' 'Bradu' 'Cabola' 'Canopis' 'Carotis' 'Çonca' 'Çuntama' 'Çuvei' 'Faun' 'Fleçida' 'Frigonița' \
-                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nirvada' 'Nordavia' 'Omagad' 'Pandora' 'Râșcota' 'Șaosu' 'Scârțari' 'Șigata' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
+                    'Ğimbola' 'Grivina' 'Hodor' 'Izmir' 'Loth' 'Lupinis' 'Minas' 'Nirvada' 'Nordavia' 'Omagad' 'Pandora' 'Râșcota' 'Șaosu' 'Scârțari' 'Sinço' 'Soçida' 'Sușița' 'Veneței' 'Yvalond'; do
     set_settlement_region_settings "${WORLD_NAME}" 'settlement_village' "${VILLAGE_NAME}" 'Nucilandia'
 done
 for VILLAGE_NAME in 'Aecrim' 'Bastonia'; do
