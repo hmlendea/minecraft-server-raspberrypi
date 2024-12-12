@@ -201,6 +201,13 @@ config-version: 37
 world-settings:
   default:
     mobs:
+      creaking:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 1.0
+          scale: 1.0
       armadillo:
         ridable: false
         ridable-in-water: true
@@ -240,6 +247,7 @@ world-settings:
         ridable-in-water: false
         controllable: true
         attributes:
+          tempt_range: 10.0
           scale: 1.0
           max_health: 20.0
         follow-emerald-blocks: false
@@ -1163,6 +1171,7 @@ world-settings:
         ridable-in-water: false
         controllable: true
         attributes:
+          tempt_range: 10.0
           scale: 1.0
           max_health: 20.0
         follow-emerald-blocks: false

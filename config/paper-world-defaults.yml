@@ -127,7 +127,6 @@ entities:
     spawner-nerfed-mobs-should-jump: true
     zombie-villager-infection-chance: default
     zombies-target-turtle-eggs: true
-  entities-target-with-follow-range: false
   markers:
     tick: true
   mob-effects:
@@ -309,6 +308,9 @@ entities:
       water_creature:
         hard: 48
         soft: 24
+    despawn-time:
+      llama_spit: disabled
+      snowball: disabled
     disable-mob-spawner-spawn-egg-transformation: true
     duplicate-uuid:
       mode: SAFE_REGEN
@@ -441,6 +443,7 @@ misc:
   disable-end-credits: true
   disable-relative-projectile-velocity: false
   disable-sprint-interruption-on-attack: false
+  legacy-ender-pearl-behavior: false
   light-queue-size: 20
   max-leash-distance: 10.0
   redstone-implementation: ALTERNATE_CURRENT

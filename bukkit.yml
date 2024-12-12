@@ -5,7 +5,7 @@ settings:
   permissions-file: permissions.yml
   update-folder: update
   plugin-profiling: false
-  connection-throttle: 1000
+  connection-throttle: 4000
   query-plugins: false
   deprecated-verbose: default
   shutdown-message: NuciCraft s-a oprit
