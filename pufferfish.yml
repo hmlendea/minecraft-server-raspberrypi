@@ -4,10 +4,6 @@
 # Download new builds at https://ci.pufferfish.host/job/Pufferfish
 info:
   version: '1.0'
-# These values define a entity's maximum lifespan. If an
-# entity is in this list and it has survived for longer than
-# that number of ticks, then it will be removed. Setting a value to
-# -1 disables this feature.
 entity_timeouts:
   SNOWBALL: 200
   LLAMA_SPIT: -1

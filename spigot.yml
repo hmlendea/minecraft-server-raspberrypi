@@ -38,7 +38,7 @@ settings:
 messages:
   whitelist: |-
     You are not whitelisted on this server.
-    To get access, join our Discord: &9tinyurl.com/nc-discord
+    To get access, join our Discord: &9mc.nucilandia.ro/discord
   server-full: The server is full!
   outdated-client: Outdated client! Please use {0}
   outdated-server: Outdated server! I'm still on {0}

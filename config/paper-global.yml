@@ -17,7 +17,7 @@ block-updates:
   disable-chorus-plant-updates: true
   disable-mushroom-block-updates: true
   disable-noteblock-updates: true
-  disable-tripwire-updates: true
+  disable-tripwire-updates: false
 chunk-loading:
   autoconfig-send-distance: true
   enable-frustum-priority: false

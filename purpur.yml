@@ -894,7 +894,7 @@ world-settings:
         attributes:
           scale: 1.0
           max_health: 16.0
-        bypass-mob-griefing: false
+        bypass-mob-griefing: true
         takes-damage-from-water: false
         portal-spawn-modifier: 2000
         always-drop-exp: false
@@ -1180,7 +1180,7 @@ world-settings:
         breeding-delay-ticks: 6000
         clerics-farm-warts: false
         cleric-wart-farmers-throw-warts-at-villagers: true
-        bypass-mob-griefing: false
+        bypass-mob-griefing: true
         takes-damage-from-water: false
         allow-trading: true
         always-drop-exp: false
