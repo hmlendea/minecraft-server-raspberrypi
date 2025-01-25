@@ -52,34 +52,6 @@ PLACEHOLDER_SHEEP_BRACKETS='{sheep}'
 PLACEHOLDER_STATE_PERCENT='%state%'
 PLACEHOLDER_USERNAME_PERCENT='%username%'
 
-if is_plugin_installed 'KeepInventoryCost'; then
-    configure_plugin 'KeepInventoryCost' config \
-        'message.prefix' "${COLOUR_RESET_MINIMESSAGE}" \
-        'message.reload' "$(get_reload_message_minimessage KeepInventoryCost)"
-
-    if [ "${LOCALE}" = 'ro' ]; then
-        configure_plugin 'KeepInventoryCost' config \
-            'message.disabled' "$(get_enablement_message oprită)" \
-            'message.enabled' "$(get_enablement_message pornită)" \
-            'message.setting..get' "$(get_formatted_message info inventory Păstrarea inventarului la moarte e %s)" \
-            'message.setting..set' "$(get_formatted_message success inventory Păstrarea inventarului la moarte a fost %s)" \
-            'message.setting..set_refuse' "$(get_formatted_message error inventory Păstrarea inventarului la moarte e deja %s)" \
-            'message.death..no_money' "$(get_formatted_message error_minimessage inventory Nu ai avut destui bani pentru a păstra inventarul)" \
-            'message.death..paid' "$(get_formatted_message succes inventory Ai plătit $(get_coloured_message ${COLOUR_GREEN_LIGHT} %s) pentru a păstra inventarul)"
-    else
-        configure_plugin 'KeepInventoryCost' config \
-            'message.disabled' "$(get_enablement_message disabled)" \
-            'message.enabled' "$(get_enablement_message enabled)" \
-            'message.setting..get' "$(get_formatted_message info inventory Keeping the inventory on death is %s)" \
-            'message.setting..set' "$(get_formatted_message success inventory Keeping the inventory on death has been %s)" \
-            'message.setting..set_refuse' "$(get_formatted_message error inventory Keeping the inventory on death is already %s)" \
-            'message.death..no_money' "$(get_formatted_message error_minimessage inventory You didn\'t have enough money to keep your inventory)" \
-            'message.death..paid' "$(get_formatted_message succes inventory You paid %s to keep your inventory)"
-    fi
-fi
-
-exit
-
 if [ "${LOCALE}" = 'ro' ]; then
     WEBMAP_PAGE_TITLE="Harta ${SERVER_NAME}"
     INVALID_ACTION_MESSAGE="$(get_formatted_message error command Nu se poate efectua)"
@@ -119,10 +91,12 @@ set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"  'messages.no-permission'    "${I
 if is_plugin_installed 'PurpurExtras'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'PurpurExtras' config \
-            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Cuferele cu comori se pot distruge doar în timp ce ești $(get_highlighted_message aplecat))"
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Poți sparge cuferele cu comori doar dacă stai $(get_highlighted_message aplecat))"
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Poți sparge spawnerele doar dacă stai $(get_highlighted_message aplecat))"
     else
         configure_plugin 'PurpurExtras' config \
-            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Treasure chests can only be broken while $(get_highlighted_message sneaking))"
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block You can only break loot chests while $(get_highlighted_message sneaking))"
+            'settings.protect-spawners.message' "$(get_formatted_message_minimessage error break_block You can only break spawners while $(get_highlighted_message sneaking))"
     fi
 fi
 
@@ -250,8 +224,8 @@ if is_plugin_installed 'ChestShop'; then
             'SHOP_CREATED'                      "$(get_formatted_message success trade Oferta de vânzare a fost creată)" \
             'SOMEBODY_BOUGHT_FROM_YOUR_SHOP'    "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_BUYER_SINGLEPERCENT}) a cumpărat $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) cu $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) de la magazinul tău)" \
             'SOMEBODY_SOLD_TO_YOUR_SHOP'        "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_SELLER_SINGLEPERCENT}) a vândut $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) cu $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) la magazinul tău)" \
-            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message dezactivată))" \
-            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message activată))" \
+            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message activată))" \
+            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Tranzacționarea cu propriile oferte a fost $(get_enablement_message dezactivată))" \
             'TOGGLE_MESSAGES_OFF'               "$(get_formatted_message info trade Notificările cu tranzacții de la magazin au fost $(get_enablement_message dezactivate))" \
             'TOGGLE_MESSAGES_ON'                "$(get_formatted_message info trade Notificările cu tranzacții de la magazin au fost $(get_enablement_message activate))" \
             'TRADE_DENIED_ACCESS_PERMS'         "$(get_formatted_message error trade Nu poți tranzacționa cu propriile oferte. Folosește $(get_command_mention /csaccess))" \
@@ -276,8 +250,8 @@ if is_plugin_installed 'ChestShop'; then
             'SHOP_CREATED'                      "$(get_formatted_message success trade The offer was set up)" \
             'SOMEBODY_BOUGHT_FROM_YOUR_SHOP'    "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_BUYER_SINGLEPERCENT}) bought $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) from your shop)" \
             'SOMEBODY_SOLD_TO_YOUR_SHOP'        "$(get_formatted_message info trade $(get_player_mention ${PLACEHOLDER_SELLER_SINGLEPERCENT}) sold $(get_highlighted_message ${PLACEHOLDER_ITEM_SINGLEPERCENT}) for $(get_highlighted_message ${PLACEHOLDER_PRICE_SINGLEPERCENT}) to your shop)" \
-            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message disabled))" \
-            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message enabled))" \
+            'TOGGLE_ACCESS_OFF'                 "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message enabled))" \
+            'TOGGLE_ACCESS_ON'                  "$(get_formatted_message info trade Transacting with your own trades has been $(get_enablement_message disabled))" \
             'TOGGLE_MESSAGES_OFF'               "$(get_formatted_message info trade The trade notifications have been $(get_enablement_message disabled))" \
             'TOGGLE_MESSAGES_ON'                "$(get_formatted_message info trade The trade notifications have been $(get_enablement_message enabled))" \
             'TRADE_DENIED_ACCESS_PERMS'         "$(get_formatted_message error trade You can\'t trade with your own shops. Use $(get_command_mention /csaccess))" \
@@ -783,22 +757,22 @@ if is_plugin_installed 'KeepInventoryCost'; then
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'KeepInventoryCost' config \
-            'message.disabled' "$(get_enablement_minimessage oprită)" \
-            'message.enabled' "$(get_enablement_minimessage pornită)" \
-            'message.setting..get' "$(get_formatted_message_minimessage info inventory Păstrarea inventarului la moarte este %s)" \
-            'message.setting..set' "$(get_formatted_message_minimessage success inventory Păstrarea inventarului la moarte a fost %s)" \
-            'message.setting..set_refuse' "$(get_formatted_message_minimessage error inventory Păstrarea inventarului la moarte este deja %s)" \
-            'message.death..no_money' "$(get_formatted_message_minimessage error_minimessage inventory Nu ai avut %s pentru a păstra inventarul când ai murit)" \
-            'message.death..paid' "$(get_formatted_message_minimessage succes inventory Ai plătit %s pentru a păstra inventarul când ai murit)"
+            'message.disabled' "$(get_enablement_message oprită)" \
+            'message.enabled' "$(get_enablement_message pornită)" \
+            'message.setting..get' "$(get_formatted_message info inventory Păstrarea inventarului la moarte e %s)" \
+            'message.setting..set' "$(get_formatted_message success inventory Păstrarea inventarului la moarte a fost %s)" \
+            'message.setting..set_refuse' "$(get_formatted_message error inventory Păstrarea inventarului la moarte e deja %s)" \
+            'message.death..no_money' "$(get_formatted_message error_minimessage inventory Nu ai avut destui bani pentru a păstra inventarul)" \
+            'message.death..paid' "$(get_formatted_message succes inventory Ai plătit $(get_coloured_message ${COLOUR_GREEN_LIGHT} %s) pentru a păstra inventarul)"
     else
         configure_plugin 'KeepInventoryCost' config \
-            'message.disabled' "$(get_enablement_minimessage disabled)" \
-            'message.enabled' "$(get_enablement_minimessage enabled)" \
-            'message.setting..get' "$(get_formatted_message_minimessage info inventory Keeping the inventory on death is %s)" \
-            'message.setting..set' "$(get_formatted_message_minimessage success inventory Keeping the inventory on death has been %s)" \
-            'message.setting..set_refuse' "$(get_formatted_message_minimessage error inventory Keeping the inventory on death is already %s)" \
-            'message.death..no_money' "$(get_formatted_message_minimessage error_minimessage inventory You didn\'t have %s to keep your inventory on death)" \
-            'message.death..paid' "$(get_formatted_message_minimessage succes inventory You paid %s to keep your inventory on death)"
+            'message.disabled' "$(get_enablement_message disabled)" \
+            'message.enabled' "$(get_enablement_message enabled)" \
+            'message.setting..get' "$(get_formatted_message info inventory Keeping the inventory on death is %s)" \
+            'message.setting..set' "$(get_formatted_message success inventory Keeping the inventory on death has been %s)" \
+            'message.setting..set_refuse' "$(get_formatted_message error inventory Keeping the inventory on death is already %s)" \
+            'message.death..no_money' "$(get_formatted_message error_minimessage inventory You didn\'t have enough money to keep your inventory)" \
+            'message.death..paid' "$(get_formatted_message succes inventory You paid %s to keep your inventory)"
     fi
 fi
 
@@ -1048,11 +1022,13 @@ if is_plugin_installed 'TreeAssist'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'TreeAssist' messages \
             'successful.noreplant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message oprită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
-            'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))"
+            'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
+            'warning.destruction_invalidblock' "$(get_formatted_message error woodcutting Acest copac nu se poate tăia automat)"
     else
         configure_plugin 'TreeAssist' messages \
             'successful.noreplant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message disabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
-            'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))"
+            'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
+            'warning.destruction_invalidblock' "$(get_formatted_message error woodcutting This tree cannot be automatically chopped)"
     fi
 fi
 

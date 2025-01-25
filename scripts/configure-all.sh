@@ -3,4 +3,4 @@
 source "/srv/papermc/scripts/common/paths.sh"
 
 sh "${SERVER_SCRIPTS_DIR}/configure-settings.sh"
-sh "${SERVER_SCRIPTS_DIR}/configure-localisations.sh"
+sh "${SERVER_SCRIPTS_DIR}/configure-localisation.sh"

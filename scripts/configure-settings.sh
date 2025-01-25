@@ -12,11 +12,13 @@ ensure_su_access
 
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
+    'allow-flight'                                              true \
     'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
     'max-chained-neighbor-updates'                              10000 \
     'max-players'                                               "${PLAYERS_MAX}" \
     'network-compression-threshold'                             512 \
     'simulation-distance'                                       "${SIMULATION_DISTANCE}" \
+    'spawn-protection'                                          0 \
     'sync-chunk-writes'                                         false \
     'view-distance'                                             "${VIEW_DISTANCE}"
 
@@ -40,6 +42,7 @@ set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.query-plugins'       false
 set_config_value "${BUKKIT_CONFIG_FILE}" 'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}"
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
+    'block-updates.disable-tripwire-updates'                                        false \
     'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  1 \
     'chunk-loading-basic.player-max-chunk-generate-rate'                            5 \
     'item-validation.book-size.page-max'                                            1024 \
@@ -129,7 +132,9 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'    10 \
     'world-settings.default.gameplay-mechanics.use-better-mending'                                 true \
     'world-settings.default.mobs.dolphin.disable-treasure-searching'                               true \
-    'world-settings.default.mobs.villager.lobotomize.enabled'                                      true \
+    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                       true \
+    'world-settings.default.mobs.villager.bypass-mob-griefing'                                     true \
+    'world-settings.default.mobs.villager.lobotomize.enabled'                                      false \
     'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                      true \
     'world-settings.default.mobs.villager.search-radius.acquire-poi'                               16 \
     'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                        16 \
@@ -146,6 +151,7 @@ configure_plugin 'PurpurExtras' config \
     'settings.mobs.snow_golem.drop-pumpkin-when-sheared' true \
     'settings.mobs.sheep.jeb-shear-random-color' true \
     'settings.protect-blocks-with-loot.enabled' true \
+    'settings.protect-spawners.enabled' true \
     'settings.unlock-all-recipes-on-join' true
 
 # 'prevent-burrow'=true && 'prevent-burrow.teleport-above-block'=true => broken slime-launchers
@@ -201,7 +207,7 @@ configure_plugin 'AuthMe' config \
     'Hooks.useEssentialsMotd' $(is_plugin_installed_bool 'EssentialsX') \
     'Security.console.logConsole' false \
     'Security.tempban.enableTempban' true \
-    'Security.tempban.maxLoginTries' 6 \
+    'Security.tempban.maxLoginTries' 9 \
     'Security.tempban.minutesBeforeCounterReset' 300 \
     'Security.tempban.tempbanLength' 240 \
     'settings.delayJoinMessage' false \
@@ -215,7 +221,7 @@ configure_plugin 'AuthMe' config \
     'settings.serverName' "${SERVER_NAME}" \
     'settings.sessions.enabled' true \
     'settings.sessions.timeout' 960 \
-    'settings.security.minPasswordLength' 12 \
+    'settings.security.minPasswordLength' 8 \
     'settings.useAsyncTasks' true \
     'settings.useWelcomeMessage' $(is_plugin_not_installed_bool 'EssentialsX')
 
@@ -286,11 +292,22 @@ configure_plugin 'DeluxeMenus' config \
 
 if is_plugin_installed 'DiscordSRV'; then
     configure_plugin 'DiscordSRV' config \
+        'Experiment_WebhookChatMessageAvatarFromDiscord' true \
+        'Experiment_WebhookChatMessageDelivery' true \
         'ServerWatchdogEnabled' false \
         'UpdateCheckDisabled'   "${SKIP_PLUGIN_UPDATE_CHECKS}"
 
     configure_plugin 'DiscordSRV' messages \
-        'MinecraftPlayerDeathMessage.Enabled' $(is_plugin_not_installed_bool DeathMessages)
+        'MinecraftPlayerAchievementMessage.Webhook.Enable' true \
+        'MinecraftPlayerDeathMessage.Enabled' $(is_plugin_not_installed_bool DeathMessages) \
+        'MinecraftPlayerDeathMessage.Webhook.Enable' true \
+        'MinecraftPlayerFirstJoinMessage.Webhook.Enable' true \
+        'MinecraftPlayerJoinMessage.Webhook.Enable' true \
+        'MinecraftPlayerLeaveMessage.Webhook.Enable' true
+
+    configure_plugin 'DiscordSRV' synchronization \
+        'NicknameSynchronizationEnabled' true
+
 fi
 
 configure_plugin 'DynamicLights' config \
@@ -439,6 +456,7 @@ configure_plugin 'OreAnnouncer' config \
     'oreannouncer.updates.check'    "${CHECK_PLUGINS_FOR_UPDATES}" \
     'oreannouncer.updates.warn'     "${CHECK_PLUGINS_FOR_UPDATES}"
 
+
 configure_plugin 'Orebfuscator' config \
     'cache.baseDirectory' 'cache/orebfuscator' \
     'general.checkForUpdates' "${CHECK_PLUGINS_FOR_UPDATES}" \
@@ -446,12 +464,15 @@ configure_plugin 'Orebfuscator' config \
     'general.bypassNotification' false \
     'general.ignoreSpectator' true \
     'obfuscation.obfuscation-end.enabled' false \
+    'obfuscation.obfuscation-nether.enabled' true \
+    'obfuscation.obfuscation-nether.hiddenBlocks' '["minecraft:ancient_debris"]' \
+    'obfuscation.obfuscation-overworld.enabled' true \
+    'obfuscation.obfuscation-overworld.hiddenBlocks' '["minecraft:diamond_ore","minecraft:deepslate_diamond_ore"]' \
     'obfuscation.obfuscation-overworld.maxY' '64' \
     'obfuscation.obfuscation-overworld.minY' '-64' \
-    'obfuscation.obfuscation-overworld.enabled' true \
-    'proximity.proximity-overworld' false \
-    'proximity.proximity-nether' false \
-    'proximity.proximity-end' false
+    'proximity.proximity-overworld.enabled' false \
+    'proximity.proximity-nether.enabled' false \
+    'proximity.proximity-end.enabled' false
 
 if is_plugin_installed 'PaperTweaks'; then
     configure_plugin 'PaperTweaks' config \
@@ -538,8 +559,7 @@ if is_plugin_installed 'Pl3xmap'; then
 fi
 
 configure_plugin 'ProAntiTab' config \
-    'updater.enabled' "${SKIP_PLUGIN_UPDATE_CHECKS}"
-
+    'updater.enabled' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'SkinsRestorer' config \
     'commands.perSkinPermissionConsent' 'I will follow the rules' \
@@ -704,9 +724,12 @@ for MATERIAL in 'diamond' 'netherite'; do
 done
 
 for OVERWORLD_MATERIAL in 'coal' 'copper' 'iron' 'gold' 'redstone' 'lapis' 'diamond' 'emerald'; do
-    for ITEM in "${OVERWORLD_MATERIAL}" "${OVERWORLD_MATERIAL}_block" "${OVERWORLD_MATERIAL}_ore" "deepslate_${OVERWORLD_MATERIAL}_ore"; do
+    for ITEM in "${OVERWORLD_MATERIAL}_block" "${OVERWORLD_MATERIAL}_ore" "deepslate_${OVERWORLD_MATERIAL}_ore"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
+done
+for OVERWORLD_MATERIAL in 'coal' 'redstone' 'diamond' 'emerald'; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${OVERWORLD_MATERIAL}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
 done
 for NETHER_MATERIAL in 'quartz' 'gold'; do
     for ITEM in "${NETHER_MATERIAL}" "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
