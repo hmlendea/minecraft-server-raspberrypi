@@ -13,6 +13,17 @@ if [ ! -f "${PLAYERS_CACHE_FILE}" ]; then
     echo "{}" | sudo tee "${PLAYERS_CACHE_FILE}" &>/dev/null
 fi
 
+function get_essentials_userdata_value() {
+    local PLAYER_UUID="${1}"
+    local PROPERTY="${2}"
+
+    if [ -f "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" ]; then
+        get_config_value "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" "${PROPERTY}"
+    else
+        echo ''
+    fi
+}
+
 function get_playerscache_value() {
     local PLAYER_UUID="${1}"
     local PROPERTY="${2}"
@@ -89,10 +100,7 @@ function get_player_username() {
         PLAYER_USERNAME=$(get_playerscache_value "${PLAYER_UUID}" "username" | sed 's/\"//g')
         [ -n "${PLAYER_USERNAME}" ] && FOUND_IN_CACHE=true
     
-        if [ -z "${PLAYER_USERNAME}" ]; then
-            PLAYER_USERNAME=$(get_config_value "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" "last-account-name")
-        fi
-        
+        [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(get_essentials_userdata_value "${PLAYER_UUID}" 'last-account-name')
         [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_USERCACHE_FILE}")
         [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_WHITELIST_FILE}")
         [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_OPS_FILE}")
@@ -112,7 +120,7 @@ function get_player_username() {
 
 function get_player_ip() {
     local PLAYER_UUID="${1}"
-    local PLAYER_IP=$(get_config_value "${ESSENTIALS_USERDATA_DIR}/${PLAYER_UUID}.yml" "ip-address")
+    local PLAYER_IP=$(get_essentials_userdata_value "${PLAYER_UUID}" 'ip-address')
 
     echo "${PLAYER_IP}"
 }
@@ -256,10 +264,16 @@ function get_player_playtime() {
         return
     fi
 
-    local PLAYTIME_TICKS=$(jq ".stats.\"minecraft:custom\".\"minecraft:play_time\"" "${PLAYER_STATS_FILE}")
-    local PLAYTIME_SECS=$((PLAYTIME_TICKS/20))
+    jq ".stats.\"minecraft:custom\".\"minecraft:play_time\"" "${PLAYER_STATS_FILE}"
+}
 
-    echo "${PLAYTIME_SECS}" | awk '{printf "%d hour%s %d minute%s %d second%s\n", $1/3600, ($1/3600)==1?"":"s", ($1%3600)/60, (($1%3600)/60)==1?"":"s", $1%60, ($1%60)==1?"":"s"}'
+function get_player_wealth() {
+    local PLAYER_UUID="${1}"
+    local PLAYER_WEALTH=$(get_essentials_userdata_value "${PLAYER_UUID}" 'money')
+
+    [ -z "${PLAYER_WEALTH}" ] && PLAYER_WEALTH=0
+
+    echo "${PLAYER_WEALTH}"
 }
 
 function get_player_info() {
@@ -270,10 +284,11 @@ function get_player_info() {
     echo "   - Discord ID : "$(get_player_discord_id "${UUID}")
     echo "   - Seen first : "$(get_player_date_seen_first "${UUID}")
     echo "   - Seen last  : "$(get_player_date_seen_last "${UUID}")
-    echo "   - Play time  : "$(get_player_playtime "${UUID}")
+    echo "   - Play time  : "$(convert_ticks_to_duration $(get_player_playtime "${UUID}"))
     echo "   - Last IP    : "$(get_player_ip "${UUID}")
     echo "   - Location   : "$(get_player_location "${UUID}")
     echo "   - Spawn      : "$(get_player_spawn "${UUID}")
+    echo "   - Wealth     : "$(get_player_wealth "${UUID}")
 
     local PLAYER_PASSWORD=$(get_player_password "${UUID}")
     [ -n "${PLAYER_PASSWORD}" ] && echo "   - Password   : ${PLAYER_PASSWORD}"
