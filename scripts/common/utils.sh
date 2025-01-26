@@ -1,6 +1,19 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
 
+function convert_ticks_to_seconds() {
+    local TICKS="${1}"
+
+    echo $((TICKS/20))
+}
+
+function convert_ticks_to_duration() {
+    local TICKS="${1}"
+    local SECONDS=$(convert_ticks_to_seconds ${TICKS})
+
+    echo "${SECONDS}" | awk '{printf "%d hour%s %d minute%s %d second%s\n", $1/3600, ($1/3600)==1?"":"s", ($1%3600)/60, (($1%3600)/60)==1?"":"s", $1%60, ($1%60)==1?"":"s"}'
+}
+
 function convert_seconds_to_ticks() {
     local SECONDS="${1}"
 

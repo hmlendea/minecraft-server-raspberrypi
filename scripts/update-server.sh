@@ -25,13 +25,11 @@ else
     update_server
 
     update_datapack 'DungeonsAndTaverns'        'https://modrinth.com/datapack/dungeons-and-taverns'
-#    update_datapack 'Explorify'                 'https://modrinth.com/datapack/explorify'
+    update_datapack 'Explorify'                 'https://modrinth.com/datapack/explorify'
     update_datapack 'Hearths'                   'https://modrinth.com/datapack/hearths'
     update_datapack 'Nullscape'                 'https://modrinth.com/datapack/nullscape'
     update_datapack 'PandaTemple'               'https://modrinth.com/datapack/panda-temple'
-    update_datapack 'qraftyEndVillages'         'https://modrinth.com/datapack/qraftys-end-villages'
-    update_datapack 'qraftyMushroomVillages'    'https://modrinth.com/datapack/qraftys-mushroom-villages'
-    update_datapack 'qraftyUndergroundVillages' 'https://modrinth.com/datapack/qraftys-bunkers'
+    update_datapack 'qraftyfied'                'https://modrinth.com/datapack/qraftyfied'
     update_datapack 'VanillaStructureUpdate'    'https://modrinth.com/datapack/vanilla-structure-update'
 
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
@@ -45,7 +43,7 @@ else
     update_plugin 'CoreProtect'                 'https://ci.froobworld.com'                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCommands'              'https://modrinth.com/plugin/custom-commands'               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCrafting'              'https://modrinth.com/plugin/customcrafting'                'customcrafting-spigot-%pluginVersion%.jar'
-#    update_plugin 'DeathMessages'               'https://github.com/Winds-Studio/DeathMessages'             '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'DeathMessages'               'https://github.com/Winds-Studio/DeathMessages'             '%pluginName%-%pluginVersion%.jar'
     update_plugin 'DecentHolograms'             'https://github.com/DecentSoftware-eu/DecentHolograms'      '%pluginName%-%pluginVersion%.jar'
     update_plugin 'DeluxeMenus'                 'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'DiscordSRV'                  'https://github.com/DiscordSRV/DiscordSRV'                  "%pluginName%-Build-%pluginVersion%.jar"

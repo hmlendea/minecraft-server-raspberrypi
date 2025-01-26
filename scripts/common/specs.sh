@@ -1,7 +1,7 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
-source "${SERVER_SCRIPTS_DIR}/common/config.sh"
-source "${SERVER_SCRIPTS_DIR}/common/plugins.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 function get_server_property() {
     local KEY="${1}"
