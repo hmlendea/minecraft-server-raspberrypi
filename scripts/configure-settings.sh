@@ -13,10 +13,12 @@ ensure_su_access
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
     'allow-flight'                                              true \
+    'difficulty'                                                'hard' \
     'enforce-secure-profile'                                    "${SIMULATION_DISTANCE}" \
     'max-chained-neighbor-updates'                              10000 \
     'max-players'                                               "${PLAYERS_MAX}" \
     'network-compression-threshold'                             512 \
+    'online-mode'                                               false \
     'simulation-distance'                                       "${SIMULATION_DISTANCE}" \
     'spawn-protection'                                          0 \
     'sync-chunk-writes'                                         false \
