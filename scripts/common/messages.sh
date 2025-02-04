@@ -90,6 +90,7 @@ function get_symbol_by_category() {
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'gamemode' "${GAMEMODE_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'health' "${HEALTH_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'help' "${HELP_SYMBOL}")
+    [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'hint' "${HELP_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'home' "${HOME_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" 'hospital' "${HEALTH_SYMBOL}")
     [ -z "${SYMBOL}" ] && SYMBOL=$(match_category_to_symbol "${CATEGORY}" "inspect" "${INSPECT_SYMBOL}")
@@ -235,6 +236,10 @@ function get_info_message() {
 
 function get_info_minimessage() {
     echo $(get_formatted_message_minimessage 'info' 'info' "${*}")
+}
+
+function get_hint_message() {
+    echo $(get_formatted_message 'info' 'hint' "${*}")
 }
 
 function get_action_message() {

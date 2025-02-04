@@ -208,7 +208,7 @@ if is_plugin_installed 'ChestShop'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'ChestShop' messages \
             'CANNOT_CREATE_SHOP_HERE'           "$(get_formatted_message error trade Nu poți crea oferte de vânzare în afara zonelor special amenajate)" \
-            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade Obiectul alocat ofertei nu este valid)" \
+            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade Obiectul ofertei nu este valid. Vezi $(get_command_mention /iteminfo))" \
             'NO_BUYING_HERE'                    "$(get_formatted_message error trade Această ofertă permite doar vânzarea $(get_obscured_message \(click stânga\)))" \
             'NO_CHEST_DETECTED'                 "$(get_formatted_message error trade Nu a fost găsit nici un container)" \
             'NO_SELLING_HERE'                   "$(get_formatted_message error trade Această ofertă permite doar cumpărarea $(get_obscured_message \(click dreapta\)))" \
@@ -234,7 +234,7 @@ if is_plugin_installed 'ChestShop'; then
     else
         configure_plugin 'ChestShop' messages \
             'CANNOT_CREATE_SHOP_HERE'           "$(get_formatted_message error trade You can\'t create trade offers outside of the designated areas)" \
-            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade The item assigned to the offer is not valid)" \
+            'INCORRECT_ITEM_ID'                 "$(get_formatted_message error trade This offer\'s item is invalid. See $(get_command_mention /iteminfo))" \
             'NO_BUYING_HERE'                    "$(get_formatted_message error trade This offer only allows selling $(get_obscured_message \(left click\)))" \
             'NO_CHEST_DETECTED'                 "$(get_formatted_message error trade No container found)" \
             'NO_SELLING_HERE'                   "$(get_formatted_message error trade This offer only allows buying $(get_obscured_message \(right-click\)))" \
@@ -289,8 +289,8 @@ if is_plugin_installed 'ChestSort'; then
             'message-player-inventory-sorted' "$(get_formatted_message success inventory Inventarul tău a fost sortat)" \
             'message-sorting-disabled' "$(get_formatted_message success inventory Sortarea automată a fost $(get_enablement_message dezactivată) pentru $(get_highlighted_message containere))" \
             'message-sorting-enabled' "$(get_formatted_message success inventory Sortarea automată a fost $(get_enablement_message activată) pentru $(get_highlighted_message containere))" \
-            'message-when-using-chest' "$(get_info_message Poți $(get_enablement_message porni) sortarea automată a $(get_highlighted_message containerelor) cu $(get_command_mention /csort on))" \
-            'message-when-using-chest2' "$(get_info_message Poți $(get_enablement_message opri) sortarea automată a $(get_highlighted_message containerelor) cu $(get_command_mention /csort off))"
+            'message-when-using-chest' "$(get_hint_message Poți $(get_enablement_message porni) sortarea automată a $(get_highlighted_message containerelor) cu $(get_command_mention /csort on))" \
+            'message-when-using-chest2' "$(get_hint_message Poți $(get_enablement_message opri) sortarea automată a $(get_highlighted_message containerelor) cu $(get_command_mention /csort off))"
     else
         configure_plugin 'ChestSort' config \
             'message-container-sorted' "$(get_formatted_message success inventory The container has been sorted)" \
@@ -299,8 +299,8 @@ if is_plugin_installed 'ChestSort'; then
             'message-player-inventory-sorted' "$(get_formatted_message success inventory Your inventory has been sorted)" \
             'message-sorting-disabled' "$(get_formatted_message success inventory Automatic $(get_highlighted_message container) sorting has been $(get_enablement_message disabled))" \
             'message-sorting-enabled' "$(get_formatted_message success inventory Automatic $(get_highlighted_message container) sorting has been $(get_enablement_message enabled))" \
-            'message-when-using-chest' "$(get_info_message Automatic sorting for $(get_highlighted_message containers) can be $(get_enablement_message enabled) using $(get_command_mention /csort on))" \
-            'message-when-using-chest2' "$(get_info_message Automatic sorting for $(get_highlighted_message containers) can be $(get_enablement_message disabled) using $(get_command_mention /csort off))"
+            'message-when-using-chest' "$(get_hint_message Automatic sorting for $(get_highlighted_message containers) can be $(get_enablement_message enabled) using $(get_command_mention /csort on))" \
+            'message-when-using-chest2' "$(get_hint_message Automatic sorting for $(get_highlighted_message containers) can be $(get_enablement_message disabled) using $(get_command_mention /csort off))"
     fi
 fi
 
