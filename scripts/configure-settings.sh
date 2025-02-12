@@ -24,26 +24,37 @@ set_config_values "${SERVER_PROPERTIES_FILE}" \
     'sync-chunk-writes'                                         false \
     'view-distance'                                             "${VIEW_DISTANCE}"
 
-set_config_value "${SPIGOT_CONFIG_FILE}"    'settings.save-user-cache-on-stop-only'                                     false
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.entity-activation-range.tick-inactive-villagers'    false
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.merge-radius.exp'                                   '5.0'
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.merge-radius.item'                                  '3.5'
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.nerf-spawner-mobs'                                  true
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.simulation-distance'                                "${SIMULATION_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    'world-settings.default.view-distance'                                      "${VIEW_DISTANCE}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_END_NAME}.simulation-distance"                      "${SIMULATION_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_END_NAME}.view-distance"                            "${VIEW_DISTANCE_END}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}.simulation-distance"                   "${SIMULATION_DISTANCE_NETHER}"
-set_config_value "${SPIGOT_CONFIG_FILE}"    "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
+set_config_values "${SPIGOT_CONFIG_FILE}" \
+    'settings.log-named-deaths'                                                 true \
+    'settings.log-villager-deaths'                                              false \
+    'settings.save-user-cache-on-stop-only'                                     false \
+    'world-settings.default.arrow-despawn-rate'                                 300 \
+    'world-settings.default.trident-despawn-rate'                               1000 \
+    'world-settings.default.entity-activation-range.ignore-spectators'          true \
+    'world-settings.default.entity-activation-range.tick-inactive-villagers'    false \
+    'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}" \
+    'world-settings.default.merge-radius.exp'                                   '5.0' \
+    'world-settings.default.merge-radius.item'                                  '3.5' \
+    'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}" \
+    'world-settings.default.nerf-spawner-mobs'                                  true \
+    'world-settings.default.simulation-distance'                                "${SIMULATION_DISTANCE}" \
+    'world-settings.default.view-distance'                                      "${VIEW_DISTANCE}" \
+    "world-settings.${WORLD_END_NAME}.simulation-distance"                      "${SIMULATION_DISTANCE_END}" \
+    "world-settings.${WORLD_END_NAME}.view-distance"                            "${VIEW_DISTANCE_END}" \
+    "world-settings.${WORLD_NETHER_NAME}.simulation-distance"                   "${SIMULATION_DISTANCE_NETHER}" \
+    "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
 
-set_config_value "${BUKKIT_CONFIG_FILE}" 'chunk-gc.period-in-ticks'     300
-set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.connection-throttle' "${CONNECTION_THROTTLE}"
-set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.query-plugins'       false
-set_config_value "${BUKKIT_CONFIG_FILE}" 'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}"
+set_config_values "${BUKKIT_CONFIG_FILE}" \
+    'chunk-gc.period-in-ticks'     300 \
+    'settings.connection-throttle' "${CONNECTION_THROTTLE}" \
+    'settings.query-plugins'       false \
+    'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}" \
+    'ticks-per.autosave'            24000
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
+    'block-updates.disable-chorus-plant-updates'                                    true \
+    'block-updates.disable-mushroom-block-updates'                                  true \
+    'block-updates.disable-noteblock-updates'                                       true \
     'block-updates.disable-tripwire-updates'                                        false \
     'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  1 \
     'chunk-loading-basic.player-max-chunk-generate-rate'                            5 \
@@ -52,9 +63,14 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.action'            'DROP' \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.interval'          '1.0' \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.max-packet-rate'   '15.0' \
+    'proxies.bungee-cord.online-mode'                                               ${ONLINE_MODE} \
+    'proxies.velocity.online-mode'                                                  ${ONLINE_MODE} \
+    'scoreboards.save-empty-scoreboard-teams'                                       false \
+    'timings.enabled'                                                               false \
     'timings.server-name'                                                           "${SERVER_NAME}" \
+    'timings.server-name-privacy'                                                   true \
     'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true
-
+exit
 # Note: Setting hopper.disable-move-event=false will break Hopper Minecarts
 set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'chunks.delay-chunk-unloads-by'                                     '10s' \
@@ -66,6 +82,7 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'entities.armor-stands.do-collision-entity-lookups'                 false \
     'entities.armor-stands.tick'                                        false \
     'entities.behavior.disable-chest-cat-detection'                     true \
+    'entities.behavior.spawner-nerfed-mobs-should-jump'                 true \
     'entities.spawning.disable-mob-spawner-spawn-egg-transformation'    true \
     'entities.spawning.per-player-mob-spawns'                           true \
     'entities.spawning.wandering-trader.spawn-chance-max'               125 \
@@ -77,8 +94,11 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'environment.treasure-maps.enabled'                                 true \
     'environment.treasure-maps.find-already-discovered.loot-tables'     true \
     'environment.treasure-maps.find-already-discovered.villager-trade'  true \
+    'fixes.disable-unloaded-chunk-enderpearl-exploit'                   true \
     'hopper.disable-move-event'                                         true \
     'hopper.ignore-occluding-blocks'                                    true \
+    'lootables.auto-replenish'                                          true \
+    'misc.disable-end-credits'                                          true \
     'misc.redstone-implementation'                                      'ALTERNATE_CURRENT' \
     'misc.update-pathfinding-on-block-update'                           false \
     'spawn.keep-spawn-loaded'                                           "${KEEP_SPAWN_LOADED}" \
@@ -110,37 +130,61 @@ set_config_values "${PUFFERFISH_CONFIG_FILE}" \
     'projectile.max-loads-per-tick'    8
 
 set_config_values "${PURPUR_CONFIG_FILE}" \
-    'settings.network.max-joins-per-second'                                                        true \
-    'settings.server-mod-name'                                                                     "${SERVER_NAME}" \
-    'settings.use-alternate-keepalive'                                                             true \
-    'world-settings.default.blocks.campfire.lit-when-placed'                                       false \
-    'world-settings.default.blocks.chest.open-with-solid-block-on-top'                             true \
-    'world-settings.default.blocks.coral.die-outside-water'                                        false \
-    'world-settings.default.blocks.farmland.get-moist-from-below'                                  true \
-    'world-settings.default.blocks.respawn-anchor.explode'                                         false \
-    'world-settings.default.blocks.sponge.absorption.range'                                        8 \
-    'world-settings.default.blocks.stonecutter.damage'                                             1.0 \
-    'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                 true \
-    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                       "${DAYTIME_LENGTH_TICKS}" \
-    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                     "${NIGHTTIME_LENGTH_TICKS}" \
-    'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                true \
-    'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'               true \
-    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                 true \
-    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'       true \
-    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                 true \
-    'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                         true \
-    'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                100000 \
-    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'  true \
-    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'    10 \
-    'world-settings.default.gameplay-mechanics.use-better-mending'                                 true \
-    'world-settings.default.mobs.dolphin.disable-treasure-searching'                               true \
-    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                       true \
-    'world-settings.default.mobs.villager.bypass-mob-griefing'                                     true \
-    'world-settings.default.mobs.villager.lobotomize.enabled'                                      false \
-    'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                      true \
-    'world-settings.default.mobs.villager.search-radius.acquire-poi'                               16 \
-    'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                        16 \
-    'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                  false
+    'settings.blocks.anvil.cumulative-cost'                                                         false \
+    'settings.blocks.barrel.rows'                                                                   6 \
+    'settings.blocks.crying-obsidian.valid-for-portal-frame'                                        true \
+    'settings.blocks.ender-chest.six-rows'                                                          true \
+    'settings.enchntment.allow-unsafe-enchant-command'                                              true \
+    'settings.logger.suppress-init-legacy-material-errors'                                          true \
+    'settings.logger.suppress-ignored-advancement-warnings'                                         true \
+    'settings.logger.suppress-unrecognized-recipe-errors'                                           true \
+    'settings.network.max-joins-per-second'                                                         true \
+    'settings.server-mod-name'                                                                      "${SERVER_NAME}" \
+    'settings.use-alternate-keepalive'                                                              true \
+    'settings.username-valid-characters'                                                            "^[a-zA-Z0-9_]*$" \
+    'world-settings.default.blocks.beacon.effect-range.level-1'                                     40 \
+    'world-settings.default.blocks.beacon.effect-range.level-2'                                     60 \
+    'world-settings.default.blocks.beacon.effect-range.level-3'                                     80 \
+    'world-settings.default.blocks.beacon.effect-range.level-4'                                     100 \
+    'world-settings.default.blocks.campfire.lit-when-placed'                                        false \
+    'world-settings.default.blocks.chest.open-with-solid-block-on-top'                              true \
+    'world-settings.default.blocks.coral.die-outside-water'                                         false \
+    'world-settings.default.blocks.enchantment-table.lapis-persists'                                true \
+    'world-settings.default.blocks.farmland.gets-moist-from-below'                                  true \
+    'world-settings.default.blocks.respawn-anchor.explode'                                          false \
+    'world-settings.default.blocks.sponge.absorption.range'                                         8 \
+    'world-settings.default.blocks.stonecutter.damage'                                              1.0 \
+    'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                  true \
+    'world-settings.default.gameplay-mechanics.boat.do-fall-damage'                                 true \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                        "${DAYTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                      "${NIGHTTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                 true \
+    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'           true \
+    'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                       true \
+    'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                             true \
+    'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                true \
+    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                  true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'        true \
+    'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                 100000 \
+    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'   true \
+    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'     15 \
+    'world-settings.default.gameplay-mechanics.player.totem-of-undying-works-in-inventory'          true \
+    'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                  true \
+    'world-settings.default.gameplay-mechanics.use-better-mending'                                  true \
+    'world-settings.default.mobs.dolphin.disable-treasure-searching'                                true \
+    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                        true \
+    'world-settings.default.mobs.villager.bypass-mob-griefing'                                      true \
+    'world-settings.default.mobs.villager.lobotomize.enabled'                                       false \
+    'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                       true \
+    'world-settings.default.mobs.villager.search-radius.acquire-poi'                                16 \
+    'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                         16 \
+    'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                   false \
+    'world-settings.default.tools.hoe.replant-crops'                                                true \
+    'world-settings.default.tools.hoe.replant-nether-warts'                                         true
+
+for MOB in 'cow' 'goat' 'iron_golem' 'llama' 'mooshroom' 'panda' 'polar_bear' 'ravager' 'sheep' 'trader_llama' 'turtle' 'wolf'; do
+    set_config_values "${PURPUR_CONFIG_FILE}" "world-settings.default.mobs.${MOB}.rideable" true
+done
 
 configure_plugin 'PurpurExtras' config \
     'settings.anvil-splits-boats' true \
@@ -428,7 +472,7 @@ if is_plugin_installed 'InvUnload'; then
         'ignore-blocked-chests'     false \
         'laser-animation'           false \
         'laser-default-duration'    5 \
-        'max-chest-radius'          64 \
+        'max-chest-radius'          96 \
         'particle-type'             'WITCH'
 fi
 
@@ -489,10 +533,10 @@ if is_plugin_installed 'PaperTweaks'; then
         'survival.unlock-all-recipes' true
     
     set_config_values "${PAPERTWEAKS_MODULES_DIR}/moremobheads/config.yml" \
-        "require-player-kill" true
+        'require-player-kill' true
     
     set_config_values "${PAPERTWEAKS_MODULES_DIR}/playerheaddrops/config.yml" \
-        "require-player-kill" true
+        'require-player-kill' true
 fi
 
 if is_plugin_installed 'Pl3xmap'; then
@@ -532,7 +576,7 @@ if is_plugin_installed 'Pl3xmap'; then
         "world-settings.${WORLD_NETHER_NAME}.render.renderers.inhabited" '' \
         "world-settings.${WORLD_NETHER_NAME}.render.renderers.flowermap" '' \
         "world-settings.${WORLD_NETHER_NAME}.render.translucent-fluids" false \
-        "world-settings.${WORLD_NETHER_NAME}.ui.display-name" "The Nether" \
+        "world-settings.${WORLD_NETHER_NAME}.ui.display-name" 'The Nether' \
         "world-settings.${WORLD_NETHER_NAME}.zoom.max-out" 0
 
     if cmp -s "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"; then
@@ -554,10 +598,10 @@ if is_plugin_installed 'Pl3xmap'; then
         "settings.enabled" false \
         "settings.layer.default-hidden" true
 
-    configure_plugin "Pl3xmap" "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
-        "settings.layer.default-hidden" true \
-        "world-settings.default.map.zoom.max" 2 \
-        "world-settings.default.map.zoom.max-out" 1
+    configure_plugin 'Pl3xmap' "${PLEXMAP_CLAIMS_WORLDGUARD_CONFIG_FILE}" \
+        'settings.layer.default-hidden' true \
+        'world-settings.default.map.zoom.max' 2 \
+        'world-settings.default.map.zoom.max-out' 1
 fi
 
 configure_plugin 'ProAntiTab' config \
@@ -601,22 +645,22 @@ configure_plugin 'ToolStats' config \
     'enabled.spawned-in.sword' false
 
 configure_plugin 'TradeShop' config \
-    "language-options.shop-bad-colour" "${COLOUR_ERROR}" \
-    "language-options.shop-good-colour" "${COLOUR_SUCCESS}" \
-    "language-options.shop-incomplete-colour" "${COLOUR_ERROR}" \
-    "system-options.allow-metrics" false \
+    'language-options.shop-bad-colour' "${COLOUR_ERROR}" \
+    'language-options.shop-good-colour' "${COLOUR_SUCCESS}" \
+    'language-options.shop-incomplete-colour' "${COLOUR_ERROR}" \
+    'system-options.allow-metrics' false \
     'system-options.check-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
-    "system-options.unlimited-admin" true \
-    "global-options.allowed-shops" '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
-    "global-options.allow-sign-break" true \
-    "global-options.allow-chest-break" true
-#     "shop-sign-options.sign-default-colours.birch-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.cherry-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.crimson-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.oak-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.mangrove-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.spruce-sign" "${COLOUR_WHITE}" \
-#     "shop-sign-options.sign-default-colours.warped-sign" "${COLOUR_WHITE}"
+    'system-options.unlimited-admin' true \
+    'global-options.allowed-shops' '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
+    'global-options.allow-sign-break' true \
+    'global-options.allow-chest-break' true
+    'shop-sign-options.sign-default-colours.birch-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.cherry-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.crimson-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.oak-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.mangrove-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.spruce-sign' "${COLOUR_WHITE}" \
+    'shop-sign-options.sign-default-colours.warped-sign' "${COLOUR_WHITE}"
 
 if is_plugin_installed 'TreeAssist'; then
     # Integrations
@@ -653,15 +697,15 @@ configure_plugin 'ViaVersion' config \
     
 configure_plugin 'ViewDistanceTweaks' config \
     'enabled' true \
-    "proactive-mode-settings.global-ticking-chunk-count-target" "${SIMULATION_CHUNKS_TARGET}" \
-    "proactive-mode-settings.global-non-ticking-chunk-count-taget" "${VIEW_CHUNKS_TARGET}" \
-    "world-settings.default.simulation-distance.exclude" true \
-    "world-settings.default.simulation-distance.maximum-simulation-distance" "${SIMULATION_DISTANCE_MAX}" \
-    "world-settings.default.simulation-distance.minimum-simulation-distance" "${SIMULATION_DISTANCE_MIN}" \
-    "world-settings.default.view-distance.exclude" false \
-    "world-settings.default.view-distance.maximum-view-distance" "${VIEW_DISTANCE_MAX}" \
-    "world-settings.default.view-distance.minimum-view-distance" "${VIEW_DISTANCE_MIN}" \
-    "world-settings.default.chunk-weight" "1" \
+    'proactive-mode-settings.global-ticking-chunk-count-target' "${SIMULATION_CHUNKS_TARGET}" \
+    'proactive-mode-settings.global-non-ticking-chunk-count-taget' "${VIEW_CHUNKS_TARGET}" \
+    'world-settings.default.simulation-distance.exclude' true \
+    'world-settings.default.simulation-distance.maximum-simulation-distance' "${SIMULATION_DISTANCE_MAX}" \
+    'world-settings.default.simulation-distance.minimum-simulation-distance' "${SIMULATION_DISTANCE_MIN}" \
+    'world-settings.default.view-distance.exclude' false \
+    'world-settings.default.view-distance.maximum-view-distance' "${VIEW_DISTANCE_MAX}" \
+    'world-settings.default.view-distance.minimum-view-distance' "${VIEW_DISTANCE_MIN}" \
+    'world-settings.default.chunk-weight' 1 \
     "world-settings.${WORLD_END_NAME}.simulation-distance.exclude" true \
     "world-settings.${WORLD_END_NAME}.view-distance.exclude" false \
     "world-settings.${WORLD_END_NAME}.view-distance.maximum-view-distance" "${VIEW_DISTANCE_END_MAX}" \
@@ -699,7 +743,7 @@ configure_plugin 'WorldGuard' config \
     'use-player-teleports' false
 
 # Entity save limits
-for ENTITY_TYPE in 'arrow' 'ender_pearl' 'experience_orb' 'fireball' 'small_fireball' 'snowball'; do
+for ENTITY_TYPE in 'arrow' 'breeze_wind_charge' 'ender_pearl' 'experience_orb' 'fireball' 'small_fireball' 'snowball' 'wind_charge'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "chunks.entity-per-chunk-save-limit.${ENTITY_TYPE}" 8
 done
 
@@ -713,14 +757,31 @@ for CREATURE_TYPE in 'axolotls' 'creature' 'misc' 'monster'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_HARD}"
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.soft"    "${MOB_DESPAWN_RANGE_SOFT}"
 done
-for CREATURE_TYPE in "ambient" "underground_water_creature" "water_ambient" "water_creature"; do
+for CREATURE_TYPE in 'ambient' 'underground_water_creature' 'water_ambient' 'water_creature'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.hard"    "${MOB_DESPAWN_RANGE_CLOSE_HARD}"
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.despawn-ranges.${CREATURE_TYPE}.soft"    "${MOB_DESPAWN_RANGE_SOFT}"
 done
 
 # Item despawn rates
-for MATERIAL in 'diamond' 'netherite'; do
-    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
+for ITEM in 'axe' 'hoe' 'pickaxe' 'shovel' 'sword'; do
+    for MATERIAL in 'wooden' 'stone'; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
+    done
+    for MATERIAL in 'golden' 'iron'; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_FAST_TICKS}"
+    done
+    for MATERIAL in 'diamond' 'netherite'; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
+    done
+done
+for ITEM in 'boots' 'chestplate' 'helmet' 'leggings'; do
+    for MATERIAL in 'leather' 'chainmail'; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
+    done
+    for MATERIAL in 'golden' 'iron'; do
+        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_FAST_TICKS}"
+    done
+    for MATERIAL in 'diamond' 'netherite'; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
@@ -738,18 +799,21 @@ for NETHER_MATERIAL in 'quartz' 'gold'; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
-for OVERWORLD_MATERIAL_WITH_INGOT in "copper" "iron" "gold"; do
+for OVERWORLD_MATERIAL_WITH_INGOT in 'copper' 'iron' 'gold'; do
     for ITEM in "raw_${OVERWORLD_MATERIAL_WITH_INGOT}" "raw_${OVERWORLD_MATERIAL_WITH_INGOT}_block" "${OVERWORLD_MATERIAL_WITH_INGOT}_ingot"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
 for ITEM in \
-    "coal" "redstone" "diamond" "emerald" \
-    "ancient_debris" "netherite_block" "netherite_ingot" "netherite_scrap" \
-    "beacon" "elytra" "nether_star" "shield" "spawner" "totem_of_undying" "wither_skeleton_skull"; do
+    'coal' 'redstone' 'diamond' 'emerald' \
+    'ancient_debris' 'netherite_block' 'netherite_ingot' 'netherite_scrap' \
+    'beacon' 'elytra' 'nether_star' 'player_head' 'shield' 'spawner' 'totem_of_undying' 'wither_skeleton_skull'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
 done
-for ITEM in "bamboo" "cactus" "kelp" "melon_slice" "pumpkin"; do
+#for ENTITY_TYPE in 'panda' 'pig' 'piglin' 'pillager' 'sheep' 'skeleton' 'villager' 'zombie'; do
+#    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
+#done
+for ITEM in 'bamboo' 'cactus' 'kelp' 'melon_slice' 'pumpkin' 'sugar_cane'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_MEDIUM_TICKS}"
 done
 for ITEM in \
@@ -757,19 +821,7 @@ for ITEM in \
     "ender_pearl" "netherrack"; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_FAST_TICKS}"
 done
-for MATERIAL in "golden" "iron"; do
-    for ITEM in "axe" "boots" "chestplate" "helmet" "hoe" "leggings" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_FAST_TICKS}"
-    done
-done
-for ITEM in "arrow" "bone" "rotten_flesh" "spider_eye" "string" "wheat_seeds"; do
+
+for ITEM in 'arrow' 'bone' 'rotten_flesh' 'spider_eye' 'string' 'wheat_seeds'; do
     set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}"   "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
-done
-for ITEM in "boots" "chestplate" "helmet" "leggings"; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.leather_${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
-done
-for MATERIAL in "wooden" "stone"; do
-    for ITEM in "axe" "hoe" "pickaxe" "shovel" "sword"; do
-        set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}_${ITEM}" "${DESPAWN_RATE_ITEMS_INSTANT_TICKS}"
-    done
 done

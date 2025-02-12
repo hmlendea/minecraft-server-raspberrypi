@@ -62,7 +62,9 @@ if [ "${LOCALE}" = 'ro' ]; then
 
     set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' "${SERVER_NAME} s-a oprit"
     set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'Te-ai reconectat prea repede. Te rugăm să aștepți puțin.'
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount Acest mob nu se poate călări)"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'settings.messages.cannot-ride-mob' "$(get_formatted_message error mount Acest mob nu se poate călări)"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.silk-touch.spawner-name' "${COLOUR_RESET_MINIMESSAGE}${COLOUR_PURPLE_MINIMESSAGE}Generator de Monștri"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.silk-touch.spawner-lore' "${COLOUR_ITEMLORE_MINIMESSAGE}Generează un ${COLOUR_HIGHLIGHT_MINIMESSAGE}<mob> ${COLOUR_ITEMLORE_MINIMESSAGE}lobotomizat"
 else
     WEBMAP_PAGE_TITLE="${SERVER_NAME} Map"
     INVALID_ACTION_MESSAGE="$(get_formatted_message error command This can\'t be done)"
@@ -73,7 +75,9 @@ else
 
     set_config_value "${BUKKIT_CONFIG_FILE}" 'settings.shutdown-message' "${SERVER_NAME} shut down"
     set_config_value "${PAPER_GLOBAL_CONFIG_FILE}" 'messages.connection-throttled' 'You reconnected too quickly. Please wait a moment.'
-    set_config_value "${PURPUR_CONFIG_FILE}" "settings.messages.cannot-ride-mob" "$(get_formatted_message error mount This mob can\'t be mounted)"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'settings.messages.cannot-ride-mob' "$(get_formatted_message error mount This mob can\'t be mounted)"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.silk-touch.spawner-name' "${COLOUR_RESET_MINIMESSAGE}${COLOUR_PURPLE_MINIMESSAGE}Monster Spawner"
+    set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.silk-touch.spawner-lore' "${COLOUR_ITEMLORE_MINIMESSAGE}Spawns a lobotomised ${COLOUR_HIGHLIGHT_MINIMESSAGE}<mob>"
 fi
 KICK_MESSAGE="${DISCONNECTED_MESSAGE}"
 KICK_MESSAGE_MINIMESSAGE="$(convert_message_to_minimessage ${KICK_MESSAGE})"
