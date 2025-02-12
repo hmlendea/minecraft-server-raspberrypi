@@ -99,10 +99,10 @@ settings:
     barrel:
       rows: 6
     ender_chest:
-      six-rows: false
+      six-rows: true
       use-permissions-for-rows: false
     crying_obsidian:
-      valid-for-portal-frame: false
+      valid-for-portal-frame: true
     beehive:
       max-bees-inside: 3
     anvil:
@@ -127,10 +127,6 @@ settings:
       reverse-bubble-column-flow: false
     soul-sand:
       reverse-bubble-column-flow: false
-    crying-obsidian:
-      valid-for-portal-frame: true
-    ender-chest:
-      six-rows: true
   enchantment:
     anvil:
       allow-inapplicable-enchants: false

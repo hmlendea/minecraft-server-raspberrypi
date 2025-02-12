@@ -132,8 +132,8 @@ set_config_values "${PUFFERFISH_CONFIG_FILE}" \
 set_config_values "${PURPUR_CONFIG_FILE}" \
     'settings.blocks.anvil.cumulative-cost'                                                         false \
     'settings.blocks.barrel.rows'                                                                   6 \
-    'settings.blocks.crying-obsidian.valid-for-portal-frame'                                        true \
-    'settings.blocks.ender-chest.six-rows'                                                          true \
+    'settings.blocks.crying_obsidian.valid-for-portal-frame'                                        true \
+    'settings.blocks.ender_chest.six-rows'                                                          true \
     'settings.enchntment.allow-unsafe-enchant-command'                                              true \
     'settings.logger.suppress-init-legacy-material-errors'                                          true \
     'settings.logger.suppress-ignored-advancement-warnings'                                         true \
@@ -313,6 +313,7 @@ fi
 configure_plugin 'ChestSort' config \
     'allow-gui' false \
     'check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'prevent-sorting-null-inventories' true \
     'sorting-enabled-by-default' true \
     'inv-sorting-enabled-by-default' true \
     'show-message-when-using-chest' true \
