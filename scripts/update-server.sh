@@ -24,16 +24,21 @@ if ! papermc status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q 'Status: stopped'; 
 else
     update_server
 
-    update_datapack 'DungeonsAndTaverns'        'https://modrinth.com/datapack/dungeons-and-taverns'
-    update_datapack 'Explorify'                 'https://modrinth.com/datapack/explorify'
-    update_datapack 'Hearths'                   'https://modrinth.com/datapack/hearths'
-    update_datapack 'Nullscape'                 'https://modrinth.com/datapack/nullscape'
-    update_datapack 'PandaTemple'               'https://modrinth.com/datapack/panda-temple'
-    update_datapack 'qraftyfied'                'https://modrinth.com/datapack/qraftyfied'
-    update_datapack 'VanillaStructureUpdate'    'https://modrinth.com/datapack/vanilla-structure-update'
+    update_datapack 'BannerFlags'                       'https://modrinth.com/datapack/banner-flags'
+    update_datapack 'DungeonsAndTaverns'                'https://modrinth.com/datapack/dungeons-and-taverns'
+    update_datapack 'Explorify'                         'https://modrinth.com/datapack/explorify'
+    update_datapack 'Hearths'                           'https://modrinth.com/datapack/hearths'
+    update_datapack 'MoreMobs'                          'https://modrinth.com/datapack/more-mobs'
+    update_datapack 'Nullscape'                         'https://modrinth.com/datapack/nullscape'
+    update_datapack 'PandaTemple'                       'https://modrinth.com/datapack/panda-temple'
+    update_datapack 'qraftyfied'                        'https://modrinth.com/datapack/qraftyfied'
+    update_datapack 'qraftyfied-industrial-structures'  'https://modrinth.com/datapack/qraftyfied-industrial-structures'
+    update_datapack 'SpawnAnimations'                   'https://modrinth.com/datapack/spawn-animations'
+    update_datapack 'VanillaStructureUpdate'            'https://modrinth.com/datapack/vanilla-structure-update'
 
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
     update_plugin 'AnnouncerPlus'               'https://github.com/jpenilla/AnnouncerPlus'                 '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'AntiPopup'                   'https://github.com/KaspianDev/AntiPopup'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'AuthMe'                      'https://github.com/AuthMe/AuthMeReloaded'
     # TODO: BestTools
     update_plugin 'ChestShop-3'                 'https://ci.minebench.de'                                   'ChestShop.jar'
@@ -62,6 +67,7 @@ else
     update_plugin 'ImageMaps'                   'https://github.com/SydMontague/ImageMaps'                  '%pluginName%.jar'
     update_plugin 'InteractionVisualizer'       'https://ci.loohpjames.com'                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'InvSee++'                    'https://github.com/Jannyboy11/InvSee-plus-plus'            '%pluginName%.jar'
+# TODO: InvUnload
     update_plugin 'KauriVPN'                    'https://github.com/funkemunky/AntiVPN'                     '%pluginName%-%pluginVersion%.jar'
     update_plugin 'LuckPerms'                   'https://ci.lucko.me'                                       '%pluginName%-Bukkit-%pluginVersion%.jar'
     update_plugin 'MiniMOTD'                    "https://github.com/jpenilla/MiniMOTD"                      "minimotd-bukkit-%pluginVersion%.jar"
@@ -70,7 +76,7 @@ else
     update_plugin 'OldCombatMechanics'          'https://github.com/kernitus/BukkitOldCombatMechanics'      "%pluginName%.jar"
     update_plugin 'Orebfuscator'                'https://github.com/Imprex-Development/orebfuscator'        'orebfuscator-plugin-%pluginVersion%.jar'
 #    update_plugin 'PacketEvents'                'https://github.com/retrooper/packetevents'                 'packetevents-spigot-%pluginVersion%.jar'
-    update_plugin 'PaperTweaks'                 "https://github.com/MC-Machinations/VanillaTweaks"          "%pluginName%.jar"
+    update_plugin 'PaperTweaks'                 'https://github.com/MC-Machinations/PaperTweaks'            '%pluginName%.jar'
     update_plugin 'Pl3xMap'                     "https://modrinth.com/plugin/pl3xmap"                       "%pluginName%-%pluginVersion%.jar"
     update_plugin 'Pl3xMap-Claims'              "https://modrinth.com/plugin/pl3xmap-claims"                "%pluginName%-%pluginVersion%.jar"
 #    update_plugin 'PlaceholderAPI'              'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'

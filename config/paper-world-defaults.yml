@@ -18,24 +18,35 @@ anticheat:
     enabled: false
     engine-mode: 1
     hidden-blocks:
+    - copper_ore
+    - deepslate_copper_ore
+    - raw_copper_block
     - gold_ore
+    - deepslate_gold_ore
     - iron_ore
+    - deepslate_iron_ore
+    - raw_iron_block
     - coal_ore
+    - deepslate_coal_ore
     - lapis_ore
+    - deepslate_lapis_ore
     - mossy_cobblestone
     - obsidian
     - chest
     - diamond_ore
+    - deepslate_diamond_ore
     - redstone_ore
+    - deepslate_redstone_ore
     - clay
     - emerald_ore
+    - deepslate_emerald_ore
     - ender_chest
     lava-obscures: false
     max-block-height: 64
-    max-chunk-section-index: 3
     replacement-blocks:
     - stone
     - oak_planks
+    - deepslate
     update-radius: 2
     use-permission: false
   obfuscation:
@@ -47,24 +58,14 @@ chunks:
   auto-save-interval: default
   delay-chunk-unloads-by: 10s
   entity-per-chunk-save-limit:
-    area_effect_cloud: 8
     arrow: 8
-    dragon_fireball: 3
-    egg: 8
+    breeze_wind_charge: 8
     ender_pearl: 8
-    experience_bottle: 3
     experience_orb: 8
-    eye_of_ender: 8
     fireball: 8
-    firework_rocket: 8
-    llama_spit: 3
-    potion: 5
-    shulker_bullet: 8
     small_fireball: 8
     snowball: 8
-    spectral_arrow: 5
-    trident: 16
-    wither_skull: 4
+    wind_charge: 8
   fixed-chunk-inhabited-time: -1
   flush-regions-on-save: true
   max-auto-save-chunks-per-tick: 6
@@ -140,11 +141,10 @@ entities:
   spawning:
     all-chunks-are-slime-chunks: false
     alt-item-despawn-rate:
-      enabled: true
+      enabled: false
       items:
         acacia_leaves: 2400
         ancient_debris: 144000
-        andesite: 6000
         arrow: 600
         azalea_leaves: 2400
         bamboo: 12000
@@ -152,14 +152,16 @@ entities:
         birch_leaves: 2400
         bone: 600
         cactus: 12000
+        chainmail_boots: 600
+        chainmail_chestplate: 600
+        chainmail_helmet: 600
+        chainmail_leggings: 600
         cherry_leaves: 2400
         coal: 144000
         coal_block: 144000
         coal_ore: 144000
-        cobbled_deepslate: 1200
-        cobblestone: 1200
+        cobblestone: 300
         copper_block: 144000
-        copper_ingot: 144000
         copper_ore: 144000
         dark_oak_leaves: 2400
         deepslate_coal_ore: 144000
@@ -182,9 +184,6 @@ entities:
         diamond_pickaxe: 144000
         diamond_shovel: 144000
         diamond_sword: 144000
-        diorite: 6000
-        dirt: 6000
-        egg: 1200
         elytra: 144000
         emerald: 144000
         emerald_block: 144000
@@ -202,16 +201,12 @@ entities:
         golden_pickaxe: 2400
         golden_shovel: 2400
         golden_sword: 2400
-        granite: 6000
-        gravel: 6000
-        ink_sac: 600
         iron_axe: 2400
         iron_block: 144000
         iron_boots: 2400
         iron_chestplate: 2400
         iron_helmet: 2400
         iron_hoe: 2400
-        iron_ingot: 144000
         iron_leggings: 2400
         iron_ore: 144000
         iron_pickaxe: 2400
@@ -245,35 +240,26 @@ entities:
         netherite_sword: 144000
         netherrack: 2400
         oak_leaves: 2400
+        player_head: 144000
         pumpkin: 12000
         quartz: 144000
         quartz_block: 144000
-        raw_copper: 144000
-        raw_iron: 144000
-        red_sand: 6000
         redstone: 144000
         redstone_block: 144000
         redstone_ore: 144000
         rotten_flesh: 600
-        sand: 6000
-        scaffolding: 6000
         shield: 144000
         spawner: 144000
         spider_eye: 600
         spruce_leaves: 2400
-        stone: 1200
         stone_axe: 600
         stone_hoe: 600
         stone_pickaxe: 600
         stone_shovel: 600
         stone_sword: 600
         string: 600
-        sugar_cane: 6000
-        tall_grass: 6000
         totem_of_undying: 144000
-        twisting_vines: 6000
         warped_wart_block: 2400
-        weeping_vines: 6000
         wheat_seeds: 600
         wither_skeleton_skull: 144000
         wooden_axe: 600
@@ -282,7 +268,7 @@ entities:
         wooden_shovel: 600
         wooden_sword: 600
     count-all-mobs-for-spawning: false
-    creative-arrow-despawn-rate: '60'
+    creative-arrow-despawn-rate: default
     despawn-range-shape: ELLIPSOID
     despawn-ranges:
       ambient:
@@ -328,10 +314,10 @@ entities:
     - SleepingZ
     iron-golems-can-spawn-in-air: false
     monster-spawn-max-light-level: default
-    non-player-arrow-despawn-rate: '60'
+    non-player-arrow-despawn-rate: default
     per-player-mob-spawns: true
     scan-for-legacy-ender-dragon: true
-    skeleton-horse-thunder-spawn-chance: 0.01
+    skeleton-horse-thunder-spawn-chance: default
     slime-spawn-height:
       slime-chunk:
         maximum: 40.0
@@ -340,14 +326,10 @@ entities:
         minimum: 50.0
     spawn-limits:
       ambient: -1
-      animals: -1
       axolotls: -1
       creature: -1
       monster: -1
-      monsters: -1
       underground_water_creature: -1
-      water-ambient: -1
-      water-animals: -1
       water_ambient: -1
       water_creature: -1
     ticks-per-spawn:
@@ -363,7 +345,7 @@ entities:
       spawn-chance-max: 125
       spawn-chance-min: 25
       spawn-day-length: 27600
-      spawn-minute-length: 300
+      spawn-minute-length: 1200
     wateranimal-spawn-height:
       maximum: default
       minimum: default
@@ -378,7 +360,6 @@ entities:
 environment:
   disable-explosion-knockback: false
   disable-ice-and-snow: false
-  disable-teleportation-suffocation-check: false
   disable-thunder: false
   fire-tick-delay: 30
   frosted-ice:
@@ -393,15 +374,15 @@ environment:
   nether-ceiling-void-damage-height: disabled
   optimize-explosions: true
   portal-create-radius: 16
-  portal-search-radius: 16
-  portal-search-vanilla-dimension-scaling: false
+  portal-search-radius: 128
+  portal-search-vanilla-dimension-scaling: true
   treasure-maps:
     enabled: true
     find-already-discovered:
       loot-tables: 'true'
       villager-trade: true
-  void-damage-amount: 3.0
-  void-damage-min-build-height-offset: -150.0
+  void-damage-amount: 4.0
+  void-damage-min-build-height-offset: -64.0
   water-over-lava-flow-speed: 5
 feature-seeds:
   generate-random-seeds-for-all: false
@@ -412,9 +393,7 @@ fixes:
   disable-unloaded-chunk-enderpearl-exploit: true
   falling-block-height-nerf: disabled
   fix-items-merging-through-walls: false
-  fix-wither-targeting-bug: false
   prevent-tnt-from-moving-in-water: false
-  remove-corrupt-tile-entities: false
   split-overstacked-loot: true
   tnt-entity-height-nerf: disabled
 hopper:
@@ -446,13 +425,13 @@ misc:
   disable-sprint-interruption-on-attack: false
   legacy-ender-pearl-behavior: false
   light-queue-size: 20
-  max-leash-distance: 10.0
+  max-leash-distance: default
   redstone-implementation: ALTERNATE_CURRENT
   shield-blocking-delay: 5
   show-sign-click-command-failure-msgs-to-player: false
   update-pathfinding-on-block-update: false
 scoreboards:
-  allow-non-player-entities-on-scoreboards: false
+  allow-non-player-entities-on-scoreboards: true
   use-vanilla-world-scoreboard-name-coloring: false
 spawn:
   allow-using-signs-inside-spawn-protection: false
@@ -461,19 +440,14 @@ spawn:
 tick-rates:
   behavior:
     villager:
-      acquirepoi: 120
-      validatenearbypoi: 60
+      validatenearbypoi: -1
   container-update: 3
   dry-farmland: 1
   grass-spread: 6
   mob-spawner: 2
   sensor:
     villager:
-      nearestbedsensor: 80
-      nearestlivingentitysensor: 40
-      playersensor: 40
-      secondarypoisensor: 80
-      villagerbabiessensor: 40
+      secondarypoisensor: 40
   wet-farmland: 1
 unsupported-settings:
   disable-world-ticking-when-empty: false

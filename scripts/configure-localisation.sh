@@ -852,6 +852,7 @@ if is_plugin_installed 'ProAntiTab'; then
     configure_plugin 'ProAntiTab' config \
         'cancel-blocked-commands.enabled' true \
         'cancel-blocked-commands.message' "[\"${INVALID_COMMAND_MESSAGE}\"]" \
+        'cancel-blocked-commands.base-command-message' "[\"${INVALID_COMMAND_MESSAGE}\"]" \
         'custom-server-brand.enabled' true \
         'custom-server-brand.brands' "[\"$(get_coloured_message ${COLOUR_SERVER} ${SERVER_NAME})\"]" \
         'custom-unknown-command.enabled' true \

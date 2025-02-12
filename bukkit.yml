@@ -8,7 +8,7 @@ settings:
   connection-throttle: 4000
   query-plugins: false
   deprecated-verbose: default
-  shutdown-message: MineCraft Server s-a oprit
+  shutdown-message: NuciCraft s-a oprit
   minimum-api: none
 spawn-limits:
   monsters: 21

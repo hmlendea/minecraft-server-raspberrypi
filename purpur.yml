@@ -149,9 +149,9 @@ settings:
       short-height: false
   allow-water-placement-in-the-end: true
   logger:
-    suppress-init-legacy-material-errors: false
-    suppress-ignored-advancement-warnings: false
-    suppress-unrecognized-recipe-errors: false
+    suppress-init-legacy-material-errors: true
+    suppress-ignored-advancement-warnings: true
+    suppress-unrecognized-recipe-errors: true
     suppress-setblock-in-far-chunk-errors: false
     suppress-library-loader: false
   network:
@@ -197,7 +197,7 @@ settings:
       distance: 0.5
     minecraft:light_blue_bed:
       distance: 0.5
-config-version: 37
+config-version: 41
 world-settings:
   default:
     mobs:
@@ -418,6 +418,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
       bee:
+        can-instantly-start-drowning: true
         ridable: false
         ridable-in-water: false
         controllable: true
@@ -1746,6 +1747,7 @@ world-settings:
           fire: []
           lightning: []
         shears:
+          damage-if-sprinting-item-model: purpurmc:scissors
           defuse-tnt-chance: 0.0
           ignore-in-water: false
           ignore-in-lava: false
