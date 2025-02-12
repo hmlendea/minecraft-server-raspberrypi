@@ -16,8 +16,8 @@ function get_server_property() {
 }
 
 export MINECRAFT_VERSION="1.21.4"
-export ONLINE_MODE=$(get_server_property "online-mode" "false")
-export WORLD_NAME=$(get_server_property "level-name" "world")
+export ONLINE_MODE=$(get_server_property 'online-mode' "false")
+export WORLD_NAME=$(get_server_property 'level-name' "world")
 
 export WORLD_END_NAME="${WORLD_NAME}_the_end"
 export WORLD_NETHER_NAME="${WORLD_NAME}_nether"
