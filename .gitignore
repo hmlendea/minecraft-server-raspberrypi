@@ -19,6 +19,7 @@ version_history.json
 
 # Logs & History
 crash-reports/
+debug/
 history/
 logs
 *.log
@@ -46,9 +47,12 @@ backup.sh
 backup
 **/*.bak
 
+# Datapacks data
+disabled-datapacks
 # Plugins data
 plugins
 plugins-disabled
+disabled-plugins
 wepif.yml
 webmap/
 
