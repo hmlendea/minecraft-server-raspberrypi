@@ -139,6 +139,7 @@ unsupported-settings:
   allow-unsafe-end-portal-teleportation: false
   compression-format: ZLIB
   perform-username-validation: true
+  skip-tripwire-hook-placement-validation: false
   skip-vanilla-damage-tick-when-shield-blocked: true
 watchdog:
   early-warning-delay: 10000

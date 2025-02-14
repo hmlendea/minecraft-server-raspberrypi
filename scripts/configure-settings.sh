@@ -45,11 +45,17 @@ set_config_values "${SPIGOT_CONFIG_FILE}" \
     "world-settings.${WORLD_NETHER_NAME}.view-distance"                         "${VIEW_DISTANCE_NETHER}"
 
 set_config_values "${BUKKIT_CONFIG_FILE}" \
-    'chunk-gc.period-in-ticks'     300 \
-    'settings.connection-throttle' "${CONNECTION_THROTTLE}" \
-    'settings.query-plugins'       false \
-    'spawn-limits.monsters'        "${MOB_SPAWN_LIMIT_MONSTER}" \
-    'ticks-per.autosave'            24000
+    'chunk-gc.period-in-ticks'                  300 \
+    'settings.connection-throttle'              "${CONNECTION_THROTTLE}" \
+    'settings.query-plugins'                    false \
+    'spawn-limits.ambient'                      "${MOB_SPAWN_LIMIT_AMBIENT}" \
+    'spawn-limits.animals'                      "${MOB_SPAWN_LIMIT_ANIMALS}" \
+    'spawn-limits.axolotls'                     "${MOB_SPAWN_LIMIT_AXOLOTLS}" \
+    'spawn-limits.monsters'                     "${MOB_SPAWN_LIMIT_MONSTERS}" \
+    'spawn-limits.water-ambient'                "${MOB_SPAWN_LIMIT_WATER_AMBIENT}" \
+    'spawn-limits.water-animals'                "${MOB_SPAWN_LIMIT_WATER_ANIMALS}" \
+    'spawn-limits.water-underground-creatures'  "${MOB_SPAWN_LIMIT_WATER_UNDERGROUND_CREATURES}" \
+    'ticks-per.autosave'                        24000
 
 set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'block-updates.disable-chorus-plant-updates'                                    true \
@@ -70,7 +76,7 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'timings.server-name'                                                           "${SERVER_NAME}" \
     'timings.server-name-privacy'                                                   true \
     'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true
-exit
+
 # Note: Setting hopper.disable-move-event=false will break Hopper Minecarts
 set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'chunks.delay-chunk-unloads-by'                                     '10s' \
@@ -699,7 +705,11 @@ configure_plugin 'ViaVersion' config \
 configure_plugin 'ViewDistanceTweaks' config \
     'enabled' true \
     'proactive-mode-settings.global-ticking-chunk-count-target' "${SIMULATION_CHUNKS_TARGET}" \
-    'proactive-mode-settings.global-non-ticking-chunk-count-taget' "${VIEW_CHUNKS_TARGET}" \
+    'proactive-mode-settings.global-non-ticking-chunk-count-target' "${VIEW_CHUNKS_TARGET}" \
+    'reactive-mode-settings.increase-mspt-threshold' 40 \
+    'reactive-mode-settings.decrease-mspt-threshold' 45 \
+    'reactive-mode-settings.reactive-view-distance.target-view-distance-ratio' 0.6 \
+    'reactive-mode-settings.reactive-view-distance.use-reactive-view-distance' true \
     'world-settings.default.simulation-distance.exclude' true \
     'world-settings.default.simulation-distance.maximum-simulation-distance' "${SIMULATION_DISTANCE_MAX}" \
     'world-settings.default.simulation-distance.minimum-simulation-distance' "${SIMULATION_DISTANCE_MIN}" \
@@ -728,7 +738,7 @@ configure_plugin 'WanderingTrades' config \
 	'updateChecker' "${CHECK_PLUGINS_FOR_UPDATES}"
 
 configure_plugin 'FastAsyncWorldEdit' config \
-    'enabled-components.update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'enabled-components.notify-update-ingame' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'history.use-database' false \
     'max-memory-percent' 85 \
     'region-restrictions' true \

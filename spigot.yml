@@ -71,7 +71,7 @@ world-settings:
     merge-radius:
       item: 3.5
       exp: 5.0
-    mob-spawn-range: 4
+    mob-spawn-range: 5
     item-despawn-rate: 36000
     arrow-despawn-rate: 300
     trident-despawn-rate: 1000
