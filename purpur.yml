@@ -1482,7 +1482,7 @@ world-settings:
           scale: 1.0
           tempt_range: 10.0
         follow-emerald-blocks: false
-        can-be-leashed: false
+        can-be-leashed: true
         can-breed: true
         breeding-delay-ticks: 6000
         clerics-farm-warts: false
@@ -1523,7 +1523,7 @@ world-settings:
           scale: 1.0
           tempt_range: 10.0
         follow-emerald-blocks: false
-        can-be-leashed: false
+        can-be-leashed: true
         takes-damage-from-water: false
         allow-trading: true
         always-drop-exp: false

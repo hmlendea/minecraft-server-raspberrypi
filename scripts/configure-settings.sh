@@ -180,10 +180,12 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.mobs.dolphin.disable-treasure-searching'                                true \
     'world-settings.default.mobs.piglin.bypass-mob-griefing'                                        true \
     'world-settings.default.mobs.villager.bypass-mob-griefing'                                      true \
+    'world-settings.default.mobs.villager.can-be-leashed'                                           true \
     'world-settings.default.mobs.villager.lobotomize.enabled'                                       false \
     'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                       true \
     'world-settings.default.mobs.villager.search-radius.acquire-poi'                                16 \
     'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                         16 \
+    'world-settings.default.mobs.wandering_trader.can-be-leashed'                                   true \
     'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                   false \
     'world-settings.default.tools.hoe.replant-crops'                                                true \
     'world-settings.default.tools.hoe.replant-nether-warts'                                         true
