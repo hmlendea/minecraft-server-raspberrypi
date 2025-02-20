@@ -10,6 +10,14 @@
 
 verbose: false
 settings:
+  server-mod-name: NuciCraft
+  use-alternate-keepalive: true
+  disable-give-dropping: false
+  bee-count-payload: false
+  tps-catchup: true
+  fix-projectile-looting-transfer: false
+  clamp-attributes: true
+  limit-armor: true
   messages:
     cannot-ride-mob: §r§c🐎 §r§7Acest mob nu se poate călări§r§7.
     afk-broadcast-away: <yellow><italic>%s is now AFK
@@ -32,15 +40,6 @@ settings:
     death-message:
       run-with-scissors: <player> slipped and fell on their shears
       stonecutter: <player> has sawed themself in half
-  register-minecraft-debug-commands: false
-  server-mod-name: NuciCraft
-  use-alternate-keepalive: true
-  disable-give-dropping: false
-  bee-count-payload: false
-  tps-catchup: true
-  fix-projectile-looting-transfer: false
-  clamp-attributes: true
-  limit-armor: true
   player-deaths-always-show-item: false
   startup-commands: []
   broadcasts:
@@ -152,8 +151,6 @@ settings:
   username-valid-characters: ^[a-zA-Z0-9_]*$
   blast-resistance-overrides: {}
   block-fall-multipliers:
-    minecraft:hay_block:
-      damage: 0.2
     minecraft:red_bed:
       distance: 0.5
     minecraft:pink_bed:
@@ -186,6 +183,9 @@ settings:
       distance: 0.5
     minecraft:white_bed:
       distance: 0.5
+    minecraft:hay_block:
+      damage: 0.2
+  register-minecraft-debug-commands: false
   enchntment:
     allow-unsafe-enchant-command: true
 config-version: 41
@@ -338,9 +338,6 @@ world-settings:
     tools:
       axe:
         strippables:
-          minecraft:pale_oak_wood:
-            into: minecraft:stripped_pale_oak_wood
-            drops: {}
           minecraft:mangrove_wood:
             into: minecraft:stripped_mangrove_wood
             drops: {}
@@ -407,16 +404,10 @@ world-settings:
           minecraft:acacia_log:
             into: minecraft:stripped_acacia_log
             drops: {}
+          minecraft:pale_oak_wood:
+            into: minecraft:stripped_pale_oak_wood
+            drops: {}
         waxables:
-          minecraft:waxed_exposed_cut_copper_slab:
-            into: minecraft:exposed_cut_copper_slab
-            drops: {}
-          minecraft:waxed_copper_block:
-            into: minecraft:copper_block
-            drops: {}
-          minecraft:waxed_oxidized_chiseled_copper:
-            into: minecraft:oxidized_chiseled_copper
-            drops: {}
           minecraft:waxed_oxidized_copper_door:
             into: minecraft:oxidized_copper_door
             drops: {}
@@ -516,10 +507,16 @@ world-settings:
           minecraft:waxed_oxidized_copper_trapdoor:
             into: minecraft:oxidized_copper_trapdoor
             drops: {}
-        weatherables:
-          minecraft:oxidized_copper:
-            into: minecraft:weathered_copper
+          minecraft:waxed_exposed_cut_copper_slab:
+            into: minecraft:exposed_cut_copper_slab
             drops: {}
+          minecraft:waxed_copper_block:
+            into: minecraft:copper_block
+            drops: {}
+          minecraft:waxed_oxidized_chiseled_copper:
+            into: minecraft:oxidized_chiseled_copper
+            drops: {}
+        weatherables:
           minecraft:exposed_chiseled_copper:
             into: minecraft:chiseled_copper
             drops: {}
@@ -598,6 +595,9 @@ world-settings:
           minecraft:exposed_copper_door:
             into: minecraft:copper_door
             drops: {}
+          minecraft:oxidized_copper:
+            into: minecraft:weathered_copper
+            drops: {}
       hoe:
         tillables:
           minecraft:dirt:
@@ -642,6 +642,9 @@ world-settings:
             drops: {}
           minecraft:grass_block:
             into: minecraft:dirt_path
+            drops: {}
+          minecraft:dirt_path:
+            into: minecraft:dirt
             drops: {}
     ridable-settings:
       babies-are-ridable: true
@@ -1501,8 +1504,8 @@ world-settings:
           radius: 0
           limit: 0
         search-radius:
-          acquire-poi: 16
-          nearest-bed-sensor: 16
+          acquire-poi: 12
+          nearest-bed-sensor: 12
       vindicator:
         ridable: false
         ridable-in-water: true
@@ -1697,7 +1700,7 @@ world-settings:
         invulnerable-while-accepting-resource-pack: true
       armorstand:
         step-height: 0.0
-        set-name-visible-when-placing-with-custom-name: false
+        set-name-visible-when-placing-with-custom-name: true
         fix-nametags: false
         can-movement-tick: true
         can-move-in-water: true
@@ -1713,7 +1716,7 @@ world-settings:
       disable-drops-on-cramming-death: false
       milk-cures-bad-omen: true
       trident-loyalty-void-return-height: 0.0
-      entities-can-use-portals: true
+      entities-can-use-portals: false
       raid-cooldown-seconds: 0
       animal-breeding-cooldown-seconds: 0
       persistent-droppable-entity-display-names: true

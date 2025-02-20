@@ -33,6 +33,7 @@ set_config_values "${SPIGOT_CONFIG_FILE}" \
     'world-settings.default.entity-activation-range.ignore-spectators'          true \
     'world-settings.default.entity-activation-range.tick-inactive-villagers'    false \
     'world-settings.default.item-despawn-rate'                                  "${DESPAWN_RATE_ITEMS_DEFAULT_TICKS}" \
+    'world-settings.default.max-entity-collisions'                              4 \
     'world-settings.default.merge-radius.exp'                                   '5.0' \
     'world-settings.default.merge-radius.item'                                  '3.5' \
     'world-settings.default.mob-spawn-range'                                    "${MOB_SPAWN_RANGE}" \
@@ -63,7 +64,10 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'block-updates.disable-noteblock-updates'                                       true \
     'block-updates.disable-tripwire-updates'                                        false \
     'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  1 \
-    'chunk-loading-basic.player-max-chunk-generate-rate'                            5 \
+    'chunk-loading-basic.player-max-chunk-generate-rate'                            3 \
+    'chunk-loading-basic.player-max-chunk-load-rate'                                60 \
+    'chunk-loading-basic.player-max-chunk-send-rate'                                80 \
+    'console.has-all-permissions'                                                   true \
     'item-validation.book-size.page-max'                                            1024 \
     'misc.max-joins-per-tick'                                                       3 \
     'packet-limiter.overrides.ServerboundCommandSuggestionPacket.action'            'DROP' \
@@ -79,10 +83,11 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
 
 # Note: Setting hopper.disable-move-event=false will break Hopper Minecarts
 set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
-    'chunks.delay-chunk-unloads-by'                                     '10s' \
+    'chunks.delay-chunk-unloads-by'                                     '15s' \
     'chunks.flush-regions-on-save'                                      true \
     'chunks.max-auto-save-chunks-per-tick'                              6 \
     'chunks.prevent-moving-into-unloaded-chunks'                        true \
+    'collisions.allow-vehicle-collisions'                               false \
     'collisions.fix-climbing-bypassing-cramming-rule'                   true \
     'collisions.max-entity-collisions'                                  2 \
     'entities.armor-stands.do-collision-entity-lookups'                 false \
@@ -93,8 +98,8 @@ set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
     'entities.spawning.per-player-mob-spawns'                           true \
     'entities.spawning.wandering-trader.spawn-chance-max'               125 \
     'entities.spawning.wandering-trader.spawn-day-length'               "${DAY_LENGTH_TICKS}" \
-    'entities.spawning.entities.creative-arrow-despawn-rate'            40 \
-    'entities.spawning.entities.non-player-arrow-despawn-rate'          40 \
+    'entities.spawning.entities.creative-arrow-despawn-rate'            20 \
+    'entities.spawning.entities.non-player-arrow-despawn-rate'          20 \
     'environment.generate-flat-bedrock'                                 true \
     'environment.optimize-explosions'                                   true \
     'environment.treasure-maps.enabled'                                 true \
@@ -136,59 +141,62 @@ set_config_values "${PUFFERFISH_CONFIG_FILE}" \
     'projectile.max-loads-per-tick'    8
 
 set_config_values "${PURPUR_CONFIG_FILE}" \
-    'settings.blocks.anvil.cumulative-cost'                                                         false \
-    'settings.blocks.barrel.rows'                                                                   6 \
-    'settings.blocks.crying_obsidian.valid-for-portal-frame'                                        true \
-    'settings.blocks.ender_chest.six-rows'                                                          true \
-    'settings.enchntment.allow-unsafe-enchant-command'                                              true \
-    'settings.logger.suppress-init-legacy-material-errors'                                          true \
-    'settings.logger.suppress-ignored-advancement-warnings'                                         true \
-    'settings.logger.suppress-unrecognized-recipe-errors'                                           true \
-    'settings.network.max-joins-per-second'                                                         true \
-    'settings.server-mod-name'                                                                      "${SERVER_NAME}" \
-    'settings.use-alternate-keepalive'                                                              true \
-    'settings.username-valid-characters'                                                            "^[a-zA-Z0-9_]*$" \
-    'world-settings.default.blocks.beacon.effect-range.level-1'                                     40 \
-    'world-settings.default.blocks.beacon.effect-range.level-2'                                     60 \
-    'world-settings.default.blocks.beacon.effect-range.level-3'                                     80 \
-    'world-settings.default.blocks.beacon.effect-range.level-4'                                     100 \
-    'world-settings.default.blocks.campfire.lit-when-placed'                                        false \
-    'world-settings.default.blocks.chest.open-with-solid-block-on-top'                              true \
-    'world-settings.default.blocks.coral.die-outside-water'                                         false \
-    'world-settings.default.blocks.enchantment-table.lapis-persists'                                true \
-    'world-settings.default.blocks.farmland.gets-moist-from-below'                                  true \
-    'world-settings.default.blocks.respawn-anchor.explode'                                          false \
-    'world-settings.default.blocks.sponge.absorption.range'                                         8 \
-    'world-settings.default.blocks.stonecutter.damage'                                              1.0 \
-    'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                  true \
-    'world-settings.default.gameplay-mechanics.boat.do-fall-damage'                                 true \
-    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                        "${DAYTIME_LENGTH_TICKS}" \
-    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                      "${NIGHTTIME_LENGTH_TICKS}" \
-    'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                 true \
-    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'           true \
-    'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                       true \
-    'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                             true \
-    'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                true \
-    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                  true \
-    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-names-and-lore'        true \
-    'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                 100000 \
-    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'   true \
-    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'     15 \
-    'world-settings.default.gameplay-mechanics.player.totem-of-undying-works-in-inventory'          true \
-    'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                  true \
-    'world-settings.default.gameplay-mechanics.use-better-mending'                                  true \
-    'world-settings.default.mobs.dolphin.disable-treasure-searching'                                true \
-    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                        true \
-    'world-settings.default.mobs.villager.bypass-mob-griefing'                                      true \
-    'world-settings.default.mobs.villager.can-be-leashed'                                           true \
-    'world-settings.default.mobs.villager.lobotomize.enabled'                                       false \
-    'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                       true \
-    'world-settings.default.mobs.villager.search-radius.acquire-poi'                                16 \
-    'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                         16 \
-    'world-settings.default.mobs.wandering_trader.can-be-leashed'                                   true \
-    'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                   false \
-    'world-settings.default.tools.hoe.replant-crops'                                                true \
-    'world-settings.default.tools.hoe.replant-nether-warts'                                         true
+    'settings.blocks.anvil.cumulative-cost'                                                                 false \
+    'settings.blocks.barrel.rows'                                                                           6 \
+    'settings.blocks.crying_obsidian.valid-for-portal-frame'                                                true \
+    'settings.blocks.ender_chest.six-rows'                                                                  true \
+    'settings.enchntment.allow-unsafe-enchant-command'                                                      true \
+    'settings.logger.suppress-init-legacy-material-errors'                                                  true \
+    'settings.logger.suppress-ignored-advancement-warnings'                                                 true \
+    'settings.logger.suppress-unrecognized-recipe-errors'                                                   true \
+    'settings.network.max-joins-per-second'                                                                 true \
+    'settings.server-mod-name'                                                                              "${SERVER_NAME}" \
+    'settings.use-alternate-keepalive'                                                                      true \
+    'settings.username-valid-characters'                                                                    "^[a-zA-Z0-9_]*$" \
+    'world-settings.default.blocks.beacon.effect-range.level-1'                                             40 \
+    'world-settings.default.blocks.beacon.effect-range.level-2'                                             60 \
+    'world-settings.default.blocks.beacon.effect-range.level-3'                                             80 \
+    'world-settings.default.blocks.beacon.effect-range.level-4'                                             100 \
+    'world-settings.default.blocks.campfire.lit-when-placed'                                                false \
+    'world-settings.default.blocks.chest.open-with-solid-block-on-top'                                      true \
+    'world-settings.default.blocks.coral.die-outside-water'                                                 false \
+    'world-settings.default.blocks.enchantment-table.lapis-persists'                                        true \
+    'world-settings.default.blocks.farmland.gets-moist-from-below'                                          true \
+    'world-settings.default.blocks.respawn-anchor.explode'                                                  false \
+    'world-settings.default.blocks.sponge.absorption.range'                                                 8 \
+    'world-settings.default.blocks.stonecutter.damage'                                                      1.0 \
+    'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                          true \
+    'world-settings.default.gameplay-mechanics.armorstand.set-name-visible-when-placing-with-custom-name'   true \
+    'world-settings.default.gameplay-mechanics.boat.do-fall-damage'                                         true \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.daytime'                                "${DAYTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                              "${NIGHTTIME_LENGTH_TICKS}" \
+    'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                         true \
+    'world-settings.default.gameplay-mechanics.entities-can-use-portals'                                    false \
+    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'                   true \
+    'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                               true \
+    'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                                     true \
+    'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                        true \
+    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                          true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                          true \
+    'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                                  true \
+    'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                         100000 \
+    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'           true \
+    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'             15 \
+    'world-settings.default.gameplay-mechanics.player.totem-of-undying-works-in-inventory'                  true \
+    'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                          true \
+    'world-settings.default.gameplay-mechanics.use-better-mending'                                          true \
+    'world-settings.default.mobs.dolphin.disable-treasure-searching'                                        true \
+    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                                true \
+    'world-settings.default.mobs.villager.bypass-mob-griefing'                                              true \
+    'world-settings.default.mobs.villager.can-be-leashed'                                                   true \
+    'world-settings.default.mobs.villager.lobotomize.enabled'                                               false \
+    'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                               true \
+    'world-settings.default.mobs.villager.search-radius.acquire-poi'                                        12 \
+    'world-settings.default.mobs.villager.search-radius.nearest-bed-sensor'                                 12 \
+    'world-settings.default.mobs.wandering_trader.can-be-leashed'                                           true \
+    'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                           false \
+    'world-settings.default.tools.hoe.replant-crops'                                                        true \
+    'world-settings.default.tools.hoe.replant-nether-warts'                                                 true
 
 for MOB in 'cow' 'goat' 'iron_golem' 'llama' 'mooshroom' 'panda' 'polar_bear' 'ravager' 'sheep' 'trader_llama' 'turtle' 'wolf'; do
     set_config_values "${PURPUR_CONFIG_FILE}" "world-settings.default.mobs.${MOB}.rideable" true

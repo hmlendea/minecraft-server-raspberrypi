@@ -173,14 +173,14 @@ function get_reloading_message() {
     fi
 }
 
-function get_reload_message_minimessage() {
+function get_reload_minimessage() {
     local PLUGIN_NAME="${1}"
     local PLUGIN_VERSION="${2}"
 
     echo $(convert_message_to_minimessage $(get_reload_message "${PLUGIN_NAME}" "${PLUGIN_VERSION}"))
 }
 
-function get_reloading_message_minimessage() {
+function get_reloading_minimessage() {
     local PLUGIN_NAME="${1}"
 
     echo $(convert_message_to_minimessage $(get_reloading_message "${PLUGIN_NAME}"))

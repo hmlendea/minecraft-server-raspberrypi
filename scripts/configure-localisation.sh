@@ -95,11 +95,11 @@ set_config_value "${PAPER_GLOBAL_CONFIG_FILE}"  'messages.no-permission'    "${I
 if is_plugin_installed 'PurpurExtras'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'PurpurExtras' config \
-            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Poți sparge cuferele cu comori doar dacă stai $(get_highlighted_message aplecat))"
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Poți sparge cuferele cu comori doar dacă stai $(get_highlighted_message aplecat))" \
             'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block Poți sparge spawnerele doar dacă stai $(get_highlighted_message aplecat))"
     else
         configure_plugin 'PurpurExtras' config \
-            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block You can only break loot chests while $(get_highlighted_message sneaking))"
+            'settings.protect-blocks-with-loot.message' "$(get_formatted_message_minimessage error break_block You can only break loot chests while $(get_highlighted_message sneaking))" \
             'settings.protect-spawners.message' "$(get_formatted_message_minimessage error break_block You can only break spawners while $(get_highlighted_message sneaking))"
     fi
 fi
@@ -364,12 +364,14 @@ if is_plugin_installed 'DiscordSRV'; then
 fi
 
 if is_plugin_installed 'DynamicLights'; then
+    configure_plugin 'DynamicLights' messages \
+        'language.reload'                "$(get_reload_minimessage DynamicLights)"
+
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'DynamicLights' messages \
             'language.disable-lock'          "$(get_formatted_message_minimessage success light Plasarea luminilor din mâna stângă a fost $(get_enablement_message activată))" \
             'language.enable-lock'           "$(get_formatted_message_minimessage success light Plasarea luminilor din mâna stângă a fost $(get_enablement_message dezactivată))" \
             'language.prevent-block-place'   "$(get_formatted_message_minimessage error light Plasarea luminilor din mâna stângă este $(get_enablement_message dezactivată))" \
-            'language.reload'                "$(get_reload_message_minimessage DynamicLights)" \
             'language.toggle-off'            "$(get_formatted_message_minimessage success light Randarea luminilor dinamice a fost $(get_enablement_message dezactivată))" \
             'language.toggle-on'             "$(get_formatted_message_minimessage success light Randarea luminilor dinamice a fost $(get_enablement_message activată))"
     else
@@ -377,7 +379,6 @@ if is_plugin_installed 'DynamicLights'; then
             'language.disable-lock'          "$(get_formatted_message_minimessage success light Placing light sources from the off-hand has been $(get_enablement_message enabled))" \
             'language.enable-lock'           "$(get_formatted_message_minimessage success light Placing light sources from the off-hand has been $(get_enablement_message disabled))" \
             'language.prevent-block-place'   "$(get_formatted_message_minimessage error light Placing items from the off-hand is currently $(get_enablement_message disabled))" \
-            'language.reload'                "$(get_reload_message_minimessage DynamicLights)" \
             'language.toggle-off'            "$(get_formatted_message_minimessage success light The rendering of dynamic lights has been $(get_enablement_message disabled))" \
             'language.toggle-on'             "$(get_formatted_message_minimessage success light The rendering of dynamic lights has been $(get_enablement_message enabled))"
     fi
@@ -431,7 +432,7 @@ if is_plugin_installed 'EssentialsX'; then
             'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost aplicat)" \
             'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) nu este valid)" \
             'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost scos)" \
-            'essentialsReload'                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
             'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message zbor))" \
             'flyMode'                           "$(get_formatted_message_minimessage success movement Zborul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
@@ -560,7 +561,7 @@ if is_plugin_installed 'EssentialsX'; then
             'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been applied)" \
             'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment is not valid)" \
             'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been removed)" \
-            'essentialsReload'                  "$(get_reload_message_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+            'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
             'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
             'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message flight))" \
             'flyMode'                           "$(get_formatted_message_minimessage success movement Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
@@ -696,7 +697,7 @@ if is_plugin_installed 'GSit'; then
         'Plugin.plugin-disabled' "$(get_plugin_enablement_minimessage GSit disabled)" \
         'Plugin.plugin-enabled' "$(get_plugin_enablement_minimessage GSit enabled)" \
         'Plugin.plugin-linked' "$(get_plugin_linked_minimessage GSit WorldGuard)" \
-        'Plugin.plugin-reload' "$(get_reload_message_minimessage GSit)"
+        'Plugin.plugin-reload' "$(get_reload_minimessage GSit)"
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'GSit' "$(get_plugin_dir GSit)/lang/en_en.yml" \
@@ -757,7 +758,7 @@ fi
 if is_plugin_installed 'KeepInventoryCost'; then
     configure_plugin 'KeepInventoryCost' config \
         'message.prefix' "${COLOUR_RESET_MINIMESSAGE}" \
-        'message.reload' "$(get_reload_message_minimessage KeepInventoryCost)"
+        'message.reload' "$(get_reload_minimessage KeepInventoryCost)"
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'KeepInventoryCost' config \
@@ -816,7 +817,7 @@ fi
 
 if is_plugin_installed 'PaperTweaks'; then
     configure_plugin 'PaperTweaks' messages \
-        'commands.reload.all.reloaded.success' "$(get_reload_message PaperTweaks)"
+        'commands.reload.all.reloaded.success' "$(get_reload_minimessage PaperTweaks)"
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'PaperTweaks' messages \
@@ -875,7 +876,7 @@ if is_plugin_installed 'SkinsRestorer'; then
             "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin URL-ul sau formatul skin-ului este invalid. Asigură-te că se termină cu ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
             "skinsrestorer..ms_uploading_skin" "$(get_formatted_message_minimessage info skin Se încarcă skin-ul...)" \
-            "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
+            "skinsrestorer..success_admin_reload" "$(get_reload_minimessage SkinsRestorer)" \
             "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Skin-ul tău a fost schimbat)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin Skin-ul lui $(get_player_mention ${PLACEHOLDER_NAME_POINTY}) a fost schimbat)" \
@@ -889,7 +890,7 @@ if is_plugin_installed 'SkinsRestorer'; then
             "skinsrestorer..error_generic" "$(get_formatted_message_minimessage error skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..error_invalid_urlskin" "$(get_formatted_message_minimessage error skin The skin\'s URL or format is invalid. Make sure it ends with ${COLOUR_HIGHLIGHT}.png${COLOUR_MESSAGE})" \
             "skinsrestorer..ms_uploading_skin" "$(get_formatted_message_minimessage info skin Uploading the skin...)" \
-            "skinsrestorer..success_admin_reload" "$(get_reload_message_minimessage SkinsRestorer)" \
+            "skinsrestorer..success_admin_reload" "$(get_reload_minimessage SkinsRestorer)" \
             "skinsrestorer..success_generic" "$(get_formatted_message_minimessage success skin ${PLACEHOLDER_MESSAGE_POINTY})" \
             "skinsrestorer..success_skin_change" "$(get_formatted_message_minimessage success skin Your skin has been changed)" \
             "skinsrestorer..success_skin_change_other" "$(get_formatted_message_minimessage success skin $(get_player_mention ${PLACEHOLDER_NAME_POINTY})\'s skin has been changed)" \
@@ -901,8 +902,8 @@ fi
 
 configure_plugin 'Sonar' messages \
     'commands.no-permission' "${NO_PERMISSION_MINIMESSAGE}" \
-    'commands.reload.finish' "$(get_reload_message_minimessage Sonar)" \
-    'commands.reload.start' "$(get_reloading_message_minimessage Sonar)"
+    'commands.reload.finish' "$(get_reload_minimessage Sonar)" \
+    'commands.reload.start' "$(get_reloading_minimessage Sonar)"
 
 if is_plugin_installed 'SuperbVote'; then
     if [ "${LOCALE}" = 'ro' ]; then
@@ -1070,10 +1071,10 @@ if is_plugin_installed 'WanderingTrades'; then
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'WanderingTrades' "$(get_plugin_dir WanderingTrades)/lang/ro_RO.yml" \
-            'command.reload.message' "$(get_formatted_message_minimessage info plugin Se reîncarcă ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
+            'command.reload.message' "$(get_reloading_minimessage WanderingTrades)"
     else
         configure_plugin 'WanderingTrades' "$(get_plugin_dir WanderingTrades)/lang/en_US.yml" \
-            'command.reload.message' "$(get_formatted_message_minimessage info plugin Reloading ${COLOUR_PLUGIN}WanderingTrades${COLOUR_MESSAGE}...)"
+            'command.reload.message' "$(get_reloading_minimessage WanderingTrades)"
     fi
 fi
 
@@ -1083,7 +1084,7 @@ if is_plugin_installed 'FastAsyncWorldEdit'; then
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
             "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
             "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Au fost copiate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
-            'worldedit..command..time-elapsed'                      "$(get_formatted_message info worldedit Au trecut $(get_highlighted_message ${PLACEHOLDER_ARG0} secunde) modificând $(get_highlighted_message ${PLACEHOLDER_ARG1} blocuri), cu viteza de $(get_highlighted_message ${PLACEHOLDER_ARG2} blocuri/s))" \
+            'worldedit..command..time-elapsed'                      "$(get_formatted_message info worldedit Au trecut $(get_highlighted_message ${PLACEHOLDER_ARG0} secunde) modificând $(get_highlighted_message ${PLACEHOLDER_ARG1} blocuri), cu viteza de $(get_highlighted_message ${PLACEHOLDER_ARG2} bps))" \
             "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit Selecția a fost scurtată cu ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..count..counted"                             "$(get_formatted_message success worldedit Au fost numărate ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocuri)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit Nu s-a făcut nici o selecție)" \
@@ -1115,7 +1116,7 @@ if is_plugin_installed 'FastAsyncWorldEdit'; then
             "prefix"                                                "${COLOUR_MESSAGE}${PLACEHOLDER_ARG0}" \
             "fawe..error.no-perm"                                   "${INVALID_COMMAND_MESSAGE}" \
             "fawe..worldedit..copy..command..copy"                  "$(get_formatted_message success worldedit Copied ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
-            'worldedit..command..time-elapsed'                      "$(get_formatted_message info worldedit $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds) elapsed changing $(get_highlighted_message ${PLACEHOLDER_ARG1} blocks), at $(get_highlighted_message ${PLACEHOLDER_ARG2} blocks/s))" \
+            'worldedit..command..time-elapsed'                      "$(get_formatted_message info worldedit $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds) elapsed changing $(get_highlighted_message ${PLACEHOLDER_ARG1} blocks), at $(get_highlighted_message ${PLACEHOLDER_ARG2} bps))" \
             "worldedit..contract..contracted"                       "$(get_formatted_message success worldedit The selection was shrunk by ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..count..counted"                             "$(get_formatted_message success worldedit Counted ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} blocks)" \
             "worldedit..error..incomplete-region"                   "$(get_formatted_message error worldedit No selection has been made)" \

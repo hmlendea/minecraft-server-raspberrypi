@@ -51,7 +51,7 @@ anticheat:
     use-permission: false
 chunks:
   auto-save-interval: default
-  delay-chunk-unloads-by: 10s
+  delay-chunk-unloads-by: 15s
   entity-per-chunk-save-limit:
     arrow: 8
     breeze_wind_charge: 8
@@ -67,7 +67,7 @@ chunks:
   prevent-moving-into-unloaded-chunks: true
 collisions:
   allow-player-cramming-damage: false
-  allow-vehicle-collisions: true
+  allow-vehicle-collisions: false
   fix-climbing-bypassing-cramming-rule: true
   max-entity-collisions: 2
   only-players-collide: false
@@ -268,28 +268,28 @@ entities:
     despawn-range-shape: ELLIPSOID
     despawn-ranges:
       ambient:
-        hard: 60
+        hard: 48
         soft: 24
       axolotls:
-        hard: 80
+        hard: 64
         soft: 24
       creature:
-        hard: 80
+        hard: 64
         soft: 24
       misc:
-        hard: 80
+        hard: 64
         soft: 24
       monster:
-        hard: 80
+        hard: 64
         soft: 24
       underground_water_creature:
-        hard: 60
+        hard: 48
         soft: 24
       water_ambient:
-        hard: 60
+        hard: 48
         soft: 24
       water_creature:
-        hard: 60
+        hard: 48
         soft: 24
     despawn-time:
       llama_spit: disabled
@@ -299,8 +299,8 @@ entities:
       mode: SAFE_REGEN
       safe-regen-delete-range: 32
     entities:
-      creative-arrow-despawn-rate: 40
-      non-player-arrow-despawn-rate: 40
+      creative-arrow-despawn-rate: 20
+      non-player-arrow-despawn-rate: 20
     filter-bad-tile-entity-nbt-from-falling-blocks: true
     filtered-entity-tag-nbt-paths:
     - Pos

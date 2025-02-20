@@ -68,10 +68,11 @@ world-settings:
     below-zero-generation-in-existing-chunks: true
     view-distance: 8
     simulation-distance: 5
+    max-entity-collisions: 4
     merge-radius:
       item: 3.5
       exp: 5.0
-    mob-spawn-range: 5
+    mob-spawn-range: 4
     item-despawn-rate: 36000
     arrow-despawn-rate: 300
     trident-despawn-rate: 1000
