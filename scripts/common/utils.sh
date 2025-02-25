@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 
 function convert_ticks_to_seconds() {
     local TICKS="${1}"
@@ -28,7 +28,7 @@ function run_server_command() {
         return
     fi
     
-    papermc command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
+    ${SERVER_CONTROLLER} command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
     tput sgr0
 }
 
@@ -124,7 +124,7 @@ function copy_file_if_needed() {
     fi
 
     copy_file "${SOURCE_FILE}" "${TARGET_FILE}"
-    sudo chown papermc:papermc "${TARGET_FILE}"
+    sudo chown minecraft:minecraft "${TARGET_FILE}"
 }
 
 function create_file() {

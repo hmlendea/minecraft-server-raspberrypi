@@ -1,6 +1,5 @@
 #!/bin/bash
-
-source "/srv/papermc/scripts/common/paths.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
@@ -18,7 +17,7 @@ function update_server() {
     download_file "${PURPUR_API_URL}/${MINECRAFT_VERSION}/${LATEST_PURPUR_BUILD_VERSION}/download" "purpur-${MINECRAFT_VERSION}-${LATEST_PURPUR_BUILD_VERSION}.jar"
 }
 
-if ! papermc status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q 'Status: stopped'; then
+if ! ${SERVER_CONTROLLER} status | sed -e 's/\x1b\[[0-9;]*m//g' | grep -q 'Status: stopped'; then
     echo 'ERROR: The server needs to be stopped to update the plugins!'
     exit 1
 else

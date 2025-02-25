@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/srv/papermc/scripts/common/paths.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"
@@ -25,7 +25,7 @@ function begin_transaction() {
 function commit_transaction() {
     sudo cp "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_TEMPORARY_FILE_NAME}" "${WORLDGUARD_DIR}/worlds/${WORLD_NAME}/${REGIONS_FILE_NAME}"
     sudo cp "${WORLDGUARD_WORLD_REGIONS_TEMPORARY_FILE}" "${WORLDGUARD_WORLD_REGIONS_FILE}"
-    sudo chown papermc:papermc "${WORLDGUARD_WORLD_REGIONS_FILE}"
+    sudo chown minecraft:minecraft "${WORLDGUARD_WORLD_REGIONS_FILE}"
 
     reload_plugin 'WorldGuard'
     reload_plugin 'RegionBossbar'

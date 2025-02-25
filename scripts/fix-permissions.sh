@@ -1,10 +1,10 @@
 #!/bin/bash
-source "/srv/papermc/scripts/common/paths.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 function setown() {
     for ITEM in "$@"; do
-        sudo chown papermc:papermc -R "${ITEM}"
+        sudo chown minecraft:minecraft -R "${ITEM}"
     done
 }
 

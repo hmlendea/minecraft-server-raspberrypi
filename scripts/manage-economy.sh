@@ -1,5 +1,5 @@
 #!/bin/bash
-source '/srv/papermc/scripts/common/paths.sh'
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 

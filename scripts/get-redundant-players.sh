@@ -1,5 +1,5 @@
 #!/bin/bash
-source "/srv/papermc/scripts/common/paths.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/players.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
@@ -24,7 +24,7 @@ sudo echo 'SU prigileges granted!'
 PLAYERS_COUNT=0
 for PLAYER_UUID in $(get_players_uuids); do
     PLAYERS_COUNT=$((PLAYERS_COUNT + 1))
-#for PLAYER_UUID in /srv/papermc/plugins/Essentials/userdata/*; do
+#for PLAYER_UUID in ${SERVER_PLUGINS_DIR}/Essentials/userdata/*; do
 #    PLAYER_UUID=$(basename "${PLAYER_UUID}" | cut -f 1 -d '.')
 
     PLAYER_WEALTH=$(get_player_wealth "${PLAYER_UUID}")
@@ -50,6 +50,6 @@ for PLAYER_UUID in $(get_players_uuids); do
 
     PLAYERS_COUNT=$((PLAYERS_COUNT + 1))
     echo -n "(${PLAYERS_COUNT}) " && get_player_info "${PLAYER_UUID}"
-#    sudo rm "/srv/papermc/plugins/Essentials/userdata/${PLAYER_UUID}.yml"
+#    sudo rm "${SERVER_PLUGINS_DIR}/Essentials/userdata/${PLAYER_UUID}.yml"
 #    run_server_command "authme unregister ${PLAYER_USERNAME}"
 done

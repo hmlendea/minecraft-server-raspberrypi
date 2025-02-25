@@ -1,13 +1,14 @@
 #!/bin/bash
-
 # Main directories
-export SERVER_ROOT_DIR="/srv/papermc"
+export SERVER_ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')"
 export SERVER_CACHE_DIR="${SERVER_ROOT_DIR}/cache"
 export SERVER_LOGS_DIR="${SERVER_ROOT_DIR}/logs"
 export SERVER_PLUGINS_DIR="${SERVER_ROOT_DIR}/plugins"
 export SERVER_PLUGINS_TEMP_DIR="${SERVER_ROOT_DIR}/plugins/.temp"
 export SERVER_SCRIPTS_DIR="${SERVER_ROOT_DIR}/scripts"
 export SERVER_SCRIPTS_COMMON_DIR="${SERVER_SCRIPTS_DIR}/common"
+
+export SERVER_CONTROLLER="${SERVER_ROOT_DIR}/server-control"
 
 # Server configs - Server
 export SERVER_OPS_FILE="${SERVER_ROOT_DIR}/ops.json"

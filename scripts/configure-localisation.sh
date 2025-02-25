@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2046,SC2086
-source "/srv/papermc/scripts/common/paths.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"

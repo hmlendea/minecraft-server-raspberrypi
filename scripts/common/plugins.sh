@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "/srv/papermc/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/github.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/modrinth.sh"
@@ -188,7 +188,7 @@ function download_plugin() {
         fi
 
         sudo mv "${PLUGIN_FILE_TEMP_PATH}" "${PLUGIN_FILE_PATH}"
-        sudo chown papermc:papermc "${PLUGIN_FILE_PATH}"
+        sudo chown minecraft:minecraft "${PLUGIN_FILE_PATH}"
         sudo chmod +x "${PLUGIN_FILE_PATH}"
     fi
 }

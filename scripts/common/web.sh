@@ -7,7 +7,7 @@ function download_file() {
     [ -f "${FILE_PATH}" ] && return
 
     sudo wget --quiet "${FILE_URL}" -O "${FILE_PATH}"
-    sudo chown papermc:papermc "${FILE_PATH}"
+    sudo chown minecraft:minecraft "${FILE_PATH}"
     #sudo chmod +x "${FILE_PATH}"
 
     if [ -f "${FILE_PATH}" ]; then
