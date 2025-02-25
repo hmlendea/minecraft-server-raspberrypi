@@ -163,6 +163,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.blocks.enchantment-table.lapis-persists'                                        true \
     'world-settings.default.blocks.farmland.gets-moist-from-below'                                          true \
     'world-settings.default.blocks.respawn-anchor.explode'                                                  false \
+    'world-settings.default.blocks.slab.break-individual-blocks-when-sneaking'                              true \
     'world-settings.default.blocks.sponge.absorption.range'                                                 8 \
     'world-settings.default.blocks.stonecutter.damage'                                                      1.0 \
     'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                          true \
@@ -299,6 +300,7 @@ fi
 
 configure_plugin 'BestTools' config \
     'besttools-enabled-by-default' true \
+    'check-for-updates' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'refill-enabled-by-default' true \
     'hotbar-only' false \
     'use-axe-as-sword' true
@@ -424,7 +426,7 @@ configure_plugin 'EssentialsX' config \
     "newbies.kit"                           'spawn' \
     "ops-name-color"                        'none' \
     'per-player-locale'                     false \
-    'per-warp-permissions'                  true \
+    'per-warp-permission'                   true \
     'remove-god-on-disconnect'              true \
     'show-zero-baltop'                      false \
     "teleport-cooldown"                     0 \
