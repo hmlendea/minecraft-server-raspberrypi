@@ -425,7 +425,7 @@ configure_plugin 'EssentialsX' config \
     "newbies.spawnpoint"                    'none' \
     "newbies.kit"                           'spawn' \
     "ops-name-color"                        'none' \
-    'per-player-locale'                     false \
+    'per-player-locale'                     true \
     'per-warp-permission'                   true \
     'remove-god-on-disconnect'              true \
     'show-zero-baltop'                      false \

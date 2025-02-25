@@ -412,261 +412,263 @@ if is_plugin_installed 'EssentialsX'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'EssentialsX' config \
             'newbies.announce-format'       "$(get_announcement_message Bun venit $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}pe ${COLOUR_HIGHLIGHT}${SERVER_NAME})"
-
-        create_file "${ESSENTIALS_DIR}/messages/messages_ro.properties"
-        configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
-            'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})" \
-            'addedToAccount'                    "$(get_formatted_message_minimessage info money Ți s-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în cont)" \
-            'addedToOthersAccount'              "$(get_formatted_message_minimessage info money S-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'backAfterDeath'                    "$(get_info_minimessage Te poți întoarce unde ai murit cu $(get_command_mention /back))" \
-            'backOther'                         "$(get_formatted_message_minimessage success teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
-            'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Te-ai întors la locația anterioară)" \
-            'balance'                           "$(get_formatted_message_minimessage info money Soldul contului tău bancar este de $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) are în cont $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'balanceTop'                        "$(get_formatted_message_minimessage info money Top cei mai bogați jucători: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
-            'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
-            'commandCooldown'                   "$(get_formatted_message_minimessage error command You must wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before running that command again)" \
-            'createdKit'                        "$(get_formatted_message_minimessage success kit Created kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) with $(get_highlighted_message ${PLACEHOLDER_ARG1} items) and a delay of $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
-            'deleteHome'                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
-            'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp-ul $(get_location_mention ${PLACEHOLDER_ARG0}) a fost șters)" \
-            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost aplicat)" \
-            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) nu este valid)" \
-            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost scos)" \
-            'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
-            'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
-            'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message zbor))" \
-            'flyMode'                           "$(get_formatted_message_minimessage success movement Zborul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'gameMode'                          "$(get_formatted_message_minimessage success gamemode $(get_player_mention ${PLACEHOLDER_ARG1}) joacă acum în modul $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_message dezactivat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_message activat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'godMode'                           "$(get_formatted_message_minimessage success gamemode Modul invincibil a fost $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) a fost vindecat)" \
-            'homes'                             "$(get_formatted_message_minimessage info home Case: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'homeSet'                           "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
-            'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory Inventarul și armurile lui $(get_player_mention ${PLACEHOLDER_ARG0}) au fost golite)" \
-            'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory Inventarul lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost golit)" \
-            'itemloreClear'                     "$(get_formatted_message_minimessage success name Descrierile obiectului din mână au fost șterse)" \
-            'itemloreNoLine'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are o descriere pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}))" \
-            'itemloreNoLore'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are nici o descriere)" \
-            'itemloreSuccess'                   "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" a fost adăugată obiectului din mână)" \
-            'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" a fost setată pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}) a obiectului din mână)" \
-            'itemnameClear'                     "$(get_formatted_message_minimessage success name Numele obiectului din mână a fost resetat)" \
-            'itemnameSuccess'                   "$(get_formatted_message_minimessage success name Obiectul din mână a fost redenumit în \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\")" \
-            'kitOnce'                           "$(get_formatted_message_minimessage error kit Nu mai poți obține acest kit din nou)" \
-            'kitReceive'                        "$(get_formatted_message_minimessage success kit Ai primit kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'kitReset'                          "$(get_formatted_message_minimessage success kit Timpul de așteptare al kit-ului $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost resetat)" \
-            'kitResetOther'                     "$(get_formatted_message_minimessage success kit Timpul de așteptare al kit-ului $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost resetat pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'listAmount'                        "$(get_formatted_message_minimessage info inspect Sunt $(get_highlighted_message ${PLACEHOLDER_ARG0}) jucători online)" \
-            'listAmountHidden'                  "$(get_formatted_message_minimessage info inspect Sunt $(get_highlighted_message ${PLACEHOLDER_ARG0}) jucători online)" \
-            'maxHomes'                          "$(get_formatted_message_minimessage error home Nu poți seta mai mult de $(get_highlighted_message ${PLACEHOLDER_ARG0} case))" \
-            'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
-            'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
-            'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
-            'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money Ai primit $(get_highlighted_message ${PLACEHOLDER_ARG0}) de la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'moneySentTo'                       "$(get_formatted_message_minimessage success money Ai trimis $(get_highlighted_message ${PLACEHOLDER_ARG0}) la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
-            'payOffline'                        "$(get_formatted_message_minimessage error money Nu poți trimite bani unui jucător offline)" \
-            'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare a fost anulată)" \
-            'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) nu a jucat niciodată pe $(get_highlighted_message ${SERVER_NAME}))" \
-            'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
-            'playtime'                          "$(get_formatted_message_minimessage info inspect Ai petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
-            'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) a petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
-            'readNextPage'                      "$(get_formatted_message_minimessage info info Poți citi următoarea pagină cu $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
-            'requestAccepted'                   "$(get_formatted_message_minimessage success player Cererea de teleportare a fost acceptată)" \
-            'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) a acceptat cererea de telportare)" \
-            'requestDenied'                     "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
-            'requestDeniedFrom'                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) a respins cererea de teleportare)" \
-            'requestSent'                       "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'requestSentAlready'                "$(get_formatted_message_minimessage error player Ai trimis deja o cerere de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'requestTimedOut'                   "$(get_formatted_message_minimessage error player Cererea de teleportare a expirat)" \
-            'requestTimedOutFrom'               "$(get_formatted_message_minimessage error player Cererea de teleportare de la $(get_player_mention ${PLACEHOLDER_ARG0}) a expirat)" \
-            'second'                            'secundă' \
-            'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Asociat cu: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'serverTotal'                       "$(get_formatted_message_minimessage info money În economia $(get_highlighted_message ${SERVER_NAME}) circulă $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'setBal'                            "$(get_formatted_message_minimessage success money Contul tău bancar a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'setBalOthers'                      "$(get_formatted_message_minimessage success money Contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command $(get_player_mention ${PLACEHOLDER_ARG0}) a fost forțat să execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
-            'takenFromAccount'                  "$(get_formatted_message_minimessage info money Ți s-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din cont)" \
-            'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money S-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
-            'teleportationDisabled'             "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message dezactivate))" \
-            'teleportBottom'                    "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cel mai de $(get_highlighted_message jos) loc al locației tale)" \
-            'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) are cererile de teleportare $(get_enablement_message dezactivate))" \
-            'teleportHereRequest'               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ți-a cerut să te teleportezi la locația sa)" \
-            'teleportHome'                      "$(get_formatted_message_minimessage success home Te-ai teleportat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'teleporting'                       "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
-            'teleportRequest'                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ți-a cerut să se teleporteze la locația ta)" \
-            'teleportRequestSpecificCancelled'  "$(get_formatted_message_minimessage info player Cererea de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}) a fost anulată)" \
-            'teleportRequestTimeoutInfo'        "$(get_formatted_message_minimessage info player Această cerere va expira după $(get_highlighted_message ${PLACEHOLDER_ARG0} secunde))" \
-            'teleportTop'                       "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cel mai de $(get_highlighted_message sus) loc al locației tale)" \
-            'teleportToPlayer'                  "$(get_formatted_message_minimessage success player Te-ai teleportat la $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'timeBeforeTeleport'                "$(get_formatted_message_minimessage error teleport Așteaptă $(get_highlighted_message ${PLACEHOLDER_ARG0}) înainte să te teleportezi din nou)" \
-            'timeWorldSet'                      "$(get_formatted_message_minimessage success time Timpul în $(get_highlighted_message ${PLACEHOLDER_ARG1}) este acum $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Te-ai teleportat la o locație aleatorie)" \
-            'true'                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}da${COLOUR_MESSAGE})" \
-            'typeTpacancel'                     "$(get_formatted_message_minimessage info player O poți anula cu $(get_command_mention /tpacancel))" \
-            'typeTpaccept'                      "$(get_formatted_message_minimessage info player O poți aproba cu $(get_command_mention /tpda))" \
-            'typeTpdeny'                        "$(get_formatted_message_minimessage info player O poți respinge cu $(get_command_mention /tpnu))" \
-            'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Casele nu pot fi setate în locații nesigure)" \
-            'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player Modul AFK a fost $(get_enablement_message activat))" \
-            'vanish'                            "$(get_formatted_message_minimessage success gamemode Modul invizibil $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message mers))" \
-            'warpingTo'                         "$(get_formatted_message_minimessage success warp Te-ai teleportat la $(get_location_mention ${PLACEHOLDER_ARG0}))" \
-            'warpsCount'                        "$(get_formatted_message_minimessage info warp Există $(get_highlighted_message ${PLACEHOLDER_ARG0}) warp-uri. Pagina $(get_highlighted_message ${PLACEHOLDER_ARG1})/$(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
-            'warpNotExist'                      "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
-            'warpSet'                           "$(get_formatted_message_minimessage success warp Warp-ul $(get_location_mention ${PLACEHOLDER_ARG0}) a fost setat la locația curentă)" \
-            'warpUsePermission'                 "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
-            'weatherStorm'                      "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) este de acum $(get_highlighted_message furtunoasă))" \
-            'weatherStormFor'                   "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) va fi $(get_highlighted_message furtunoasă) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1} secunde))" \
-            'weatherSun'                        "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) este de acum $(get_highlighted_message însorită))" \
-            'weatherSunFor'                     "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) va fi $(get_highlighted_message însorită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1} secunde))" \
-            'whoisTop'                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
-            'whoisExp'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experiență: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisFly'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Zbor: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisGamemode'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Mod de joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisGod'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibilitate: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisHealth'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viață: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisHunger'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Foame: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisJail'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Arestat: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisLocation'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Locație: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisMoney'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Bani: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisNick'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Nume: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisOp'                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisPlaytime'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Timp petrecut în joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisSpeed'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viteză: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identificator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     else
-        configure_plugin 'EssentialsX' "${ESSENTIALS_CONFIG_FILE}" \
+        configure_plugin 'EssentialsX' config \
             'newbies.announce-format'       "$(get_announcement_message Welcome $(get_player_mention ${PLACEHOLDER_DISPLAYNAME_BRACKETS}) ${COLOUR_ANNOUNCEMENT}to $(get_highlighted_message ${SERVER_NAME}))"
-
-        create_file "${ESSENTIALS_DIR}/messages/messages_en.properties"
-        configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_en.properties" \
-            'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
-            'addedToAccount'                    "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to your bank account)" \
-            'addedToOthersAccount'              "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
-            'backAfterDeath'                    "$(get_info_minimessage Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
-            'backOther'                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
-            'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
-            'balance'                           "$(get_formatted_message_minimessage info money Your bank account\'s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
-            'balanceTop'                        "$(get_formatted_message_minimessage info money Top richest players: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
-            'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
-            'commandCooldown'                   "$(get_formatted_message_minimessage error command Trebuie să aștepți $(get_highlighted_message ${PLACEHOLDER_ARG0}) pentru a folosi comanda din nou)" \
-            'createdKit'                        "$(get_formatted_message_minimessage success kit A fost creat kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}) cu $(get_highlighted_message ${PLACEHOLDER_ARG1} obiecte) și timp de așteptare de $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
-            'deleteHome'                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
-            'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) has been deleted)" \
-            'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been applied)" \
-            'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment is not valid)" \
-            'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been removed)" \
-            'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
-            'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
-            'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message flight))" \
-            'flyMode'                           "$(get_formatted_message_minimessage success movement Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'gameMode'                          "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_status disabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_status enabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'godMode'                           "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) was healed)" \
-            'homes'                             "$(get_formatted_message_minimessage success home Homes: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'homeSet'                           "$(get_formatted_message_minimessage success home Home set at the current location)" \
-            'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory and armours have been cleared)" \
-            'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory has been cleared)" \
-            'itemloreClear'                     "$(get_formatted_message_minimessage success name The descriptions of the held item were removed)" \
-            'itemloreNoLine'                    "$(get_formatted_message_minimessage success name The held item has no description on $(get_highlighted_message line ${PLACEHOLDER_ARG0}))" \
-            'itemloreNoLore'                    "$(get_formatted_message_minimessage success name The held item has no descriptions)" \
-            'itemloreSuccess'                   "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" description was added to the held item)" \
-            'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" description was set on $(get_highlighted_message line ${PLACEHOLDER_ARG0}) of the held item)" \
-            'itemnameClear'                     "$(get_formatted_message_minimessage success name The name of the held item was reset)" \
-            'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'kitOnce'                           "$(get_formatted_message_minimessage error kit You can\'t get that kit anymore)" \
-            'kitReceive'                        "$(get_formatted_message_minimessage success kit You have received the $(get_highlighted_message ${PLACEHOLDER_ARG0}) kit)" \
-            'kitReset'                          "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset)" \
-            'kitResetOther'                     "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'listAmount'                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
-            'listAmountHidden'                  "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
-            'maxHomes'                          "$(get_formatted_message_minimessage error home You can\'t set more than $(get_highlighted_message ${PLACEHOLDER_ARG0} homes))" \
-            'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
-            'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
-            'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'moneySentTo'                       "$(get_formatted_message_minimessage success money You sent $(get_highlighted_message ${PLACEHOLDER_ARG0}) to $(get_player_mention ${PLACEHOLDER_ARG1}))" \
-            'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})\'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
-            'noPendingRequest'                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
-            'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
-            'payOffline'                        "$(get_formatted_message_minimessage error money You can\'t send money to offline players)" \
-            'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
-            'playerNotFound'                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
-            'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
-            'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
-            'readNextPage'                      "$(get_formatted_message_minimessage info info You can read the next page using $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
-            'requestAccepted'                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
-            'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
-            'requestDenied'                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
-            'requestDeniedFrom'                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) denied your teleportation request)" \
-            'requestSent'                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'requestSentAlready'                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'requestTimedOut'                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
-            'requestTimedOutFrom'               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
-            'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
-            'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
-            'serverTotal'                       "$(get_formatted_message_minimessage info money There are $(get_highlighted_message ${PLACEHOLDER_ARG0}) circulating in $(get_highlighted_message ${SERVER_NAME})\'s economy)" \
-            'setBal'                            "$(get_formatted_message_minimessage success money Your bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'setBalOthers'                      "$(get_formatted_message_minimessage success money $(get_player_mention ${PLACEHOLDER_ARG0})\'s bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
-            'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) to execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
-            'takenFromAccount'                  "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from your bank account)" \
-            'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
-            'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
-            'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
-            'teleportBottom'                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
-            'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_enablement_message disabled) their teleportation requests)" \
-            'teleportHereRequest'               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to teleport to them)" \
-            'teleporting'                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
-            'teleportRequestSpecificCancelled'  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) cancelled)" \
-            'teleportRequestTimeoutInfo'        "$(get_formatted_message_minimessage info player This request will time out after $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds))" \
-            'teleportHome'                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'teleportRequest'                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to let them teleport to you)" \
-            'teleportTop'                       "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message highest) empty space at your current location)" \
-            'teleportToPlayer'                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'timeBeforeTeleport'                "$(get_formatted_message_minimessage error teleport You need to wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before teleporting again)" \
-            'timeWorldSet'                      "$(get_formatted_message_minimessage success time The time in $(get_highlighted_message ${PLACEHOLDER_ARG1}) is now $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
-            'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
-            'true'                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}yes${COLOUR_MESSAGE})" \
-            'typeTpacancel'                     "$(get_formatted_message_minimessage info player To cancel it, use $(get_command_mention /tpacancel))" \
-            'typeTpaccept'                      "$(get_formatted_message_minimessage info player To approve it, use $(get_command_mention /tpyes))" \
-            'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
-            'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Homes cannot be set in unsafe locations)" \
-            'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player The AFK mode was $(get_enablement_message enabled))" \
-            'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
-            'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message walk))" \
-            'warpingTo'                         "$(get_formatted_message_minimessage success warp Teleported to $(get_location_mention ${PLACEHOLDER_ARG0}))" \
-            'warpNotExist'                      "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
-            'warpsCount'                        "$(get_formatted_message_minimessage info warp There are ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}warps. Page ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE}/${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2})" \
-            'warpSet'                           "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) set at the current location)" \
-            'warpUsePermission'                 "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
-            'weatherStorm'                      "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) is now $(get_highlighted_message stormy))" \
-            'weatherStormFor'                   "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) will be $(get_highlighted_message stormy) for $(get_highlighted_message ${PLACEHOLDER_ARG1} seconds))" \
-            'weatherSun'                        "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) is now $(get_highlighted_message sunny))" \
-            'weatherSunFor'                     "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) will be $(get_highlighted_message sunny) for $(get_highlighted_message ${PLACEHOLDER_ARG1} seconds))" \
-            'whoisTop'                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
-            'whoisExp'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experience: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisFly'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Flight: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisGamemode'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Gamemode: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisGod'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibility: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisHealth'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Health: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisHunger'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Hunger: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisJail'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Jailed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisLocation'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Location: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisMoney'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Money: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisNick'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Name: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisOp'                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisPlaytime'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Time spent in-game: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisSpeed'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Speed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
-            'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
     fi
+
+    for LOCALE in 'ro' 'en'; do
+        create_file "${ESSENTIALS_DIR}/messages/messages_${LOCALE}.properties"
+    done
+
+    configure_plugin 'EssentialsX' "${ESSENTIALS_DIR}/messages/messages_ro.properties" \
+        'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})" \
+        'addedToAccount'                    "$(get_formatted_message_minimessage info money Ți s-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în cont)" \
+        'addedToOthersAccount'              "$(get_formatted_message_minimessage info money S-au adăugat $(get_highlighted_message ${PLACEHOLDER_ARG0}) în contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'backAfterDeath'                    "$(get_info_minimessage Te poți întoarce unde ai murit cu $(get_command_mention /back))" \
+        'backOther'                         "$(get_formatted_message_minimessage success teleport $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}s-a întors la locația anterioară)" \
+        'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Te-ai întors la locația anterioară)" \
+        'balance'                           "$(get_formatted_message_minimessage info money Soldul contului tău bancar este de $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) are în cont $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'balanceTop'                        "$(get_formatted_message_minimessage info money Top cei mai bogați jucători: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
+        'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
+        'commandCooldown'                   "$(get_formatted_message_minimessage error command You must wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before running that command again)" \
+        'createdKit'                        "$(get_formatted_message_minimessage success kit Created kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) with $(get_highlighted_message ${PLACEHOLDER_ARG1} items) and a delay of $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
+        'deleteHome'                        "$(get_formatted_message_minimessage success home Casa ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}a fost ștearsă)" \
+        'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp-ul $(get_location_mention ${PLACEHOLDER_ARG0}) a fost șters)" \
+        'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost aplicat)" \
+        'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) nu este valid)" \
+        'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant Farmecul $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost scos)" \
+        'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+        'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}nu${COLOUR_MESSAGE})" \
+        'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message zbor))" \
+        'flyMode'                           "$(get_formatted_message_minimessage success movement Zborul ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'gameMode'                          "$(get_formatted_message_minimessage success gamemode $(get_player_mention ${PLACEHOLDER_ARG1}) joacă acum în modul $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_message dezactivat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_message activat) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'godMode'                           "$(get_formatted_message_minimessage success gamemode Modul invincibil a fost $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) a fost vindecat)" \
+        'homes'                             "$(get_formatted_message_minimessage info home Case: $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'homeSet'                           "$(get_formatted_message_minimessage success home Casa a fost setată la locația curentă)" \
+        'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory Inventarul și armurile lui $(get_player_mention ${PLACEHOLDER_ARG0}) au fost golite)" \
+        'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory Inventarul lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost golit)" \
+        'itemloreClear'                     "$(get_formatted_message_minimessage success name Descrierile obiectului din mână au fost șterse)" \
+        'itemloreNoLine'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are o descriere pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}))" \
+        'itemloreNoLore'                    "$(get_formatted_message_minimessage success name Obiectul din mână nu are nici o descriere)" \
+        'itemloreSuccess'                   "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" a fost adăugată obiectului din mână)" \
+        'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name Descrierea \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" a fost setată pe $(get_highlighted_message linia ${PLACEHOLDER_ARG0}) a obiectului din mână)" \
+        'itemnameClear'                     "$(get_formatted_message_minimessage success name Numele obiectului din mână a fost resetat)" \
+        'itemnameSuccess'                   "$(get_formatted_message_minimessage success name Obiectul din mână a fost redenumit în \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\")" \
+        'kitOnce'                           "$(get_formatted_message_minimessage error kit Nu mai poți obține acest kit din nou)" \
+        'kitReceive'                        "$(get_formatted_message_minimessage success kit Ai primit kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'kitReset'                          "$(get_formatted_message_minimessage success kit Timpul de așteptare al kit-ului $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost resetat)" \
+        'kitResetOther'                     "$(get_formatted_message_minimessage success kit Timpul de așteptare al kit-ului $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost resetat pentru $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'listAmount'                        "$(get_formatted_message_minimessage info inspect Sunt $(get_highlighted_message ${PLACEHOLDER_ARG0}) jucători online)" \
+        'listAmountHidden'                  "$(get_formatted_message_minimessage info inspect Sunt $(get_highlighted_message ${PLACEHOLDER_ARG0}) jucători online)" \
+        'maxHomes'                          "$(get_formatted_message_minimessage error home Nu poți seta mai mult de $(get_highlighted_message ${PLACEHOLDER_ARG0} case))" \
+        'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
+        'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}eu)" \
+        'moveSpeed'                         "$(get_formatted_message_minimessage success movement Viteza de $(get_highlighted_message ${PLACEHOLDER_ARG0}) a fost schimbată la $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG2}))" \
+        'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money Ai primit $(get_highlighted_message ${PLACEHOLDER_ARG0}) de la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'moneySentTo'                       "$(get_formatted_message_minimessage success money Ai trimis $(get_highlighted_message ${PLACEHOLDER_ARG0}) la $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
+        'noPendingRequest'                  "$(get_formatted_message_minimessage error player Nu ai nici o cerere în așteptare)" \
+        'payOffline'                        "$(get_formatted_message_minimessage error money Nu poți trimite bani unui jucător offline)" \
+        'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare a fost anulată)" \
+        'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) nu a jucat niciodată pe $(get_highlighted_message ${SERVER_NAME}))" \
+        'playerNotFound'                    "$(get_formatted_message_minimessage error other Jucătorul specificat nu este online)" \
+        'playtime'                          "$(get_formatted_message_minimessage info inspect Ai petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
+        'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) a petrecut $(get_highlighted_message ${PLACEHOLDER_ARG0}) pe $(get_highlighted_message ${SERVER_NAME}))" \
+        'readNextPage'                      "$(get_formatted_message_minimessage info info Poți citi următoarea pagină cu $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
+        'requestAccepted'                   "$(get_formatted_message_minimessage success player Cererea de teleportare a fost acceptată)" \
+        'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) a acceptat cererea de telportare)" \
+        'requestDenied'                     "$(get_formatted_message_minimessage error player Cererea de teleportare a fost respinsă)" \
+        'requestDeniedFrom'                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) a respins cererea de teleportare)" \
+        'requestSent'                       "$(get_formatted_message_minimessage info player Cererea de teleportare a fost trimisă către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'requestSentAlready'                "$(get_formatted_message_minimessage error player Ai trimis deja o cerere de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'requestTimedOut'                   "$(get_formatted_message_minimessage error player Cererea de teleportare a expirat)" \
+        'requestTimedOutFrom'               "$(get_formatted_message_minimessage error player Cererea de teleportare de la $(get_player_mention ${PLACEHOLDER_ARG0}) a expirat)" \
+        'second'                            'secundă' \
+        'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Asociat cu: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) este ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}de $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'serverTotal'                       "$(get_formatted_message_minimessage info money În economia $(get_highlighted_message ${SERVER_NAME}) circulă $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'setBal'                            "$(get_formatted_message_minimessage success money Contul tău bancar a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'setBalOthers'                      "$(get_formatted_message_minimessage success money Contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG0}) a fost setat la $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'sudoRun'                           "$(get_formatted_message_minimessage info command $(get_player_mention ${PLACEHOLDER_ARG0}) a fost forțat să execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
+        'takenFromAccount'                  "$(get_formatted_message_minimessage info money Ți s-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din cont)" \
+        'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money S-au retras $(get_highlighted_message ${PLACEHOLDER_ARG0}) din contul bancar al lui $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'teleportationEnabled'              "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message activate))" \
+        'teleportationDisabled'             "$(get_formatted_message_minimessage info player Cererile de teleportare au fost $(get_enablement_message dezactivate))" \
+        'teleportBottom'                    "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cel mai de $(get_highlighted_message jos) loc al locației tale)" \
+        'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) are cererile de teleportare $(get_enablement_message dezactivate))" \
+        'teleportHereRequest'               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ți-a cerut să te teleportezi la locația sa)" \
+        'teleportHome'                      "$(get_formatted_message_minimessage success home Te-ai teleportat la $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'teleporting'                       "$(get_formatted_message_minimessage success teleport Teleportarea s-a realizat)" \
+        'teleportRequest'                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) ți-a cerut să se teleporteze la locația ta)" \
+        'teleportRequestSpecificCancelled'  "$(get_formatted_message_minimessage info player Cererea de teleportare către $(get_player_mention ${PLACEHOLDER_ARG0}) a fost anulată)" \
+        'teleportRequestTimeoutInfo'        "$(get_formatted_message_minimessage info player Această cerere va expira după $(get_highlighted_message ${PLACEHOLDER_ARG0} secunde))" \
+        'teleportTop'                       "$(get_formatted_message_minimessage success teleport Te-ai teleportat la cel mai de $(get_highlighted_message sus) loc al locației tale)" \
+        'teleportToPlayer'                  "$(get_formatted_message_minimessage success player Te-ai teleportat la $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'timeBeforeTeleport'                "$(get_formatted_message_minimessage error teleport Așteaptă $(get_highlighted_message ${PLACEHOLDER_ARG0}) înainte să te teleportezi din nou)" \
+        'timeWorldSet'                      "$(get_formatted_message_minimessage success time Timpul în $(get_highlighted_message ${PLACEHOLDER_ARG1}) este acum $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Te-ai teleportat la o locație aleatorie)" \
+        'true'                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}da${COLOUR_MESSAGE})" \
+        'typeTpacancel'                     "$(get_formatted_message_minimessage info player O poți anula cu $(get_command_mention /tpacancel))" \
+        'typeTpaccept'                      "$(get_formatted_message_minimessage info player O poți aproba cu $(get_command_mention /tpda))" \
+        'typeTpdeny'                        "$(get_formatted_message_minimessage info player O poți respinge cu $(get_command_mention /tpnu))" \
+        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Casele nu pot fi setate în locații nesigure)" \
+        'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player Modul AFK a fost $(get_enablement_message activat))" \
+        'vanish'                            "$(get_formatted_message_minimessage success gamemode Modul invizibil $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message mers))" \
+        'warpingTo'                         "$(get_formatted_message_minimessage success warp Te-ai teleportat la $(get_location_mention ${PLACEHOLDER_ARG0}))" \
+        'warpsCount'                        "$(get_formatted_message_minimessage info warp Există $(get_highlighted_message ${PLACEHOLDER_ARG0}) warp-uri. Pagina $(get_highlighted_message ${PLACEHOLDER_ARG1})/$(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
+        'warpNotExist'                      "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
+        'warpSet'                           "$(get_formatted_message_minimessage success warp Warp-ul $(get_location_mention ${PLACEHOLDER_ARG0}) a fost setat la locația curentă)" \
+        'warpUsePermission'                 "$(get_formatted_message_minimessage error warp Destinația specificată nu este validă)" \
+        'weatherStorm'                      "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) este de acum $(get_highlighted_message furtunoasă))" \
+        'weatherStormFor'                   "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) va fi $(get_highlighted_message furtunoasă) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1} secunde))" \
+        'weatherSun'                        "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) este de acum $(get_highlighted_message însorită))" \
+        'weatherSunFor'                     "$(get_formatted_message_minimessage success weather Vremea în $(get_highlighted_message ${PLACEHOLDER_ARG0}) va fi $(get_highlighted_message însorită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1} secunde))" \
+        'whoisTop'                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
+        'whoisExp'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experiență: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisFly'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Zbor: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisGamemode'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Mod de joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisGod'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibilitate: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisHealth'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viață: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisHunger'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Foame: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisJail'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Arestat: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisLocation'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Locație: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisMoney'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Bani: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisNick'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Nume: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisOp'                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisPlaytime'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Timp petrecut în joc: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisSpeed'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Viteză: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identificator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
+
+    configure_plugin "EssentialsX" "${ESSENTIALS_DIR}/messages/messages_en.properties" \
+        'action'                            "$(get_action_message_minimessage ${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1})!" \
+        'addedToAccount'                    "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to your bank account)" \
+        'addedToOthersAccount'              "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were added to $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
+        'backAfterDeath'                    "$(get_info_minimessage Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
+        'backOther'                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
+        'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
+        'balance'                           "$(get_formatted_message_minimessage info money Your bank account\'s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
+        'balanceTop'                        "$(get_formatted_message_minimessage info money Top richest players: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
+        'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
+        'commandCooldown'                   "$(get_formatted_message_minimessage error command Trebuie să aștepți $(get_highlighted_message ${PLACEHOLDER_ARG0}) pentru a folosi comanda din nou)" \
+        'createdKit'                        "$(get_formatted_message_minimessage success kit A fost creat kit-ul $(get_highlighted_message ${PLACEHOLDER_ARG0}) cu $(get_highlighted_message ${PLACEHOLDER_ARG1} obiecte) și timp de așteptare de $(get_highlighted_message ${PLACEHOLDER_ARG2}))" \
+        'deleteHome'                        "$(get_formatted_message_minimessage success home Home ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}has been deleted)" \
+        'deleteWarp'                        "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) has been deleted)" \
+        'enchantmentApplied'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been applied)" \
+        'enchantmentNotFound'               "$(get_formatted_message_minimessage error enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment is not valid)" \
+        'enchantmentRemoved'                "$(get_formatted_message_minimessage success enchant The $(get_highlighted_message ${PLACEHOLDER_ARG0}) enchantment has been removed)" \
+        'essentialsReload'                  "$(get_reload_minimessage EssentialsX ${PLACEHOLDER_ARG0})" \
+        'false'                             "$(convert_message_to_minimessage ${COLOUR_RED_DARK}no${COLOUR_MESSAGE})" \
+        'flying'                            "$(convert_message_to_minimessage $(get_highlighted_message flight))" \
+        'flyMode'                           "$(get_formatted_message_minimessage success movement Flight ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'gameMode'                          "$(get_formatted_message_minimessage success gamemode Game mode changed to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'godModeDisabledFor'                "$(convert_message_to_minimessage $(get_enablement_status disabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'godModeEnabledFor'                 "$(convert_message_to_minimessage $(get_enablement_status enabled) for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'godMode'                           "$(get_formatted_message_minimessage success gamemode Invincibility ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'healOther'                         "$(get_formatted_message_minimessage success health $(get_player_mention ${PLACEHOLDER_ARG0}) was healed)" \
+        'homes'                             "$(get_formatted_message_minimessage success home Homes: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'homeSet'                           "$(get_formatted_message_minimessage success home Home set at the current location)" \
+        'inventoryClearingAllArmor'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory and armours have been cleared)" \
+        'inventoryClearingAllItems'         "$(get_formatted_message_minimessage success inventory $(get_player_mention ${PLACEHOLDER_ARG0})\'s inventory has been cleared)" \
+        'itemloreClear'                     "$(get_formatted_message_minimessage success name The descriptions of the held item were removed)" \
+        'itemloreNoLine'                    "$(get_formatted_message_minimessage success name The held item has no description on $(get_highlighted_message line ${PLACEHOLDER_ARG0}))" \
+        'itemloreNoLore'                    "$(get_formatted_message_minimessage success name The held item has no descriptions)" \
+        'itemloreSuccess'                   "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG0})\" description was added to the held item)" \
+        'itemloreSuccessLore'               "$(get_formatted_message_minimessage success name The \"$(get_highlighted_message ${PLACEHOLDER_ARG1})\" description was set on $(get_highlighted_message line ${PLACEHOLDER_ARG0}) of the held item)" \
+        'itemnameClear'                     "$(get_formatted_message_minimessage success name The name of the held item was reset)" \
+        'itemnameSuccess'                   "$(get_formatted_message_minimessage success name The held item has been renamed to $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'kitOnce'                           "$(get_formatted_message_minimessage error kit You can\'t get that kit anymore)" \
+        'kitReceive'                        "$(get_formatted_message_minimessage success kit You have received the $(get_highlighted_message ${PLACEHOLDER_ARG0}) kit)" \
+        'kitReset'                          "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset)" \
+        'kitResetOther'                     "$(get_formatted_message_minimessage success kit The cooldown for kit $(get_highlighted_message ${PLACEHOLDER_ARG0}) has been reset for $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'listAmount'                        "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
+        'listAmountHidden'                  "$(get_formatted_message_minimessage info inspect There are $(get_highlighted_message ${PLACEHOLDER_ARG0} players) online)" \
+        'maxHomes'                          "$(get_formatted_message_minimessage error home You can\'t set more than $(get_highlighted_message ${PLACEHOLDER_ARG0} homes))" \
+        'meRecipient'                       "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
+        'meSender'                          "$(convert_message_to_minimessage ${COLOUR_HIGHLIGHT}me)" \
+        'moneyRecievedFrom'                 "$(get_formatted_message_minimessage info money You received $(get_highlighted_message ${PLACEHOLDER_ARG0}) from $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'moneySentTo'                       "$(get_formatted_message_minimessage success money You sent $(get_highlighted_message ${PLACEHOLDER_ARG0}) to $(get_player_mention ${PLACEHOLDER_ARG1}))" \
+        'moveSpeed'                         "$(get_formatted_message_minimessage success movement $(get_player_mention ${PLACEHOLDER_ARG2})\'s $(get_highlighted_message ${PLACEHOLDER_ARG0}) speed has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'msgFormat'                         "$(get_formatted_message_minimessage info message $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_CHAT_PRIVATE}→ $(get_player_mention ${PLACEHOLDER_ARG1})${COLOUR_CHAT_PRIVATE}: ${COLOUR_CHAT_PRIVATE}${PLACEHOLDER_ARG2})" \
+        'noPendingRequest'                  "$(get_formatted_message_minimessage error player There are no pending requests)" \
+        'pendingTeleportCancelled'          "$(get_formatted_message_minimessage error player Cererea de teleportare în așteptare a fost anulată)" \
+        'payOffline'                        "$(get_formatted_message_minimessage error money You can\'t send money to offline players)" \
+        'playerNeverOnServer'               "$(get_formatted_message_minimessage error inspect $(get_player_mention ${PLACEHOLDER_ARG0}) never played on $(get_highlighted_message ${SERVER_NAME}))" \
+        'playerNotFound'                    "$(get_formatted_message_minimessage error other The specified player is not online)" \
+        'playtime'                          "$(get_formatted_message_minimessage info inspect You spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
+        'playtimeOther'                     "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG1}) spent $(get_highlighted_message ${PLACEHOLDER_ARG0}) on $(get_highlighted_message ${SERVER_NAME}))" \
+        'readNextPage'                      "$(get_formatted_message_minimessage info info You can read the next page using $(get_command_mention /${PLACEHOLDER_ARG0} ${PLACEHOLDER_ARG1}))" \
+        'requestAccepted'                   "$(get_formatted_message_minimessage success player Teleportation request accepted)" \
+        'requestAcceptedFrom'               "$(get_formatted_message_minimessage success player $(get_player_mention ${PLACEHOLDER_ARG0}) accepted your teleportation request)" \
+        'requestDenied'                     "$(get_formatted_message_minimessage error player Teleportation request denied)" \
+        'requestDeniedFrom'                 "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) denied your teleportation request)" \
+        'requestSent'                       "$(get_formatted_message_minimessage info player Teleportation request sent to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'requestSentAlready'                "$(get_formatted_message_minimessage error player You have already sent a teleportatin request to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'requestTimedOut'                   "$(get_formatted_message_minimessage error player The teleportation request has timed out)" \
+        'requestTimedOutFrom'               "$(get_formatted_message_minimessage error player The teleportation request from $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}has timed out)" \
+        'seenAccounts'                      "$(get_formatted_message_minimessage info inspect Associated with: $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'seenOffline'                       "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_RED_DARK}offline ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+        'seenOnline'                        "$(get_formatted_message_minimessage info inspect $(get_player_mention ${PLACEHOLDER_ARG0}) has been ${COLOUR_GREEN_LIGHT}online ${COLOUR_MESSAGE}for ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1})" \
+        'serverTotal'                       "$(get_formatted_message_minimessage info money There are $(get_highlighted_message ${PLACEHOLDER_ARG0}) circulating in $(get_highlighted_message ${SERVER_NAME})\'s economy)" \
+        'setBal'                            "$(get_formatted_message_minimessage success money Your bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'setBalOthers'                      "$(get_formatted_message_minimessage success money $(get_player_mention ${PLACEHOLDER_ARG0})\'s bank account has been set to $(get_highlighted_message ${PLACEHOLDER_ARG1}))" \
+        'sudoRun'                           "$(get_formatted_message_minimessage info command Forced $(get_player_mention ${PLACEHOLDER_ARG0}) to execute $(get_command_mention /${PLACEHOLDER_ARG1}))" \
+        'takenFromAccount'                  "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from your bank account)" \
+        'takenFromOthersAccount'            "$(get_formatted_message_minimessage info money $(get_highlighted_message ${PLACEHOLDER_ARG0}) were taken from $(get_player_mention ${PLACEHOLDER_ARG1})\'s bank account)" \
+        'teleportationEnabled'              "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message enabled))" \
+        'teleportationDisabled'             "$(get_formatted_message_minimessage info player The teleportation requests have been $(get_enablement_message disabled))" \
+        'teleportBottom'                    "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message lowest) empty space at your current location)" \
+        'teleportDisabled'                  "$(get_formatted_message_minimessage error player $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_enablement_message disabled) their teleportation requests)" \
+        'teleportHereRequest'               "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to teleport to them)" \
+        'teleporting'                       "$(get_formatted_message_minimessage success teleport Teleported successfully)" \
+        'teleportRequestSpecificCancelled'  "$(get_formatted_message_minimessage info player Teleportation request with $(get_player_mention ${PLACEHOLDER_ARG0}) cancelled)" \
+        'teleportRequestTimeoutInfo'        "$(get_formatted_message_minimessage info player This request will time out after $(get_highlighted_message ${PLACEHOLDER_ARG0} seconds))" \
+        'teleportHome'                      "$(get_formatted_message_minimessage success home Teleported to ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'teleportRequest'                   "$(get_formatted_message_minimessage info player $(get_player_mention ${PLACEHOLDER_ARG0}) asked you to let them teleport to you)" \
+        'teleportTop'                       "$(get_formatted_message_minimessage success teleport Teleported to the $(get_highlighted_message highest) empty space at your current location)" \
+        'teleportToPlayer'                  "$(get_formatted_message_minimessage success player Teleported to $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'timeBeforeTeleport'                "$(get_formatted_message_minimessage error teleport You need to wait $(get_highlighted_message ${PLACEHOLDER_ARG0}) before teleporting again)" \
+        'timeWorldSet'                      "$(get_formatted_message_minimessage success time The time in $(get_highlighted_message ${PLACEHOLDER_ARG1}) is now $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'tprSuccess'                        "$(get_formatted_message_minimessage success teleport Teleported to a random location)" \
+        'true'                              "$(convert_message_to_minimessage ${COLOUR_GREEN_LIGHT}yes${COLOUR_MESSAGE})" \
+        'typeTpacancel'                     "$(get_formatted_message_minimessage info player To cancel it, use $(get_command_mention /tpacancel))" \
+        'typeTpaccept'                      "$(get_formatted_message_minimessage info player To approve it, use $(get_command_mention /tpyes))" \
+        'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
+        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Homes cannot be set in unsafe locations)" \
+        'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player The AFK mode was $(get_enablement_message enabled))" \
+        'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
+        'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message walk))" \
+        'warpingTo'                         "$(get_formatted_message_minimessage success warp Teleported to $(get_location_mention ${PLACEHOLDER_ARG0}))" \
+        'warpNotExist'                      "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
+        'warpsCount'                        "$(get_formatted_message_minimessage info warp There are ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0} ${COLOUR_MESSAGE}warps. Page ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1}${COLOUR_MESSAGE}/${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG2})" \
+        'warpSet'                           "$(get_formatted_message_minimessage success warp Warp $(get_location_mention ${PLACEHOLDER_ARG0}) set at the current location)" \
+        'warpUsePermission'                 "$(get_formatted_message_minimessage error warp The specified warp is invalid)" \
+        'weatherStorm'                      "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) is now $(get_highlighted_message stormy))" \
+        'weatherStormFor'                   "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) will be $(get_highlighted_message stormy) for $(get_highlighted_message ${PLACEHOLDER_ARG1} seconds))" \
+        'weatherSun'                        "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) is now $(get_highlighted_message sunny))" \
+        'weatherSunFor'                     "$(get_formatted_message_minimessage success weather The weather in $(get_highlighted_message ${PLACEHOLDER_ARG0}) will be $(get_highlighted_message sunny) for $(get_highlighted_message ${PLACEHOLDER_ARG1} seconds))" \
+        'whoisTop'                          "$(get_formatted_message_minimessage success inspect Informații despre $(get_player_mention ${PLACEHOLDER_ARG0}):)" \
+        'whoisExp'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Experience: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisFly'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Flight: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisGamemode'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Gamemode: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisGod'                          "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Invincibility: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisHealth'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Health: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisHunger'                       "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Hunger: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisJail'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Jailed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisLocation'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Location: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisMoney'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Money: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisNick'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Name: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisOp'                           "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Operator: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisPlaytime'                     "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Time spent in-game: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisSpeed'                        "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Speed: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})" \
+        'whoisUuid'                         "$(convert_message_to_minimessage ${BULLETPOINT_LIST_MARKER}Identifier: ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG0})"
 fi
 
 if is_plugin_installed 'GrimAC'; then
