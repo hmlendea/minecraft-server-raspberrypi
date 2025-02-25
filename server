@@ -1,0 +1,285 @@
+#!/bin/bash
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$EXEDIR/$SOURCE"
+done
+
+SERVER_ROOT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+GAME_NAME="minecraft"
+GAME_USER="minecraft"
+SESSION_NAME=$(basename "$SERVER_ROOT_DIR")
+
+source "${SERVER_ROOT_DIR}/scripts/common/paths.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/status.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
+
+SERVER_JAR_NAME=$(ls "${SERVER_ROOT_DIR}" | grep "purpur-[0-9.]*-[0-9]*.jar" | tail -n 1)
+[ -z "${SERVER_JAR_NAME}" ] && SERVER_JAR_NAME=$(ls "${SERVER_ROOT_DIR}" | grep "paper-[0-9]*.jar" | tail -n 1)
+[ -z "${SERVER_JAR_NAME}" ] && SERVER_JAR_NAME=$(ls "${SERVER_ROOT_DIR}" | grep "spigot-[0-9]*.jar" | tail -n 1)
+
+TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/1024/1024)"G"; }')
+ 
+if [ "${TOTAL_RAM}" == "8G" ] || \
+   [ "${TOTAL_RAM}" == "7G" ]; then
+    ALLOCATED_RAM="5500M"
+elif [ "${TOTAL_RAM}" == "4G" ]; then
+    ALLOCATED_RAM="3G"
+else
+    echo "${TOTAL_RAM} total RAM is not supported!"
+    exit 1
+fi
+
+SERVER_JAR_PATH="${SERVER_ROOT_DIR}/${SERVER_JAR_NAME}"
+SERVER_START_CMD="java -Xms${ALLOCATED_RAM} -Xmx${ALLOCATED_RAM} -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=\"https://mcflags.emc\" -Daikars.new.flags=true -Dpaper.maxChunkThreads=3 --add-modules=jdk.incubator.vector -jar \"${SERVER_JAR_PATH}\" nogui"
+SERVER_START_SUCCESS="done"
+GAME_COMMAND_DUMP="/tmp/${GAME_NAME}_${SESSION_NAME}_command_dump.txt"
+
+# Strictly disallow uninitialized Variables
+set -u
+# Exit if a single command breaks and its failure is not handled accordingly
+set -e
+
+MAX_SERVER_START_TIME=300
+
+if [[ "$(whoami)" == "${GAME_USER}" ]]; then
+	SUDO_CMD=""
+else
+	SUDO_CMD="sudo -u ${GAME_USER}"
+fi
+
+# Check for sudo rigths
+if [[ "$(${SUDO_CMD} whoami)" != "${GAME_USER}" ]]; then
+	>&2 echo -e "You have \e[39;1mno permission\e[0m to run commands as $GAME_USER user."
+	exit 21
+fi
+
+function clean-server-properties {
+    sleep 2m
+    SERVER_PROPERTIES_FILE_PATH="${SERVER_ROOT_DIR}/server.properties"
+    sed '/^#/d' -i "${SERVER_PROPERTIES_FILE_PATH}"
+    sort -o "${SERVER_PROPERTIES_FILE_PATH}" "${SERVER_PROPERTIES_FILE_PATH}"
+}
+
+clean-server-properties &
+#bash "${SERVER_SCRIPTS_DIR}/configure-settings.sh"
+#bash "${SERVER_SCRIPTS_DIR}/fix-permissions.sh"
+
+# Pipe any given argument to the game server console,
+# sleep for $sleep_time and return its output if $return_stdout is set
+game_command() {
+	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "command_lock"
+	if [[ -z "${return_stdout:-}" ]]; then
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" send-keys -t "${SESSION_NAME}":0.0 "$*" Enter
+	else
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0 "cat > ${GAME_COMMAND_DUMP}"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" send-keys -t "${SESSION_NAME}":0.0 "$*" Enter
+		sleep "${sleep_time:-0.3}"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0
+		${SUDO_CMD} cat "${GAME_COMMAND_DUMP}"
+	fi
+	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "command_lock"
+}
+
+# Start the server if it is not already running
+server_start() {
+	# Start the game server
+	if socket_has_session "${SESSION_NAME}"; then
+		echo "A tmux ${SESSION_NAME} session is already running. Please close it first."
+	else
+        echo "Starting '${SERVER_JAR_PATH}' with ${ALLOCATED_RAM} RAM allocated..."
+		${SUDO_CMD} rm -f "${GAME_COMMAND_DUMP}"
+		# Use a plain file as command buffers for the server startup and switch to a FIFO pipe later
+		${SUDO_CMD} touch "${GAME_COMMAND_DUMP}"
+		# Ensure pipe-pine is started before the server itself by splitting the session creation and server startup
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" new-session -s "${SESSION_NAME}" -c "${SERVER_ROOT_DIR}" -d /bin/bash
+		# Mimic GNU screen and allow for both C-a and C-b as prefix
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" set -g prefix2 C-a
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "command_lock"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0 "cat > ${GAME_COMMAND_DUMP}"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" send-keys -t "${SESSION_NAME}":0.0 "exec ${SERVER_START_CMD}" Enter
+
+		for ((i=1; i<=MAX_SERVER_START_TIME; i++)); do
+			sleep "${sleep_time:-0.1}"
+			if ! socket_session_is_alive "${SESSION_NAME}"; then
+				echo -e "\e[39;1m failed\e[0m\n"
+				>&2 ${SUDO_CMD} cat "${GAME_COMMAND_DUMP}"
+				${SUDO_CMD} rm -f "${GAME_COMMAND_DUMP}"
+				# Session is dead but remain-on-exit left it open; close it for sure
+				${SUDO_CMD} tmux -L "${SESSION_NAME}" kill-session -t "${SESSION_NAME}"
+				exit 1
+			elif grep -q -i "${SERVER_START_SUCCESS}" "${GAME_COMMAND_DUMP}"; then
+				echo -e "\e[39;1m done\e[0m"
+				break
+			elif [[ $i -eq ${MAX_SERVER_START_TIME} ]]; then
+				echo -e "\e[39;1m skipping\e[0m"
+				>&2 echo -e "Server startup has not finished yet; continuing anyways"
+			fi
+		done
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0
+		# Let the command buffer be a FIFO pipe
+		${SUDO_CMD} rm -f "${GAME_COMMAND_DUMP}"
+		${SUDO_CMD} mkfifo "${GAME_COMMAND_DUMP}"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "command_lock"
+	fi
+}
+
+# Stop the server gracefully by saving everything prior and warning the users
+server_stop() {
+	# Gracefully exit the game server
+	if socket_has_session "${SESSION_NAME}"; then
+        REASON="${*}"
+        SECONDS_BEFORE_KICK=30
+
+        BROADCAST_HEADER_MESSAGE='Attention everyone'
+        BROADCAST_SHUTDOWN_MESSAGE="${SERVER_NAME} will shut down in a moment"
+        BROADCAST_KICK_MESSAGE="All online players will be kicked in ${SECONDS_BEFORE_KICK} seconds"
+        KICK_REASON="${SERVER_NAME} is shutting down"
+
+        if [ "${LOCALE}" = 'ro' ]; then
+            BROADCAST_HEADER_MESSAGE='Atenție toată lumea'
+            BROADCAST_SHUTDOWN_MESSAGE="${SERVER_NAME} se va opri într-un moment"
+            BROADCAST_KICK_MESSAGE="Toți jucătorii online vor fi deconectați în ${SECONDS_BEFORE_KICK} secunde"
+            KICK_REASON="${SERVER_NAME} se oprește"
+        fi
+
+        game_command "essentials:broadcast ${BROADCAST_HEADER_MESSAGE}!"
+        game_command "broadcast ${BROADCAST_SHUTDOWN_MESSAGE}..."
+
+        if [ -n "${REASON}" ]; then
+            if [ "${LOCALE}" = 'ro' ]; then
+                game_command "broadcast Motiv: ${REASON}"
+                KICK_REASON="${KICK_REASON} pentru: ${REASON}"
+            else
+                game_command "broadcast Reason: ${REASON}"
+                KICK_REASON="${KICK_REASON} due to: ${REASON}"
+            fi
+        fi
+
+        game_command "essentials:broadcast ${BROADCAST_KICK_MESSAGE}!"
+
+        sleep "${SECONDS_BEFORE_KICK}"
+
+        game_command "kickall ${KICK_REASON}"
+        game_command "save-all"
+        game_command "stop"
+
+		# Finish as soon as the server has shut down completely
+		for i in {1..100}; do
+			if ! socket_has_session "${SESSION_NAME}"; then
+				${SUDO_CMD} rm -f "${GAME_COMMAND_DUMP}"
+				echo -e "\e[39;1m done\e[0m"
+				break
+			fi
+			[[ $i -eq 100 ]] && echo -e "\e[39;1m timed out\e[0m"
+			sleep 0.1
+		done
+	else
+		echo "The corresponding tmux session for ${SESSION_NAME} was already dead."
+	fi
+}
+
+# Print whether the server is running and if so give some information about memory usage and threads
+server_status() {
+	# Print status information for the game server
+	if socket_has_session "${SESSION_NAME}"; then
+		echo -e "Status:\e[39;1m running\e[0m"
+
+		# Calculating memory usage
+		for p in $(${SUDO_CMD} pgrep -f "${SERVER_JAR_PATH}"); do
+			ps -p"${p}" -O rss | tail -n 1;
+		done | gawk '{ count ++; sum += $2 }; END {count --; print "Number of processes =", count, "(tmux +", count, "x server)"; print "Total memory usage =", sum/1024, "MB" ;};'
+	else
+		echo -e "Status:\e[39;1m stopped\e[0m"
+	fi
+}
+
+# Restart the complete server by shutting it down and starting it again
+server_restart() {
+	if socket_has_session "${SESSION_NAME}"; then
+		server_stop
+		server_start
+	else
+		server_start
+	fi
+}
+
+# Run the given command at the game server console
+server_command() {
+	if [[ $# -lt 1 ]]; then
+		>&2 echo "No server command specified."
+		exit 1
+	fi
+
+	if socket_has_session "${SESSION_NAME}"; then
+		return_stdout=true game_command "$@"
+	else
+		echo "There is no ${SESSION_NAME} session to connect to."
+	fi
+}
+
+# Enter the tmux game session
+server_console() {
+	if socket_has_session "${SESSION_NAME}"; then
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" attach -t "${SESSION_NAME}":0.0
+	else
+		echo "There is no ${SESSION_NAME} session to connect to."
+	fi
+}
+
+# Check if there is a session available
+socket_has_session() {
+	if [[ "$(whoami)" != "${GAME_USER}" ]]; then
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" has-session -t "${1}":0.0 2> /dev/null
+		return $?
+	fi
+	tmux -L "${SESSION_NAME}" has-session -t "${1}":0.0 2> /dev/null
+	return $?
+}
+
+socket_session_is_alive() {
+	if socket_has_session "${1}"; then
+		if [[ "$(whoami)" != "${GAME_USER}" ]]; then
+			return $(${SUDO_CMD} tmux -L "${SESSION_NAME}" list-panes -t "${1}":0.0 -F '#{pane_dead}' 2> /dev/null)
+		fi
+		return $(tmux -L "${SESSION_NAME}" list-panes -t "${1}":0.0 -F '#{pane_dead}' 2> /dev/null)
+	else
+		return 1
+	fi
+}
+
+SERVER_CONTROL_COMMAND="${1}" && shift
+
+case "${SERVER_CONTROL_COMMAND}" in
+	start)
+	server_start
+	;;
+
+	stop)
+	server_stop "${@}"
+	;;
+
+	status)
+	server_status
+	;;
+
+	restart)
+	server_restart "Restart"
+	;;
+
+	console)
+	server_console
+	;;
+
+	command)
+	server_command "${@}"
+	;;
+
+	*)
+	echo "Unknown command: ${SERVER_CONTROL_COMMAND}"
+	;;
+esac
+
+exit 0
