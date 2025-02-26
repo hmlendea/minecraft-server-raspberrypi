@@ -7,8 +7,11 @@ while [ -h "$SOURCE" ]; do
 done
 
 SERVER_ROOT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-GAME_NAME="minecraft"
-GAME_USER="minecraft"
+
+cd "${SERVER_ROOT_DIR}"
+
+GAME_NAME='minecraft'
+GAME_USER='minecraft'
 SESSION_NAME=$(basename "$SERVER_ROOT_DIR")
 
 source "${SERVER_ROOT_DIR}/scripts/common/paths.sh"
@@ -24,25 +27,28 @@ TOTAL_RAM=$(cat /proc/meminfo | grep MemTotal | awk '{ print sprintf("%.0f", $2/
  
 if [ "${TOTAL_RAM}" == "8G" ] || \
    [ "${TOTAL_RAM}" == "7G" ]; then
-    ALLOCATED_RAM="5500M"
+    ALLOCATED_RAM='5500M'
 elif [ "${TOTAL_RAM}" == "4G" ]; then
-    ALLOCATED_RAM="3G"
+    ALLOCATED_RAM='3G'
 else
     echo "${TOTAL_RAM} total RAM is not supported!"
     exit 1
 fi
 
 SERVER_JAR_PATH="${SERVER_ROOT_DIR}/${SERVER_JAR_NAME}"
-SERVER_START_CMD="java -Xms${ALLOCATED_RAM} -Xmx${ALLOCATED_RAM} -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=\"https://mcflags.emc\" -Daikars.new.flags=true -Dpaper.maxChunkThreads=3 --add-modules=jdk.incubator.vector -jar \"${SERVER_JAR_PATH}\" nogui"
-SERVER_START_SUCCESS="done"
+SERVER_START_CMD="java -Xms${ALLOCATED_RAM} -Xmx${ALLOCATED_RAM} -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=\"https://mcflags.emc\" -Daikars.new.flags=true -Dpaper.maxChunkThreads=3 -Djna.tmpdir=${SERVER_CACHE_DIR}/JNA --add-modules=jdk.incubator.vector -jar \"${SERVER_JAR_PATH}\" nogui"
+SERVER_START_SUCCESS='done'
 GAME_COMMAND_DUMP="/tmp/${GAME_NAME}_${SESSION_NAME}_command_dump.txt"
+
+BACKUP_DIR="/var/backups/${GAME_NAME}/${SESSION_NAME}"
+BACKUP_COUNT_MAX=4
 
 # Strictly disallow uninitialized Variables
 set -u
 # Exit if a single command breaks and its failure is not handled accordingly
 set -e
 
-MAX_SERVER_START_TIME=300
+MAX_SERVER_START_TIME=30
 
 if [[ "$(whoami)" == "${GAME_USER}" ]]; then
 	SUDO_CMD=""
@@ -229,6 +235,46 @@ server_console() {
 	fi
 }
 
+server_backup() {
+	# Check for the availability of the tar binaries
+	if ! command -v tar &> /dev/null; then
+		>&2 echo "The tar binaries are needed for a backup."
+		exit 11
+	fi
+
+    BACKUP_PATHS=''
+	for BACKUP_ITEM in 'plugins' 'world' 'world_nether' 'world_the_end' 'server.properties' 'cache/players.json' 'banned-players.json' 'whitelist.json'; do
+	    if [ -d "${SERVER_ROOT_DIR}/${BACKUP_ITEM}" ] \
+	    || [ -f "${SERVER_ROOT_DIR}/${BACKUP_ITEM}" ]; then
+	        BACKUP_PATHS="${BACKUP_PATHS} ./${BACKUP_ITEM}"
+	    fi
+    done
+
+    if [ -z "${BACKUP_PATHS}" ]; then
+        echo "Nothing to back up."
+        return
+    fi
+
+	echo "Starting backup..."
+	echo "Backup items:${BACKUP_PATHS}"
+	BACKUP_FILE_NAME="$(date +%Y_%m_%d_%H.%M.%S).tar.gz"
+	${SUDO_CMD} mkdir -p "${BACKUP_DIR}"
+	if socket_has_session "${SESSION_NAME}"; then
+		game_command save-off
+		game_command save-all
+		sleep "${sleep_time:-0.3}"
+		sync && wait
+		${SUDO_CMD} tar -C "${SERVER_ROOT_DIR}" -cf "${BACKUP_DIR}/${BACKUP_FILE_NAME}" ${BACKUP_PATHS} --totals -z 2>&1 | grep -v "tar: Removing leading "
+		game_command save-on
+	else
+		${SUDO_CMD} tar -C "${SERVER_ROOT_DIR}" -cf "${BACKUP_DIR}/${BACKUP_FILE_NAME}" ${BACKUP_PATHS} --totals -z 2>&1 | grep -v "tar: Removing leading "
+	fi
+	echo -e "\e[39;1mbackup completed\e[0m\n"
+
+	echo -n "Only keeping the last ${BACKUP_COUNT_MAX} backups and removing the other ones..."
+	ls -tp "${BACKUP_DIR}"/*.tar.gz | tail -n +$((BACKUP_COUNT_MAX + 1)) | xargs -r rm --
+}
+
 # Check if there is a session available
 socket_has_session() {
 	if [[ "$(whoami)" != "${GAME_USER}" ]]; then
@@ -275,6 +321,10 @@ case "${SERVER_CONTROL_COMMAND}" in
 
 	command)
 	server_command "${@}"
+	;;
+
+	backup)
+	server_backup
 	;;
 
 	*)
