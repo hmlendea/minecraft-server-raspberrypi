@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 
 function convert_ticks_to_seconds() {
     local TICKS="${1}"

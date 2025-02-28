@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
@@ -53,7 +53,8 @@ function get_playerdata_value() {
     local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
-    
+    [ ! -f '/usr/bin/nbted' ] && return
+
     sudo nbted -p "${PLAYER_DATA_FILE}" | \
         grep "${PROPERTY}" | \
         sed 's/^.*\"'"${PROPERTY}"'\"\s*[\"]*\([^\"]*\).*/\1/g'
@@ -107,11 +108,10 @@ function get_player_username() {
         [ -z "${PLAYER_USERNAME}" ] && PLAYER_USERNAME=$(jq -r --arg uuid "${PLAYER_UUID}" '.[] | select(.uuid == $uuid) | .name' "${SERVER_OPS_FILE}")
     fi
 
-    if [ -f "/usr/bin/nbted" ]; then
-        if [ -z "${PLAYER_USERNAME}" ]; then
-            PLAYER_USERNAME=$(get_playerdata_value "${PLAYER_UUID}" "lastKnownName")
-        fi
+    if [ -z "${PLAYER_USERNAME}" ]; then
+        PLAYER_USERNAME=$(get_playerdata_value "${PLAYER_UUID}" "lastKnownName")
     fi
+
     if ! ${FOUND_IN_CACHE} && [ -n "${PLAYER_USERNAME}" ]; then
         set_playerscache_value "${PLAYER_UUID}" "username" "${PLAYER_USERNAME}"
     fi
@@ -204,6 +204,7 @@ function get_player_location() {
     local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
+    [ ! -f '/usr/bin/nbted' ] && return
     
     local POS_ALL=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
     local POS_X_FULL=$(sed -n 2p <<< "${POS_ALL}" | sed 's/\s//g')
@@ -222,6 +223,7 @@ function get_player_spawn() {
     local PLAYER_DATA_FILE="${WORLD_PLAYERDATA_DIR}/${PLAYER_UUID}.dat"
 
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
+    [ ! -f '/usr/bin/nbted' ] && return
 
     local SPAWN_X=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 

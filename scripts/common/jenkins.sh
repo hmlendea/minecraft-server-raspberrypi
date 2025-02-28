@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/web.sh"
 
 function get_latest_jenkins_build_version() {

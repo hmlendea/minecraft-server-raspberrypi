@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
 
 function set_config_values() {
@@ -211,8 +211,10 @@ function set_json_value_with_jq() {
     fi
 
     if [ -w "${FILE}" ]; then
-        #jq -i "${JQ_COMMAND}" "${FILE}"
-        jq "${JQ_COMMAND}" "${FILE}"
+        cat "${FILE}" | jq "${JQ_COMMAND}" > "${FILE}.tmp"
+        cat "${FILE}.tmp" > "${FILE}"
+        rm "${FILE}.tmp" 
+        #jq "${JQ_COMMAND}" "${FILE}"
     else
         jq "${JQ_COMMAND}" "${FILE}" | sudo tee "${FILE}.tmp" > /dev/null
         cat "${FILE}.tmp" | sudo tee "${FILE}" > /dev/null
