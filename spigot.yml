@@ -67,12 +67,12 @@ world-settings:
   default:
     below-zero-generation-in-existing-chunks: true
     view-distance: 8
-    simulation-distance: 5
+    simulation-distance: 6
     max-entity-collisions: 4
     merge-radius:
       item: 3.5
       exp: 5.0
-    mob-spawn-range: 4
+    mob-spawn-range: 5
     item-despawn-rate: 36000
     arrow-despawn-rate: 300
     trident-despawn-rate: 1000
@@ -185,8 +185,8 @@ world-settings:
   faweregentempworld:
     verbose: false
   world_the_end:
-    simulation-distance: 5
-    view-distance: 12
+    simulation-distance: 6
+    view-distance: 10
   world_nether:
-    simulation-distance: 5
+    simulation-distance: 6
     view-distance: 5

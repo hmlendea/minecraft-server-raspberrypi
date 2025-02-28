@@ -293,7 +293,7 @@ world-settings:
       sign:
         allow-colors: false
       slab:
-        break-individual-slabs-when-sneaking: false
+        break-individual-slabs-when-sneaking: true
       spawner:
         deactivate-by-redstone: false
         fix-mc-238526: false

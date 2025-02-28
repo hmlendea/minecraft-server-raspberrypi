@@ -1,14 +1,12 @@
 #!/bin/bash
 # shellcheck disable=SC2046,SC2086
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
-
-ensure_su_access
 
 set_config_values "${SERVER_PROPERTIES_FILE}" \
     'accepts-transfers'                                         true \
@@ -63,10 +61,11 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'block-updates.disable-mushroom-block-updates'                                  true \
     'block-updates.disable-noteblock-updates'                                       true \
     'block-updates.disable-tripwire-updates'                                        false \
-    'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  1 \
-    'chunk-loading-basic.player-max-chunk-generate-rate'                            3 \
-    'chunk-loading-basic.player-max-chunk-load-rate'                                60 \
-    'chunk-loading-basic.player-max-chunk-send-rate'                                80 \
+    'chunk-loading-advanced.player-max-concurrent-chunk-generates'                  3 \
+    'chunk-loading-advanced.player-max-concurrent-chunk-loads'                      0 \
+    'chunk-loading-basic.player-max-chunk-generate-rate'                            3.0 \
+    'chunk-loading-basic.player-max-chunk-load-rate'                                75 \
+    'chunk-loading-basic.player-max-chunk-send-rate'                                70 \
     'console.has-all-permissions'                                                   true \
     'item-validation.book-size.page-max'                                            1024 \
     'misc.max-joins-per-tick'                                                       3 \
@@ -163,7 +162,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.blocks.enchantment-table.lapis-persists'                                        true \
     'world-settings.default.blocks.farmland.gets-moist-from-below'                                          true \
     'world-settings.default.blocks.respawn-anchor.explode'                                                  false \
-    'world-settings.default.blocks.slab.break-individual-blocks-when-sneaking'                              true \
+    'world-settings.default.blocks.slab.break-individual-slabs-when-sneaking'                              true \
     'world-settings.default.blocks.sponge.absorption.range'                                                 8 \
     'world-settings.default.blocks.stonecutter.damage'                                                      1.0 \
     'world-settings.default.gameplay-mechanics.armorstand.place-with-arms-visible'                          true \
@@ -425,8 +424,9 @@ configure_plugin 'EssentialsX' config \
     "newbies.spawnpoint"                    'none' \
     "newbies.kit"                           'spawn' \
     "ops-name-color"                        'none' \
-    'per-player-locale'                     true \
+    'per-player-locale'                     false \
     'per-warp-permission'                   true \
+    'register-back-in-listener'             true \
     'remove-god-on-disconnect'              true \
     'show-zero-baltop'                      false \
     "teleport-cooldown"                     0 \
@@ -672,7 +672,7 @@ configure_plugin 'TradeShop' config \
     'system-options.unlimited-admin' true \
     'global-options.allowed-shops' '["BARREL","CHEST","TRAPPED_CHEST","SHULKER"]' \
     'global-options.allow-sign-break' true \
-    'global-options.allow-chest-break' true
+    'global-options.allow-chest-break' true \
     'shop-sign-options.sign-default-colours.birch-sign' "${COLOUR_WHITE}" \
     'shop-sign-options.sign-default-colours.cherry-sign' "${COLOUR_WHITE}" \
     'shop-sign-options.sign-default-colours.crimson-sign' "${COLOUR_WHITE}" \
@@ -823,7 +823,7 @@ for NETHER_MATERIAL in 'quartz' 'gold'; do
     done
 done
 for OVERWORLD_MATERIAL_WITH_INGOT in 'copper' 'iron' 'gold'; do
-    for ITEM in "raw_${OVERWORLD_MATERIAL_WITH_INGOT}" "raw_${OVERWORLD_MATERIAL_WITH_INGOT}_block" "${OVERWORLD_MATERIAL_WITH_INGOT}_ingot"; do
+    for BLOCK in "raw_${OVERWORLD_MATERIAL_WITH_INGOT}" "raw_${OVERWORLD_MATERIAL_WITH_INGOT}_block" "${OVERWORLD_MATERIAL_WITH_INGOT}_ingot"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${BLOCK}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done

@@ -157,6 +157,7 @@ entities:
         coal_ore: 144000
         cobblestone: 300
         copper_block: 144000
+        copper_ingot: 144000
         copper_ore: 144000
         dark_oak_leaves: 2400
         deepslate_coal_ore: 144000
@@ -186,6 +187,7 @@ entities:
         ender_pearl: 2400
         gold: 144000
         gold_block: 144000
+        gold_ingot: 144000
         gold_ore: 144000
         golden_axe: 2400
         golden_boots: 2400
@@ -202,6 +204,7 @@ entities:
         iron_chestplate: 2400
         iron_helmet: 2400
         iron_hoe: 2400
+        iron_ingot: 144000
         iron_leggings: 2400
         iron_ore: 144000
         iron_pickaxe: 2400
@@ -239,6 +242,12 @@ entities:
         pumpkin: 12000
         quartz: 144000
         quartz_block: 144000
+        raw_copper: 144000
+        raw_copper_block: 144000
+        raw_gold: 144000
+        raw_gold_block: 144000
+        raw_iron: 144000
+        raw_iron_block: 144000
         redstone: 144000
         redstone_block: 144000
         redstone_ore: 144000
@@ -268,29 +277,29 @@ entities:
     despawn-range-shape: ELLIPSOID
     despawn-ranges:
       ambient:
-        hard: 48
-        soft: 24
+        hard: 84
+        soft: 28
       axolotls:
-        hard: 64
-        soft: 24
+        hard: 112
+        soft: 28
       creature:
-        hard: 64
-        soft: 24
+        hard: 112
+        soft: 28
       misc:
-        hard: 64
-        soft: 24
+        hard: 112
+        soft: 28
       monster:
-        hard: 64
-        soft: 24
+        hard: 112
+        soft: 28
       underground_water_creature:
-        hard: 48
-        soft: 24
+        hard: 84
+        soft: 28
       water_ambient:
-        hard: 48
-        soft: 24
+        hard: 84
+        soft: 28
       water_creature:
-        hard: 48
-        soft: 24
+        hard: 84
+        soft: 28
     despawn-time:
       llama_spit: disabled
       snowball: disabled

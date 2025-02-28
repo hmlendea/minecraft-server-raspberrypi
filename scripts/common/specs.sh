@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
@@ -48,12 +48,12 @@ export VIEW_DISTANCE_NETHER=5
 export VIEW_DISTANCE_NETHER_MIN=3
 export VIEW_DISTANCE_NETHER_MAX=5
 
-export VIEW_DISTANCE_END=12
-export VIEW_DISTANCE_END_MIN=8
+export VIEW_DISTANCE_END=10
+export VIEW_DISTANCE_END_MIN=5
 export VIEW_DISTANCE_END_MAX=16
 
 export SIMULATION_DISTANCE_VANILLA=10
-export SIMULATION_DISTANCE=5
+export SIMULATION_DISTANCE=6
 export SIMULATION_DISTANCE_TARGET=5 # The Simulation Distance that the server was tested against when ${PLAYERS_TARGET} players were online
 export SIMULATION_DISTANCE_MIN=3 # Never ever go below 3!!!
 export SIMULATION_DISTANCE_MAX=${SIMULATION_DISTANCE_VANILLA}

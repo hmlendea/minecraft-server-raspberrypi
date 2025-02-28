@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2046,SC2086
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/colours.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/messages.sh"
@@ -154,7 +154,7 @@ if is_plugin_installed 'AuthMe'; then
             'password.match_error' "$(get_formatted_message error auth Parola de confirmare nu se potrivește)" \
             'registration.register_request' "$(get_formatted_message error auth Pentru a putea juca, înregistrează-te cu $(get_command_mention /register ${COLOUR_COMMAND_ARGUMENT}'<Parolă>' '<ConfirmareaParolei>'))" \
             'registration.success' "$(get_formatted_message success auth Te-ai înregistrat)" \
-            'session.invalid_session' "$(get_formatted_message error auth Sesiunea de autentificare a expirat datorită schimbării adresei IP)" \
+            'session.invalid_session' "$(get_formatted_message error auth Sesiunea de autentificare a expirat)" \
             'session.valid_session' "$(get_formatted_message success auth Te-ai autentificat automat de data trecută)"
     else
         configure_plugin 'AuthMe' "$(get_plugin_dir AuthMe)/messages/messages_en.yml" \
@@ -172,7 +172,7 @@ if is_plugin_installed 'AuthMe'; then
             'password.match_error' "$(get_formatted_message error auth The confirmation password does not match)" \
             'registration.register_request' "$(get_formatted_message error auth You must register in order to play.\\n${BULLETPOINT_LIST_MARKER}Use ${COLOUR_COMMAND}/register ${COLOUR_COMMAND_ARGUMENT}'<Password>' '<ConfirmPassword>'${COLOUR_MESSAGE})" \
             'registration.success' "$(get_formatted_message success auth You are now registered)" \
-            'session.invalid_session' "$(get_formatted_message error auth The authentication session has expired due to your IP address having changed)" \
+            'session.invalid_session' "$(get_formatted_message error auth The authentication session has expired)" \
             'session.valid_session' "$(get_formatted_message success auth You authenticated automatically from the previous session)"
     fi
 fi
@@ -553,7 +553,7 @@ if is_plugin_installed 'EssentialsX'; then
         'backAfterDeath'                    "$(get_info_minimessage Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
         'backOther'                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
         'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
-        'balance'                           "$(get_formatted_message_minimessage info money Your bank account\'s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'balance'                           "$(get_formatted_message_minimessage info money Your bank account`s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
         'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
         'balanceTop'                        "$(get_formatted_message_minimessage info money Top richest players: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
         'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
