@@ -23,7 +23,6 @@ set_config_values "${SERVER_PROPERTIES_FILE}" \
     'view-distance'                                             "${VIEW_DISTANCE}"
 
 set_config_values "${SPIGOT_CONFIG_FILE}" \
-    'settings.log-named-deaths'                                                 true \
     'settings.log-villager-deaths'                                              false \
     'settings.save-user-cache-on-stop-only'                                     false \
     'world-settings.default.arrow-despawn-rate'                                 300 \
@@ -144,7 +143,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'settings.blocks.barrel.rows'                                                                           6 \
     'settings.blocks.crying_obsidian.valid-for-portal-frame'                                                true \
     'settings.blocks.ender_chest.six-rows'                                                                  true \
-    'settings.enchntment.allow-unsafe-enchant-command'                                                      true \
+    'settings.enchantment.allow-unsafe-enchant-command'                                                     true \
     'settings.logger.suppress-init-legacy-material-errors'                                                  true \
     'settings.logger.suppress-ignored-advancement-warnings'                                                 true \
     'settings.logger.suppress-unrecognized-recipe-errors'                                                   true \
@@ -172,7 +171,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                              "${NIGHTTIME_LENGTH_TICKS}" \
     'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                         true \
     'world-settings.default.gameplay-mechanics.entities-can-use-portals'                                    false \
-    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'                   true \
+    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'                   false \
     'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                               true \
     'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                                     true \
     'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                        true \
@@ -181,7 +180,6 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                                  true \
     'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                         100000 \
     'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'           true \
-    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'             15 \
     'world-settings.default.gameplay-mechanics.player.totem-of-undying-works-in-inventory'                  true \
     'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                          true \
     'world-settings.default.gameplay-mechanics.use-better-mending'                                          true \
@@ -197,6 +195,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.mobs.zombie.aggressive-towards-villager-when-lagging'                           false \
     'world-settings.default.tools.hoe.replant-crops'                                                        true \
     'world-settings.default.tools.hoe.replant-nether-warts'                                                 true
+#    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'             15 \
 
 for MOB in 'cow' 'goat' 'iron_golem' 'llama' 'mooshroom' 'panda' 'polar_bear' 'ravager' 'sheep' 'trader_llama' 'turtle' 'wolf'; do
     set_config_values "${PURPUR_CONFIG_FILE}" "world-settings.default.mobs.${MOB}.rideable" true
@@ -279,7 +278,7 @@ configure_plugin 'AuthMe' config \
     'settings.registration.forceLoginAfterRegister' true \
     'settings.restrictions.kickOnWrongPassword' false \
     'settings.restrictions.ProtectInventoryBeforeLogIn' false \
-    'settings.restrictions.timeout' 60 \
+    'settings.restrictions.timeout' 90 \
     'settings.serverName' "${SERVER_NAME}" \
     'settings.sessions.enabled' true \
     'settings.sessions.timeout' 960 \
@@ -379,51 +378,53 @@ configure_plugin 'DynamicLights' config \
     'update-rate' 2
 
 configure_plugin 'Dynmap' config \
-    'max-sessions'                 5 \
-    'disable-webserver'            true \
-    'webserver-port'               25550 \
-    'webpath'                      "${WEBMAP_DIR}" \
-    'tilespath'                    "${WEBMAP_TILES_DIR}" \
+    'max-sessions'                  5 \
+    'disable-webserver'             true \
+    'webserver-port'                25550 \
+    'webpath'                       "${WEBMAP_DIR}" \
+    'tilespath'                     "${WEBMAP_TILES_DIR}" \
     \
-    'allowchat'                    false \
-    'allowwebchat'                 false \
+    'allowchat'                     false \
+    'allowwebchat'                  false \
     \
-    "enabletilehash"               true \
-    "tiles-rendered-at-once"       1 \
-    "tileupdatedelay"              60 \
-    "timesliceinterval"            0.5 \
-    "maxchunkspertick"             90 \
-    "renderacceleratethreshold"    30 \
-    'updaterate'                   3000 \
+    'enabletilehash'                true \
+    'tiles-rendered-at-once'        1 \
+    'tileupdatedelay'               60 \
+    'timesliceinterval'             0.5 \
+    'maxchunkspertick'              50 \
+    'parallelrendercnt'             1 \
+    'renderacceleratethreshold'     30 \
+    'updaterate'                    3000 \
     \
-    'fullrender-min-tps'           19.5 \
-    'update-min-tps'               19.0 \
-    'zoomout-min-tps'              18.0 \
+    'fullrender-min-tps'            19.7 \
+    'update-min-tps'                19.5 \
+    'zoomout-min-tps'               18.0 \
     \
-    'fullrenderplayerlimit'        3 \
-    'updateplayerlimit'            4 \
+    'fullrenderplayerlimit'         2 \
+    'updateplayerlimit'             4 \
     \
-    "smooth-lighting"              true \
-    "image-format"                 'png' \
-    "use-generated-textures"       false \
-    "correct-water-lighting"       false \
-    "transparent-leaves"           true \
-    "ctm-support"                  false \
-    "skinsrestorer-integration"    $(is_plugin_installed_bool 'SkinsRestorer') \
-    "defaultzoom"                  6
+    'smooth-lighting'               true \
+    'image-format'                  'png' \
+    'initial-zoomout-validate'      false \
+    'use-generated-textures'        false \
+    'correct-water-lighting'        false \
+    'transparent-leaves'            true \
+    'ctm-support'                   false \
+    'skinsrestorer-integration'     $(is_plugin_installed_bool 'SkinsRestorer') \
+    'defaultzoom'                   6
 
 configure_plugin 'EssentialsX' config \
     'allow-silient-join-quit'               true \
     'auto-afk'                              300 \
-    "auto-afk-kick"                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
-    "change-tab-complete-name"              true \
-    "command-cooldowns.tpr"                 300 \
-    "currency-symbol"                       "${CURRENCY_SYMBOL}" \
-    "disable-item-pickup-while-afk"         true \
-    "kit-auto-equip"                        true \
-    "newbies.spawnpoint"                    'none' \
-    "newbies.kit"                           'spawn' \
-    "ops-name-color"                        'none' \
+    'auto-afk-kick'                         "${IDLE_KICK_TIMEOUT_SECONDS}" \
+    'change-tab-complete-name'              true \
+    'command-cooldowns.tpr'                 300 \
+    'currency-symbol'                       "${CURRENCY_SYMBOL}" \
+    'disable-item-pickup-while-afk'         true \
+    'kit-auto-equip'                        true \
+    'newbies.spawnpoint'                    'none' \
+    'newbies.kit'                           'spawn' \
+    'ops-name-color'                        'none' \
     'per-player-locale'                     false \
     'per-warp-permission'                   true \
     'register-back-in-listener'             true \
@@ -545,7 +546,7 @@ if is_plugin_installed 'PaperTweaks'; then
     
     set_config_values "${PAPERTWEAKS_MODULES_FILE}" \
         'items.player-head-drops' true \
-        'mobs.more-mob-heads' true \
+        'mobs.more-mob-heads' false \
         'survival.cauldron-concrete' true \
         'survival.custom-nether-portals' true \
         'survival.durability-ping' true \
@@ -700,7 +701,7 @@ if is_plugin_installed 'TreeAssist'; then
         'Commands.No Replant.Cooldown Time' 90 \
         'Commands.Replant.Cooldown Time'    90 \
         'Destruction.Falling Blocks'        true \
-        'Destruction.Falling Blocks Fancy'  true \
+        'Destruction.Falling Blocks Fancy'  false \
         'General.Toggle Remember'           false \
         'General.Use Permissions'           true
 fi
@@ -814,11 +815,11 @@ for OVERWORLD_MATERIAL in 'coal' 'copper' 'iron' 'gold' 'redstone' 'lapis' 'diam
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done
-for OVERWORLD_MATERIAL in 'coal' 'redstone' 'diamond' 'emerald'; do
-    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${OVERWORLD_MATERIAL}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
+for MATERIAL in 'coal' 'redstone' 'diamond' 'emerald' 'quartz'; do
+    set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${MATERIAL}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
 done
 for NETHER_MATERIAL in 'quartz' 'gold'; do
-    for ITEM in "${NETHER_MATERIAL}" "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
+    for ITEM in "${NETHER_MATERIAL}_block" "nether_${NETHER_MATERIAL}_ore"; do
         set_config_value "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" "entities.spawning.alt-item-despawn-rate.items.${ITEM}" "${DESPAWN_RATE_ITEMS_RARE_TICKS}"
     done
 done

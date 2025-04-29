@@ -35,7 +35,7 @@ block-updates:
   disable-tripwire-updates: false
 chunk-loading-advanced:
   auto-config-send-distance: true
-  player-max-concurrent-chunk-generates: 2
+  player-max-concurrent-chunk-generates: 3
   player-max-concurrent-chunk-loads: 0
 chunk-loading-basic:
   player-max-chunk-generate-rate: 3.0
@@ -49,6 +49,7 @@ collisions:
   enable-player-collisions: true
   send-full-pos-for-hard-colliding-entities: true
 commands:
+  ride-command-allow-player-as-vehicle: false
   suggest-player-names-when-null-tab-completions: true
   time-command-affects-all-worlds: false
 console:
@@ -139,8 +140,10 @@ unsupported-settings:
   allow-unsafe-end-portal-teleportation: false
   compression-format: ZLIB
   perform-username-validation: true
+  simplify-remote-item-matching: false
   skip-tripwire-hook-placement-validation: false
   skip-vanilla-damage-tick-when-shield-blocked: true
+  update-equipment-on-player-actions: true
 watchdog:
   early-warning-delay: 10000
   early-warning-every: 5000

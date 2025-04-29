@@ -95,10 +95,12 @@ settings:
       second: '%02d second'
       seconds: '%02d seconds'
   blocks:
+    snow:
+      smooth-accumulation-step: 0
     barrel:
       rows: 6
     ender_chest:
-      six-rows: true
+      six-rows: false
       use-permissions-for-rows: false
     crying_obsidian:
       valid-for-portal-frame: true
@@ -132,7 +134,7 @@ settings:
       allow-incompatible-enchants: false
       allow-higher-enchants-levels: false
       replace-incompatible-enchants: false
-    allow-unsafe-enchant-command: false
+    allow-unsafe-enchant-command: true
     clamp-levels: true
   entity:
     enderman:
@@ -186,8 +188,6 @@ settings:
     minecraft:hay_block:
       damage: 0.2
   register-minecraft-debug-commands: false
-  enchntment:
-    allow-unsafe-enchant-command: true
 config-version: 41
 world-settings:
   default:
@@ -1188,7 +1188,7 @@ world-settings:
         attributes:
           max_health: 16.0
           scale: 1.0
-        bypass-mob-griefing: true
+        bypass-mob-griefing: false
         takes-damage-from-water: false
         portal-spawn-modifier: 2000
         always-drop-exp: false
@@ -1490,7 +1490,7 @@ world-settings:
         breeding-delay-ticks: 6000
         clerics-farm-warts: false
         cleric-wart-farmers-throw-warts-at-villagers: true
-        bypass-mob-griefing: true
+        bypass-mob-griefing: false
         takes-damage-from-water: false
         allow-trading: true
         always-drop-exp: false
@@ -1688,7 +1688,7 @@ world-settings:
         ridable-in-water: false
         curse-of-binding:
           remove-with-weakness: false
-        shift-right-click-repairs-mending-points: 15
+        shift-right-click-repairs-mending-points: 0
         exp-pickup-delay-ticks: 2
         allow-void-trading: false
         netherite-fire-resistance:
@@ -1720,7 +1720,7 @@ world-settings:
       raid-cooldown-seconds: 0
       animal-breeding-cooldown-seconds: 0
       persistent-droppable-entity-display-names: true
-      entities-pick-up-loot-bypass-mob-griefing: true
+      entities-pick-up-loot-bypass-mob-griefing: false
       fireballs-bypass-mob-griefing: false
       projectiles-bypass-mob-griefing: false
       note-block-ignore-above: false
@@ -1752,7 +1752,7 @@ world-settings:
           trident: 0
         kinetic-damage: true
       infinity-bow:
-        works-without-arrows: false
+        works-without-arrows: true
       clamp-explosion-radius: true
       item:
         immune:

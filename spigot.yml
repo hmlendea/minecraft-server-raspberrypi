@@ -20,7 +20,7 @@ settings:
   moved-wrongly-threshold: 0.0625
   moved-too-quickly-multiplier: 10.0
   timeout-time: 60
-  restart-on-crash: true
+  restart-on-crash: false
   restart-script: ./start.sh
   netty-threads: 4
   attribute:
@@ -33,9 +33,9 @@ settings:
     attackDamage:
       max: 2048.0
   log-villager-deaths: false
-  log-named-deaths: true
+  log-named-deaths: false
 messages:
-  whitelist: To get access, join our Discord at &9mc.nucilandia.ro/discord
+  whitelist: To connect to the server, join our Discord at &9mc.nucilandia.ro/discord
   unknown-command: §r§c✘ §r§7Nu se poate efectua§r§7.
   server-full: The server is full!
   outdated-client: Outdated client! Please use {0}
@@ -53,6 +53,7 @@ commands:
   - summon
   - testforblock
   - tellraw
+  enable-spam-exclusions: false
 advancements:
   disable-saving: false
   disabled:

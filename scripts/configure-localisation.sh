@@ -32,7 +32,6 @@ PLACEHOLDER_FISH_BRACKETS="{fish}"
 PLACEHOLDER_ITEM_SINGLEPERCENT='%item'
 PLACEHOLDER_KILLS_BRACKETS="{kills}"
 PLACEHOLDER_NAME_POINTY="<name>"
-PLACEHOLDER_OWNER_SINGLEPERCENT='%owner'
 PLACEHOLDER_PLAYER="{PLAYER}"
 PLACEHOLDER_PLAYER_BRACKETS='{player}'
 PLACEHOLDER_PLAYER_PERCENT='%player%'
@@ -80,7 +79,6 @@ else
     set_config_value "${PURPUR_CONFIG_FILE}" 'world-settings.default.gameplay-mechanics.silk-touch.spawner-lore' "${COLOUR_ITEMLORE_MINIMESSAGE}Spawns a lobotomised ${COLOUR_HIGHLIGHT_MINIMESSAGE}<mob>"
 fi
 KICK_MESSAGE="${DISCONNECTED_MESSAGE}"
-KICK_MESSAGE_MINIMESSAGE="$(convert_message_to_minimessage ${KICK_MESSAGE})"
 INVALID_COMMAND_MESSAGE="${INVALID_ACTION_MESSAGE}"
 INVALID_COMMAND_MINIMESSAGE="$(convert_message_to_minimessage ${INVALID_COMMAND_MESSAGE})"
 NO_PERMISSION_MESSAGE="${INVALID_COMMAND_MESSAGE}"
@@ -181,11 +179,15 @@ if is_plugin_installed 'BestTools'; then
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'BestTools' config \
             'message-besttools-enabled' "$(get_formatted_message success tool Selectarea automată a uneltelor a fost $(get_enablement_message activată))" \
-            'message-besttools-disabled' "$(get_formatted_message success tool Selectarea automată a uneltelor a fost $(get_enablement_message dezactivată))"
+            'message-besttools-disabled' "$(get_formatted_message success tool Selectarea automată a uneltelor a fost $(get_enablement_message dezactivată))" \
+            'message-refill-enabled' "$(get_formatted_message success inventory Reumplerea automată a hotbar-ului a fost $(get_enablement_message activată))" \
+            'message-refill-disabled' "$(get_formatted_message success inventory Reumplerea automată a hotbar-ului a fost $(get_enablement_message dezactivată))"
     else
         configure_plugin 'BestTools' config \
             'message-besttools-enabled' "$(get_formatted_message success tool Automatic tool selection has been $(get_enablement_message enabled))" \
-            'message-besttools-disabled' "$(get_formatted_message success tool Automatic tool selection has been $(get_enablement_message disabled))"
+            'message-besttools-disabled' "$(get_formatted_message success tool Automatic tool selection has been $(get_enablement_message disabled))" \
+            'message-refill-enabled' "$(get_formatted_message success inventory Automatic hotbar refill has been $(get_enablement_message enabled))" \
+            'message-refill-disabled' "$(get_formatted_message success inventory Automatic hotbar refill has been $(get_enablement_message disabled))"
     fi
 fi
 
@@ -517,7 +519,7 @@ if is_plugin_installed 'EssentialsX'; then
         'typeTpacancel'                     "$(get_formatted_message_minimessage info player O poți anula cu $(get_command_mention /tpacancel))" \
         'typeTpaccept'                      "$(get_formatted_message_minimessage info player O poți aproba cu $(get_command_mention /tpda))" \
         'typeTpdeny'                        "$(get_formatted_message_minimessage info player O poți respinge cu $(get_command_mention /tpnu))" \
-        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Casele nu pot fi setate în locații nesigure)" \
+        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Nu te poți teleporta în locații nesigure)" \
         'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player Modul AFK a fost $(get_enablement_message activat))" \
         'vanish'                            "$(get_formatted_message_minimessage success gamemode Modul invizibil $(get_highlighted_message ${PLACEHOLDER_ARG1}) pentru $(get_player_mention ${PLACEHOLDER_ARG0}))" \
         'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message mers))" \
@@ -553,7 +555,7 @@ if is_plugin_installed 'EssentialsX'; then
         'backAfterDeath'                    "$(get_info_minimessage Use ${COLOUR_COMMAND}/b ${COLOUR_MESSAGE}to return to your death location)" \
         'backOther'                         "$(get_formatted_message_minimessage success teleport Returned $(get_player_mention ${PLACEHOLDER_ARG0}) ${COLOUR_MESSAGE}to their preivous location)" \
         'backUsageMsg'                      "$(get_formatted_message_minimessage success teleport Returned to your previous location)" \
-        'balance'                           "$(get_formatted_message_minimessage info money Your bank account`s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
+        'balance'                           "$(get_formatted_message_minimessage info money Your bank account\'s balance is $(get_highlighted_message ${PLACEHOLDER_ARG0}))" \
         'balanceOther'                      "$(get_formatted_message_minimessage info money $(get_player_mention ${PLACEHOLDER_ARG0}) has $(get_highlighted_message ${PLACEHOLDER_ARG1}) in their bank account)" \
         'balanceTop'                        "$(get_formatted_message_minimessage info money Top richest players: $(get_obscured_message \(${PLACEHOLDER_ARG0}\)))" \
         'broadcast'                         "$(get_announcement_message_minimessage ${PLACEHOLDER_ARG0})" \
@@ -641,7 +643,7 @@ if is_plugin_installed 'EssentialsX'; then
         'typeTpacancel'                     "$(get_formatted_message_minimessage info player To cancel it, use $(get_command_mention /tpacancel))" \
         'typeTpaccept'                      "$(get_formatted_message_minimessage info player To approve it, use $(get_command_mention /tpyes))" \
         'typeTpdeny'                        "$(get_formatted_message_minimessage info player To deny this request, use $(get_command_mention /tpno))" \
-        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport Homes cannot be set in unsafe locations)" \
+        'unsafeTeleportDestination'         "$(get_formatted_message_minimessage error teleport You cannot teleport to unsafe locations)" \
         'userIsAwaySelf'                    "$(get_formatted_message_minimessage success player The AFK mode was $(get_enablement_message enabled))" \
         'vanish'                            "$(get_formatted_message_minimessage success gamemode Invisible mode ${COLOUR_HIGHLIGHT}${PLACEHOLDER_ARG1} ${COLOUR_MESSAGE}for $(get_player_mention ${PLACEHOLDER_ARG0}))" \
         'walking'                           "$(convert_message_to_minimessage $(get_highlighted_message walk))" \
@@ -699,6 +701,7 @@ if is_plugin_installed 'GSit'; then
         'Plugin.plugin-disabled' "$(get_plugin_enablement_minimessage GSit disabled)" \
         'Plugin.plugin-enabled' "$(get_plugin_enablement_minimessage GSit enabled)" \
         'Plugin.plugin-linked' "$(get_plugin_linked_minimessage GSit WorldGuard)" \
+        'Plugin.plugin-prefix' "${COLOUR_RESET}"
         'Plugin.plugin-reload' "$(get_reload_minimessage GSit)"
 
     if [ "${LOCALE}" = 'ro' ]; then
@@ -863,7 +866,8 @@ if is_plugin_installed 'ProAntiTab'; then
         'custom-server-brand.enabled' true \
         'custom-server-brand.brands' "[\"$(get_coloured_message ${COLOUR_SERVER} ${SERVER_NAME})\"]" \
         'custom-unknown-command.enabled' true \
-        'custom-unknown-command.message' "[\"${INVALID_COMMAND_MESSAGE}\"]"
+        'custom-unknown-command.message' "[\"${INVALID_COMMAND_MESSAGE}\"]" \
+        'no-permissions' "${NO_PERMISSION_MESSAGE}"
 fi
 
 configure_plugin 'RegionBossbar' config \
