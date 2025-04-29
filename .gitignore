@@ -2,6 +2,7 @@ motd.txt
 
 # Configs
 server.properties
+settings.json
 
 # Brandings
 server-icon.png
