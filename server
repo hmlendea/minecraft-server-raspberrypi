@@ -30,7 +30,7 @@ SERVER_START_SUCCESS='done'
 GAME_COMMAND_DUMP="/tmp/${GAME_NAME}_${SESSION_NAME}_command_dump.txt"
 
 BACKUP_DIR="/var/backups/${GAME_NAME}/${SESSION_NAME}"
-BACKUP_COUNT_MAX=4
+BACKUP_COUNT_MAX=6
 
 # Strictly disallow uninitialized Variables
 set -u
@@ -65,7 +65,7 @@ clean-server-properties &
 # Pipe any given argument to the game server console,
 # sleep for $sleep_time and return its output if $return_stdout is set
 game_command() {
-	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "command_lock"
+	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "cmd_lock"
 	if [[ -z "${return_stdout:-}" ]]; then
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" send-keys -t "${SESSION_NAME}":0.0 "$*" Enter
 	else
@@ -75,7 +75,8 @@ game_command() {
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0
 		${SUDO_CMD} cat "${GAME_COMMAND_DUMP}"
 	fi
-	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "command_lock"
+
+	${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "cmd_lock"
 }
 
 # Start the server if it is not already running
@@ -92,7 +93,7 @@ server_start() {
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" new-session -s "${SESSION_NAME}" -c "${SERVER_ROOT_DIR}" -d /bin/bash
 		# Mimic GNU screen and allow for both C-a and C-b as prefix
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" set -g prefix2 C-a
-		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "command_lock"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -L "cmd_lock"
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" pipe-pane -t "${SESSION_NAME}":0.0 "cat > ${GAME_COMMAND_DUMP}"
 		${SUDO_CMD} tmux -L "${SESSION_NAME}" send-keys -t "${SESSION_NAME}":0.0 "exec ${SERVER_START_CMD}" Enter
 
@@ -117,7 +118,7 @@ server_start() {
 		# Let the command buffer be a FIFO pipe
 		${SUDO_CMD} rm -f "${GAME_COMMAND_DUMP}"
 		${SUDO_CMD} mkfifo "${GAME_COMMAND_DUMP}"
-		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "command_lock"
+		${SUDO_CMD} tmux -L "${SESSION_NAME}" wait-for -U "cmd_lock"
 	fi
 }
 
@@ -320,5 +321,3 @@ case "${SERVER_CONTROL_COMMAND}" in
 	echo "Unknown command: ${SERVER_CONTROL_COMMAND}"
 	;;
 esac
-
-exit 0
