@@ -3,6 +3,7 @@
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/github.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/modrinth.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/status.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/jenkins.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/web.sh"
 

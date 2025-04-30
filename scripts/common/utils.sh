@@ -28,8 +28,9 @@ function run_server_command() {
         return
     fi
     
-    ${SERVER_CONTROLLER} command "$@" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
-    tput sgr0
+    ${SERVER_CONTROLLER} command "$@"
+    # | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
+    #tput sgr0
 }
 
 function send_broadcast_message() {
