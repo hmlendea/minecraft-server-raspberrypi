@@ -13,12 +13,6 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
-  # Romanian versions
-  tpda:
-  - tpyes $1-
-  tpnu:
-  - tpno $1-
-  
   itemnbt:
   - minecraft:data get entity $sender SelectedItem
 # setpaintingname:
