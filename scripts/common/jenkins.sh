@@ -15,6 +15,7 @@ function get_latest_jenkins_build_version() {
                              sed \
                                 -e 's/'"${JOB_NAME}"'[\_\-]//g' \
                                 -e 's/\(Bukkit\|Spigot\)//g' \
+                                -e 's/-\(javadoc\|sources\)//g' \
                                 -e 's/^-//g' \
                                 -e 's/\.jar$//g' \
                                 -e 's/^v//g')
