@@ -8,6 +8,7 @@
 # Configuration options here apply to all worlds, unless you specify overrides inside
 # the world-specific config file inside each world folder.
 # 
+# File Reference: https://docs.papermc.io/paper/reference/world-configuration/
 # Docs: https://docs.papermc.io/
 # Discord: https://discord.gg/papermc
 # Website: https://papermc.io/
@@ -278,29 +279,29 @@ entities:
     despawn-range-shape: ELLIPSOID
     despawn-ranges:
       ambient:
-        hard: 84
-        soft: 28
+        hard: 60
+        soft: 24
       axolotls:
-        hard: 112
-        soft: 28
+        hard: 80
+        soft: 24
       creature:
-        hard: 112
-        soft: 28
+        hard: 80
+        soft: 24
       misc:
-        hard: 112
-        soft: 28
+        hard: 80
+        soft: 24
       monster:
-        hard: 112
-        soft: 28
+        hard: 80
+        soft: 24
       underground_water_creature:
-        hard: 84
-        soft: 28
+        hard: 60
+        soft: 24
       water_ambient:
-        hard: 84
-        soft: 28
+        hard: 60
+        soft: 24
       water_creature:
-        hard: 84
-        soft: 28
+        hard: 60
+        soft: 24
     despawn-time:
       llama_spit: disabled
       snowball: disabled

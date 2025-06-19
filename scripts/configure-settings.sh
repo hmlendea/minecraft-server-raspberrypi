@@ -142,7 +142,6 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'settings.blocks.anvil.cumulative-cost'                                                                 false \
     'settings.blocks.barrel.rows'                                                                           6 \
     'settings.blocks.crying_obsidian.valid-for-portal-frame'                                                true \
-    'settings.blocks.ender_chest.six-rows'                                                                  true \
     'settings.enchantment.allow-unsafe-enchant-command'                                                     true \
     'settings.logger.suppress-init-legacy-material-errors'                                                  true \
     'settings.logger.suppress-ignored-advancement-warnings'                                                 true \
@@ -171,7 +170,7 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.daylight-cycle-ticks.nighttime'                              "${NIGHTTIME_LENGTH_TICKS}" \
     'world-settings.default.gameplay-mechanics.disable-oxidation-proximity-penalty'                         true \
     'world-settings.default.gameplay-mechanics.entities-can-use-portals'                                    false \
-    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-bypass-mob-griefing'                   false \
+    'world-settings.default.gameplay-mechanics.entities-pick-up-loot-mob-griefing-override'                 default \
     'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                               true \
     'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                                     true \
     'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                        true \
@@ -184,8 +183,8 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                          true \
     'world-settings.default.gameplay-mechanics.use-better-mending'                                          true \
     'world-settings.default.mobs.dolphin.disable-treasure-searching'                                        true \
-    'world-settings.default.mobs.piglin.bypass-mob-griefing'                                                true \
-    'world-settings.default.mobs.villager.bypass-mob-griefing'                                              true \
+    'world-settings.default.mobs.piglin.mob-griefing-override'                                              true \
+    'world-settings.default.mobs.villager.mob-griefing-override'                                            true \
     'world-settings.default.mobs.villager.can-be-leashed'                                                   true \
     'world-settings.default.mobs.villager.lobotomize.enabled'                                               false \
     'world-settings.default.mobs.villager.lobotomize.wait-until-trade-locked'                               true \

@@ -10,6 +10,7 @@
 
 verbose: false
 settings:
+  generate-end-void-rings: false
   server-mod-name: NuciCraft
   use-alternate-keepalive: true
   disable-give-dropping: false
@@ -95,8 +96,6 @@ settings:
       second: '%02d second'
       seconds: '%02d seconds'
   blocks:
-    snow:
-      smooth-accumulation-step: 0
     barrel:
       rows: 6
     ender_chest:
@@ -108,6 +107,8 @@ settings:
       max-bees-inside: 3
     anvil:
       cumulative-cost: false
+    snow:
+      smooth-accumulation-step: 0
     lightning_rod:
       range: 128
     grindstone:
@@ -188,7 +189,7 @@ settings:
     minecraft:hay_block:
       damage: 0.2
   register-minecraft-debug-commands: false
-config-version: 41
+config-version: 43
 world-settings:
   default:
     blocks:
@@ -254,7 +255,7 @@ world-settings:
           explosion-effect: BLOCK
         cramming-amount: 0
       farmland:
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         gets-moist-from-below: true
         use-alpha-farmland: false
         disable-trampling: false
@@ -280,7 +281,7 @@ world-settings:
       magma-block:
         damage-when-sneaking: false
       powder_snow:
-        bypass-mob-griefing: false
+        mob-griefing-override: default
       powered-rail:
         activation-range: 8
       respawn_anchor:
@@ -310,7 +311,7 @@ world-settings:
         break-from-exp-orbs: false
         break-from-items: false
         break-from-minecarts: false
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         random-tick-crack-chance: 500
         feather-fall-distance-affects-trampling: false
       water:
@@ -338,6 +339,9 @@ world-settings:
     tools:
       axe:
         strippables:
+          minecraft:pale_oak_wood:
+            into: minecraft:stripped_pale_oak_wood
+            drops: {}
           minecraft:mangrove_wood:
             into: minecraft:stripped_mangrove_wood
             drops: {}
@@ -404,10 +408,16 @@ world-settings:
           minecraft:acacia_log:
             into: minecraft:stripped_acacia_log
             drops: {}
-          minecraft:pale_oak_wood:
-            into: minecraft:stripped_pale_oak_wood
-            drops: {}
         waxables:
+          minecraft:waxed_exposed_cut_copper_slab:
+            into: minecraft:exposed_cut_copper_slab
+            drops: {}
+          minecraft:waxed_copper_block:
+            into: minecraft:copper_block
+            drops: {}
+          minecraft:waxed_oxidized_chiseled_copper:
+            into: minecraft:oxidized_chiseled_copper
+            drops: {}
           minecraft:waxed_oxidized_copper_door:
             into: minecraft:oxidized_copper_door
             drops: {}
@@ -507,16 +517,13 @@ world-settings:
           minecraft:waxed_oxidized_copper_trapdoor:
             into: minecraft:oxidized_copper_trapdoor
             drops: {}
-          minecraft:waxed_exposed_cut_copper_slab:
-            into: minecraft:exposed_cut_copper_slab
-            drops: {}
-          minecraft:waxed_copper_block:
-            into: minecraft:copper_block
-            drops: {}
-          minecraft:waxed_oxidized_chiseled_copper:
-            into: minecraft:oxidized_chiseled_copper
-            drops: {}
         weatherables:
+          minecraft:exposed_copper_door:
+            into: minecraft:copper_door
+            drops: {}
+          minecraft:oxidized_copper:
+            into: minecraft:weathered_copper
+            drops: {}
           minecraft:exposed_chiseled_copper:
             into: minecraft:chiseled_copper
             drops: {}
@@ -591,12 +598,6 @@ world-settings:
             drops: {}
           minecraft:weathered_copper_door:
             into: minecraft:exposed_copper_door
-            drops: {}
-          minecraft:exposed_copper_door:
-            into: minecraft:copper_door
-            drops: {}
-          minecraft:oxidized_copper:
-            into: minecraft:weathered_copper
             drops: {}
       hoe:
         tillables:
@@ -812,7 +813,7 @@ world-settings:
           scale: 1.0
         naturally-charged-chance: 0.0
         allow-griefing: true
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         explode-when-killed: false
         health-impacts-explosion: false
@@ -879,7 +880,7 @@ world-settings:
         attributes:
           max_health: 200.0
         always-drop-full-exp: false
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         can-ride-vehicles: false
       enderman:
@@ -891,7 +892,7 @@ world-settings:
           scale: 1.0
         allow-griefing: true
         can-despawn-with-held-block: false
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: true
         aggressive-towards-endermites: true
         aggressive-towards-endermites-only-spawned-by-player-thrown-ender-pearls: false
@@ -914,7 +915,7 @@ world-settings:
         attributes:
           max_health: 24.0
           scale: 1.0
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
       fox:
@@ -926,7 +927,7 @@ world-settings:
           scale: 1.0
         tulips-change-type: false
         breeding-delay-ticks: 6000
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
       frog:
@@ -1188,7 +1189,7 @@ world-settings:
         attributes:
           max_health: 16.0
           scale: 1.0
-        bypass-mob-griefing: false
+        mob-griefing-override: true
         takes-damage-from-water: false
         portal-spawn-modifier: 2000
         always-drop-exp: false
@@ -1210,7 +1211,7 @@ world-settings:
         attributes:
           max_health: 24.0
           scale: 1.0
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
       polar_bear:
@@ -1243,7 +1244,7 @@ world-settings:
         spawn-toast-chance: 0.0
         spawn-killer-rabbit-chance: 0.0
         breeding-delay-ticks: 6000
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
       ravager:
@@ -1253,7 +1254,7 @@ world-settings:
         attributes:
           max_health: 100.0
           scale: 1.0
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         griefable-blocks:
         - minecraft:oak_leaves
@@ -1292,7 +1293,7 @@ world-settings:
           max_health: 8.0
           scale: 1.0
         breeding-delay-ticks: 6000
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
         rideable: true
@@ -1321,7 +1322,7 @@ world-settings:
           scale: 1.0
           movement_speed: 0.25
           attack_damage: 1.0
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
       skeleton:
@@ -1374,7 +1375,7 @@ world-settings:
         max-shoot-interval-ticks: 20
         snow-ball-modifier: 10.0
         attack-distance: 1.25
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: true
         always-drop-exp: false
       sniffer:
@@ -1490,7 +1491,7 @@ world-settings:
         breeding-delay-ticks: 6000
         clerics-farm-warts: false
         cleric-wart-farmers-throw-warts-at-villagers: true
-        bypass-mob-griefing: false
+        mob-griefing-override: true
         takes-damage-from-water: false
         allow-trading: true
         always-drop-exp: false
@@ -1553,7 +1554,7 @@ world-settings:
           scale: 1.0
         health-regen-amount: 1.0
         health-regen-delay: 20
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         can-ride-vehicles: false
         explosion-radius: 1.0
@@ -1604,7 +1605,7 @@ world-settings:
           chance: 0.05
           try-existing-chickens: true
         aggressive-towards-villager-when-lagging: false
-        bypass-mob-griefing: false
+        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
         head-visibility-percent: 0.5
@@ -1720,9 +1721,9 @@ world-settings:
       raid-cooldown-seconds: 0
       animal-breeding-cooldown-seconds: 0
       persistent-droppable-entity-display-names: true
-      entities-pick-up-loot-bypass-mob-griefing: false
-      fireballs-bypass-mob-griefing: false
-      projectiles-bypass-mob-griefing: false
+      entities-pick-up-loot-mob-griefing-override: default
+      fireballs-mob-griefing-override: default
+      projectiles-mob-griefing-override: default
       note-block-ignore-above: false
       impose-teleport-restrictions-on-gateways: false
       impose-teleport-restrictions-on-nether-portals: false
@@ -1839,4 +1840,3 @@ world-settings:
             grass_block: 0.3
             stone: 0.5
       persistent-droppable-display-names: true
-      persistent-tileentity-display-names-and-lore: true

@@ -8,6 +8,7 @@
 # The world configuration options have been moved inside
 # their respective world folder. The files are named paper-world.yml
 # 
+# File Reference: https://docs.papermc.io/paper/reference/global-configuration/
 # Docs: https://docs.papermc.io/
 # Discord: https://discord.gg/papermc
 # Website: https://papermc.io/
@@ -91,6 +92,7 @@ misc:
   strict-advancement-dimension-check: false
   use-alternative-luck-formula: false
   use-dimension-type-for-custom-spawners: false
+  xp-orb-groups-per-area: default
 packet-limiter:
   all-packets:
     action: KICK
