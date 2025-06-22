@@ -174,11 +174,9 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.gameplay-mechanics.minecart.controllable.enabled'                               true \
     'world-settings.default.gameplay-mechanics.minecart.place-anywhere'                                     true \
     'world-settings.default.gameplay-mechanics.mob-spawning.ignore-creative-players'                        true \
-    'world-settings.default.gameplay-mechanics.persistent-droppable-display-names'                          true \
     'world-settings.default.gameplay-mechanics.persistent-tileentity-display-name'                          true \
     'world-settings.default.gameplay-mechanics.persistent-tileentity-lore'                                  true \
     'world-settings.default.gameplay-mechanics.player.exp-dropped-on-death.maximum'                         100000 \
-    'world-settings.default.gameplay-mechanics.player.invulnerable-while-accepting-resource-pack'           true \
     'world-settings.default.gameplay-mechanics.player.totem-of-undying-works-in-inventory'                  true \
     'world-settings.default.gameplay-mechanics.silk-touch.enabled'                                          true \
     'world-settings.default.gameplay-mechanics.use-better-mending'                                          true \
@@ -196,9 +194,9 @@ set_config_values "${PURPUR_CONFIG_FILE}" \
     'world-settings.default.tools.hoe.replant-nether-warts'                                                 true
 #    'world-settings.default.gameplay-mechanics.player.shift-right-click-repairs-mending-points'             15 \
 
-for MOB in 'cow' 'goat' 'iron_golem' 'llama' 'mooshroom' 'panda' 'polar_bear' 'ravager' 'sheep' 'trader_llama' 'turtle' 'wolf'; do
-    set_config_values "${PURPUR_CONFIG_FILE}" "world-settings.default.mobs.${MOB}.rideable" true
-done
+#for MOB in 'cow' 'goat' 'iron_golem' 'llama' 'mooshroom' 'panda' 'polar_bear' 'ravager' 'sheep' 'trader_llama' 'turtle' 'wolf'; do
+#    set_config_values "${PURPUR_CONFIG_FILE}" "world-settings.default.mobs.${MOB}.rideable" true
+#done
 
 configure_plugin 'PurpurExtras' config \
     'settings.anvil-splits-boats' true \
@@ -751,6 +749,8 @@ configure_plugin 'WanderingTrades' config \
 
 configure_plugin 'FastAsyncWorldEdit' config \
     'enabled-components.notify-update-ingame' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'enabled-components.release-update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
+    'enabled-components.snapshot-update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'history.use-database' false \
     'max-memory-percent' 85 \
     'region-restrictions' true \

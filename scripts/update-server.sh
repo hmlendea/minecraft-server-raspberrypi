@@ -58,7 +58,7 @@ else
     update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
     update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
-    update_plugin 'GeyserMC'                    'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
+    update_plugin 'Geyser-Spigot'               'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
     update_plugin 'HardPlus'                    'https://modrinth.com/plugin/hardplus'                      '%pluginName%-%pluginVersion%.jar'
@@ -92,13 +92,11 @@ else
     update_plugin 'Sonar'                       'https://github.com/jonesdevelopment/sonar'                 '%pluginName%-Bukkit.jar'
     update_plugin 'spark'                       'https://ci.lucko.me'                                       '%pluginName%-Bukkit-%pluginVersion%.jar'
     update_plugin 'StackableItems'              'https://github.com/haveric/StackableItems'                 '%pluginName%.jar'
-    # TODO: SuperbVote
     update_plugin 'TAB'                         "https://github.com/NEZNAMY/TAB"                            "%pluginName%.v%pluginVersion%.jar"
     update_plugin 'TChat'                       "https://github.com/TectHost/TChat"                         "%pluginName%.jar"
     update_plugin 'ToolStats'                   'https://github.com/hyperdefined/ToolStats'                 'toolstats-%pluginVersion%.jar'
     # TODO: TreeAssist
     update_plugin 'UltimateInventory'           "https://github.com/percyqaz/UltimateInventory"             "%pluginName%-%pluginVersion%.jar"
-    # TODO: VanillaMessagesFormatter
     update_plugin 'VanillaMinimaps'             'https://github.com/JNNGL/VanillaMinimaps'                  'vanillaminimaps-%pluginVersion%.jar'
     update_plugin 'Vault'                       "https://github.com/MilkBowl/Vault"                         "%pluginName%.jar"
     update_plugin 'ViaBackwards'                "https://github.com/ViaVersion/ViaBackwards"
@@ -108,7 +106,7 @@ else
     update_plugin 'VotingPlugin'                "https://bencodez.com"                                      '%pluginName%.jar'
     update_plugin 'WanderingTrades'             'https://jenkins.jpenilla.xyz'                              '%pluginName%-%pluginVersion%.jar'
     #update_plugin 'WanderingTrades'             'https://github.com/jpenilla/WanderingTrades'               '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'WolfyUtils'                  'https://modrinth.com/plugin/wolfyutils'                    'wolfyutils-spigot-%pluginVersion%.jar'
+    update_plugin 'WolfyUtilities'              'https://modrinth.com/plugin/wolfyutils'                    'wolfyutils-spigot-%pluginVersion%.jar'
     update_plugin 'WorldEditSUI'                'https://github.com/kennytv/WorldEditSUI'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'WorldGuard'                  'https://modrinth.com/plugin/worldguard'                    'worldguard-bukkit-%pluginVersion%-dist.jar'
     update_plugin 'WorldGuardExtraFlags'        'https://github.com/aromaa/WorldGuardExtraFlags'            '%pluginName%.jar'
