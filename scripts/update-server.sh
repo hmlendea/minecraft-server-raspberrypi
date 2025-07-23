@@ -24,6 +24,7 @@ if ${IS_SERVER_RUNNING}; then
 else
     update_server
 
+    # TODO: AntiPopup
 #    update_datapack 'BannerFlags'                       'https://modrinth.com/datapack/banner-flags'
     update_datapack 'DungeonsAndTaverns'                'https://modrinth.com/datapack/dungeons-and-taverns'
 #####update_datapack 'Explorify'                         'https://modrinth.com/datapack/explorify'

@@ -10,6 +10,7 @@
 
 verbose: false
 settings:
+  register-minecraft-disabled-commands: false
   messages:
     afk-broadcast-away: <yellow><italic>%s is now AFK
     afk-broadcast-back: <yellow><italic>%s is no longer AFK
@@ -650,6 +651,18 @@ world-settings:
       use-night-vision: false
       use-dismounts-underwater-tag: true
     mobs:
+      happy_ghast:
+        ridable-in-water: false
+        attributes:
+          max_health: 20.0
+          tempt_range: 16.0
+          flying_speed: 0.05
+          movement_speed: 0.05
+          follow_range: 16.0
+          camera_distance: 8.0
+          scale: 1.0
+        takes-damage-from-water: false
+        always-drop-exp: false
       allay:
         ridable: false
         ridable-in-water: true
