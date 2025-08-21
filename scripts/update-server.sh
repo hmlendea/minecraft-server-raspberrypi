@@ -54,8 +54,8 @@ else
     update_plugin 'DeluxeMenus'                 'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'DiscordSRV'                  'https://github.com/DiscordSRV/DiscordSRV'                  '%pluginName%-Build-%pluginVersion%.jar'
     update_plugin 'DynamicLights'               'https://github.com/xCykrix/DynamicLights'                  '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'Dynmap'                      'https://modrinth.com/plugin/dynmap'                        '%pluginName%-%pluginVersion%-spigot.jar'
-    update_plugin 'EssentialsX'                 'https://github.com/EssentialsX/Essentials'
+    #update_plugin 'Dynmap'                      'https://modrinth.com/plugin/dynmap'                        '%pluginName%-%pluginVersion%-spigot.jar'
+    #update_plugin 'EssentialsX'                 'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
     update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
@@ -84,8 +84,7 @@ else
     update_plugin 'PlaceholderAPI'              'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'PlugManX'                    "https://github.com/TheBlackEntity/PlugManX"                '%pluginName%.jar'
     update_plugin 'ProAntiTab'                  'https://github.com/RayzsYT/ProAntiTab'                     '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'ProtocolLib'                 'https://ci.dmulloy2.net'                                   '%pluginName%.jar'
-#    update_plugin 'ProtocolLib'                 "https://github.com/dmulloy2/ProtocolLib"                   "%pluginName%.jar"
+    update_plugin 'ProtocolLib'                 "https://github.com/dmulloy2/ProtocolLib"                   "%pluginName%.jar"
     update_plugin 'PurpurExtras'                'https://modrinth.com/plugin/purpurextras'                  '%pluginName%-%pluginVersion%.jar'
     update_plugin 'SeeMore'                     'https://github.com/froobynooby/SeeMore'                    '%pluginName%-%pluginVersion%.jar'
     update_plugin 'SimpleVoiceChat'             'https://modrinth.com/plugin/simple-voice-chat'             'voicechat-bukkit-%pluginVersion.jar'

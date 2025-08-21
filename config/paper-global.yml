@@ -13,7 +13,7 @@
 # Discord: https://discord.gg/papermc
 # Website: https://papermc.io/
 
-_version: 29
+_version: 30
 anticheat:
   obfuscation:
     items:
@@ -101,11 +101,11 @@ packet-limiter:
     max-packet-rate: 500.0
   kick-message: <red><lang:disconnect.exceeded_packet_rate>
   overrides:
-    ServerboundCommandSuggestionPacket:
+    minecraft:command_suggestion:
       action: DROP
       interval: 1.0
       max-packet-rate: 15.0
-    ServerboundPlaceRecipePacket:
+    minecraft:place_recipe:
       action: DROP
       interval: 4.0
       max-packet-rate: 5.0

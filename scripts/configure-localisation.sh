@@ -102,8 +102,6 @@ if is_plugin_installed 'PurpurExtras'; then
     fi
 fi
 
-exit
-
 if is_plugin_installed 'AdvancedHelp'; then
     configure_plugin 'AdvancedHelp' config \
         'messages.no-permission' "${NO_PERMISSION_MESSAGE}"
