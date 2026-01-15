@@ -1033,13 +1033,13 @@ if is_plugin_installed 'TreeAssist'; then
 
     if [ "${LOCALE}" = 'ro' ]; then
         configure_plugin 'TreeAssist' messages \
-            'successful.noreplant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message oprită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
-            'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} secunde))" \
+            'successful.noreplant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message oprită) pentru $(get_highlighted_message 5 minute))" \
+            'successful.replant' "$(get_formatted_message success woodcutting Replantarea automată a pomilor $(get_enablement_message pornită) pentru $(get_highlighted_message 5 minute))" \
             'warning.destruction_invalidblock' "$(get_formatted_message error woodcutting Acest copac nu se poate tăia automat)"
     else
         configure_plugin 'TreeAssist' messages \
-            'successful.noreplant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message disabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
-            'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message ${PLACEHOLDER_ARG1_PERCENT} seconds))" \
+            'successful.noreplant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message disabled) for $(get_highlighted_message 5 minutes))" \
+            'successful.replant' "$(get_formatted_message success woodcutting Automatic replanting of saplings $(get_enablement_message enabled) for $(get_highlighted_message 5 minutes))" \
             'warning.destruction_invalidblock' "$(get_formatted_message error woodcutting This tree cannot be automatically chopped)"
     fi
 fi

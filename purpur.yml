@@ -44,7 +44,6 @@ settings:
   limit-armor: true
   player-deaths-always-show-item: false
   startup-commands: []
-  generate-end-void-rings: false
   broadcasts:
     advancement:
       only-broadcast-to-affected-player: false
@@ -190,7 +189,7 @@ settings:
       distance: 0.5
     minecraft:purple_bed:
       distance: 0.5
-config-version: 43
+config-version: 47
 world-settings:
   default:
     blocks:
@@ -235,7 +234,7 @@ world-settings:
       composter:
         sneak-to-bulk-process: false
       coral:
-        die-outside-water: false
+        die-outside-water: true
       dispenser:
         apply-cursed-to-armor-slots: true
         place-anvils: false
@@ -518,6 +517,78 @@ world-settings:
           minecraft:waxed_weathered_copper_door:
             drops: {}
             into: minecraft:weathered_copper_door
+          minecraft:waxed_copper_chest:
+            into: minecraft:copper_chest
+            drops: {}
+          minecraft:waxed_exposed_copper_chest:
+            into: minecraft:exposed_copper_chest
+            drops: {}
+          minecraft:waxed_weathered_copper_chest:
+            into: minecraft:weathered_copper_chest
+            drops: {}
+          minecraft:waxed_oxidized_copper_chest:
+            into: minecraft:oxidized_copper_chest
+            drops: {}
+          minecraft:waxed_copper_golem_statue:
+            into: minecraft:copper_golem_statue
+            drops: {}
+          minecraft:waxed_exposed_copper_golem_statue:
+            into: minecraft:exposed_copper_golem_statue
+            drops: {}
+          minecraft:waxed_weathered_copper_golem_statue:
+            into: minecraft:weathered_copper_golem_statue
+            drops: {}
+          minecraft:waxed_oxidized_copper_golem_statue:
+            into: minecraft:oxidized_copper_golem_statue
+            drops: {}
+          minecraft:waxed_lightning_rod:
+            into: minecraft:lightning_rod
+            drops: {}
+          minecraft:waxed_exposed_lightning_rod:
+            into: minecraft:exposed_lightning_rod
+            drops: {}
+          minecraft:waxed_weathered_lightning_rod:
+            into: minecraft:weathered_lightning_rod
+            drops: {}
+          minecraft:waxed_oxidized_lightning_rod:
+            into: minecraft:oxidized_lightning_rod
+            drops: {}
+          minecraft:waxed_copper_bars:
+            into: minecraft:copper_bars
+            drops: {}
+          minecraft:waxed_exposed_copper_bars:
+            into: minecraft:exposed_copper_bars
+            drops: {}
+          minecraft:waxed_weathered_copper_bars:
+            into: minecraft:weathered_copper_bars
+            drops: {}
+          minecraft:waxed_oxidized_copper_bars:
+            into: minecraft:oxidized_copper_bars
+            drops: {}
+          minecraft:waxed_copper_chain:
+            into: minecraft:copper_chain
+            drops: {}
+          minecraft:waxed_exposed_copper_chain:
+            into: minecraft:exposed_copper_chain
+            drops: {}
+          minecraft:waxed_weathered_copper_chain:
+            into: minecraft:weathered_copper_chain
+            drops: {}
+          minecraft:waxed_oxidized_copper_chain:
+            into: minecraft:oxidized_copper_chain
+            drops: {}
+          minecraft:waxed_copper_lantern:
+            into: minecraft:copper_lantern
+            drops: {}
+          minecraft:waxed_exposed_copper_lantern:
+            into: minecraft:exposed_copper_lantern
+            drops: {}
+          minecraft:waxed_weathered_copper_lantern:
+            into: minecraft:weathered_copper_lantern
+            drops: {}
+          minecraft:waxed_oxidized_copper_lantern:
+            into: minecraft:oxidized_copper_lantern
+            drops: {}
         weatherables:
           minecraft:exposed_cut_copper:
             drops: {}
@@ -600,6 +671,60 @@ world-settings:
           minecraft:exposed_cut_copper_stairs:
             drops: {}
             into: minecraft:cut_copper_stairs
+          minecraft:exposed_copper_chest:
+            into: minecraft:copper_chest
+            drops: {}
+          minecraft:weathered_copper_chest:
+            into: minecraft:exposed_copper_chest
+            drops: {}
+          minecraft:oxidized_copper_chest:
+            into: minecraft:weathered_copper_chest
+            drops: {}
+          minecraft:exposed_copper_golem_statue:
+            into: minecraft:copper_golem_statue
+            drops: {}
+          minecraft:weathered_copper_golem_statue:
+            into: minecraft:exposed_copper_golem_statue
+            drops: {}
+          minecraft:oxidized_copper_golem_statue:
+            into: minecraft:weathered_copper_golem_statue
+            drops: {}
+          minecraft:exposed_lightning_rod:
+            into: minecraft:lightning_rod
+            drops: {}
+          minecraft:weathered_lightning_rod:
+            into: minecraft:exposed_lightning_rod
+            drops: {}
+          minecraft:oxidized_lightning_rod:
+            into: minecraft:weathered_lightning_rod
+            drops: {}
+          minecraft:exposed_copper_bars:
+            into: minecraft:copper_bars
+            drops: {}
+          minecraft:weathered_copper_bars:
+            into: minecraft:exposed_copper_bars
+            drops: {}
+          minecraft:oxidized_copper_bars:
+            into: minecraft:weathered_copper_bars
+            drops: {}
+          minecraft:exposed_copper_chain:
+            into: minecraft:copper_chain
+            drops: {}
+          minecraft:weathered_copper_chain:
+            into: minecraft:exposed_copper_chain
+            drops: {}
+          minecraft:oxidized_copper_chain:
+            into: minecraft:weathered_copper_chain
+            drops: {}
+          minecraft:exposed_copper_lantern:
+            into: minecraft:copper_lantern
+            drops: {}
+          minecraft:weathered_copper_lantern:
+            into: minecraft:exposed_copper_lantern
+            drops: {}
+          minecraft:oxidized_copper_lantern:
+            into: minecraft:weathered_copper_lantern
+            drops: {}
       hoe:
         tillables:
           minecraft:coarse_dirt:
@@ -651,6 +776,37 @@ world-settings:
       use-night-vision: false
       use-dismounts-underwater-tag: true
     mobs:
+      nautilus:
+        attributes:
+          max_health: 15.0
+          movement_speed: 1.0
+          attack_damage: 3.0
+          knockback_resistance: 0.3
+          scale: 1.0
+        breeding-delay-ticks: 6000
+        always-drop-exp: false
+      zombie_nautilus:
+        attributes:
+          max_health: 15.0
+          movement_speed: 1.1
+          attack_damage: 3.0
+          knockback_resistance: 0.3
+          scale: 1.0
+        always-drop-exp: false
+      copper_golem:
+        can-open-shulker: false
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        can-swim: false
+        attributes:
+          max_health: 12.0
+          step_height: 1.0
+          movement_speed: 0.2
+          scale: 1.0
+        takes-damage-from-water: false
+        always-drop-exp: false
+        can-open-barrel: false
       happy_ghast:
         ridable-in-water: false
         attributes:
@@ -670,6 +826,7 @@ world-settings:
         attributes:
           max_health: 20.0
           scale: 1.0
+        can-pick-up-loot: default
       armadillo:
         ridable: false
         ridable-in-water: true
@@ -736,6 +893,7 @@ world-settings:
         attributes:
           max_health: 16.0
           scale: 1.0
+        can-pick-up-loot: default
       camel:
         ridable-in-water: false
         attributes:
@@ -873,6 +1031,7 @@ world-settings:
         takes-damage-from-water: false
         can-break-doors: false
         always-drop-exp: false
+        can-pick-up-loot: default
       elder_guardian:
         ridable: false
         controllable: true
@@ -939,6 +1098,7 @@ world-settings:
         mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       frog:
         ridable: false
         ridable-in-water: true
@@ -1036,6 +1196,7 @@ world-settings:
           try-existing-chickens: true
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       illusioner:
         ridable: false
         ridable-in-water: true
@@ -1193,12 +1354,12 @@ world-settings:
         attributes:
           max_health: 16.0
           scale: 1.0
-        mob-griefing-override: true
         takes-damage-from-water: false
         portal-spawn-modifier: 2000
         always-drop-exp: false
         head-visibility-percent: 0.5
         ignores-armor-with-gold-trim: false
+        can-pick-up-loot: true
       piglin_brute:
         ridable: false
         ridable-in-water: true
@@ -1208,6 +1369,7 @@ world-settings:
           scale: 1.0
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       pillager:
         ridable: false
         ridable-in-water: true
@@ -1215,9 +1377,9 @@ world-settings:
         attributes:
           max_health: 24.0
           scale: 1.0
-        mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       polar_bear:
         ridable: false
         ridable-in-water: true
@@ -1338,6 +1500,7 @@ world-settings:
         head-visibility-percent: 0.5
         feed-wither-roses: 0
         bow-accuracy: 14 - difficulty * 4
+        can-pick-up-loot: default
       skeleton_horse:
         ridable: false
         ridable-in-water: true
@@ -1416,6 +1579,7 @@ world-settings:
           scale: 1.0
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       strider:
         ridable: false
         ridable-in-water: false
@@ -1506,6 +1670,7 @@ world-settings:
         search-radius:
           acquire-poi: 12
           nearest-bed-sensor: 12
+        can-pick-up-loot: default
       vindicator:
         ridable: false
         ridable-in-water: true
@@ -1517,6 +1682,7 @@ world-settings:
           spawn-chance: 0.0
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       wandering_trader:
         ridable: false
         ridable-in-water: true
@@ -1531,6 +1697,7 @@ world-settings:
         allow-trading: true
         always-drop-exp: false
       warden:
+        can-use-sonic-boom: true
         ridable: false
         ridable-in-water: true
         controllable: true
@@ -1568,6 +1735,7 @@ world-settings:
           scale: 1.0
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
       wolf:
         ridable: false
         ridable-in-water: true
@@ -1607,6 +1775,7 @@ world-settings:
         takes-damage-from-water: false
         always-drop-exp: false
         head-visibility-percent: 0.5
+        can-pick-up-loot: default
       zombie_horse:
         ridable: false
         ridable-in-water: false
@@ -1643,6 +1812,7 @@ world-settings:
         cure:
           enabled: true
         always-drop-exp: false
+        can-pick-up-loot: default
       zombified_piglin:
         ridable: false
         ridable-in-water: true
@@ -1658,6 +1828,7 @@ world-settings:
         count-as-player-kill-when-angry: true
         takes-damage-from-water: false
         always-drop-exp: false
+        can-pick-up-loot: default
     hunger:
       starvation-damage: 1.0
     settings:
@@ -1718,7 +1889,6 @@ world-settings:
       raid-cooldown-seconds: 0
       animal-breeding-cooldown-seconds: 0
       persistent-droppable-entity-display-names: true
-      entities-pick-up-loot-mob-griefing-override: default
       fireballs-mob-griefing-override: default
       projectiles-mob-griefing-override: default
       note-block-ignore-above: false

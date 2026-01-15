@@ -39,7 +39,8 @@ else
 
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
     update_plugin 'AnnouncerPlus'               'https://github.com/jpenilla/AnnouncerPlus'                 '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'AntiPopup'                   'https://github.com/KaspianDev/AntiPopup'                   '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'AntiPopup'                   'https://modrinth.com/plugin/antipopup'                     '%pluginName%-%pluginVersion%.jar'
+#    update_plugin 'AntiPopup'                   'https://github.com/KaspianDev/AntiPopup'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'AuthMe'                      'https://github.com/AuthMe/AuthMeReloaded'
     # TODO: BestTools
     update_plugin 'ChestShop-3'                 'https://ci.minebench.de'                                   'ChestShop.jar'
@@ -110,5 +111,6 @@ else
     update_plugin 'WorldEditSUI'                'https://github.com/kennytv/WorldEditSUI'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'WorldGuard'                  'https://modrinth.com/plugin/worldguard'                    'worldguard-bukkit-%pluginVersion%-dist.jar'
     update_plugin 'WorldGuardExtraFlags'        'https://github.com/aromaa/WorldGuardExtraFlags'            '%pluginName%.jar'
+    update_plugin 'WorldGuardExtraFlagsPlus'    'https://modrinth.com/plugin/worldguard-extraflags-plus'    '%pluginName%-%pluginVersion%.jar'
     update_plugin 'XRayHunter'                  'https://github.com/rlf/XRayHunter'                         '%pluginName%.jar'
 fi

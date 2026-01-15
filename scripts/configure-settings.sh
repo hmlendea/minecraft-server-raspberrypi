@@ -77,7 +77,8 @@ set_config_values "${PAPER_GLOBAL_CONFIG_FILE}" \
     'timings.enabled'                                                               false \
     'timings.server-name'                                                           "${SERVER_NAME}" \
     'timings.server-name-privacy'                                                   true \
-    'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true
+    'unsupported-settings.skip-vanilla-damage-tick-when-shield-blocked'             true \
+    'update-checker.enabled'                                                        "${CHECK_PLUGINS_FOR_UPDATES}"
 
 # Note: Setting hopper.disable-move-event=false will break Hopper Minecarts
 set_config_values "${PAPER_WORLD_DEFAULT_CONFIG_FILE}" \
@@ -624,6 +625,9 @@ fi
 configure_plugin 'ProAntiTab' config \
     'updater.enabled' "${CHECK_PLUGINS_FOR_UPDATES}"
 
+configure_plugin 'ProtocolLib' config \
+    'global.auto updater.notify' "${CHECK_PLUGINS_FOR_UPDATES}"
+
 configure_plugin 'SkinsRestorer' config \
     'commands.perSkinPermissionConsent' 'I will follow the rules' \
     'SkinExpiresAfter' 180
@@ -695,8 +699,8 @@ if is_plugin_installed 'TreeAssist'; then
     configure_plugin 'TreeAssist' config \
         'bStats.Active'                     "${USE_TELEMETRY}" \
         'bStats.Full'                       "${USE_TELEMETRY}" \
-        'Commands.No Replant.Cooldown Time' 90 \
-        'Commands.Replant.Cooldown Time'    90 \
+        'Commands.No Replant.Cooldown Time' 300 \
+        'Commands.Replant.Cooldown Time'    300 \
         'Destruction.Falling Blocks'        true \
         'Destruction.Falling Blocks Fancy'  false \
         'General.Toggle Remember'           false \
