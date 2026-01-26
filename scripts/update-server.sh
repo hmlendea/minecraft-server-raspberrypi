@@ -22,6 +22,12 @@ if ${IS_SERVER_RUNNING}; then
     echo 'ERROR: The server needs to be stopped to update the plugins!'
     exit 1
 else
+    # Important to be up-to-date for maintenance
+    update_plugin 'Geyser-Spigot'               'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
+    update_plugin 'ViaBackwards'                "https://github.com/ViaVersion/ViaBackwards"
+    update_plugin 'ViaVersion'                  "https://github.com/ViaVersion/ViaVersion"
+
+    # Better to manually update
     update_server
 
     # TODO: AntiPopup
@@ -60,7 +66,6 @@ else
     update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
     update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
-    update_plugin 'Geyser-Spigot'               'https://modrinth.com/plugin/geyser'                        'Geyser-Spigot-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
     update_plugin 'HardPlus'                    'https://modrinth.com/plugin/hardplus'                      '%pluginName%-%pluginVersion%.jar'
@@ -100,8 +105,6 @@ else
     update_plugin 'UltimateInventory'           "https://github.com/percyqaz/UltimateInventory"             "%pluginName%-%pluginVersion%.jar"
     update_plugin 'VanillaMinimaps'             'https://github.com/JNNGL/VanillaMinimaps'                  'vanillaminimaps-%pluginVersion%.jar'
     update_plugin 'Vault'                       "https://github.com/MilkBowl/Vault"                         "%pluginName%.jar"
-    update_plugin 'ViaBackwards'                "https://github.com/ViaVersion/ViaBackwards"
-    update_plugin 'ViaVersion'                  "https://github.com/ViaVersion/ViaVersion"
     update_plugin 'ViewDistanceTweaks'          "https://ci.froobworld.com"                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'VivecraftSpigotExtensions'   'https://github.com/jrbudda/Vivecraft_Spigot_Extensions'    'Vivecraft_Spigot_Extensions.%pluginVersion%.jar'
     update_plugin 'VotingPlugin'                "https://bencodez.com"                                      '%pluginName%.jar'

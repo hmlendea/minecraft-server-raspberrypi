@@ -20,7 +20,7 @@ function is_datapack_installed() {
 function is_plugin_installed() {
     local PLUGIN_NAME="${1}"
 
-    for FILE in "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}"*".jar"; do
+    for FILE in "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*".jar"; do
         [ -e "${FILE}" ] && return 0
     done
     
