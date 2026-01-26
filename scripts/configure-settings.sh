@@ -756,7 +756,9 @@ configure_plugin 'FastAsyncWorldEdit' config \
     'enabled-components.release-update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'enabled-components.snapshot-update-notifications' "${CHECK_PLUGINS_FOR_UPDATES}" \
     'history.use-database' false \
-    'max-memory-percent' 85 \
+    'limits.default.max-changes' 2000000 \
+    'max-memory-percent' 75 \
+    'slower-memory-percent' 70 \
     'region-restrictions' true \
     'queue.parallel-threads' "${CPU_THREADS_HALF}" \
     'queue.target-size' $((CPU_THREADS_HALF * 5))
