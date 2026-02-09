@@ -60,3 +60,5 @@ webmap/
 # Others
 .hawtjni
 DeathMessages.yml
+motd.txt
+motd_*.txt
