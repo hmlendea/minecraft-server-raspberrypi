@@ -233,7 +233,7 @@ server_backup() {
 	fi
 
     BACKUP_PATHS=''
-	for BACKUP_ITEM in 'plugins' 'world' 'world_nether' 'world_the_end' 'server.properties' 'cache/players.json' 'banned-players.json' 'whitelist.json'; do
+	for BACKUP_ITEM in 'data' 'plugins' 'world' 'world_nether' 'world_the_end' 'server.properties' 'cache/players.json' 'banned-players.json' 'whitelist.json'; do
 	    if [ -d "${SERVER_ROOT_DIR}/${BACKUP_ITEM}" ] \
 	    || [ -f "${SERVER_ROOT_DIR}/${BACKUP_ITEM}" ]; then
 	        BACKUP_PATHS="${BACKUP_PATHS} ./${BACKUP_ITEM}"
