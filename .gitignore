@@ -50,12 +50,15 @@ backup
 
 # Datapacks data
 disabled-datapacks
-# Plugins data
-plugins
-plugins-disabled
-disabled-plugins
-wepif.yml
+
+# Data
+cert/
+data/
+plugins/
+plugins-disabled/
+disabled-plugins/
 webmap/
+wepif.yml
 
 # Others
 .hawtjni
