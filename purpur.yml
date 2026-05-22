@@ -100,6 +100,7 @@ settings:
     barrel:
       rows: 6
     ender_chest:
+      persist-hidden-rows: true
       six-rows: false
       use-permissions-for-rows: false
     crying_obsidian:
@@ -189,7 +190,7 @@ settings:
       distance: 0.5
     minecraft:purple_bed:
       distance: 0.5
-config-version: 47
+config-version: 48
 world-settings:
   default:
     blocks:

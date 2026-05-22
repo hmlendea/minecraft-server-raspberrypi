@@ -60,7 +60,7 @@ advancements:
   - minecraft:story/disabled
 players:
   disable-saving: false
-config-version: 12
+config-version: 13
 stats:
   disable-saving: false
   forced-stats: {}
@@ -185,9 +185,9 @@ world-settings:
     verbose: false
   faweregentempworld:
     verbose: false
-  world_the_end:
-    simulation-distance: 6
-    view-distance: 10
-  world_nether:
+  minecraft:the_nether:
     simulation-distance: 6
     view-distance: 5
+  minecraft:the_end:
+    simulation-distance: 6
+    view-distance: 10
