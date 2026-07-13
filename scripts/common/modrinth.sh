@@ -45,41 +45,24 @@ function get_latest_modrinth_version_id() {
 
     local APIREQUEST="https://api.modrinth.com/v2/project/${PROJECT_ID}/version"
     local APIRESPONSE=$(curl -s "${APIREQUEST}")
-    local VERSIONS=""
 
     if [[ "${PROJECT_TYPE}" == 'plugin' ]]; then
-        VERSIONS=$(echo "${APIRESPONSE}" | jq '
-          [ .[]
+        echo "${APIRESPONSE}" | jq -r '
+            .[]
             | select(any(.loaders[]?; IN("paper","spigot","bukkit")))
-          ]
-          | sort_by(.version_number)
-          | last
-          | .id
-        ')
+            | .id
+        ' | head -n 1
+
     elif [[ "${PROJECT_TYPE}" == 'datapack' ]]; then
-        VERSIONS=$(echo "${APIRESPONSE}" | jq '
-          [ .[]
+        echo "${APIRESPONSE}" | jq -r '
+            .[]
             | select(any(.loaders[]?; IN("datapack")))
-          ]
-          | sort_by(.version_number)
-          | last
-          | .id
-        ')
+            | .id
+        ' | head -n 1
+
     else
-        VERSIONS=$(echo "${APIRESPONSE}" | jq '
-          [ .[] ]
-          | sort_by(.version_number)
-          | last
-          | .id
-        ')
+        echo "${APIRESPONSE}" | jq -r '.[0].id'
     fi
-
-    local LATEST_VERSION_ID=$(sed 's/^v*//' <<< "${VERSIONS}" | sort -V | tail -n 1)
-    LATEST_VERSION_ID=$(grep "^[v]*${LATEST_VERSION_ID}$" <<< "${VERSIONS}" | tail -n 1)
-
-    [ -z "${LATEST_VERSION_ID}" ] && LATEST_VERSION=$(echo "${APIRESPONSE}" | jq -r '.[0].id')
-
-    echo "${LATEST_VERSION_ID}" | sed 's/\"//g'
 }
 
 function download_datapack_modrinth() {

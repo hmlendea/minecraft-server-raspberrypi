@@ -26,14 +26,13 @@ export PURPUR_CONFIG_FILE="${SERVER_ROOT_DIR}/purpur.yml"
 export SPIGOT_CONFIG_FILE="${SERVER_ROOT_DIR}/spigot.yml"
 
 # World
-[ -z "${WORLD_NAME}" ] && source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
-export WORLD_DIR="${SERVER_ROOT_DIR}/${WORLD_NAME}"
+export WORLD_DIR="${SERVER_ROOT_DIR}/world"
 export WORLD_ADVANCEMENTS_DIR="${WORLD_DIR}/advancements"
-export WORLD_PLAYERDATA_DIR="${WORLD_DIR}/playerdata"
+export WORLD_PLAYERDATA_DIR="${WORLD_DIR}/players/data"
 export WORLD_STATS_DIR="${WORLD_DIR}/stats"
-export WORLD_END_DIR="${SERVER_ROOT_DIR}/${WORLD_END_NAME}"
+export WORLD_END_DIR="${SERVER_ROOT_DIR}/world_the_end"
 export WORLD_END_PLAYERDATA_DIR="${WORLD_END_DIR}/playerdata"
-export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/${WORLD_NETHER_NAME}"
+export WORLD_NETHER_DIR="${SERVER_ROOT_DIR}/world_nether"
 export WORLD_NETHER_PLAYERDATA_DIR="${WORLD_NETHER_DIR}/playerdata"
 
 export SERVER_DATAPACKS_DIR="${WORLD_DIR}/datapacks"

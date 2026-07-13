@@ -30,7 +30,6 @@ else
     # Better to manually update
     update_server
 
-    # TODO: AntiPopup
 #    update_datapack 'BannerFlags'                       'https://modrinth.com/datapack/banner-flags'
     update_datapack 'DungeonsAndTaverns'                'https://modrinth.com/datapack/dungeons-and-taverns'
 #####update_datapack 'Explorify'                         'https://modrinth.com/datapack/explorify'
@@ -45,8 +44,8 @@ else
 
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'
     update_plugin 'AnnouncerPlus'               'https://github.com/jpenilla/AnnouncerPlus'                 '%pluginName%-%pluginVersion%.jar'
-    update_plugin 'AntiPopup'                   'https://modrinth.com/plugin/antipopup'                     '%pluginName%-%pluginVersion%.jar'
-#    update_plugin 'AntiPopup'                   'https://github.com/KaspianDev/AntiPopup'                   '%pluginName%-%pluginVersion%.jar'
+#    update_plugin 'AntiPopup'                   'https://modrinth.com/plugin/antipopup'                     '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'AntiPopup'                   'https://github.com/KaspianDev/AntiPopup'                   '%pluginName%-%pluginVersion%.jar'
     update_plugin 'AuthMe'                      'https://github.com/AuthMe/AuthMeReloaded'
     # TODO: BestTools
     update_plugin 'ChestShop-3'                 'https://ci.minebench.de'                                   'ChestShop.jar'
@@ -89,7 +88,7 @@ else
     update_plugin 'Pl3xMap-Claims'              "https://modrinth.com/plugin/pl3xmap-claims"                '%pluginName%-%pluginVersion%.jar'
     update_plugin 'PlaceholderAPI'              'https://ci.extendedclip.com'                               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'PlugManX'                    "https://github.com/TheBlackEntity/PlugManX"                '%pluginName%.jar'
-    update_plugin 'ProAntiTab'                  'https://github.com/RayzsYT/ProAntiTab'                     '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'ProAntiTab'                  'https://github.com/RayzsYT/ProAntiTab'                     '%pluginName%-%pluginVersion%.jar'  true
     update_plugin 'ProtocolLib'                 "https://github.com/dmulloy2/ProtocolLib"                   "%pluginName%.jar"
     update_plugin 'PurpurExtras'                'https://modrinth.com/plugin/purpurextras'                  '%pluginName%-%pluginVersion%.jar'
     update_plugin 'SeeMore'                     'https://github.com/froobynooby/SeeMore'                    '%pluginName%-%pluginVersion%.jar'

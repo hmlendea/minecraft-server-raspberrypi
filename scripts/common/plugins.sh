@@ -216,15 +216,30 @@ function update_plugin() {
 
     local URL="${2}"
     local ASSET_FILE_NAME_PATTERN="${3}"
-    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
+    local ALLOW_PRERELEASES="${4:-false}"
+
+    [ -z "${ASSET_FILE_NAME_PATTERN}" ] && \
+        ASSET_FILE_NAME_PATTERN="%pluginName%-%pluginVersion%.jar"
 
     echo "Checking for updates for plugin '${PLUGIN_NAME}'..."
+
     if [[ ${URL} == *'github'* ]]; then
-        update_plugin_github "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
+        update_plugin_github \
+            "${PLUGIN_NAME}" \
+            "${URL}" \
+            "${ASSET_FILE_NAME_PATTERN}" \
+            "${ALLOW_PRERELEASES}"
+
     elif [[ ${URL} == *'modrinth'* ]]; then
-        update_plugin_modrinth "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
+        update_plugin_modrinth \
+            "${PLUGIN_NAME}" \
+            "${URL}" \
+            "${ASSET_FILE_NAME_PATTERN}"
+
     else
-        update_plugin_jenkins "${PLUGIN_NAME}" "${URL}" "${ASSET_FILE_NAME_PATTERN}"
+        update_plugin_jenkins \
+            "${PLUGIN_NAME}" \
+            "${URL}" \
+            "${ASSET_FILE_NAME_PATTERN}"
     fi
 }
-

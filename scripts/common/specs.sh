@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
+source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/config.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
@@ -33,7 +33,7 @@ export AUTO_UPDATE_PLUGINS=false
 export USE_TELEMETRY=false
 export DISABLE_TELEMETRY=true
 
-export PLAYERS_REGISTERED=$(find ${SERVER_ROOT_DIR}/world/playerdata/ -name "*.dat" | wc -l)
+export PLAYERS_REGISTERED=$(find "${WORLD_PLAYERDATA_DIR}" -name "*.dat" | wc -l)
 export PLAYERS_MAX=20
 export PLAYERS_TARGET=5 # The amount of players the server was tested against
 
