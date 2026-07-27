@@ -18,9 +18,6 @@ function get_latest_github_release_tag() {
     local RELEASES_RESPONSE
     RELEASES_RESPONSE=$(curl -s "${RELEASES_API}")
 
-    echo "=== RELEASES RAW ===" >&2
-    echo "${RELEASES_RESPONSE}" >&2
-
     local RELEASES_TYPE
     RELEASES_TYPE=$(echo "${RELEASES_RESPONSE}" | jq -r 'type')
 
@@ -48,9 +45,6 @@ function get_latest_github_release_tag() {
     local TAGS_RESPONSE
     TAGS_RESPONSE=$(curl -s "${TAGS_API}")
 
-    echo "=== TAGS RAW ===" >&2
-    echo "${TAGS_RESPONSE}" >&2
-
     local TAGS_TYPE
     TAGS_TYPE=$(echo "${TAGS_RESPONSE}" | jq -r 'type')
 
@@ -70,10 +64,6 @@ function download_plugin_github() {
 
     local DOWNLOAD_URL="${REPOSITORY_URL}/releases/download/${RELEASE_TAG}/${ASSET_FILE_NAME}"
 
-    echo "TAG: ${RELEASE_TAG}"
-    echo "ASSET: ${ASSET_FILE_NAME}"
-    echo "URL: ${DOWNLOAD_URL}"
-
     download_plugin "${DOWNLOAD_URL}" "${PLUGIN_NAME}" "${PLUGIN_VERSION}"
 }
 
@@ -88,8 +78,6 @@ function update_plugin_github() {
             "${GH_REPOSITORY_URL}" \
             "${ALLOW_PRERELEASES}"
     )
-
-    echo $PLUGIN_NAME $LATEST_RELEASE_TAG
 
     [ "${LATEST_RELEASE_TAG}" == "null" ] && return
     [ -z "${LATEST_RELEASE_TAG}" ] && return
