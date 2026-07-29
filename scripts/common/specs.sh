@@ -15,7 +15,7 @@ function get_server_property() {
     echo "${VALUE}"
 }
 
-export MINECRAFT_VERSION='26.1.2'
+export MINECRAFT_VERSION='26.2'
 export ONLINE_MODE=$(get_server_property 'online-mode' "false")
 export WORLD_NAME=$(get_server_property 'level-name' "world")
 

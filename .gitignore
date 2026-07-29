@@ -65,3 +65,4 @@ wepif.yml
 DeathMessages.yml
 motd.txt
 motd_*.txt
+.paper/

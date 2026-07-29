@@ -194,6 +194,8 @@ config-version: 48
 world-settings:
   default:
     blocks:
+      leaves:
+        instant-decay: false
       observer:
         disable-clock: false
       anvil:
@@ -777,6 +779,44 @@ world-settings:
       use-night-vision: false
       use-dismounts-underwater-tag: true
     mobs:
+      breeze:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 30.0
+          scale: 1.0
+        takes-damage-from-water: false
+        always-drop-exp: false
+      camel_husk:
+        ridable-in-water: false
+        attributes:
+          max_health:
+            min: 32.0
+            max: 32.0
+          jump_strength:
+            min: 0.42
+            max: 0.42
+          movement_speed:
+            min: 0.09
+            max: 0.09
+        always-drop-exp: false
+      parched:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        attributes:
+          max_health: 16.0
+          scale: 1.0
+        takes-damage-from-water: false
+        always-drop-exp: false
+        can-pick-up-loot: default
+      sulfur_cube:
+        ridable: false
+        ridable-in-water: true
+        controllable: true
+        takes-damage-from-water: false
+        always-drop-exp: false
       nautilus:
         attributes:
           max_health: 15.0
@@ -1698,6 +1738,7 @@ world-settings:
         allow-trading: true
         always-drop-exp: false
       warden:
+        can-ride-vehicles: false
         can-use-sonic-boom: true
         ridable: false
         ridable-in-water: true
@@ -1980,6 +2021,7 @@ world-settings:
         - minecraft:diamond_pickaxe
         - minecraft:netherite_pickaxe
       projectile-offset:
+        wind-charge: 1.0
         bow: 1.0
         crossbow: 1.0
         egg: 1.0

@@ -52,7 +52,8 @@ else
     update_plugin 'ChestShopNotifier'           'https://ci.minebench.de'                                   '%pluginName%.jar'
     # TODO: ChestSort
     # TODO: CommandHelper
-    update_plugin 'CoreProtect'                 'https://ci.froobworld.com'                                 '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'CoreProtect'                 'https://modrinth.com/plugin/coreprotect'                   '%pluginName%-CE-%pluginVersion%.jar'
+    #update_plugin 'CoreProtect'                 'https://ci.froobworld.com'                                 '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCommands'              'https://modrinth.com/plugin/custom-commands'               '%pluginName%-%pluginVersion%.jar'
     update_plugin 'CustomCrafting'              'https://modrinth.com/plugin/customcrafting'                'customcrafting-spigot-%pluginVersion%.jar'
     update_plugin 'DeathMessages'               'https://github.com/Winds-Studio/DeathMessages'             '%pluginName%-%pluginVersion%.jar'
@@ -64,7 +65,9 @@ else
     #update_plugin 'EssentialsX'                 'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXSpawn'            'https://github.com/EssentialsX/Essentials'
     update_plugin 'EssentialsXChat'             'https://github.com/EssentialsX/Essentials'
-    update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
+    update_plugin 'FastAsyncWorldEdit'          'https://github.com/IntellectualSites/FastAsyncWorldEdit'   '%pluginName%-Paper-%pluginVersion%.jar'
+    #update_plugin 'FastAsyncWorldEdit'          'https://modrinth.com/plugin/fastasyncworldedit'            '%pluginName%-Paper-%pluginVersion%.jar'
+    #update_plugin 'FastAsyncWorldEdit'          'https://ci.athion.net'                                     '%pluginName%-Bukkit-%pluginVersion%.jar'
     update_plugin 'GrimAC'                      'https://modrinth.com/plugin/grimac'                        'grimac-%pluginVersion%.jar'
     update_plugin 'GSit'                        'https://github.com/Gecolay/GSit'
     update_plugin 'HardPlus'                    'https://modrinth.com/plugin/hardplus'                      '%pluginName%-%pluginVersion%.jar'
@@ -91,6 +94,7 @@ else
     update_plugin 'ProAntiTab'                  'https://github.com/RayzsYT/ProAntiTab'                     '%pluginName%-%pluginVersion%.jar'  true
     update_plugin 'ProtocolLib'                 "https://github.com/dmulloy2/ProtocolLib"                   "%pluginName%.jar"
     update_plugin 'PurpurExtras'                'https://modrinth.com/plugin/purpurextras'                  '%pluginName%-%pluginVersion%.jar'
+    update_plugin 'scafall'                     'https://modrinth.com/plugin/scafall'                       '%pluginName%-%pluginVersion%.jar'
     update_plugin 'SeeMore'                     'https://github.com/froobynooby/SeeMore'                    '%pluginName%-%pluginVersion%.jar'
     update_plugin 'SimpleVoiceChat'             'https://modrinth.com/plugin/simple-voice-chat'             'voicechat-bukkit-%pluginVersion.jar'
     update_plugin 'SkinsRestorer'               'https://github.com/SkinsRestorer/SkinsRestorer'            '%pluginName%.jar'

@@ -76,6 +76,7 @@ messages:
   no-permission: <red>✘ </red><gray>Nu se poate efectua.
   use-display-name-in-quit-message: false
 misc:
+  catchup-ticks: default
   chat-threads:
     chat-executor-core-size: -1
     chat-executor-max-size: -1
