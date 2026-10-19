@@ -3,6 +3,7 @@ source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')
 source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/status.sh"
 source "${SERVER_SCRIPTS_COMMON_DIR}/utils.sh"
+source "${SERVER_SCRIPTS_COMMON_DIR}/plugins.sh"
 
 GAME_NAME='minecraft'
 GAME_USER='minecraft'
@@ -38,6 +39,11 @@ set -u
 set -e
 
 MAX_SERVER_START_TIME=30
+
+# Geyser plugin auto-update configuration
+GEYSER_PLUGIN_NAME='Geyser-Spigot'
+GEYSER_MODRINTH_URL='https://modrinth.com/plugin/geyser'
+GEYSER_ASSET_FILE_NAME_PATTERN='Geyser-Spigot-%pluginVersion%.jar'
 
 if [[ "$(whoami)" == "${GAME_USER}" ]]; then
 	SUDO_CMD=""
@@ -81,6 +87,12 @@ game_command() {
 
 # Start the server if it is not already running
 server_start() {
+	# Auto-update Geyser plugin if installed
+	if [ -d "${SERVER_PLUGINS_DIR}/${GEYSER_PLUGIN_NAME}" ] || ls "${SERVER_PLUGINS_DIR}/${GEYSER_PLUGIN_NAME}"-*.jar 1> /dev/null 2>&1; then
+		echo "Geyser plugin detected, checking for updates..."
+		update_plugin "${GEYSER_PLUGIN_NAME}" "${GEYSER_MODRINTH_URL}" "${GEYSER_ASSET_FILE_NAME_PATTERN}"
+	fi
+
 	# Start the game server
 	if socket_has_session "${SESSION_NAME}"; then
 		echo "A tmux ${SESSION_NAME} session is already running. Please close it first."
