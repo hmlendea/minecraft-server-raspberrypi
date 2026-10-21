@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Shell Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v6
+
+      - name: Run Tests
+        shell: bash
+        run: |
+          command -v jq
+          for TEST_SCRIPT in tests/*-tests.sh; do
+            bash "${TEST_SCRIPT}"
+          done
