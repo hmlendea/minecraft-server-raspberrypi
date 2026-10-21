@@ -48,17 +48,17 @@ function get_latest_modrinth_version_id() {
 
     if [[ "${PROJECT_TYPE}" == 'plugin' ]]; then
         echo "${APIRESPONSE}" | jq -r '
-            .[]
-            | select(any(.loaders[]?; IN("paper","spigot","bukkit")))
-            | .id
-        ' | head -n 1
+            first(.[]
+                | select(any(.loaders[]?; IN("paper","spigot","bukkit")))
+                | .id)
+        '
 
     elif [[ "${PROJECT_TYPE}" == 'datapack' ]]; then
         echo "${APIRESPONSE}" | jq -r '
-            .[]
-            | select(any(.loaders[]?; IN("datapack")))
-            | .id
-        ' | head -n 1
+            first(.[]
+                | select(any(.loaders[]?; IN("datapack")))
+                | .id)
+        '
 
     else
         echo "${APIRESPONSE}" | jq -r '.[0].id'
