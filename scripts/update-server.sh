@@ -40,6 +40,7 @@ else
 #####update_datapack 'qraftyfied'                        'https://modrinth.com/datapack/qraftyfied'
     update_datapack 'qraftyfied-industrial-structures'  'https://modrinth.com/datapack/qraftyfied-industrial-structures'
     update_datapack 'SpawnAnimations'                   'https://modrinth.com/datapack/spawn-animations'
+    update_datapack 'Tectonic'                          'https://modrinth.com/datapack/tectonic'
     #update_datapack 'VanillaStructureUpdate'            'https://modrinth.com/datapack/vanilla-structure-update'
 
     update_plugin 'AnarchyExploitFixes'         'https://modrinth.com/plugin/anarchyexploitfixes'           '%pluginName%-Folia-%pluginVersion%.jar'

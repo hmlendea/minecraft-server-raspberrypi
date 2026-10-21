@@ -1,15 +1,3 @@
-# This is the Spigot configuration file for Paper.
-# As you can see, there's tons to configure. Some options may impact gameplay, so use
-# with caution, and make sure you know what each option does before configuring.
-#
-# If you need help with the configuration or have any questions related to Paper,
-# join us in our Discord or check the docs page.
-#
-# File Reference: https://docs.papermc.io/paper/reference/spigot-configuration/
-# Docs: https://docs.papermc.io/
-# Discord: https://discord.gg/papermc
-# Website: https://papermc.io/
-
 settings:
   debug: false
   bungeecord: false
@@ -46,18 +34,18 @@ commands:
   send-namespaced: true
   log: true
   spam-exclusions:
-  - /skill
+    - /skill
   silent-commandblock-console: false
   replace-commands:
-  - setblock
-  - summon
-  - testforblock
-  - tellraw
+    - setblock
+    - summon
+    - testforblock
+    - tellraw
   enable-spam-exclusions: false
 advancements:
   disable-saving: false
   disabled:
-  - minecraft:story/disabled
+    - minecraft:story/disabled
 players:
   disable-saving: false
 config-version: 13
@@ -191,3 +179,9 @@ world-settings:
   minecraft:the_end:
     simulation-distance: 6
     view-distance: 10
+  world_the_end:
+    simulation-distance: 6
+    view-distance: 10
+  world_nether:
+    simulation-distance: 6
+    view-distance: 5

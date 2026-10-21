@@ -1,13 +1,3 @@
-# This is the main configuration file for Purpur.
-# As you can see, there's tons to configure. Some options may impact gameplay, so use
-# with caution, and make sure you know what each option does before configuring.
-#
-# If you need help with the configuration or have any questions related to Purpur,
-# join us in our Discord guild.
-#
-# Website: https://purpurmc.org 
-# Docs: https://purpurmc.org/docs 
-
 verbose: false
 settings:
   register-minecraft-disabled-commands: false
@@ -115,8 +105,8 @@ settings:
       range: 128
     grindstone:
       ignored-enchants:
-      - minecraft:binding_curse
-      - minecraft:vanishing_curse
+        - minecraft:binding_curse
+        - minecraft:vanishing_curse
       remove-attributes: false
       remove-name-and-lore: false
     cave_vines:
@@ -190,7 +180,7 @@ settings:
       distance: 0.5
     minecraft:purple_bed:
       distance: 0.5
-config-version: 48
+config-version: 49
 world-settings:
   default:
     blocks:
@@ -237,7 +227,7 @@ world-settings:
       composter:
         sneak-to-bulk-process: false
       coral:
-        die-outside-water: true
+        die-outside-water: false
       dispenser:
         apply-cursed-to-armor-slots: true
         place-anvils: false
@@ -327,10 +317,10 @@ world-settings:
           distance: 8.0
           damage-amount: 4.0
         valid-ring-blocks:
-        - minecraft:prismarine
-        - minecraft:prismarine_bricks
-        - minecraft:sea_lantern
-        - minecraft:dark_prismarine
+          - minecraft:prismarine
+          - minecraft:prismarine_bricks
+          - minecraft:sea_lantern
+          - minecraft:dark_prismarine
       cauldron:
         fill-chances:
           rain: 0.05000000074505806
@@ -824,8 +814,13 @@ world-settings:
           attack_damage: 3.0
           knockback_resistance: 0.3
           scale: 1.0
-        breeding-delay-ticks: 6000
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       zombie_nautilus:
         attributes:
           max_health: 15.0
@@ -875,16 +870,26 @@ world-settings:
         attributes:
           max_health: 12.0
           scale: 1.0
-        breeding-delay-ticks: 6000
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       axolotl:
         ridable: false
         controllable: true
         attributes:
           max_health: 14.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       bat:
         ridable: false
         ridable-in-water: true
@@ -910,13 +915,18 @@ world-settings:
         attributes:
           max_health: 10.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         can-work-at-night: false
         can-work-in-rain: false
         can-instantly-start-drowning: true
         always-drop-exp: false
         dies-after-sting: true
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       blaze:
         ridable: false
         ridable-in-water: true
@@ -947,7 +957,12 @@ world-settings:
           movement_speed:
             min: 0.09
             max: 0.09
-        breeding-delay-ticks: 6000
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       cat:
         ridable: false
         ridable-in-water: true
@@ -959,10 +974,15 @@ world-settings:
         scan-range-for-other-cats:
           swamp-hut: 16
           village: 48
-        breeding-delay-ticks: 6000
         default-collar-color: RED
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       cave_spider:
         ridable: false
         ridable-in-water: true
@@ -980,9 +1000,14 @@ world-settings:
           max_health: 4.0
           scale: 1.0
         retaliate: false
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       cod:
         ridable: false
         controllable: true
@@ -999,12 +1024,17 @@ world-settings:
           max_health: 10.0
           scale: 1.0
         feed-mushrooms-for-mooshroom: 0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         naturally-aggressive-to-players:
           chance: 0.0
           damage: 2.0
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       creaking:
         ridable: false
         ridable-in-water: true
@@ -1054,9 +1084,14 @@ world-settings:
           movement_speed:
             min: 0.175
             max: 0.175
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       drowned:
         ridable: false
         ridable-in-water: true
@@ -1135,17 +1170,27 @@ world-settings:
           max_health: 10.0
           scale: 1.0
         tulips-change-type: false
-        breeding-delay-ticks: 6000
         mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
         can-pick-up-loot: default
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       frog:
         ridable: false
         ridable-in-water: true
         controllable: true
         ridable-jump-height: 0.6499999761581421
-        breeding-delay-ticks: 6000
+        breeding:
+          offspring:
+            chance: 1.0
+            min: 2
+            max: 5
+          cooldown-in-ticks: 6000
       ghast:
         ridable: false
         ridable-in-water: true
@@ -1187,9 +1232,14 @@ world-settings:
         attributes:
           max_health: 10.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       guardian:
         ridable: false
         controllable: true
@@ -1205,9 +1255,14 @@ world-settings:
         attributes:
           max_health: 40.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       horse:
         ridable-in-water: false
         attributes:
@@ -1220,9 +1275,14 @@ world-settings:
           movement_speed:
             min: 0.1125
             max: 0.3375
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       husk:
         ridable: false
         ridable-in-water: true
@@ -1239,6 +1299,7 @@ world-settings:
         always-drop-exp: false
         can-pick-up-loot: default
       illusioner:
+        spawn-in-raids: false
         ridable: false
         ridable-in-water: true
         controllable: true
@@ -1275,10 +1336,15 @@ world-settings:
           movement_speed:
             min: 0.175
             max: 0.175
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         join-caravans: true
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       magma_cube:
         ridable: false
         ridable-in-water: true
@@ -1295,9 +1361,14 @@ world-settings:
         attributes:
           max_health: 10.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       mule:
         ridable-in-water: false
         attributes:
@@ -1310,9 +1381,10 @@ world-settings:
           movement_speed:
             min: 0.175
             max: 0.175
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          cooldown-in-ticks: 6000
       ocelot:
         ridable: false
         ridable-in-water: true
@@ -1320,10 +1392,15 @@ world-settings:
         attributes:
           max_health: 10.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
         spawn-below-sea-level: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       panda:
         ridable: false
         ridable-in-water: true
@@ -1331,9 +1408,14 @@ world-settings:
         attributes:
           max_health: 20.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       parrot:
         ridable: false
         ridable-in-water: true
@@ -1385,9 +1467,14 @@ world-settings:
           max_health: 10.0
           scale: 1.0
         give-saddle-back: false
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       piglin:
         ridable: false
         ridable-in-water: true
@@ -1401,6 +1488,7 @@ world-settings:
         head-visibility-percent: 0.5
         ignores-armor-with-gold-trim: false
         can-pick-up-loot: true
+        mob-griefing-override: true
       piglin_brute:
         ridable: false
         ridable-in-water: true
@@ -1429,9 +1517,10 @@ world-settings:
           max_health: 30.0
           scale: 1.0
         breedable-item: ''
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          cooldown-in-ticks: 6000
       pufferfish:
         ridable: false
         controllable: true
@@ -1449,10 +1538,15 @@ world-settings:
           scale: 1.0
         spawn-toast-chance: 0.0
         spawn-killer-rabbit-chance: 0.0
-        breeding-delay-ticks: 6000
         mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       ravager:
         ridable: false
         ridable-in-water: false
@@ -1463,23 +1557,23 @@ world-settings:
         mob-griefing-override: default
         takes-damage-from-water: false
         griefable-blocks:
-        - minecraft:oak_leaves
-        - minecraft:spruce_leaves
-        - minecraft:birch_leaves
-        - minecraft:jungle_leaves
-        - minecraft:acacia_leaves
-        - minecraft:cherry_leaves
-        - minecraft:dark_oak_leaves
-        - minecraft:pale_oak_leaves
-        - minecraft:mangrove_leaves
-        - minecraft:azalea_leaves
-        - minecraft:flowering_azalea_leaves
-        - minecraft:wheat
-        - minecraft:carrots
-        - minecraft:potatoes
-        - minecraft:torchflower_crop
-        - minecraft:pitcher_crop
-        - minecraft:beetroots
+          - minecraft:oak_leaves
+          - minecraft:spruce_leaves
+          - minecraft:birch_leaves
+          - minecraft:jungle_leaves
+          - minecraft:acacia_leaves
+          - minecraft:cherry_leaves
+          - minecraft:dark_oak_leaves
+          - minecraft:pale_oak_leaves
+          - minecraft:mangrove_leaves
+          - minecraft:azalea_leaves
+          - minecraft:flowering_azalea_leaves
+          - minecraft:wheat
+          - minecraft:carrots
+          - minecraft:potatoes
+          - minecraft:torchflower_crop
+          - minecraft:pitcher_crop
+          - minecraft:beetroots
         always-drop-exp: false
         avoid-rabbits: false
       salmon:
@@ -1497,10 +1591,15 @@ world-settings:
         attributes:
           max_health: 8.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         mob-griefing-override: default
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       shulker:
         ridable: false
         ridable-in-water: true
@@ -1590,7 +1689,8 @@ world-settings:
         attributes:
           max_health: 14.0
           scale: 1.0
-        breeding-delay-ticks: 6000
+        breeding:
+          cooldown-in-ticks: 6000
       squid:
         ridable: false
         controllable: true
@@ -1628,10 +1728,15 @@ world-settings:
         attributes:
           max_health: 20.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         give-saddle-back: false
         takes-damage-from-water: true
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       tadpole:
         ridable: false
         ridable-in-water: true
@@ -1650,9 +1755,14 @@ world-settings:
           movement_speed:
             min: 0.175
             max: 0.175
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       tropical_fish:
         ridable: false
         controllable: true
@@ -1668,9 +1778,14 @@ world-settings:
         attributes:
           max_health: 30.0
           scale: 1.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       vex:
         ridable: false
         ridable-in-water: true
@@ -1692,7 +1807,6 @@ world-settings:
         follow-emerald-blocks: false
         can-be-leashed: true
         can-breed: true
-        breeding-delay-ticks: 6000
         clerics-farm-warts: false
         cleric-wart-farmers-throw-warts-at-villagers: true
         mob-griefing-override: true
@@ -1712,6 +1826,12 @@ world-settings:
           acquire-poi: 12
           nearest-bed-sensor: 12
         can-pick-up-loot: default
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       vindicator:
         ridable: false
         ridable-in-water: true
@@ -1788,9 +1908,14 @@ world-settings:
         default-collar-color: RED
         milk-cures-rabid-wolves: true
         spawn-rabid-chance: 0.0
-        breeding-delay-ticks: 6000
         takes-damage-from-water: false
         always-drop-exp: false
+        breeding:
+          offspring:
+            chance: 0.0
+            min: 1
+            max: 1
+          cooldown-in-ticks: 6000
       zoglin:
         ridable: false
         ridable-in-water: true
@@ -2014,12 +2139,12 @@ world-settings:
         spawner-name: <reset>Generator de Monștri
         minimal-level: 1
         spawner-lore:
-        - <reset><grey>Generează un <reset><white><mob> <reset><grey>lobotomizat
+          - <reset><grey>Generează un <reset><white><mob> <reset><grey>lobotomizat
         tools:
-        - minecraft:iron_pickaxe
-        - minecraft:golden_pickaxe
-        - minecraft:diamond_pickaxe
-        - minecraft:netherite_pickaxe
+          - minecraft:iron_pickaxe
+          - minecraft:golden_pickaxe
+          - minecraft:diamond_pickaxe
+          - minecraft:netherite_pickaxe
       projectile-offset:
         wind-charge: 1.0
         bow: 1.0
@@ -2050,3 +2175,4 @@ world-settings:
           block-speed:
             grass_block: 0.3
             stone: 0.5
+      entities-pick-up-loot-mob-griefing-override: default

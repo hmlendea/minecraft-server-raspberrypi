@@ -83,13 +83,11 @@ misc:
   client-interaction-leniency-distance: default
   compression-level: default
   enable-nether: true
-  fix-far-end-terrain-generation: true
   load-permissions-yml-before-plugins: true
   max-joins-per-tick: 3
   max-tracking-combat-entries: 10240
   prevent-negative-villager-demand: false
   region-file-cache-size: 256
-  send-full-pos-for-item-entities: false
   strict-advancement-dimension-check: false
   use-alternative-luck-formula: false
   use-dimension-type-for-custom-spawners: false
@@ -101,6 +99,10 @@ packet-limiter:
     max-packet-rate: 500.0
   kick-message: <red><lang:disconnect.exceeded_packet_rate>
   overrides:
+    ServerboundCommandSuggestionPacket:
+      action: DROP
+      interval: 1.0
+      max-packet-rate: 15.0
     minecraft:command_suggestion:
       action: DROP
       interval: 1.0
@@ -151,7 +153,7 @@ unsupported-settings:
   skip-vanilla-damage-tick-when-shield-blocked: true
   update-equipment-on-player-actions: true
 update-checker:
-  enabled: true
+  enabled: false
 watchdog:
   early-warning-delay: 10000
   early-warning-every: 5000

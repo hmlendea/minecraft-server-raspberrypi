@@ -52,7 +52,7 @@ anticheat:
     use-permission: false
 chunks:
   auto-save-interval: default
-  delay-chunk-unloads-by: 20s
+  delay-chunk-unloads-by: 15s
   entity-per-chunk-save-limit:
     arrow: 8
     breeze_wind_charge: 8
@@ -65,6 +65,8 @@ chunks:
   fixed-chunk-inhabited-time: -1
   flush-regions-on-save: true
   max-auto-save-chunks-per-tick: 6
+  min-chunk-unload-count: 50
+  min-chunk-unload-fraction: 0.05
   prevent-moving-into-unloaded-chunks: true
 collisions:
   allow-player-cramming-damage: false
@@ -100,6 +102,7 @@ entities:
       - HARD
     ender-dragons-death-always-places-dragon-egg: false
     experience-merge-max-value: -1
+    inactive-mob-goal-selector-throttle-rate: disabled
     mobs-can-always-pick-up-loot:
       skeletons: false
       zombies: false
