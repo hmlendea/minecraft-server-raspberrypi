@@ -45,7 +45,7 @@ fi
 
 echo "Changing ${OLD_USERNAME} (${OLD_UUID}) to ${NEW_USERNAME} (${NEW_UUID})..."
 
-sudo sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${DISCORDSRV_ACCOUNTS_FILE}"
+run_with_privileges sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${DISCORDSRV_ACCOUNTS_FILE}"
 reload_plugin "discordsrv"
 
 move_file "${ESSENTIALS_USERDATA_DIR}/${OLD_UUID}.yml" "${ESSENTIALS_USERDATA_DIR}/${NEW_UUID}.yml"
@@ -61,7 +61,7 @@ reload_plugin "skinsrestorer"
 move_file "${TRADESHOP_PLAYER_DATA_DIR}/${OLD_UUID}.json" "${TRADESHOP_PLAYER_DATA_DIR}/${NEW_UUID}.json"
 reload_plugin "tradeshop"
 
-sudo sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${WORLDGUARD_WORLD_REGIONS_FILE}"
+run_with_privileges sed -i 's/'"${OLD_UUID}"'/'"${NEW_UUID}"'/g' "${WORLDGUARD_WORLD_REGIONS_FILE}"
 reload_plugin "worldguard"
 
 move_file "${WORLD_ADVANCEMENTS_DIR}/${OLD_UUID}.json" "${WORLD_ADVANCEMENTS_DIR}/${NEW_UUID}.json"
@@ -69,7 +69,7 @@ move_file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat" "${WORLD_PLAYERDATA_DIR}/${N
 move_file "${WORLD_PLAYERDATA_DIR}/${OLD_UUID}.dat_old" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.dat_old"
 move_file "${WORLD_STATS_DIR}/${OLD_UUID}.json" "${WORLD_PLAYERDATA_DIR}/${NEW_UUID}.json"
 
-sudo sed -i 's/\"'"${OLD_UUID}"'\"/\"'"${NEW_UUID}"'\"/g' "${SERVER_WHITELIST_FILE}"
-sudo sed -i 's/\"'"${OLD_USERNAME}"'\"/\"'"${NEW_USERNAME}"'\"/g' "${SERVER_WHITELIST_FILE}"
+run_with_privileges sed -i 's/\"'"${OLD_UUID}"'\"/\"'"${NEW_UUID}"'\"/g' "${SERVER_WHITELIST_FILE}"
+run_with_privileges sed -i 's/\"'"${OLD_USERNAME}"'\"/\"'"${NEW_USERNAME}"'\"/g' "${SERVER_WHITELIST_FILE}"
 
 ${SHELL} "${SERVER_SCRIPTS_DIR}/fix-permissions.sh"

@@ -10,8 +10,8 @@ if [ -f "${PLAYERS_CACHE_FILE}" ]; then
 fi
 
 if [ ! -f "${PLAYERS_CACHE_FILE}" ]; then
-    sudo touch "${PLAYERS_CACHE_FILE}"
-    echo "{}" | sudo tee "${PLAYERS_CACHE_FILE}" &>/dev/null
+    run_with_privileges touch "${PLAYERS_CACHE_FILE}"
+    echo "{}" | run_with_privileges tee "${PLAYERS_CACHE_FILE}" &>/dev/null
 fi
 
 function get_essentials_userdata_value() {
@@ -55,7 +55,7 @@ function get_playerdata_value() {
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
     [ ! -f '/usr/bin/nbted' ] && return
 
-    sudo nbted -p "${PLAYER_DATA_FILE}" | \
+    run_with_privileges nbted -p "${PLAYER_DATA_FILE}" | \
         grep "${PROPERTY}" | \
         sed 's/^.*\"'"${PROPERTY}"'\"\s*[\"]*\([^\"]*\).*/\1/g'
 }
@@ -137,7 +137,7 @@ function get_player_discord_id() {
     fi
     
     if [ -z "${DISCORD_ID}" ] && [ -f "${DISCORDSRV_ACCOUNTS_FILE}" ]; then
-        DISCORD_ID=$(sudo grep "${PLAYER_UUID}" "${DISCORDSRV_ACCOUNTS_FILE}" | awk '{print $1}')
+        DISCORD_ID=$(run_with_privileges grep "${PLAYER_UUID}" "${DISCORDSRV_ACCOUNTS_FILE}" | awk '{print $1}')
     fi
     
     if [ -z "${DISCORD_ID}" ] && [ -f "${DISCORDSRV_DIR}/linkedaccounts.json" ]; then
@@ -171,7 +171,7 @@ function get_player_date_seen_first() {
     
     if [ -z "${PLAYER_DATE_REGISTRATION}" ]; then
         local PLAYER_USERNAME=$(get_player_username "${PLAYER_UUID}")
-        PLAYER_DATE_REGISTRATION=$(sudo grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
+        PLAYER_DATE_REGISTRATION=$(run_with_privileges grep -a " ${PLAYER_USERNAME} registered" "${AUTHME_LOG_FILE}" | head -n 1 | awk -F"]" '{print $1}' | sed 's/^\[//g')
 
 #        [ -n "${PLAYER_DATE_REGISTRATION}" ] && PLAYER_DATE_REGISTRATION=$(date +"%F %T" -d "$(date +%Y)-${PLAYER_DATE_REGISTRATION}")
     fi
@@ -206,7 +206,7 @@ function get_player_location() {
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
     [ ! -f '/usr/bin/nbted' ] && return
     
-    local POS_ALL=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
+    local POS_ALL=$(run_with_privileges nbted -p "${PLAYER_DATA_FILE}" | grep -A3 "List \"Pos\"")
     local POS_X_FULL=$(sed -n 2p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Y_FULL=$(sed -n 3p <<< "${POS_ALL}" | sed 's/\s//g')
     local POS_Z_FULL=$(sed -n 4p <<< "${POS_ALL}" | sed 's/\s//g')
@@ -225,12 +225,12 @@ function get_player_spawn() {
     [ ! -f "${PLAYER_DATA_FILE}" ] && return
     [ ! -f '/usr/bin/nbted' ] && return
 
-    local SPAWN_X=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_X=$(run_with_privileges nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnX" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     [ -z "${SPAWN_X}" ] && return
 
-    local SPAWN_Y=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
-    local SPAWN_Z=$(sudo nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Y=$(run_with_privileges nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnY" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
+    local SPAWN_Z=$(run_with_privileges nbted -p "${PLAYER_DATA_FILE}" | grep "SpawnZ" | awk -F"\"" '{print $3}' | sed 's/^\s*\(.*\)\s*$/\1/g')
 
     echo "${SPAWN_X} ${SPAWN_Y} ${SPAWN_Z}"
 }

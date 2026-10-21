@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
 function download_file() {
     local FILE_URL="${1}"
@@ -6,14 +7,13 @@ function download_file() {
 
     [ -f "${FILE_PATH}" ] && return
 
-    sudo wget --quiet "${FILE_URL}" -O "${FILE_PATH}"
-    sudo chown minecraft:minecraft "${FILE_PATH}"
-    #sudo chmod +x "${FILE_PATH}"
+    run_with_privileges wget --quiet "${FILE_URL}" -O "${FILE_PATH}"
+    run_with_privileges chown minecraft:minecraft "${FILE_PATH}"
 
     if [ -f "${FILE_PATH}" ]; then
         local FILE_SIZE=$(du "${FILE_PATH}" | awk '{print $1}' | head -n 1)
         if [ ${FILE_SIZE} -eq 0 ]; then
-            sudo rm "${FILE_PATH}"
+            run_with_privileges rm "${FILE_PATH}"
         else
             echo " > Downloaded '${FILE_PATH}'"
         fi

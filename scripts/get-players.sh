@@ -10,7 +10,7 @@ function get_userdata_prop() {
     yq -r ".${PROPERTY_ESC}" "${FILE}"
 }
 
-sudo echo 'SU prigileges granted!'
+run_with_privileges echo 'SU prigileges granted!'
 
 PLAYERS_COUNT=0
 for PLAYER_UUID in $(get_players_uuids); do

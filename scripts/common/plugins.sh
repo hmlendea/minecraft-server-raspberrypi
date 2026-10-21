@@ -164,7 +164,7 @@ function download_datapack() {
 
     if [ -f "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip" ] && \
        [ ! -f "${DATAPACK_FILE_PATH}" ]; then
-        sudo rm "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip"
+        run_with_privileges rm "${SERVER_DATAPACKS_DIR}/${DATAPACK_NAME}-"*".zip"
     fi
 
     download_file "${ASSET_URL}" "${DATAPACK_FILE_PATH}"
@@ -179,18 +179,18 @@ function download_plugin() {
     local PLUGIN_FILE_PATH="${SERVER_PLUGINS_DIR}/${PLUGIN_FILE_NAME}"
 
     [ -f "${PLUGIN_FILE_PATH}" ] && return
-    [ ! -d "${SERVER_PLUGINS_TEMP_DIR}" ] && sudo mkdir -p "${SERVER_PLUGINS_TEMP_DIR}"
+    [ ! -d "${SERVER_PLUGINS_TEMP_DIR}" ] && run_with_privileges mkdir -p "${SERVER_PLUGINS_TEMP_DIR}"
 
     download_file "${ASSET_URL}" "${PLUGIN_FILE_TEMP_PATH}"
 
     if [ -f "${PLUGIN_FILE_TEMP_PATH}" ]; then
         if ls "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar' 1> /dev/null 2>&1; then
-            sudo rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar'
+            run_with_privileges rm "${SERVER_PLUGINS_DIR}/${PLUGIN_NAME}-"*'.jar'
         fi
 
-        sudo mv "${PLUGIN_FILE_TEMP_PATH}" "${PLUGIN_FILE_PATH}"
-        sudo chown minecraft:minecraft "${PLUGIN_FILE_PATH}"
-        sudo chmod +x "${PLUGIN_FILE_PATH}"
+        run_with_privileges mv "${PLUGIN_FILE_TEMP_PATH}" "${PLUGIN_FILE_PATH}"
+        run_with_privileges chown minecraft:minecraft "${PLUGIN_FILE_PATH}"
+        run_with_privileges chmod +x "${PLUGIN_FILE_PATH}"
     fi
 }
 

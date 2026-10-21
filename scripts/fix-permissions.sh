@@ -4,7 +4,7 @@ source "${SERVER_SCRIPTS_COMMON_DIR}/specs.sh"
 
 function setown() {
     for ITEM in "$@"; do
-        sudo chown minecraft:minecraft -R "${ITEM}"
+        run_with_privileges chown minecraft:minecraft -R "${ITEM}"
     done
 }
 
@@ -12,7 +12,7 @@ function setexe() {
     for FILE in "$@"; do
         [ -h "${FILE}" ] && continue
 
-        sudo chmod +x -R "${FILE}"
+        run_with_privileges chmod +x -R "${FILE}"
     done
 }
 
@@ -22,7 +22,7 @@ function setmod() {
     for FILE in "$@"; do
         [ -h "${FILE}" ] && continue
 
-        sudo chmod ${MOD} "${FILE}"
+        run_with_privileges chmod ${MOD} "${FILE}"
     done
 }
 

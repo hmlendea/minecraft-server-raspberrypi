@@ -48,13 +48,13 @@ function set_config_value() {
             if [ -w "${FILE}" ]; then
                 sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
             else
-                sudo sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
+                run_with_privileges sed -i 's/^\(\s*\)\('"${KEY_ESC}"'\)\(\s*[=:]\s*\).*$/\1\2\3'"${VAL_ESC}"'/g' "${FILE}"
             fi
         else
             if [ -w "${FILE}" ]; then
                 echo "${KEY}=${VALUE}" >> "${FILE}"
             else
-                echo "${KEY}=${VALUE}" | sudo tee -a "${FILE}" > /dev/null
+                echo "${KEY}=${VALUE}" | run_with_privileges tee -a "${FILE}" > /dev/null
             fi
         fi
     fi
@@ -82,7 +82,7 @@ function set_xml_value() {
         if [ -w "${FILE}" ]; then
             xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
         else
-            sudo xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
+            run_with_privileges xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
         fi
     fi
 }
@@ -119,7 +119,7 @@ function set_yml_value() {
         apply_yml_config "${FILE}" "${KEY_ESC} = ${VALUE_ESC}"
     else
         echo "${FILE}: ${KEY}=${VALUE_ESC}"
-        sudo sed 's/^'"${KEY}"':.*/'"${KEY}"': '"${VALUE_ESC}"'/g' -i "${FILE}"
+        run_with_privileges sed 's/^'"${KEY}"':.*/'"${KEY}"': '"${VALUE_ESC}"'/g' -i "${FILE}"
     fi
 }
 
@@ -149,7 +149,7 @@ function apply_yml_config() {
     if [ -w "${FILE}" ]; then
         yq -yi "${YQ_COMMAND}" "${FILE}"
     else
-        sudo yq -yi "${YQ_COMMAND}" "${FILE}"
+        run_with_privileges yq -yi "${YQ_COMMAND}" "${FILE}"
     fi
 }
 
@@ -180,7 +180,7 @@ function set_json_value_with_sed() {
     if [ -w "${FILE}" ]; then
         sed -i 's/\(\s*\"'"${KEY_ESC}"'\": \).*\"\(,\)*/\1\"'"${VALUE}"'\"\2/g' "${FILE}"
     else
-        sudo sed -i 's/\(\s*\"'"${KEY_ESC}"'\": \).*\"\(,\)*/\1\"'"${VALUE}"'\"\2/g' "${FILE}"
+        run_with_privileges sed -i 's/\(\s*\"'"${KEY_ESC}"'\": \).*\"\(,\)*/\1\"'"${VALUE}"'\"\2/g' "${FILE}"
     fi
 }
 
@@ -216,9 +216,9 @@ function set_json_value_with_jq() {
         rm "${FILE}.tmp" 
         #jq "${JQ_COMMAND}" "${FILE}"
     else
-        jq "${JQ_COMMAND}" "${FILE}" | sudo tee "${FILE}.tmp" > /dev/null
-        cat "${FILE}.tmp" | sudo tee "${FILE}" > /dev/null
-        sudo rm "${FILE}.tmp"
+        jq "${JQ_COMMAND}" "${FILE}" | run_with_privileges tee "${FILE}.tmp" > /dev/null
+        cat "${FILE}.tmp" | run_with_privileges tee "${FILE}" > /dev/null
+        run_with_privileges rm "${FILE}.tmp"
     fi
 }
 

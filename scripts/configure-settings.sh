@@ -599,7 +599,7 @@ if is_plugin_installed 'Pl3xmap'; then
 
     if cmp -s "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"; then
         echo "Copying '${SERVER_IMAGE_FILE}' to '${WEBMAP_ICON_FILE}'..."
-        sudo cp "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"
+        run_with_privileges cp "${SERVER_IMAGE_FILE}" "${WEBMAP_ICON_FILE}"
     fi
     
     configure_plugin "Pl3xmap" "${PLEXMAP_CONFIG_COLOURS_FILE}" \

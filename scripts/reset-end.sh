@@ -29,8 +29,8 @@ function clear_region() {
     [ ! -f "${REGION_FILE}" ] && return
 
     echo "Removing region ${REGION_X}.${REGION_Y} from the End dimension..."
-    [ ! -d "${BACKUP_DIR}" ] && sudo mkdir "${BACKUP_DIR}"
-    sudo mv "${REGION_FILE}" "${BACKUP_DIR}/${REGION_FILE_NAME}"
+    [ ! -d "${BACKUP_DIR}" ] && run_with_privileges mkdir "${BACKUP_DIR}"
+    run_with_privileges mv "${REGION_FILE}" "${BACKUP_DIR}/${REGION_FILE_NAME}"
 }
 
 # End cities

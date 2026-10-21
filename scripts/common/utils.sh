@@ -1,6 +1,14 @@
 #!/bin/bash
 [ -z "${SERVER_ROOT_DIR}" ] && source "$(dirname "${BASH_SOURCE[0]}" | xargs realpath | sed 's/\/scripts.*//g')/scripts/common/paths.sh"
 
+function run_with_privileges() {
+    if [[ "${EUID}" -eq 0 || "$(id -un)" == 'minecraft' ]]; then
+        "$@"
+    else
+        sudo "$@"
+    fi
+}
+
 function convert_ticks_to_seconds() {
     local TICKS="${1}"
 
@@ -27,7 +35,7 @@ function run_server_command() {
         echo "    > Error: The server is not running!"
         return
     fi
-    
+
     ${SERVER_CONTROLLER} command "$@"
     # | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]//g"
     #tput sgr0
@@ -51,11 +59,11 @@ function is_guid() {
 
 function function_exists() {
     local FUNCTION_NAME="${1}"
-    
+
     if ! declare -f "${FUNCTION_NAME}" > /dev/null; then
         return 0
     fi
-    
+
     local SOURCING_FILE=$(declare -f "${FUNCTION_NAME}" | grep -oP "(?<=^# Source file: ).*")
 
     if [[ -z "${SOURCING_FILE}" ]]; then
@@ -90,7 +98,7 @@ function move_file() {
     fi
 
     echo "Moving '${OLD_FILE}' to '${NEW_FILE}'..."
-    sudo mv "${OLD_FILE}" "${NEW_FILE}"
+    run_with_privileges mv "${OLD_FILE}" "${NEW_FILE}"
 }
 
 function copy_file() {
@@ -108,7 +116,7 @@ function copy_file() {
     fi
 
     echo "Copying '${SOURCE_FILE}' to '${TARGET_FILE}'..."
-    sudo cp "${SOURCE_FILE}" "${TARGET_FILE}"
+    run_with_privileges cp "${SOURCE_FILE}" "${TARGET_FILE}"
 }
 
 function copy_file_if_needed() {
@@ -125,7 +133,7 @@ function copy_file_if_needed() {
     fi
 
     copy_file "${SOURCE_FILE}" "${TARGET_FILE}"
-    sudo chown minecraft:minecraft "${TARGET_FILE}"
+    run_with_privileges chown minecraft:minecraft "${TARGET_FILE}"
 }
 
 function create_file() {
@@ -140,12 +148,12 @@ function create_file() {
     if [ -w "${DIRECTORY_PATH}" ]; then
         touch "${FILE_PATH}"
     else
-        sudo touch "${FILE_PATH}"
+        run_with_privileges touch "${FILE_PATH}"
     fi
 }
 
 function ensure_su_access() {
-    sudo echo "SU access achieved!"
+    run_with_privileges echo "SU access achieved!"
 }
 
 function ensure_bin_is_installed() {
