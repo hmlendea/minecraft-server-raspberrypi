@@ -97,6 +97,15 @@ This server is a shell-based operations toolkit that provisions and runs a singl
 
 See the [Architecture Documentation](ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
-## Contributing
+## 🤝 Contributing
 
-If you would like to contribute to this project, feel free to submit a pull request or open an issue on GitHub. We welcome all contributions, big or small!
+You are welcome to submit any suggestion, feedback, or modification to this project.
+
+When doing so, please:
+- Maintain cross-platform compatibility
+- Submit focused pull requests that conform to the existing code style
+- Maintain your branch synchronised with `master`
+- Revise the documentation when functionality changes
+- Properly test all modifications, including edge cases and error conditions
+
+See the [Contributing Guidelines](./CONTRIBUTING.md) for details on how to report issues, suggest enhancements, and submit changes.
