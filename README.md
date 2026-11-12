@@ -97,6 +97,38 @@ This server is a shell-based operations toolkit that provisions and runs a singl
 
 See the [Architecture Documentation](ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
+## 🛡️ Privacy and Data
+
+Minecraft Server on Raspberry Pi stores player data on the operator's own host and sends nothing to the project maintainers; optional plugin telemetry and update checks are disabled by default.
+
+For the detailed description of how the application handles privacy and personal data, see the [Privacy Statement](./PRIVACY.md).
+
+Player data is produced and stored by the running server and its plugins on the operator's host.
+
+| Data | Purpose | Storage | Retention | Optional |
+|------|---------|---------|-----------|----------|
+| Player usernames and account identifiers | Authentication, permissions, and world state | `usercache.json`, `whitelist.json`, `ops.json`, world player data | Until the operator deletes it | No |
+| Player world state | Game progression | `world/`, `world_nether/`, `world_the_end/` | Until the operator deletes it | No |
+| Plugin data (chat, shops, regions, skins, Discord links) | Plugin features | `plugins/<name>/` | Until the operator deletes it | No |
+| Server logs | Operation and diagnosis | `logs/` | Rotated by the server runtime | No |
+| Rendered web map output | Public map pages | `webmap/` | Until the operator deletes it | Yes |
+| Plugin telemetry | Anonymous plugin statistics | bStats service | Managed by bStats | Yes |
+| Backups | Recovery | `/var/backups/minecraft/` | Most recent six archives | Yes |
+
+### Data Locations
+
+| Platform or Scope | Location | Contents |
+|-------------------|----------|----------|
+| World | `world/`, `world_nether/`, `world_the_end/` | Player data, statistics, advancements, region files |
+| Plugin data | `plugins/` | Player records, chat, shop, region, and skin data |
+| Logs | `logs/` | Connection, command, and plugin activity |
+| Web map | `webmap/` | Rendered map tiles and skin images |
+| Backups | `/var/backups/minecraft/` | Timestamped archives of world, plugin, and player data |
+
+### Telemetry Controls
+
+Optional plugin telemetry is controlled by `USE_TELEMETRY` in `scripts/common/specs.sh`; it is disabled by default and can be re-enabled or disabled and reapplied with `scripts/configure-settings.sh`. Optional plugin update checks are controlled by `CHECK_PLUGINS_FOR_UPDATES` and `SKIP_PLUGIN_UPDATE_CHECKS` in the same file.
+
 ## 🤝 Contributing
 
 You are welcome to submit any suggestion, feedback, or modification to this project.
