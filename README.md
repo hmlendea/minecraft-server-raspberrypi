@@ -91,6 +91,12 @@ This server is designed to be easy to use and maintain. To start the server, sim
 
 This will start the server with the pre-configured settings and Java flags. To stop the server, simply use `Ctrl+C` in the terminal.
 
+## 🏗️ Architecture
+
+This server is a shell-based operations toolkit that provisions and runs a single PurpurMC Java process on a Raspberry Pi 4.
+
+See the [Architecture Documentation](ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
+
 ## Contributing
 
 If you would like to contribute to this project, feel free to submit a pull request or open an issue on GitHub. We welcome all contributions, big or small!
