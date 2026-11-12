@@ -141,3 +141,9 @@ When doing so, please:
 - Properly test all modifications, including edge cases and error conditions
 
 See the [Contributing Guidelines](./CONTRIBUTING.md) for details on how to report issues, suggest enhancements, and submit changes.
+
+## 🔒 Security
+
+Minecraft Server on Raspberry Pi distributes configuration files and shell scripts for self-hosted servers and handles vulnerabilities through coordinated disclosure.
+
+For information on reporting security vulnerabilities, see the [Security Policy](./SECURITY.md).
