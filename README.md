@@ -97,6 +97,31 @@ This server is a shell-based operations toolkit that provisions and runs a singl
 
 See the [Architecture Documentation](ARCHITECTURE.md) for the system context, principal components, runtime flows, ownership boundaries, dependencies, constraints, and extension points.
 
+## 📚 Documentation
+
+Detailed documentation of the toolkit, its components, and its operational flows is maintained under [`docs/`](./docs/INDEX.md).
+
+| Resource | Description |
+|----------|-------------|
+| [Documentation index](./docs/INDEX.md) | Master index and navigation for the documentation knowledge base |
+| [Repository overview](./docs/repository-overview.md) | Purpose, scope, entry points, and intended audience |
+| [Repository structure](./docs/repository-structure.md) | Source tree layout and module organisation |
+| [Architecture](./docs/architecture.md) | Layered architecture detail that complements `ARCHITECTURE.md` |
+| [Quick start](./docs/quick-start.md) | Prerequisites, first run, and everyday operations |
+| [Components](./docs/components/) | Deep dives into the controller, common libraries, configuration writers, provider adapters, plugin management, player data, messaging, and region settings |
+| [Flows](./docs/flows/) | End-to-end flows for startup, shutdown and backup, provisioning, configuration, and username migration |
+| [Behaviour](./docs/behaviour/) | Operator-visible lifecycle, configuration provisioning, player management, and artefact update behaviour |
+| [Command interface reference](./docs/api-reference/INDEX.md) | Operator commands for the `server` controller and the operational scripts |
+| [Configuration](./docs/configuration.md) | Configuration sources, format dispatch, and hardware-derived values |
+| [Data model](./docs/data-model.md) | Player, region, plugin, and datapack entities |
+| [State and persistence](./docs/state-and-persistence.md) | Stores, derived caches, backups, and migrations |
+| [Security](./docs/security.md) | Trust boundaries, privilege handling, and data protection controls |
+| [Testing](./docs/testing.md) | Test strategy, harness technique, and coverage gaps |
+| [Change guide](./docs/change-guide.md) | How to modify common areas safely |
+| [Troubleshooting](./docs/troubleshooting.md) | Common issues and their resolutions |
+| [FAQ](./docs/faq.md) | Frequently asked questions |
+| [Open questions](./docs/ambiguities-and-open-questions.md) | Known gaps, latent defects, and unresolved items |
+
 ## 🛡️ Privacy and Data
 
 Minecraft Server on Raspberry Pi stores player data on the operator's own host and sends nothing to the project maintainers; optional plugin telemetry and update checks are disabled by default.
